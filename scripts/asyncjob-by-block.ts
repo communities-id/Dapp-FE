@@ -247,6 +247,9 @@ function listenEventsOnChain(chainId: SupportedChainIds) {
     while (retryTime > 0) {
       try {
         await syncEventsInOneBlock(chainId, block)
+        if (retryTime < 5) {
+          await sendMessage(5879750850, `Sync chain ${chainId} block ${block} success after retry ${5 - retryTime} times`)
+        }
         return
       } catch (e: any) {
         retryTime -= 1
