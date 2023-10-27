@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id                String   @id @default(cuid())
+  name              String   @unique
+  chainId           Int
+  registry          String?
+  registryInterface String?
+  from              String?
+  to                String?
+  tokenId           Int
+  blockNumber       Int
+  blockTimestamp    Int
+  transactionHash   String?
+  price             String
+  memberInfo        Json
+  isPrimary         Boolean  @default(false)
+  updatedAt         DateTime @updatedAt
+
+  @@unique([registry, tokenId, chainId])
+}
+
+model Community {
+  id                String   @id @default(cuid())
+  chainId           Int
+  name              String   @unique
+  registry          String?
+  registryInterface String?
+  coinId            String?
+  coin              Coin?    @relation(fields: [coinId], references: [id])
+  pool              String?
+  from              String?
+  to                String?
+  tokenId           Int
+  blockNumber       Int?
+  blockTimestamp    Int?
+  transactionHash   String?
+  price             String?
+  communityInfo     Json
+  latestBlock       Int      @default(0)
+  tgGroupID         String?  @unique
+  updatedAt         DateTime @updatedAt
+
+  @@unique([tokenId, chainId])
+}
+
+model Coin {
+  id           String      @id @default(cuid())
+  chainId      Int
+  tokenDecimal Int         @default(18)
+  contract     String
+  usdPrice     Decimal     @default(0)
+  communities  Community[]
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([contract, chainId])
+}
+
+model Form {
+  id    String  @id @default(cuid())
+  email String?
+}
+
+model Cache {
+  id          String   @id @default(cuid())
+  chainId     BigInt
+  type        String
+  blockNumber BigInt
+  updatedAt   DateTime @updatedAt
+
+  @@unique([chainId, type])
+}
+
+model TelegramGroup {
+  id       String @id @default(cuid())
+  brand    String @unique
+  registry String
+  chainId  BigInt
+  groupId  String @unique
+}
+
+model TelegramUser {
+  id      String @id @default(cuid())
+  address String @unique
+  userId  String
+}
+
+model Relayer {
+  id         String   @id @default(cuid())
+  srcBlock   BigInt
+  srcChain   BigInt
+  dstChain   BigInt?
+  srcAddress String
+  payload    String?  @db.Text
+  dstAddress String?
+  srcTx      String
+  dstBlock   BigInt   @default(0)
+  dstTx      String?
+  dstErr     String?  @db.Text
+  status     Int      @default(0) //0: pending, 1: delivered, 2: blocked
+  createdAt  DateTime @default(now())
+}

@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/relayer/cron",
+      "schedule": "* * * * *"
+    }
+  ]
+}

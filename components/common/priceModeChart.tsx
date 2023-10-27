@@ -1,0 +1,62 @@
+import { FC } from 'react'
+
+import LinearChart, { Markers } from '@/components/chart/linear'
+
+import { priceModeFormulaMap, calcCurrentMintPrice } from '@/utils/formula'
+import { formatDecimalsPrice, formatToDecimal } from '@/utils/format'
+
+import { PriceMode, CommunityPrice } from '@/types/contract'
+
+interface Props {
+  name?: string
+  params: CommunityPrice<string>
+  labels?: number[]
+  values?: number[]
+  height?: number
+  markerSymbol?: string
+  currentLabel?: number
+  hiddenMarkers?: boolean
+}
+
+const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200, labels = [0, 1000, 2000, 3000, 4000, 5000, 6000], values, markerSymbol = 'Coin', currentLabel = 1, hiddenMarkers }) => {
+
+  const datasetsValues = values || labels.map(x => {
+    // price is the final price of multiple days
+    return Number(formatToDecimal(calcCurrentMintPrice(x, { ...params }).price, 0, 6))
+  })
+
+  const currentPrice = formatToDecimal(calcCurrentMintPrice(currentLabel, { ...params }).price, 0, 6)
+
+  const markers: Markers = [{
+    label: `Current Price ≈ ${formatDecimalsPrice(currentPrice, 6)}`,
+    value: Number(currentPrice),
+    options: {
+      labelPos: 'left',
+    }
+  }]
+
+  console.log('- datasetsValues', datasetsValues)
+  return (
+    <LinearChart
+      key={name}
+      height={height}
+      labels={labels}
+      datasets={[
+        {
+          name: 'per year',
+          type: 'line',
+          values: datasetsValues,
+        },
+      ]}
+      markers={hiddenMarkers ? undefined : markers}
+      // yRegion={{
+      //   label: 'Mint Price',
+      //   start: 0,
+      //   end: values[values.length - 1]
+      // }}
+      markerSymbol={markerSymbol}
+    />
+  )
+}
+
+export default PriceModeChart

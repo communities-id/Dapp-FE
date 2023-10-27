@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .testimonial-01 .swiper-pagination-bullet {
+  @apply w-2.5 h-2.5 bg-stroke opacity-100;
+}
+.testimonial-01 .swiper-pagination-bullet-active {
+  @apply bg-primary w-5 rounded-full;
+} */
+
+.sr-item {
+  @apply invisible;
+}
+
+#supportCheckbox:checked ~ div span {
+  @apply opacity-100;
+}
+
+@layer base {
+  &::selection {
+    @apply !bg-mintPurple !text-white;
+  }
+  &::-moz-selection {
+    @apply !bg-mintPurple !text-white;
+  }
+  body {
+    @apply font-outfit font-normal text-regular text-waterloo relative dark:text-manatee z-1;
+  }
+}
+
+@layer container {
+  .search-container {
+    @apply mx-auto max-w-c-800 w-full;
+  }
+}
+
+@layer components {
+  /* .dropdown {
+    @apply flex-col gap-4 min-w-max lg:w-[250px] mt-2 lg:mt-0 bg-white dark:bg-black border border-stroke dark:border-strokedark shadow-solid-13 ease-in duration-300 px-8 py-5 rounded-md -left-7.5 hidden
+    lg:translate-y-10 lg:opacity-0 lg:invisible lg:absolute lg:flex
+    lg:before:absolute lg:before:-top-1.5 lg:before:left-10 lg:before:w-3 lg:before:h-3 lg:before:border-l lg:before:border-t lg:before:border-stroke lg:dark:before:border-strokedark lg:before:bg-white lg:dark:before:bg-black lg:before:rotate-45 
+    lg:group-hover:translate-y-6.5 lg:group-hover:opacity-100 lg:group-hover:visible;
+  } */
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .img-white {
+    filter: invert(0%) sepia(96%) saturate(15%) hue-rotate(249deg) brightness(100%) contrast(105%);
+  }
+}
+
+@keyframes skeleton-breath {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* @keyframes normal-breath {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+} */
+
+.selection-text {
+  /* &::selection {
+    @apply !bg-mintPurple !text-white;
+  }
+  &::-moz-selection {
+    @apply !bg-mintPurple !text-white;
+  } */
+}
+
+.cid-price-chart .y-regions .bar {
+  display: none;
+}

@@ -1,0 +1,28 @@
+.connect-btn {
+  img {
+    margin-top: -2px;
+  }
+}
+
+.logo {
+  @media screen and (max-width: 600px) {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.nav-search {
+  background-color: #fff;
+}
+
+.nav-home {
+  background-color: #000;
+}
+
+.footer {
+  padding: 40px;
+
+  @media screen and (max-width: 600px) {
+    padding: 20px;
+  }
+}

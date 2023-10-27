@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Community" ALTER COLUMN "pool" DROP DEFAULT,
+ALTER COLUMN "pool" SET DATA TYPE TEXT;
