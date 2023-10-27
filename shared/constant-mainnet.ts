@@ -1,6 +1,6 @@
 import { ChainIDs, mainnetCommunitiesIDInput, CONTRACT_MAP as contractMap } from '@communitiesid/id'
 
-import { getAlchemyHost, getQuickNodeHost } from '@/utils/provider'
+import { getChainbaseHosts, getQuickNodeHost } from '@/utils/provider'
 
 import { ContractAddresses } from '@/types/contract'
 
@@ -78,19 +78,19 @@ const CONTRACT_MAP: Record<number, ContractAddresses> = {
 const SDK_OPTIONS: mainnetCommunitiesIDInput = {
   openseaKey: 'bbf06a664d3c450692c73a8bc300cf25',
   Ethereum: {
-    RPCUrl: getAlchemyHost(CHAIN_ID_MAP.Ethereum),
+    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Ethereum),
   },
   Polygon: {
-    RPCUrl: getAlchemyHost(CHAIN_ID_MAP.Polygon),
+    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Polygon),
   },
   Base: {
-    RPCUrl: getAlchemyHost(CHAIN_ID_MAP.Base),
+    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Base),
   },
   OP: {
-    RPCUrl: getAlchemyHost(CHAIN_ID_MAP.Optimism),
+    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Optimism),
   },
   BSC: {
-    RPCUrl: getQuickNodeHost(CHAIN_ID_MAP.BSC),
+    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.BSC),
   },
   Scroll: {
     RPCUrl: getQuickNodeHost(CHAIN_ID_MAP.Scroll),

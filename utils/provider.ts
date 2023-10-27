@@ -4,7 +4,8 @@ import { ethers } from "ethers"
 import { TestnetChainIDs, ChainIDs } from '@communitiesid/id'
 import { TotalSupportedChainIDs } from "@/types/chain"
 
-const ethersNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
+// const ethersNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
+const chainbaseNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
 
 // const ENDPOINTS = [
@@ -12,6 +13,36 @@ const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Test
 //   "b706609261c64eaaad792171bc3c9fcf",
 //   "4779964dc9704f6dbf8d63a1e0183ed6",
 // ];
+
+export const chainbaseKeys: Record<TotalSupportedChainIDs, string> = {
+  [ChainIDs.Ethereum]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [ChainIDs.OP]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [ChainIDs.BSC]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [ChainIDs.Polygon]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [ChainIDs.Base]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [ChainIDs.Scroll]: '',
+  [TestnetChainIDs.Goerli]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [TestnetChainIDs["Polygon Mumbai"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [TestnetChainIDs["Base Goerli Testnet"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: ''
+}
+
+export const chainbaseHosts: Record<TotalSupportedChainIDs, string> = {
+  [ChainIDs.Ethereum]: 'ethereum-mainnet',
+  [ChainIDs.OP]: 'optimism-mainnet',
+  [ChainIDs.BSC]: 'bsc-mainnet',
+  [ChainIDs.Polygon]: 'polygon-mainnet',
+  [ChainIDs.Base]: 'base-mainnet',
+  [ChainIDs.Scroll]: '',
+  [TestnetChainIDs.Goerli]: 'ethereum-goerli',
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: 'optimism-goerli',
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'bsc-testnet',
+  [TestnetChainIDs["Polygon Mumbai"]]: 'polygon-mumbai',
+  [TestnetChainIDs["Base Goerli Testnet"]]: 'base-goerli',
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: ''
+}
 
 export const quickNodeKeys: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Ethereum]: '',
@@ -99,6 +130,18 @@ export const getQuickNodeProvider = (network: number) => {
   return new ethers.providers.JsonRpcProvider(getQuickNodeHost(network as TotalSupportedChainIDs))
 }
 
+export const getChainbaseKey = (network: number) => {
+  return chainbaseKeys[network as TotalSupportedChainIDs]
+}
+
+export const getChainbaseHosts = (network: number) => {
+  return `https://${chainbaseHosts[network as TotalSupportedChainIDs]}.s.chainbase.online/v1/${getChainbaseKey(network)}/`
+}
+
+export const getChainbaseProvider = (network: number) => {
+  return new ethers.providers.JsonRpcProvider(getChainbaseHosts(network as TotalSupportedChainIDs))
+}
+
 // export const getblockHost = (network: number) => {
 //   return 'https://bsc.getblock.io/1a5ea93b-d342-48bd-85c2-754cdae87a19/testnet/'
 // }
@@ -110,11 +153,12 @@ export const createProvider = (network: number) => {
     if (providers.has(network)) return providers.get(network) as ethers.providers.JsonRpcProvider
     
     // custom provider by endpoint
-    if (ethersNetworksWl.includes(network)) {
-      providers.set(network, new ethers.providers.AlchemyProvider(
-        ethers.providers.getNetwork(network),
-        getAlchemyKey(network as TotalSupportedChainIDs)
-      ))
+    if (chainbaseNetworksWl.includes(network)) {
+      // providers.set(network, new ethers.providers.AlchemyProvider(
+      //   ethers.providers.getNetwork(network),
+      //   getAlchemyKey(network as TotalSupportedChainIDs)
+      // ))
+      return providers.set(network, getChainbaseProvider(network))
       // quicknode provider
     } else if (quickNodeNetworksWl.includes(network)) {
       providers.set(network, getQuickNodeProvider(network))
