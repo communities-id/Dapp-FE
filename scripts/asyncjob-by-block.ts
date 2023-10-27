@@ -279,7 +279,7 @@ async function main() {
     }
   })
 
-  const allChains = [5] //Object.values(CHAIN_ID_MAP)
+  const allChains = Object.values(CHAIN_ID_MAP)
   for (let i = 0; i < allChains.length; i++) {
     listenEventsOnChain(allChains[i] as SupportedChainIds)
   }
