@@ -158,7 +158,7 @@ export const createProvider = (network: number) => {
       //   ethers.providers.getNetwork(network),
       //   getAlchemyKey(network as TotalSupportedChainIDs)
       // ))
-      return providers.set(network, getChainbaseProvider(network))
+      providers.set(network, getChainbaseProvider(network))
       // quicknode provider
     } else if (quickNodeNetworksWl.includes(network)) {
       providers.set(network, getQuickNodeProvider(network))
