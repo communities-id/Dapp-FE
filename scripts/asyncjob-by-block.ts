@@ -247,18 +247,17 @@ function listenEventsOnChain(chainId: SupportedChainIds) {
     while (retryTime > 0) {
       try {
         await syncEventsInOneBlock(chainId, block)
-        if (retryTime < 5) {
-          await sendMessage(5879750850, `Sync chain ${chainId} block ${block} success after retry ${5 - retryTime} times`)
-        }
         return
       } catch (e: any) {
         retryTime -= 1
-        await sendMessage(5879750850, `Error occurred when syncing events with retry times ${5 - retryTime}`)
-        await sendMessage(5879750850, JSON.stringify({
-          chainId,
-          block,
-          error: e.toString()
-        }))
+        if (retryTime < 1) {
+          await sendMessage(5879750850, `Error occurred when syncing events with retry times ${5 - retryTime}`)
+          await sendMessage(5879750850, JSON.stringify({
+            chainId,
+            block,
+            error: e.toString()
+          }))
+        }
       }
     }
   })
