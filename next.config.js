@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   env: {
+    NEXT_PUBLIC_OPENSEA_KEY: process.env.NEXT_PUBLIC_OPENSEA_KEY,
     NEXT_PUBLIC_RPC_KEYS: process.env.NEXT_PUBLIC_RPC_KEYS,
     NEXT_PUBLIC_ALCHEMY_ID: process.env.NEXT_PUBLIC_ALCHEMY_ID,
     MASTER_ADDR: process.env.MASTER_ADDR,

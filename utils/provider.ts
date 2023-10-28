@@ -1,31 +1,22 @@
 import { ethers } from "ethers"
 
-
-import { TestnetChainIDs, ChainIDs } from '@communitiesid/id'
+import { TestnetChainIDs, ChainIDs, CommunitiesIDInput } from '@communitiesid/id'
 import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
 // const ethersNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const chainbaseNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
 
-const { alchemy, quickNode, chainbase } = JSON.parse(process.env.NEXT_PUBLIC_RPC_KEYS ?? '{}') as RPCKeys
-
-const defaultChainbaseKeys = chainbase[ChainIDs.Ethereum] || chainbase[TestnetChainIDs.Goerli]
-
-export const chainbaseKeys: Record<TotalSupportedChainIDs, string[]> = {
-  [ChainIDs.Ethereum]: chainbase[ChainIDs.Ethereum] ?? defaultChainbaseKeys,
-  [ChainIDs.OP]: chainbase[ChainIDs.OP] ?? defaultChainbaseKeys,
-  [ChainIDs.BSC]: chainbase[ChainIDs.BSC] ?? defaultChainbaseKeys,
-  [ChainIDs.Polygon]: chainbase[ChainIDs.Polygon] ?? defaultChainbaseKeys,
-  [ChainIDs.Base]: chainbase[ChainIDs.Base] ?? defaultChainbaseKeys,
-  [ChainIDs.Scroll]: chainbase[ChainIDs.Scroll] ?? defaultChainbaseKeys,
-  [TestnetChainIDs.Goerli]: chainbase[TestnetChainIDs.Goerli] ?? defaultChainbaseKeys,
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: chainbase[TestnetChainIDs["Optimism Goerli Testnet"]] ?? defaultChainbaseKeys,
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: chainbase[TestnetChainIDs["BNB Smart Chain Testnet"]] ?? defaultChainbaseKeys,
-  [TestnetChainIDs["Polygon Mumbai"]]: chainbase[TestnetChainIDs["Polygon Mumbai"]] ?? defaultChainbaseKeys,
-  [TestnetChainIDs["Base Goerli Testnet"]]: chainbase[TestnetChainIDs["Base Goerli Testnet"]] ?? defaultChainbaseKeys,
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: chainbase[TestnetChainIDs["Scroll Sepolia Testnet"]] ?? defaultChainbaseKeys
+export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode' | 'chainbase', Record<TotalSupportedChainIDs, string[]>> => {
+  const { alchemy, quickNode, chainbase } = JSON.parse(rpcKeys) as RPCKeys
+  return {
+    alchemy: Object.fromEntries(Object.entries(alchemy).map(([key, value]) => [Number(key), value])) as Record<TotalSupportedChainIDs, string[]>,
+    quickNode: Object.fromEntries(Object.entries(quickNode).map(([key, value]) => [Number(key), value])) as Record<TotalSupportedChainIDs, string[]>,
+    chainbase: Object.fromEntries(Object.entries(chainbase).map(([key, value]) => [Number(key), value])) as Record<TotalSupportedChainIDs, string[]>
+  }
 }
+
+const { alchemy: alchemyKeys, quickNode: quickNodeKeys, chainbase: chainbaseKeys } = parseRPCKeys(process.env.NEXT_PUBLIC_RPC_KEYS ?? '{}')
 
 export const chainbaseHosts: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Ethereum]: 'ethereum-mainnet',
@@ -42,21 +33,6 @@ export const chainbaseHosts: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: ''
 }
 
-export const quickNodeKeys: Record<TotalSupportedChainIDs, string[]> = {
-  [ChainIDs.Ethereum]: quickNode[ChainIDs.Ethereum],
-  [ChainIDs.OP]: quickNode[ChainIDs.OP],
-  [ChainIDs.BSC]: quickNode[ChainIDs.BSC],
-  [ChainIDs.Polygon]: quickNode[ChainIDs.Polygon],
-  [ChainIDs.Base]: quickNode[ChainIDs.Base],
-  [ChainIDs.Scroll]: quickNode[ChainIDs.Scroll],
-  [TestnetChainIDs.Goerli]: quickNode[TestnetChainIDs.Goerli],
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: quickNode[TestnetChainIDs["Optimism Goerli Testnet"]],
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: quickNode[TestnetChainIDs["BNB Smart Chain Testnet"]],
-  [TestnetChainIDs["Polygon Mumbai"]]: quickNode[TestnetChainIDs["Polygon Mumbai"]],
-  [TestnetChainIDs["Base Goerli Testnet"]]: quickNode[TestnetChainIDs["Base Goerli Testnet"]],
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: quickNode[TestnetChainIDs["Scroll Sepolia Testnet"]]
-}
-
 export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Ethereum]: 'eth-mainnet',
   [ChainIDs.OP]: 'opt-mainnet',
@@ -70,21 +46,6 @@ export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs["Polygon Mumbai"]]: 'polygon-mumbai',
   [TestnetChainIDs["Base Goerli Testnet"]]: 'base-goerli',
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'multi-wandering-daylight.scroll-testnet'
-}
-
-export const alchemyKeys: Record<TotalSupportedChainIDs, string[]> = {
-  [ChainIDs.Ethereum]: alchemy[ChainIDs.Ethereum],
-  [ChainIDs.OP]: alchemy[ChainIDs.OP],
-  [ChainIDs.BSC]: alchemy[ChainIDs.BSC],
-  [ChainIDs.Polygon]: alchemy[ChainIDs.Polygon],
-  [ChainIDs.Base]: alchemy[ChainIDs.Base],
-  [ChainIDs.Scroll]: alchemy[ChainIDs.Scroll],
-  [TestnetChainIDs.Goerli]: alchemy[TestnetChainIDs.Goerli],
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: alchemy[TestnetChainIDs["Optimism Goerli Testnet"]],
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: alchemy[TestnetChainIDs["BNB Smart Chain Testnet"]],
-  [TestnetChainIDs["Polygon Mumbai"]]: alchemy[TestnetChainIDs["Polygon Mumbai"]],
-  [TestnetChainIDs["Base Goerli Testnet"]]: alchemy[TestnetChainIDs["Base Goerli Testnet"]],
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: alchemy[TestnetChainIDs["Scroll Sepolia Testnet"]]
 }
 
 export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
@@ -107,9 +68,10 @@ export const getAlchemyKey = (network: number) => {
   return keys[Math.floor(Math.random() * keys.length)] ?? ''
 }
 
-export const getAlchemyHost = (network: number) => {
-  const alchemyKey = getAlchemyKey(network as TotalSupportedChainIDs)
-  return `https:/\/${alchemyHosts[network as TotalSupportedChainIDs]}.g.alchemy.com/v2/${alchemyKey}`
+export const getAlchemyHost = (network: number, keys?: string[]) => {
+  const _keys = keys ?? alchemyKeys[network as TotalSupportedChainIDs] ?? []
+  const key = _keys[Math.floor(Math.random() * _keys.length)] ?? ''
+  return `https:/\/${alchemyHosts[network as TotalSupportedChainIDs]}.g.alchemy.com/v2/${key}`
 }
 
 export const getAlchemyProvider = (network: number) => {
@@ -121,8 +83,10 @@ export const getQuickNodeKey = (network: number) => {
   return keys[Math.floor(Math.random() * keys.length)] ?? ''
 }
 
-export const getQuickNodeHost = (network: number) => {
-  return `https://${quickNodeHosts[network as TotalSupportedChainIDs]}.quiknode.pro/${getQuickNodeKey(network)}/`
+export const getQuickNodeHost = (network: number, keys?: string[]) => {
+  const _keys = keys ?? alchemyKeys[network as TotalSupportedChainIDs] ?? []
+  const key = _keys[Math.floor(Math.random() * _keys.length)] ?? ''
+  return `https://${quickNodeHosts[network as TotalSupportedChainIDs]}.quiknode.pro/${key}/`
 }
 
 export const getQuickNodeProvider = (network: number) => {
@@ -130,12 +94,14 @@ export const getQuickNodeProvider = (network: number) => {
 }
 
 export const getChainbaseKey = (network: number) => {
-  const keys = chainbaseKeys[network as TotalSupportedChainIDs] ?? []
+  const keys = chainbaseKeys[network as TotalSupportedChainIDs] ?? (chainbaseKeys[ChainIDs.Ethereum] || chainbaseKeys[TestnetChainIDs.Goerli]) ?? []
   return keys[Math.floor(Math.random() * keys.length)] ?? ''
 }
 
-export const getChainbaseHosts = (network: number) => {
-  return `https://${chainbaseHosts[network as TotalSupportedChainIDs]}.s.chainbase.online/v1/${getChainbaseKey(network)}/`
+export const getChainbaseHosts = (network: number, keys?: string[]) => {
+  const _keys = keys ?? chainbaseKeys[network as TotalSupportedChainIDs] ?? []
+  const key = _keys[Math.floor(Math.random() * _keys.length)] ?? ''
+  return `https://${chainbaseHosts[network as TotalSupportedChainIDs]}.s.chainbase.online/v1/${key}/`
 }
 
 export const getChainbaseProvider = (network: number) => {
@@ -169,4 +135,56 @@ export const createProvider = (network: number) => {
 
     return providers.get(network) as ethers.providers.JsonRpcProvider
   })()
+}
+
+export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): CommunitiesIDInput => {
+  const isTestnet = process.env.NEXT_PUBLIC_IS_TESTNET === 'true'
+  const { quickNode, chainbase } = parseRPCKeys(rpcKeys ?? '{}')
+
+  return isTestnet ? {
+    isTestnet: true,
+    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY as string,
+    Goerli: {
+      // RPCUrl: "https://goerli.infura.io/v3/4779964dc9704f6dbf8d63a1e0183ed6",
+      RPCUrl: getChainbaseHosts(TestnetChainIDs.Goerli, chainbase[TestnetChainIDs.Goerli]),
+    },
+    "Polygon Mumbai": {
+      RPCUrl: getChainbaseHosts(TestnetChainIDs['Polygon Mumbai'], chainbase[TestnetChainIDs['Polygon Mumbai']] ?? chainbaseKeys[TestnetChainIDs.Goerli]),
+    },
+    'Base Goerli Testnet': {
+      RPCUrl: getChainbaseHosts(TestnetChainIDs['Base Goerli Testnet'], chainbase[TestnetChainIDs['Base Goerli Testnet']] ?? chainbase[TestnetChainIDs.Goerli]),
+    },
+    'Optimism Goerli Testnet': {
+      RPCUrl: getChainbaseHosts(TestnetChainIDs['Optimism Goerli Testnet'], chainbase[TestnetChainIDs['Optimism Goerli Testnet']] ?? chainbase[TestnetChainIDs.Goerli]),
+    },
+    'BNB Smart Chain Testnet': {
+      RPCUrl: getChainbaseHosts(TestnetChainIDs['BNB Smart Chain Testnet'], chainbase[TestnetChainIDs['BNB Smart Chain Testnet']] ?? chainbase[TestnetChainIDs.Goerli]),
+    },
+    'Scroll Sepolia Testnet': {
+      RPCUrl: getQuickNodeHost(TestnetChainIDs['Scroll Sepolia Testnet'], quickNode[TestnetChainIDs['Scroll Sepolia Testnet']]),
+    },
+  } : {
+    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY as string,
+    Ethereum: {
+      RPCUrl: getChainbaseHosts(ChainIDs.Ethereum, chainbase[ChainIDs.Ethereum]),
+    },
+    Polygon: {
+      RPCUrl: getChainbaseHosts(ChainIDs.Polygon, chainbase[ChainIDs.Polygon] ?? chainbase[ChainIDs.Ethereum]),
+    },
+    Base: {
+      RPCUrl: getChainbaseHosts(ChainIDs.Base, chainbase[ChainIDs.Base] ?? chainbase[ChainIDs.Ethereum]),
+    },
+    OP: {
+      RPCUrl: getChainbaseHosts(ChainIDs.OP, chainbase[ChainIDs.OP] ?? chainbase[ChainIDs.Ethereum]),
+    },
+    BSC: {
+      RPCUrl: getChainbaseHosts(ChainIDs.BSC, chainbase[ChainIDs.BSC] ?? chainbase[ChainIDs.Ethereum]),
+    },
+    Scroll: {
+      RPCUrl: getQuickNodeHost(ChainIDs.Scroll, quickNode[ChainIDs.Scroll]),
+    },
+    arbitrum: {
+      RPCUrl: 'https://arb1.arbitrum.io/rpc'
+    }
+  }
 }

@@ -75,31 +75,6 @@ const CONTRACT_MAP: Record<number, ContractAddresses> = {
   [CHAIN_ID_MAP.Scroll]: CONTRACT_ADDRESS_SCROLL
 }
 
-const SDK_OPTIONS: mainnetCommunitiesIDInput = {
-  openseaKey: 'bbf06a664d3c450692c73a8bc300cf25',
-  Ethereum: {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Ethereum),
-  },
-  Polygon: {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Polygon),
-  },
-  Base: {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Base),
-  },
-  OP: {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Optimism),
-  },
-  BSC: {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.BSC),
-  },
-  Scroll: {
-    RPCUrl: getQuickNodeHost(CHAIN_ID_MAP.Scroll),
-  },
-  arbitrum: {
-    RPCUrl: 'https://arb1.arbitrum.io/rpc'
-  }
-}
-
 const config =  {
   CHAIN_ID,
   MAIN_CHAIN,
@@ -112,7 +87,6 @@ const config =  {
   DEFAULT_TOKEN_SYMBOL,
   SCAN_MAP,
   CHAINS_MINT_TOOLTIPS,
-  SDK_OPTIONS
 }
 
 export default config

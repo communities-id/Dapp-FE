@@ -7,11 +7,12 @@ import {
   getTotalBlock,
 } from "./contract";
 import { getTokenPrice } from "./price";
-import { CHAINS_ID_TO_NETWORK, CONTRACT_MAP, MAIN_CHAIN_ID, SDK_OPTIONS, ZERO_ADDRESS } from "./constant";
+import { CHAINS_ID_TO_NETWORK, CONTRACT_MAP, MAIN_CHAIN_ID, ZERO_ADDRESS } from "./constant";
 import { Community, Member } from "@prisma/client";
+import { getSDKOptions } from "@/utils/provider";
 
 const DELTA_BLOCK = (chainId: number) => 9999
-const communitiesidSDK = new CommunitiesID(SDK_OPTIONS)
+const communitiesidSDK = new CommunitiesID(getSDKOptions(process.env.RPC_KEYS))
 
 function pickEvents(allEvents: Event[]) {
   if (allEvents.length <= 10) {

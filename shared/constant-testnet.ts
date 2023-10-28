@@ -1,7 +1,7 @@
 //test net
 import { CommunitiesIDInput, CONTRACT_MAP as contractMap } from "@communitiesid/id";
 
-import { getChainbaseHosts, getQuickNodeHost } from '@/utils/provider'
+import { getAlchemyHost, getQuickNodeHost, getSDKOptions } from '@/utils/provider'
 
 import { TestnetChainIDs } from '@communitiesid/id'
 import { ContractAddresses } from '@/types/contract'
@@ -78,30 +78,6 @@ const CONTRACT_MAP: Record<number, ContractAddresses> = {
   [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: CONTRACT_ADDRESS_SCROLL_SEPOLIA_TESTNET
 }
 
-const SDK_OPTIONS: CommunitiesIDInput = {
-  isTestnet: true,
-  openseaKey: '',
-  Goerli: {
-    // RPCUrl: "https://goerli.infura.io/v3/4779964dc9704f6dbf8d63a1e0183ed6",
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP.Goerli),
-  },
-  "Polygon Mumbai": {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP['Polygon Mumbai']),
-  },
-  'Base Goerli Testnet': {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP['Base Goerli Testnet']),
-  },
-  'Optimism Goerli Testnet': {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP['Optimism Goerli Testnet']),
-  },
-  'BNB Smart Chain Testnet': {
-    RPCUrl: getChainbaseHosts(CHAIN_ID_MAP['BNB Smart Chain Testnet']),
-  },
-  'Scroll Sepolia Testnet': {
-    RPCUrl: getQuickNodeHost(CHAIN_ID_MAP['Scroll Sepolia Testnet']),
-  },
-}
-
 const config = {
   CHAIN_ID,
   MAIN_CHAIN,
@@ -114,7 +90,6 @@ const config = {
   DEFAULT_TOKEN_SYMBOL,
   SCAN_MAP,
   CHAINS_MINT_TOOLTIPS,
-  SDK_OPTIONS
 }
 
 export default config
