@@ -4,17 +4,18 @@ import CommunitiesID from '@communitiesid/id';
 import axios from 'axios';
 import { ethers } from 'ethers';
 import fs from 'fs'
-import { SDK_OPTIONS } from '@/shared/constant';
+import { getSDKOptions } from '@/utils/provider';
 
 const COMMUNITIY_NAME = 'jtest1'
 const FILE_NAME = 'data.csv'
 
-for (let i in SDK_OPTIONS) {
-  if ((SDK_OPTIONS as any)[i].RPCUrl) {
-    (SDK_OPTIONS as any)[i].generateSigner = (provider: any) => new ethers.Wallet(process.env.PRIVATE_KEY || '', provider)
+const sdkOptions = getSDKOptions(process.env.RPC_KEYS)
+for (let i in sdkOptions) {
+  if ((sdkOptions as any)[i].RPCUrl) {
+    (sdkOptions as any)[i].generateSigner = (provider: any) => new ethers.Wallet(process.env.PRIVATE_KEY || '', provider)
   }
 }
-const communitiesidSDK = new CommunitiesID(SDK_OPTIONS)
+const communitiesidSDK = new CommunitiesID(sdkOptions)
 
 async function main() {
   const brandDID = await communitiesidSDK.collector.searchBrandDID(COMMUNITIY_NAME)

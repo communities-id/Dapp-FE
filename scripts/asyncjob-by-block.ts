@@ -3,13 +3,14 @@ dotenv.config()
 import CommunitiesID, { SupportedChainIds } from '@communitiesid/id'
 import { getCommunitiesEvent, getMemberEvent, getPrimaryRecordEvent } from "@/shared/contract"
 import { prisma } from "@/shared/prisma"
-import { CHAIN_ID_MAP, CONTRACT_MAP, SDK_OPTIONS, ZERO_ADDRESS } from '@/shared/constant'
+import { CHAIN_ID_MAP, CONTRACT_MAP, ZERO_ADDRESS } from '@/shared/constant'
 import axios from 'axios'
 import { banUserWithNoPermission, sendMessage } from '@/shared/telegram'
-import { createProvider } from '@/utils/provider'
+import { getSDKOptions, createProvider } from '@/utils/provider'
 
 const domain = process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? 'https://testnet.communities.id' : 'https://communities.id'
-const communitiesidSDK = new CommunitiesID(SDK_OPTIONS)
+
+const communitiesidSDK = new CommunitiesID(getSDKOptions(process.env.RPC_KEYS))
 const allCommunities: any = {}
 
 function logInfo(info: string) {
