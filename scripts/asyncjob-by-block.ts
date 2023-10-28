@@ -222,8 +222,9 @@ async function syncPrimaryEventsInOneBlock(block: number) {
 
 async function syncEventsInOneBlock(chainId: SupportedChainIds, block: number) {
   const provider = createProvider(chainId)
-  console.log(`Scanning block ${block} on chain ${chainId}`)
+  logInfo(`Scanning block ${block} on chain ${chainId}`)
   const log = await provider.getBlockWithTransactions(block)
+  logInfo(`Found ${log.transactions.length} transactions on chainId ${chainId} block ${block} `)
   const transactions = log.transactions
   const communityEvents = transactions.filter(v => v.to?.toLowerCase() === CONTRACT_MAP[chainId].MemberRegistryInterfaceFactory.toLowerCase())
   const memberEvents = transactions.filter(v => allCommunities[v.to?.toLowerCase() ?? ''])
@@ -242,17 +243,23 @@ async function syncEventsInOneBlock(chainId: SupportedChainIds, block: number) {
 function listenEventsOnChain(chainId: SupportedChainIds) {
   const provider = createProvider(chainId)
   provider.on('block', async block => {
-    try {
-      await syncEventsInOneBlock(chainId, block)
-    } catch(e: any) {
-      console.log(e)
-      await sendMessage(5879750850, 'Error occurred when syncing events')
-      await sendMessage(5879750850, JSON.stringify({
-        chainId,
-        block,
-        error: e.toString()
-      }))
-      await syncEventsInOneBlock(chainId, block)
+    let retryTime = 5
+    while (retryTime > 0) {
+      try {
+        await syncEventsInOneBlock(chainId, block)
+        if (retryTime < 5) {
+          await sendMessage(5879750850, `Sync chain ${chainId} block ${block} success after retry ${5 - retryTime} times`)
+        }
+        return
+      } catch (e: any) {
+        retryTime -= 1
+        await sendMessage(5879750850, `Error occurred when syncing events with retry times ${5 - retryTime}`)
+        await sendMessage(5879750850, JSON.stringify({
+          chainId,
+          block,
+          error: e.toString()
+        }))
+      }
     }
   })
   

@@ -11,18 +11,19 @@ export default async function handler(
 ) {
   
   const { name } = req.query
+  const { type } = execSearch(name as string)
 
-  const { type, member } = execSearch(name as string)
-
-  if (type !== 'member') return res.status(200).json({
-    code: -1,
-    data: null,
-    message: 'not member!'
-  })
+  if (type !== 'member') {
+    return res.status(200).json({
+      code: -1,
+      data: null,
+      message: 'not member!'
+    })
+  }
 
   const data = await prisma.member.findUnique({
     where: {
-      name: member
+      name: name as string
     },
   })
   return res.status(200).json({

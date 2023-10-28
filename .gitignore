@@ -39,3 +39,6 @@ temp.txt
 
 .hypothesis
 csvs
+
+deploy.ps1
+deploy.sh

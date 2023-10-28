@@ -39,6 +39,9 @@ export const formatWeiToNum = (num: BigNumber, decimals = 18) => {
 }
 
 export const formatDecimalsPrice = (num: number | string, digits = 6) => {
+  if (Number(num) === 0) {
+    return '0'
+  }
   const strNum = formatToDecimal(num as number, 0, digits)
   if (Number(strNum) < 1e-6) return '0.000001'
   return strNum
