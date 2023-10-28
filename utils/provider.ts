@@ -2,31 +2,29 @@ import { ethers } from "ethers"
 
 
 import { TestnetChainIDs, ChainIDs } from '@communitiesid/id'
-import { TotalSupportedChainIDs } from "@/types/chain"
+import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
 // const ethersNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const chainbaseNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
 
-// const ENDPOINTS = [
-//   "ed57fee96b9f44a397fee2e8d4048b1b",
-//   "b706609261c64eaaad792171bc3c9fcf",
-//   "4779964dc9704f6dbf8d63a1e0183ed6",
-// ];
+const { alchemy, quickNode, chainbase } = JSON.parse(process.env.NEXT_PUBLIC_RPC_KEYS ?? '{}') as RPCKeys
 
-export const chainbaseKeys: Record<TotalSupportedChainIDs, string> = {
-  [ChainIDs.Ethereum]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [ChainIDs.OP]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [ChainIDs.BSC]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [ChainIDs.Polygon]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [ChainIDs.Base]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [ChainIDs.Scroll]: '',
-  [TestnetChainIDs.Goerli]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [TestnetChainIDs["Polygon Mumbai"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [TestnetChainIDs["Base Goerli Testnet"]]: '2XLxCt8Lfdq7UJh6iMGqhUjg9Gu',
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: ''
+const defaultChainbaseKeys = chainbase[ChainIDs.Ethereum] || chainbase[TestnetChainIDs.Goerli]
+
+export const chainbaseKeys: Record<TotalSupportedChainIDs, string[]> = {
+  [ChainIDs.Ethereum]: chainbase[ChainIDs.Ethereum] ?? defaultChainbaseKeys,
+  [ChainIDs.OP]: chainbase[ChainIDs.OP] ?? defaultChainbaseKeys,
+  [ChainIDs.BSC]: chainbase[ChainIDs.BSC] ?? defaultChainbaseKeys,
+  [ChainIDs.Polygon]: chainbase[ChainIDs.Polygon] ?? defaultChainbaseKeys,
+  [ChainIDs.Base]: chainbase[ChainIDs.Base] ?? defaultChainbaseKeys,
+  [ChainIDs.Scroll]: chainbase[ChainIDs.Scroll] ?? defaultChainbaseKeys,
+  [TestnetChainIDs.Goerli]: chainbase[TestnetChainIDs.Goerli] ?? defaultChainbaseKeys,
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: chainbase[TestnetChainIDs["Optimism Goerli Testnet"]] ?? defaultChainbaseKeys,
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: chainbase[TestnetChainIDs["BNB Smart Chain Testnet"]] ?? defaultChainbaseKeys,
+  [TestnetChainIDs["Polygon Mumbai"]]: chainbase[TestnetChainIDs["Polygon Mumbai"]] ?? defaultChainbaseKeys,
+  [TestnetChainIDs["Base Goerli Testnet"]]: chainbase[TestnetChainIDs["Base Goerli Testnet"]] ?? defaultChainbaseKeys,
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: chainbase[TestnetChainIDs["Scroll Sepolia Testnet"]] ?? defaultChainbaseKeys
 }
 
 export const chainbaseHosts: Record<TotalSupportedChainIDs, string> = {
@@ -44,19 +42,19 @@ export const chainbaseHosts: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: ''
 }
 
-export const quickNodeKeys: Record<TotalSupportedChainIDs, string> = {
-  [ChainIDs.Ethereum]: '',
-  [ChainIDs.OP]: '',
-  [ChainIDs.BSC]: '402da9ac3bd984448f37ac00f39950f0ee96a7ef',
-  [ChainIDs.Polygon]: '',
-  [ChainIDs.Base]: '',
-  [ChainIDs.Scroll]: 'feb5dba212a1f5f2125f7184209e6561514cffd1',
-  [TestnetChainIDs.Goerli]: '',
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: '',
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: '0376e91a041267d0bd9596987135b4af740c9404',
-  [TestnetChainIDs["Polygon Mumbai"]]: '',
-  [TestnetChainIDs["Base Goerli Testnet"]]: '',
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'ef282ceb9fa2f7c070728a9b4b9d3562cd4aff40'
+export const quickNodeKeys: Record<TotalSupportedChainIDs, string[]> = {
+  [ChainIDs.Ethereum]: quickNode[ChainIDs.Ethereum],
+  [ChainIDs.OP]: quickNode[ChainIDs.OP],
+  [ChainIDs.BSC]: quickNode[ChainIDs.BSC],
+  [ChainIDs.Polygon]: quickNode[ChainIDs.Polygon],
+  [ChainIDs.Base]: quickNode[ChainIDs.Base],
+  [ChainIDs.Scroll]: quickNode[ChainIDs.Scroll],
+  [TestnetChainIDs.Goerli]: quickNode[TestnetChainIDs.Goerli],
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: quickNode[TestnetChainIDs["Optimism Goerli Testnet"]],
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: quickNode[TestnetChainIDs["BNB Smart Chain Testnet"]],
+  [TestnetChainIDs["Polygon Mumbai"]]: quickNode[TestnetChainIDs["Polygon Mumbai"]],
+  [TestnetChainIDs["Base Goerli Testnet"]]: quickNode[TestnetChainIDs["Base Goerli Testnet"]],
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: quickNode[TestnetChainIDs["Scroll Sepolia Testnet"]]
 }
 
 export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
@@ -75,18 +73,18 @@ export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
 }
 
 export const alchemyKeys: Record<TotalSupportedChainIDs, string[]> = {
-  [ChainIDs.Ethereum]: ['k6tXMTkD-M7nx0TTyMHp795qjpy_IgGB'],
-  [ChainIDs.OP]: ['I3hQNtvtRXJhYg0nj7DNILuZjLu78lzD'],
-  [ChainIDs.BSC]: [''],
-  [ChainIDs.Polygon]: ['-7UFTTE8EeFLMzGyICfzX3-obni0pXcp'],
-  [ChainIDs.Base]: ['InugYiR8AtjtTPfRjqtmQLWa9MGvK56f'],
-  [ChainIDs.Scroll]: [''],
-  [TestnetChainIDs.Goerli]: ['6jUlYQ_AC_GGmes1VmdNQSYa89xr5_CC', 'MaXBRPDQfQuBc9neTAVrg2te_s7WUEb2'],
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: ['wrsh4EQxyGnK3jG70HeUgdrGXprQwiv2', '4VfcUnGlvHT_Qx80y9i-ZintiKjwh69c'],
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: ['bsctest'],
-  [TestnetChainIDs["Polygon Mumbai"]]: ['8Cl-CABzyMKUY5d2lUA1z_fcw35bG9VW', 'IVlQZm8YztHFHPP6NG_ZZMWHdXMwkebV'],
-  [TestnetChainIDs["Base Goerli Testnet"]]: ['ng0gz-31_us9zlmzD1pJMltcpXbYp5mw', 'QmQs506FvSqlOWIRMs4Oay69uVphdyb-'],
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: ['']
+  [ChainIDs.Ethereum]: alchemy[ChainIDs.Ethereum],
+  [ChainIDs.OP]: alchemy[ChainIDs.OP],
+  [ChainIDs.BSC]: alchemy[ChainIDs.BSC],
+  [ChainIDs.Polygon]: alchemy[ChainIDs.Polygon],
+  [ChainIDs.Base]: alchemy[ChainIDs.Base],
+  [ChainIDs.Scroll]: alchemy[ChainIDs.Scroll],
+  [TestnetChainIDs.Goerli]: alchemy[TestnetChainIDs.Goerli],
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: alchemy[TestnetChainIDs["Optimism Goerli Testnet"]],
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: alchemy[TestnetChainIDs["BNB Smart Chain Testnet"]],
+  [TestnetChainIDs["Polygon Mumbai"]]: alchemy[TestnetChainIDs["Polygon Mumbai"]],
+  [TestnetChainIDs["Base Goerli Testnet"]]: alchemy[TestnetChainIDs["Base Goerli Testnet"]],
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: alchemy[TestnetChainIDs["Scroll Sepolia Testnet"]]
 }
 
 export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
@@ -105,8 +103,8 @@ export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
 }
 
 export const getAlchemyKey = (network: number) => {
-  const keys = alchemyKeys[network as TotalSupportedChainIDs]
-  return keys[Math.floor(Math.random() * keys.length)]
+  const keys = alchemyKeys[network as TotalSupportedChainIDs] ?? []
+  return keys[Math.floor(Math.random() * keys.length)] ?? ''
 }
 
 export const getAlchemyHost = (network: number) => {
@@ -119,7 +117,8 @@ export const getAlchemyProvider = (network: number) => {
 }
 
 export const getQuickNodeKey = (network: number) => {
-  return quickNodeKeys[network as TotalSupportedChainIDs]
+  const keys = quickNodeKeys[network as TotalSupportedChainIDs] ?? []
+  return keys[Math.floor(Math.random() * keys.length)] ?? ''
 }
 
 export const getQuickNodeHost = (network: number) => {
@@ -131,7 +130,8 @@ export const getQuickNodeProvider = (network: number) => {
 }
 
 export const getChainbaseKey = (network: number) => {
-  return chainbaseKeys[network as TotalSupportedChainIDs]
+  const keys = chainbaseKeys[network as TotalSupportedChainIDs] ?? []
+  return keys[Math.floor(Math.random() * keys.length)] ?? ''
 }
 
 export const getChainbaseHosts = (network: number) => {
