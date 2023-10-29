@@ -51,10 +51,6 @@ export const toBN = (num: BigNumber | number | string) => {
   return BigNumber.from(num)
 }
 
-export const mathEvaluate = (formula: string) => {
-  return bnMath.evaluate(formula).toString()
-}
-
 export const formatInfo = (info: any) => {
   if (info.pool) {
     info.pool = BigNumber.from(info.pool.hex)
@@ -77,4 +73,8 @@ export const formatToUnitPrice = (price: number, durationUnit = 365, decimals = 
 // form price = unit price / durationUnit
 export const formatToFormPrice = (unit: BigNumber, durationUnit = 365,  decimals = 18) => {
   return formatWeiToNum(unit.mul(durationUnit), decimals)
+}
+
+export const formatLocaleDecimalsNumber = (num: number | string) => {
+  return String(num).replace(/,+/g, '')
 }

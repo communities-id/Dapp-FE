@@ -12,7 +12,7 @@ const Loading: FC<Props> = ({ personal, animate = true, className }) => {
     <div className={classnames('relative pt-[40px] pb-5 w-full py-4', {
       'animate-skeleton-breath': animate
     }, className)}>
-      <div className='w-[100px] h-[100px] absolute top-[-80px] left-0 rounded-[12px] bg-sekeleton-gray'></div>
+      <div className='w-[100px] h-[100px] absolute top-[-80px] left-5 rounded-[12px] bg-sekeleton-gray'></div>
       <div className='flex items-center justify-between'>
         <p className='w-[118px] h-[26px] bg-sekeleton-gray'></p>
         <ul className='flex items-center gap-2'>

@@ -129,9 +129,9 @@ const PersonInfo: FC<Props> = ({}) => {
   return (
     <div className='w-full pb-[20px]'>
       <Banner banner={ownerMemberInfo?.tokenUri?.brand_image} />
-      <div className='search-container'>
+      <div className='w-full px-5'>
         <div className='w-full relative pt-[40px]'>
-          <AvatarCard outline size={100} className='absolute top-[-80px] left-0 rounded-full' src={ownerMemberInfo.tokenUri?.image}/>
+          <AvatarCard outline size={100} className='absolute top-[-80px] left-5 rounded-full' src={ownerMemberInfo.tokenUri?.image}/>
           <div className="w-full flex flex-col">
             <div className='w-full flex items-center justify-between'>
               <div className='flex-1 flex items-center gap-4'>

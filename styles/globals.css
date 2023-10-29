@@ -33,7 +33,7 @@
 
 @layer container {
   .search-container {
-    @apply mx-auto max-w-c-800 w-full;
+    @apply mx-auto max-w-c-840 w-full;
   }
 }
 
