@@ -110,7 +110,7 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
 
   return isTestnet ? {
     isTestnet: true,
-    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY as string,
+    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY ?? '',
     Goerli: {
       // RPCUrl: "https://goerli.infura.io/v3/4779964dc9704f6dbf8d63a1e0183ed6",
       RPCUrl: getAlchemyHost(TestnetChainIDs.Goerli, alchemy[TestnetChainIDs.Goerli]),
@@ -131,7 +131,7 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
       RPCUrl: getQuickNodeHost(TestnetChainIDs['Scroll Sepolia Testnet'], quickNode[TestnetChainIDs['Scroll Sepolia Testnet']]),
     },
   } : {
-    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY as string,
+    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY ?? '',
     Ethereum: {
       RPCUrl: getAlchemyHost(ChainIDs.Ethereum, alchemy[ChainIDs.Ethereum]),
     },
