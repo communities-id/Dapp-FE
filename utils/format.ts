@@ -28,7 +28,7 @@ export const formatNumber = (num: number | string, digits = 0) => {
 }
 
 export const formatNumToWei = (num: number | string, decimals = 18) => {
-  const strNum = formatToDecimal(num as number, 0, decimals)
+  const strNum = formatLocaleDecimalsNumber(formatToDecimal(num as number, 0, decimals))
   return ethers.utils.parseUnits(strNum, decimals)
 }
 
@@ -42,7 +42,7 @@ export const formatDecimalsPrice = (num: number | string, digits = 6) => {
   if (Number(num) === 0) {
     return '0'
   }
-  const strNum = formatToDecimal(num as number, 0, digits)
+  const strNum = formatLocaleDecimalsNumber(formatToDecimal(num as number, 0, digits))
   if (Number(strNum) < 1e-6) return '0.000001'
   return strNum
 }
