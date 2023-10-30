@@ -31,6 +31,7 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
     size?: 'large' | 'normal',
     layout?: 'normal' | 'inline',
     description?: string,
+    aspect?: number,
     startIcon?: JSX.Element,
     preview?: (v: any) => any
   }[] = [
@@ -42,7 +43,8 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       unit: 'Url',
       action: 'upload',
       size: 'normal',
-      layout: 'inline'
+      layout: 'inline',
+      aspect: 1,
     },
     {
       type: 'text',
@@ -52,7 +54,8 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       unit: 'Url',
       action: 'upload',
       size: 'large',
-      description: 'Recommended size: 1400 * 350'
+      description: 'Recommended size: 1400 * 350',
+      aspect: 4 / 1
     },
     {
       type: 'text',
@@ -169,6 +172,7 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
                           }>
                             <IpfsUploader
                               key={item.label}
+                              aspect={item.aspect}
                               defaultUrl={form[item.name]}
                               description={item.description}
                               handleComplete={(url) => {
