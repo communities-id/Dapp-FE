@@ -3,7 +3,7 @@ import { WrapperProvider } from '@/contexts/wrapper'
 
 import SearchContent from '@/components/search/pageContent'
 
-import { SearchMode, SearchModeType } from '@/types'
+import { SearchMode } from '@/types'
 
 export default function Search() {
   const keywords = useSearchParams().get('keywords') as string
