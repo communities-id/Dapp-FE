@@ -13,10 +13,8 @@ export default function RainbowKitLayout({ children }: RainbowKitLayoutProps) {
     localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
   }, [])
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} initialChain={chains[0]}>
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <RainbowKitProvider chains={chains} initialChain={chains[0]}>
+      {children}
+    </RainbowKitProvider>
   )
 }

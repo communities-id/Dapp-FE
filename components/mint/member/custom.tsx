@@ -2,7 +2,7 @@ import { FC, Fragment, ReactNode, useCallback, useEffect, useMemo, useState } fr
 import { useRouter } from 'next/router'
 
 import { BigNumber } from 'ethers'
-import { useNetwork, useSwitchNetwork } from 'wagmi'
+import { useSwitchNetwork } from 'wagmi'
 import { BrandDID } from '@communitiesid/id'
 import { DEFAULT_TOKEN_SYMBOL, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 import useApi, { getMintMemberPrice } from '@/shared/useApi'
