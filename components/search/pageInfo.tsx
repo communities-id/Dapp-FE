@@ -23,7 +23,7 @@ const PageHeaderInfo: FC<Props> = () => {
         (contentLoading && mode !== 'address') ? (
           <Fragment>
             <Banner />
-            <Loading personal={mode === 'unknown'} className='search-container' />
+            <Loading personal={mode === 'unknown'} className='search-container px-5' />
           </Fragment>
         ) : (
           <Fragment>

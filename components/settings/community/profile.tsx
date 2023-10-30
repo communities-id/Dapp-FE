@@ -30,6 +30,7 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
     action?: 'upload',
     size?: 'large' | 'normal',
     layout?: 'normal' | 'inline',
+    description?: string,
     startIcon?: JSX.Element,
     preview?: (v: any) => any
   }[] = [
@@ -40,7 +41,7 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       placeholder: 'https://',
       unit: 'Url',
       action: 'upload',
-      size: 'large',
+      size: 'normal',
       layout: 'inline'
     },
     {
@@ -49,7 +50,9 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       label: 'Banner image',
       placeholder: 'https://',
       unit: 'Url',
-      action: 'upload'
+      action: 'upload',
+      size: 'large',
+      description: 'Recommended size: 1400 * 350'
     },
     {
       type: 'text',
@@ -161,12 +164,13 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
                             classNames(
                               'rounded-[6px]', {
                                 'w-[86px] h-[86px]': item.layout === 'inline',
-                                'w-full h-[86px]': item.layout !== 'inline',
+                                'w-full h-[130px]': item.layout !== 'inline', // 1400 * 350 => 518 * 130
                               })
                           }>
                             <IpfsUploader
                               key={item.label}
                               defaultUrl={form[item.name]}
+                              description={item.description}
                               handleComplete={(url) => {
                                 handleChange?.(item.name, url)
                               }}

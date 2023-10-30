@@ -3,13 +3,14 @@ dotenv.config()
 import CommunitiesID, { SupportedChainIds } from '@communitiesid/id'
 import { getCommunitiesEvent, getMemberEvent, getPrimaryRecordEvent } from "@/shared/contract"
 import { prisma } from "@/shared/prisma"
-import { CHAIN_ID_MAP, CONTRACT_MAP, SDK_OPTIONS, ZERO_ADDRESS } from '@/shared/constant'
+import { CHAIN_ID_MAP, CONTRACT_MAP, ZERO_ADDRESS } from '@/shared/constant'
 import axios from 'axios'
 import { banUserWithNoPermission, sendMessage } from '@/shared/telegram'
-import { createProvider } from '@/utils/provider'
+import { getSDKOptions, createProvider } from '@/utils/provider'
 
 const domain = process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? 'https://testnet.communities.id' : 'https://communities.id'
-const communitiesidSDK = new CommunitiesID(SDK_OPTIONS)
+
+const communitiesidSDK = new CommunitiesID(getSDKOptions(process.env.RPC_KEYS))
 const allCommunities: any = {}
 
 function logInfo(info: string) {
@@ -222,8 +223,9 @@ async function syncPrimaryEventsInOneBlock(block: number) {
 
 async function syncEventsInOneBlock(chainId: SupportedChainIds, block: number) {
   const provider = createProvider(chainId)
-  console.log(`Scanning block ${block} on chain ${chainId}`)
+  logInfo(`Scanning block ${block} on chain ${chainId}`)
   const log = await provider.getBlockWithTransactions(block)
+  logInfo(`Found ${log.transactions.length} transactions on chainId ${chainId} block ${block} `)
   const transactions = log.transactions
   const communityEvents = transactions.filter(v => v.to?.toLowerCase() === CONTRACT_MAP[chainId].MemberRegistryInterfaceFactory.toLowerCase())
   const memberEvents = transactions.filter(v => allCommunities[v.to?.toLowerCase() ?? ''])
@@ -242,17 +244,22 @@ async function syncEventsInOneBlock(chainId: SupportedChainIds, block: number) {
 function listenEventsOnChain(chainId: SupportedChainIds) {
   const provider = createProvider(chainId)
   provider.on('block', async block => {
-    try {
-      await syncEventsInOneBlock(chainId, block)
-    } catch(e: any) {
-      console.log(e)
-      await sendMessage(5879750850, 'Error occurred when syncing events')
-      await sendMessage(5879750850, JSON.stringify({
-        chainId,
-        block,
-        error: e.toString()
-      }))
-      await syncEventsInOneBlock(chainId, block)
+    let retryTime = 5
+    while (retryTime > 0) {
+      try {
+        await syncEventsInOneBlock(chainId, block)
+        return
+      } catch (e: any) {
+        retryTime -= 1
+        if (retryTime < 1) {
+          await sendMessage(5879750850, `Error occurred when syncing events with retry times ${5 - retryTime}`)
+          await sendMessage(5879750850, JSON.stringify({
+            chainId,
+            block,
+            error: e.toString()
+          }))
+        }
+      }
     }
   })
   

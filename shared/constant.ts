@@ -1,6 +1,8 @@
 import { ABIs as abis } from '@communitiesid/id'
 import mainnetConfig from './constant-mainnet'
 import testnetConfig from './constant-testnet'
+import { getSDKOptions } from '@/utils/provider'
+
 import { MintMode, SequenceMode } from '@/types/contract'
 
 export const DEFAULT_AVATAR = 'ipfs://QmSYEgebBb8PWfsJkdtYQJsXWDTvTAXwjNN5VPYteJZhrw'
@@ -85,4 +87,4 @@ export const CONTRACT_MAP = constants.CONTRACT_MAP
 export const DEFAULT_TOKEN_SYMBOL = constants.DEFAULT_TOKEN_SYMBOL
 export const SCAN_MAP = constants.SCAN_MAP
 export const CHAINS_MINT_TOOLTIPS = constants.CHAINS_MINT_TOOLTIPS
-export const SDK_OPTIONS = constants.SDK_OPTIONS
+export const SDK_OPTIONS = getSDKOptions()

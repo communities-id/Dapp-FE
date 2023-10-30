@@ -139,7 +139,7 @@ const HeroSection: FC<Props> = () => {
           //   }
           // },
           finish: () => {
-            console.log('- finish -')
+            // console.log('- finish -')
             // 闪烁结束，切换 placeholder
             text = randomAction(text)
             writer.update({

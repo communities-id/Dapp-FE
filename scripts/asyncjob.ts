@@ -3,13 +3,14 @@ dotenv.config()
 import CommunitiesID, { SupportedChainIds } from '@communitiesid/id'
 import { getCommunitiesEvent, getMemberEvent, getPrimaryRecordEvent, getTotalBlock } from "@/shared/contract"
 import { prisma } from "@/shared/prisma"
-import { MAIN_CHAIN_ID, SDK_OPTIONS, ZERO_ADDRESS } from '@/shared/constant'
+import { MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 import axios from 'axios'
 import { banUserWithNoPermission } from '@/shared/telegram'
+import { getSDKOptions } from '@/utils/provider'
 
 const domain = process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? 'https://testnet.communities.id' : 'https://communities.id'
 const DELTA_BLOCK = (chainId: number) => 9999;
-const communitiesidSDK = new CommunitiesID(SDK_OPTIONS)
+const communitiesidSDK = new CommunitiesID(getSDKOptions(process.env.RPC_KEYS))
 const totalBlocks: any = {}
 const progress: any = {
   community: {},

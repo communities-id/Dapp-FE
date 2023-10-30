@@ -28,7 +28,7 @@ export const formatNumber = (num: number | string, digits = 0) => {
 }
 
 export const formatNumToWei = (num: number | string, decimals = 18) => {
-  const strNum = formatToDecimal(num as number, 0, decimals)
+  const strNum = formatLocaleDecimalsNumber(formatToDecimal(num as number, 0, decimals))
   return ethers.utils.parseUnits(strNum, decimals)
 }
 
@@ -39,17 +39,16 @@ export const formatWeiToNum = (num: BigNumber, decimals = 18) => {
 }
 
 export const formatDecimalsPrice = (num: number | string, digits = 6) => {
-  const strNum = formatToDecimal(num as number, 0, digits)
+  if (Number(num) === 0) {
+    return '0'
+  }
+  const strNum = formatLocaleDecimalsNumber(formatToDecimal(num as number, 0, digits))
   if (Number(strNum) < 1e-6) return '0.000001'
   return strNum
 }
 
 export const toBN = (num: BigNumber | number | string) => {
   return BigNumber.from(num)
-}
-
-export const mathEvaluate = (formula: string) => {
-  return bnMath.evaluate(formula).toString()
 }
 
 export const formatInfo = (info: any) => {
@@ -74,4 +73,8 @@ export const formatToUnitPrice = (price: number, durationUnit = 365, decimals = 
 // form price = unit price / durationUnit
 export const formatToFormPrice = (unit: BigNumber, durationUnit = 365,  decimals = 18) => {
   return formatWeiToNum(unit.mul(durationUnit), decimals)
+}
+
+export const formatLocaleDecimalsNumber = (num: number | string) => {
+  return String(num).replace(/,+/g, '')
 }

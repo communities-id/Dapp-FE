@@ -3,7 +3,7 @@ import { FC } from 'react'
 import LinearChart, { Markers } from '@/components/chart/linear'
 
 import { priceModeFormulaMap, calcCurrentMintPrice } from '@/utils/formula'
-import { formatDecimalsPrice, formatToDecimal } from '@/utils/format'
+import { formatDecimalsPrice, formatToDecimal, formatLocaleDecimalsNumber } from '@/utils/format'
 
 import { PriceMode, CommunityPrice } from '@/types/contract'
 
@@ -22,10 +22,10 @@ const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200,
 
   const datasetsValues = values || labels.map(x => {
     // price is the final price of multiple days
-    return Number(formatToDecimal(calcCurrentMintPrice(x, { ...params }).price, 0, 6))
+    return Number(formatLocaleDecimalsNumber(formatToDecimal(calcCurrentMintPrice(x, { ...params }).price, 0, 6)))
   })
 
-  const currentPrice = formatToDecimal(calcCurrentMintPrice(currentLabel, { ...params }).price, 0, 6)
+  const currentPrice = formatLocaleDecimalsNumber(formatToDecimal(calcCurrentMintPrice(currentLabel, { ...params }).price, 0, 6))
 
   const markers: Markers = [{
     label: `Current Price ≈ ${formatDecimalsPrice(currentPrice, 6)}`,

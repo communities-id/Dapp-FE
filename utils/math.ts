@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers'
 import * as math from 'mathjs'
 
-import { formatToDecimal } from '@/utils/format'
+import { formatLocaleDecimalsNumber } from '@/utils/format'
 
 const bnMath = math.create(math.all, {
   number: 'BigNumber',
@@ -9,7 +9,7 @@ const bnMath = math.create(math.all, {
 })
 
 export const mathEvaluate = (formula: string) => {
-  const val = bnMath.evaluate(formula).toFixed(18)
+  const val = bnMath.evaluate(formatLocaleDecimalsNumber(formula)).toFixed(18)
   if (val === 'NaN') return '0'
   return val
 }

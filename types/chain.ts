@@ -5,3 +5,5 @@ export type SupportedChainIDs = UnionToNumber<`${ChainIDs}`>
 export type SupportedTestnetChainIDs = UnionToNumber<`${TestnetChainIDs}`>
 
 export type TotalSupportedChainIDs = SupportedChainIDs | SupportedTestnetChainIDs
+
+export type RPCKeys = Record<'alchemy' | 'quickNode' | 'chainbase', Record<TotalSupportedChainIDs, string[]>>

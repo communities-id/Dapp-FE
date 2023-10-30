@@ -7,11 +7,12 @@ import UploadIcon from '~@/icons/upload.svg'
 import classNames from 'classnames'
 
 interface Props {
+  description?: string
   defaultUrl?: string
   handleComplete?: (url: string) => void
 }
 
-const IpfsUploader: FC<Props> = ({ defaultUrl, handleComplete }) => {
+const IpfsUploader: FC<Props> = ({ description, defaultUrl, handleComplete }) => {
   const { upload } = useIpfs()
 
   const [loading, setLoading] = useState(false)
@@ -49,6 +50,11 @@ const IpfsUploader: FC<Props> = ({ defaultUrl, handleComplete }) => {
             url && (
               <img alt='' src={url} className='w-full h-full object-cover'/>
             )
+          )
+        }
+        {
+          description && (
+            <p className='absolute bottom-2 left-2 text-[12px] text-linkGray'>{ description }</p>
           )
         }
         <div className={
