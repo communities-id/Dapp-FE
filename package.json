@@ -59,6 +59,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-countup": "^6.4.2",
     "react-dom": "18.2.0",
+    "react-easy-crop": "^5.0.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-jazzicon": "^1.0.4",
     "react-use": "^17.4.0",

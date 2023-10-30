@@ -17,9 +17,10 @@ interface CommunityProfileProps {
   validation: Record<string, string | undefined>
   loading: boolean
   handleChange?: (name: CommunityProfileLabels, value: string) => void
+  handleError?: (msg: string) => void
 }
 
-const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading, handleChange }) => {
+const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading, handleChange, handleError }) => {
 
   const forms: {
     type: 'text' | 'textarea',
@@ -31,6 +32,9 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
     size?: 'large' | 'normal',
     layout?: 'normal' | 'inline',
     description?: string,
+    aspect?: number,
+    minWidth?: number,
+    minHeight?: number,
     startIcon?: JSX.Element,
     preview?: (v: any) => any
   }[] = [
@@ -42,7 +46,10 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       unit: 'Url',
       action: 'upload',
       size: 'normal',
-      layout: 'inline'
+      layout: 'inline',
+      aspect: 1,
+      minWidth: 210,
+      minHeight: 210,
     },
     {
       type: 'text',
@@ -52,7 +59,10 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       unit: 'Url',
       action: 'upload',
       size: 'large',
-      description: 'Recommended size: 1400 * 350'
+      description: 'Recommended size: 1400 * 350',
+      aspect: 4 / 1,
+      minWidth: 840,
+      minHeight: 210,
     },
     {
       type: 'text',
@@ -169,11 +179,15 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
                           }>
                             <IpfsUploader
                               key={item.label}
+                              aspect={item.aspect}
                               defaultUrl={form[item.name]}
                               description={item.description}
+                              minWidth={item.minWidth}
+                              minHeight={item.minHeight}
                               handleComplete={(url) => {
                                 handleChange?.(item.name, url)
                               }}
+                              handleError={handleError}
                             />
                           </div>
                         )

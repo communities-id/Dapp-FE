@@ -4,7 +4,9 @@ import '@rainbow-me/rainbowkit/styles.css';
 import React, { useMemo, Fragment } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import { usePathname } from 'next/navigation'
+
+import { WagmiConfig } from 'wagmi'
+import { wagmiConfig } from '@/config/rainbowKit'
 import { Analytics } from '@vercel/analytics/react';
 import RainbowKitLayout from '@/layouts/rainbowKit';
 
@@ -19,11 +21,9 @@ import { TokenPriceProvider } from '@/contexts/tokenPrice';
 
 
 export default function App({ Component, pageProps }: AppProps) {
-  const pathname = usePathname()
 
   return (
     <Fragment>
-
       <Head>
         <title>Communities ID - DID as a Service for community</title>
         <link rel="icon" href="/logo/favicon.svg" />
@@ -40,18 +40,20 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:image" content="https://w.wallhaven.cc/full/x6/wallhaven-x6p3y3.jpg" />
         <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
-      <RainbowKitLayout>
-        <RootProvider>
-          <ToastContextProvider>
-            <ConfigurationProvider>
-              <TokenPriceProvider>
-                <Component {...pageProps} />
-                <Analytics />
-              </TokenPriceProvider>
-            </ConfigurationProvider>
-          </ToastContextProvider>
-        </RootProvider>
-      </RainbowKitLayout>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitLayout>
+          <RootProvider>
+            <ToastContextProvider>
+              <ConfigurationProvider>
+                <TokenPriceProvider>
+                  <Component {...pageProps} />
+                  <Analytics />
+                </TokenPriceProvider>
+              </ConfigurationProvider>
+            </ToastContextProvider>
+          </RootProvider>
+        </RainbowKitLayout>
+      </WagmiConfig>
     </Fragment>
   )
 }

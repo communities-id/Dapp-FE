@@ -67,7 +67,7 @@ export const getQuickNodeKey = (network: number) => {
 }
 
 export const getQuickNodeHost = (network: number, keys?: string[]) => {
-  const _keys = keys ?? alchemyKeys[network as TotalSupportedChainIDs] ?? []
+  const _keys = keys ?? quickNodeKeys[network as TotalSupportedChainIDs] ?? []
   const key = _keys[Math.floor(Math.random() * _keys.length)] ?? ''
   return `https://${quickNodeHosts[network as TotalSupportedChainIDs]}.quiknode.pro/${key}/`
 }

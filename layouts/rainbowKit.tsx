@@ -1,8 +1,7 @@
 import { ReactNode, useEffect } from 'react'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { WagmiConfig } from 'wagmi'
 
-import { chains, wagmiConfig } from '@/config/rainbowKit'
+import { chains } from '@/config/rainbowKit'
 
 interface RainbowKitLayoutProps {
   children: ReactNode
@@ -13,10 +12,8 @@ export default function RainbowKitLayout({ children }: RainbowKitLayoutProps) {
     localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
   }, [])
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} initialChain={chains[0]}>
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <RainbowKitProvider chains={chains} initialChain={chains[0]}>
+      {children}
+    </RainbowKitProvider>
   )
 }
