@@ -183,6 +183,9 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
         handleChange={(name, value) => {
           setForm({ ...form, [name]: value })
         }}
+        handleError={(error) => {
+          message({ type: 'error', content: error })
+        }}
       />
     </Dialog>
   )

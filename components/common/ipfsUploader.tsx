@@ -1,6 +1,7 @@
 import { FC, Fragment, useEffect, useState } from 'react'
 
 import { useIpfs } from '@/hooks/ipfs'
+import { readFileSize } from '@/utils/media'
 
 import ImageCropperDialog from '@/components/dialog/imgCropper'
 
@@ -12,10 +13,13 @@ interface Props {
   aspect?: number
   description?: string
   defaultUrl?: string
+  minWidth?: number
+  minHeight?: number
   handleComplete?: (url: string) => void
+  handleError?: (msg: string) => void
 }
 
-const IpfsUploader: FC<Props> = ({ aspect, description, defaultUrl, handleComplete }) => {
+const IpfsUploader: FC<Props> = ({ aspect, description, defaultUrl, minWidth = 0, minHeight = 0, handleComplete, handleError }) => {
   const { upload } = useIpfs()
 
   const [loading, setLoading] = useState(false)
@@ -33,10 +37,16 @@ const IpfsUploader: FC<Props> = ({ aspect, description, defaultUrl, handleComple
     setLoading(false)
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true)
     const file = e.target.files?.[0]
     if (!file) return
+    const { width, height } = await readFileSize(file)
+    if (width < minWidth || height < minHeight) {
+      handleError?.(`The minimum image size should be at least: ${minWidth} * ${minHeight}`)
+      setLoading(false)
+      return
+    }
     setCropUrl(URL.createObjectURL(file))
     setCropperOpen(true)
     setLoading(false)
