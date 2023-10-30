@@ -1,8 +1,7 @@
 import { ReactNode, useEffect } from 'react'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { WagmiConfig } from 'wagmi'
 
-import { chains, wagmiConfig } from '@/config/rainbowKit'
+import { chains } from '@/config/rainbowKit'
 
 interface RainbowKitLayoutProps {
   children: ReactNode
