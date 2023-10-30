@@ -48,8 +48,8 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
       size: 'normal',
       layout: 'inline',
       aspect: 1,
-      minWidth: 210,
-      minHeight: 210,
+      minWidth: 100,
+      minHeight: 100,
     },
     {
       type: 'text',
