@@ -11,7 +11,6 @@ import Input from '@/components/common/input'
 import Switch from '@/components/common/switch'
 import ToolTip from '@/components/common/tooltip'
 import InfoLabel from '@/components/common/infoLabel'
-import MintButton from '@/components/mint/button'
 import DividerLine from '@/components/common/dividerLine'
 
 import { CommunityPrice, MintModeLabels, SequenceMode, SequenceModeLabels, PriceMode, PriceModeLabels, PriceModeKeys, CommunityMintConfig, CommunityMemberConfig, ContractVerison } from '@/types/contract'

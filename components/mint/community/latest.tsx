@@ -12,7 +12,7 @@ import { updateCommunity } from '@/shared/apis'
 import { formatContractError } from '@/shared/helper'
 import { CHAIN_ID_MAP, CHAINS_ID_TO_NETWORK, CHAINS_NETWORK_TO_ID, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 
-import MintButton from '@/components/mint/button'
+import ConnectButton from '@/components/common/connectButton'
 
 import PendingIcon from '~@/icons/mint/pending.svg'
 
@@ -43,7 +43,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
   // const [isSwitchNetwork, setIsSwitchNetwork] = useState(false)
   const [switchNetworkLoading, setSwitchNetworkLoading] = useState(false)
   const [mintLoading, setMintLoading] = useState(false)
-  const [releaseState, setReleaseState] = useState(false)
+  // const [releaseState, setReleaseState] = useState(false)
 
   const confirmExitWhenLoading = (e: any) => {
     if (mintLoading) {
@@ -167,17 +167,17 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
         <div className='flex items-center justify-center gap-[10px]'>
           {
             mintNetwork !== MAIN_CHAIN_ID && (
-              <MintButton
+              <ConnectButton
                 loading={mintLoading || switchNetworkLoading}
                 size='auto'
                 theme='pink'
                 className='px-[28px]'
                 onClick={handleRelease}>
                 Release
-              </MintButton>
+              </ConnectButton>
             )
           }
-          <MintButton
+          <ConnectButton
             loading={mintLoading || switchNetworkLoading}
             size='auto'
             theme='purple'
@@ -185,7 +185,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
             disabled={disabled}
             onClick={handleMint}>
             Mint
-          </MintButton>
+          </ConnectButton>
         </div>
       </div>
       { children }

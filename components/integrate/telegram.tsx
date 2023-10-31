@@ -9,7 +9,7 @@ import { TG_BOT_NAME } from '@/shared/constant'
 
 import LabelInput from '@/components/common/labelInput'
 import StepLite from '@/components/common/stepLite'
-import MintButton from '@/components/mint/button'
+import ConnectButton from '@/components/common/connectButton'
 import DividerLine from '@/components/common/dividerLine'
 
 import BotIcon from '~@/icons/bot.svg'
@@ -107,7 +107,7 @@ const TelegramIntegrate: FC<Props> = () => {
             totalStep={totalStep}
             handleChangeStep={setStep}
           />
-          <MintButton
+          <ConnectButton
             size='auto'
             theme='purple'
             className='px-[34px]'
@@ -122,7 +122,7 @@ const TelegramIntegrate: FC<Props> = () => {
             }}
           >
             { step === 1 ? 'Next' : 'Connect' }
-          </MintButton>
+          </ConnectButton>
         </div>
       </div>
     </div>

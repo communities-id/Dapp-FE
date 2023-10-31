@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import LoadingIcon from '~@/icons/loading.svg'
 
-interface Props {
+export interface Props {
   size: 'fixed' | 'auto' | 'full'
   theme: 'purple' | 'pink'
   loading?: boolean
