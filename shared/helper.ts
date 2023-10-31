@@ -21,6 +21,7 @@ export function isDate(str: string) {
 }
 
 export function isValidLabel(name: string) {
+  name = (name ?? '').toLocaleLowerCase()
   if (name.length === 0) {
     return false
   }

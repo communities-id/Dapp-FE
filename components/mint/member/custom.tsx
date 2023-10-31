@@ -14,6 +14,7 @@ import { useRoot } from '@/contexts/root'
 import { useSignUtils } from '@/hooks/sign'
 import { useWallet } from '@/hooks/wallet'
 import { parseToDurationPrice } from '@/utils/formula'
+import { formatInputName } from '@/utils/format'
 
 import PriceModeChart from '@/components/common/priceModeChart'
 import MintButton from '@/components/mint/button'
@@ -307,7 +308,7 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
           endAdornment={`.${community}`}
           inputclassname={'my-input-class'}
           onChange={(e) => {
-            setMemberInput(e.target.value)
+            setMemberInput(formatInputName(e.target.value))
           }}
         />
       </div>

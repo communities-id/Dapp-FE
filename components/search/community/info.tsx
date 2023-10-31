@@ -115,7 +115,8 @@ const CommunityLayout: FC<Props> = () => {
   const shareMenus = useMemo(() => {
     if (typeof window === 'undefined') return []
     // const brandLink = `${location.origin}/community/${communityInfo.tokenUri?.name ?? ''}`
-    const brandLink = location.href
+    // const brandLink = location.href
+    const brandLink = `${location.origin}/community/${community}/mint`
     return [
       {
         id: 'copy-link',

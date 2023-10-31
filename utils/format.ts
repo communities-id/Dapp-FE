@@ -86,3 +86,7 @@ export const formatToFormPrice = (unit: BigNumber, durationUnit = 365,  decimals
 export const formatLocaleDecimalsNumber = (num: number | string) => {
   return String(num).replace(/,+/g, '')
 }
+
+export const formatInputName = (name: string) => {
+  return (name || '').toLocaleLowerCase()
+}
