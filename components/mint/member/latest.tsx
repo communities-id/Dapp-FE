@@ -16,7 +16,7 @@ import { useWallet } from '@/hooks/wallet'
 import { parseToDurationPrice } from '@/utils/formula'
 
 import PriceModeChart from '@/components/common/priceModeChart'
-import MintButton from '@/components/mint/button'
+import ConnectButton from '@/components/common/connectButton'
 import AdvancedMintSetting from '@/components/common/advanceMintSetting'
 import ToolTip from '@/components/common/tooltip'
 import Input from '@/components/common/input'
@@ -312,13 +312,13 @@ const MemberMintLatest: FC<MemberMintLatestProps> = ({ member, slot }) => {
         )
       }
       <div className='mt-[30px] flex flex-col items-center gap-[10px]'>
-        <MintButton
+        <ConnectButton
           loading={mintLoading || switchNetworkLoading}
           size='auto'
           theme='purple'
           className='px-[34px]'
           disabled={isMintDisabled}
-          onClick={handleMint}>Mint Now</MintButton>
+          onClick={handleMint}>Mint Now</ConnectButton>
         <ul>
           {
             mintTypes.map(({ label, tip }, idx) => {

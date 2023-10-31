@@ -46,43 +46,15 @@ export const WrapperProvider = ({ mode, keywords, children }: { mode: SearchMode
         <GlobalDialogProvider>
           <SearchHeader className='absolute top-0 left-0'/>
           {
-            mounted && <ConnectButton.Custom>
-              {
-                ({
-                  account,
-                  chain,
-                  openAccountModal,
-                  openChainModal,
-                  openConnectModal,
-                  mounted: connectMounted,
-                }) => {
-                  const connected = connectMounted && account && chain
-                  if (!connected && connectMounted) {
-                    return (
-                      <WalletConnect handleConnect={() => {
-                        openConnectModal()
-                      }} />
-                    )
-                  }
-                  if (chain?.unsupported) {
-                    return (
-                      <WrongChain handleConnect={() => {
-                        openChainModal()
-                      }} />
-                    )
-                  }
-                  return (
-                    <main className='min-h-screen bg-[#FAFAFA]'>
-                      <img src='/search/blur-bg.png' className='absolute top-0 left-0 z-0 w-full h-full bg-cover pointer-events-none'/>
-                      <header className='search-container bg-white relative z-1 rounded-[10px]'>
-                        <SearchHeaderInfo />
-                      </header>
-                      {children}
-                    </main>
-                  )
-                }
-              }
-            </ConnectButton.Custom>
+            mounted && (
+              <main className='min-h-screen bg-[#FAFAFA]'>
+                <img src='/search/blur-bg.png' className='absolute top-0 left-0 z-0 w-full h-full bg-cover pointer-events-none'/>
+                <header className='search-container bg-white relative z-1 rounded-[10px]'>
+                  <SearchHeaderInfo />
+                </header>
+                {children}
+              </main>
+            )
           }
         </GlobalDialogProvider>
       </DetailsProvider>

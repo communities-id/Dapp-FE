@@ -88,7 +88,7 @@ const Header: FC<Props> = ({ className }) => {
                       </button>
                     )
                   }
-                  if (chain.unsupported) {
+                  if (chain?.unsupported) {
                     return (
                       <button
                         className='flex items-center justify-center bg-[#F4943B] w-[34px] h-[34px] rounded-full'
@@ -101,14 +101,16 @@ const Header: FC<Props> = ({ className }) => {
                     )
                   }
 
-                  return <AccountInfo
-                    address={account.address ?? ''}
-                    theme='light'
-                    darkMode={darkMode}
-                    toggleDarkMode={toggleDarkMode}
-                    handleDisconnect={handleDisconnect}
-                    handleSearch={selfHandleSearch}
-                    handleSearchDone={toggleNavigationOpen}/>
+                  return (
+                    <AccountInfo
+                      address={account?.address ?? ''}
+                      theme='light'
+                      darkMode={darkMode}
+                      toggleDarkMode={toggleDarkMode}
+                      handleDisconnect={handleDisconnect}
+                      handleSearch={selfHandleSearch}
+                      handleSearchDone={toggleNavigationOpen}/>
+                  )
                 }
               }
             </ConnectButton.Custom>

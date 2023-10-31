@@ -4,15 +4,12 @@ import { BigNumber } from 'ethers'
 import { useNetwork, useSwitchNetwork } from 'wagmi'
 import useApi, { getOmniNodeState } from '@/shared/useApi'
 import { useDetails } from '@/contexts/details'
-import { useConfiguration } from '@/contexts/configuration'
 import { useRoot } from '@/contexts/root'
-import { useSignUtils } from '@/hooks/sign'
-import { useWallet } from '@/hooks/wallet'
 import useIntervalAsync from '@/hooks/polling'
 import { CHAIN_ID, MAIN_CHAIN, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 import { formatContractError } from '@/shared/helper'
 
-import MintButton from '@/components/mint/button'
+import ConnectButton from '@/components/common/connectButton'
 
 import MintRightIcon from '~@/icons/mint/right-circle.svg'
 
@@ -156,13 +153,13 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, omninodeAd
       <div className='mt-[30px] flex flex-col items-center gap-[10px]'>
         {/* <p className='text-mintTipDesc text-mainGray'>The estimated cost is : <b className='text-mintPurple'>0.0170 ETH</b></p> */}
         <div className='flex items-center justify-center gap-[10px]'>
-          <MintButton
+          <ConnectButton
             className='px-[16px]'
             size='auto'
             theme='purple'
             loading={registerLoading}
             disabled={disabled}
-            onClick={handleDeploy}>Pre-Mint</MintButton>
+            onClick={handleDeploy}>Pre-Mint</ConnectButton>
         </div>
       </div>
       { children }

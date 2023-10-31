@@ -37,24 +37,26 @@ const SearchForm: FC<Props> = ({ className, inputClassName, buttonClassName, han
 
   const handleSearchSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    e.stopPropagation()
     handleSearch(searchValue)
     handleDone?.()
+    return false
   }
 
   return (
-    <form className='border-none' action="" onSubmit={handleSearchSubmit}>
-      <div className={
-        classnames(
-          'flex items-center',
-          'h-[46px] py-[6px] px-[6px]',
-          'bg-search-form-bg backdrop-blur-[10px] transition-all duration-300 linear',
-          'outline outline-search-form rounded-[32px] hover:bg-search-form-focus-bg',
-          {
-            '!bg-search-form-focus-bg': isFocus
-          },
-          className
-        )
-      }>
+    <div className={
+      classnames(
+        'flex items-center',
+        'h-[46px] py-[6px] px-[6px]',
+        'bg-search-form-bg backdrop-blur-[10px] transition-all duration-300 linear',
+        'outline outline-search-form rounded-[32px] hover:bg-search-form-focus-bg',
+        {
+          '!bg-search-form-focus-bg': isFocus
+        },
+        className
+      )
+    }>
+      <form className='border-none' action="" onSubmit={handleSearchSubmit}>
         <label htmlFor='search-button'>
           <input
             type="text"
@@ -79,7 +81,6 @@ const SearchForm: FC<Props> = ({ className, inputClassName, buttonClassName, han
             onBlur={() => setIsFocus(false)}
           />
         </label>
-        { children }
         <Button
           id="search-button"
           type="submit"
@@ -91,8 +92,10 @@ const SearchForm: FC<Props> = ({ className, inputClassName, buttonClassName, han
             )
           }>
         </Button>
-      </div>
-    </form>
+      </form>
+      
+      { children }
+    </div>
   )
 }
 
