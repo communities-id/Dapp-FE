@@ -17,7 +17,7 @@ export default async function handler(
       msg: msg.msg,
       ua: msg.ua,
       url: msg.url,
-      ip,
+      ip: ip?.toString() ?? '',
       refer
     })
   } catch (e) { }
