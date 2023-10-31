@@ -7,6 +7,7 @@ import { sleep } from '@/utils/tools'
 
 import Button from '@/components/solid/Button'
 import DottedBg from '@/components/common/dottedBg'
+import { track } from '@/shared/track'
 
 // import MetaMaskSvg from '~@/platform/metamask.svg'
 
@@ -52,6 +53,7 @@ const HeroSection: FC<Props> = () => {
 
   const handleSearchSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    track('search', { keyword: searchValue, from: 'home' })
     handleSearch(searchValue)
   }
 
