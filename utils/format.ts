@@ -1,6 +1,8 @@
 import { BigNumber, ethers } from "ethers"
 import * as math from 'mathjs'
 
+import { minimumDecimalsPrice, minimumDecimalsPriceStr } from "@/utils/price"
+
 const bnMath = math.create(math.all, {
   number: 'BigNumber',
   precision: 18,
@@ -43,7 +45,7 @@ export const formatDecimalsPrice = (num: number | string, digits = 6) => {
     return '0'
   }
   const strNum = formatLocaleDecimalsNumber(formatToDecimal(num as number, 0, digits))
-  if (Number(strNum) < 1e-6) return '0.000001'
+  if (Number(strNum) < minimumDecimalsPrice) return minimumDecimalsPriceStr
   return strNum
 }
 
@@ -67,6 +69,12 @@ export const formatInfo = (info: any) => {
 
 // unit price = (wei price / durationUnit) + 1 wei
 export const formatToUnitPrice = (price: number, durationUnit = 365, decimals = 18) => {
+  if (!Number(price)) return '0'
+  
+  // minimum decimals price: minimumDecimalsPrice
+  if (Number(price) < minimumDecimalsPrice) {
+    price = minimumDecimalsPrice
+  }
   return formatNumToWei(price, decimals).div(durationUnit).add(1).toString()
 }
 

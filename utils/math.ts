@@ -8,9 +8,9 @@ const bnMath = math.create(math.all, {
   precision: 18,
 })
 
-export const mathEvaluate = (formula: string) => {
+export const mathEvaluate = (formula: string): string => {
   const val = bnMath.evaluate(formatLocaleDecimalsNumber(formula)).toFixed(18)
-  if (val === 'NaN') return '0'
+  if (val === 'NaN') return 'NaN'
   return val
 }
 

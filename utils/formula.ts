@@ -47,7 +47,9 @@ export const calcCurrentMintPrice = (x: number, params: PriceFormulaCalcParams, 
 
   let price = mathEvaluate(afterFormula)
   // (x / 0) will be Infinity
-  price = (price === 'Infinity' || price === 'NaN') ? x : price
+  if ((price === 'Infinity' || price === 'NaN')) {
+    price = params.a ?? '0'
+  }
 
   return {
     price,
