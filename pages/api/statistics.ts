@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/shared/prisma'
-import { getDefaultCoinPrice } from '@/shared/contract'
+import { batchGetDefaultCoinPrice } from '@/shared/contract'
 import { BigNumber } from 'ethers'
 
 import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
 
-const t = (v: string): string => v
 
 async function getTVL() {
   const communities = await prisma.community.findMany({
@@ -14,9 +13,11 @@ async function getTVL() {
     }
   })
   
-  const ethPrice = await getDefaultCoinPrice('ETH')
-  const maticPrice = await getDefaultCoinPrice('MATIC')
-  const bnbPrice = await getDefaultCoinPrice('BNB')
+
+  const price = await batchGetDefaultCoinPrice(['ETH', 'MATIC', 'BNB'])
+  const ethPrice = price.ETH
+  const maticPrice = price.MATIC
+  const bnbPrice = price.BNB
 
   // to do: multiple chain
   const defaultCoinPrice: Record<SupportedChainIDs | SupportedTestnetChainIDs, number> = {

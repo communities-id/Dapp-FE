@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { updateMembers } from '@/shared/asyncJob'
 
-const t = (v: string): string => v
 
 export default async function handler(
   req: NextApiRequest,

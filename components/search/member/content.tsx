@@ -11,7 +11,6 @@ import { getOpenseaLink } from '@/utils/tools'
 import { getNormalTwitterShareLink } from '@/utils/share'
 import { updateMember } from '@/shared/apis'
 
-import MintButton from '@/components/mint/button';
 import AvatarCard from '@/components/common/avatar'
 import Popover, { PopoverMenuItem } from '@/components/common/popover'
 import CommunityMint from '@/components/mint/community'
@@ -191,16 +190,6 @@ const PersonContent: FC<Props> = () => {
                 </div>
                 <div className='flex flex-col justify-between'>
                   <div className='flex items-start justify-end gap-3'>
-                    {/* {
-                      !loadingSet.member && memberInfoSet.isOwner && !memberInfoSet.isPrimary && (
-                        <MintButton
-                          className='!text-member-d-as-btn !h-[40px] !px-[16px] !py-0'
-                          loading={primarySetLoading}
-                          size='auto'
-                          theme='pink'
-                          onClick={handleAsPrimary}>As Primary</MintButton>
-                      )
-                    } */}
                     {
                       memberInfoSet.isOwner && (
                         <Popover

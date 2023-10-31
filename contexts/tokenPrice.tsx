@@ -1,4 +1,4 @@
-import { getDefaultCoinPrice } from '@/shared/contract'
+import { batchGetDefaultCoinPrice, getDefaultCoinPrice } from '@/shared/contract'
 import { useState, useContext, createContext, ReactNode, useEffect, useRef, useMemo } from 'react'
 
 import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
@@ -20,17 +20,17 @@ const Context = createContext<Record<SupportedChainIDs | SupportedTestnetChainID
 
 export function TokenPriceProvider({ children }: { children: ReactNode }) {
 
-  const [ETH, setETH] = useState(0)
-  const [MATIC, setMATIC] = useState(0)
-  const [BNB, setBNB] = useState(0)
+  const [ETH, setETH] = useState(1790)
+  const [MATIC, setMATIC] = useState(0.6)
+  const [BNB, setBNB] = useState(225)
 
   useEffect(() => {
     async function getTokenPrice() {
       try {
-        const [ethPrice, maticPrice, bnbPrice] = await Promise.all([getDefaultCoinPrice('ETH'), getDefaultCoinPrice('MATIC'), getDefaultCoinPrice('BNB')])
-        setETH(ethPrice)
-        setMATIC(maticPrice)
-        setBNB(bnbPrice)
+        const price = await batchGetDefaultCoinPrice(['ETH', 'MATIC', 'BNB'])
+        setETH(price.ETH)
+        setMATIC(price.MATIC)
+        setBNB(price.BNB)
       } catch (e) {
         console.log(e)
       }

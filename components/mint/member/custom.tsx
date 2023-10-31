@@ -14,9 +14,10 @@ import { useRoot } from '@/contexts/root'
 import { useSignUtils } from '@/hooks/sign'
 import { useWallet } from '@/hooks/wallet'
 import { parseToDurationPrice } from '@/utils/formula'
+import { formatInputName } from '@/utils/format'
 
+import ConnectButton from '@/components/common/connectButton'
 import PriceModeChart from '@/components/common/priceModeChart'
-import MintButton from '@/components/mint/button'
 import AdvancedMintSetting from '@/components/common/advanceMintSetting'
 import ToolTip from '@/components/common/tooltip'
 import Input from '@/components/common/input'
@@ -307,7 +308,7 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
           endAdornment={`.${community}`}
           inputclassname={'my-input-class'}
           onChange={(e) => {
-            setMemberInput(e.target.value)
+            setMemberInput(formatInputName(e.target.value))
           }}
         />
       </div>
@@ -343,13 +344,13 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
       </div>
 
       <div className='mt-[30px] flex flex-col items-center gap-[10px] w-full'>
-        <MintButton
+        <ConnectButton
           loading={mintLoading || switchNetworkLoading}
           size='auto'
           theme='purple'
           className='px-[34px] w-full'
           disabled={isMintDisabled}
-          onClick={handleMint}>Mint Now</MintButton>
+          onClick={handleMint}>Mint Now</ConnectButton>
       </div>
     </div>
   )

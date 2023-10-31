@@ -202,3 +202,16 @@ export const getDefaultCoinPrice = async (coin = 'ETH') => {
   const res = await axios.get(`https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=USD`)
   return res.data.USD as number
 }
+
+export const batchGetDefaultCoinPrice = async (coins = ['ETH']) => {
+  const fsyms = coins.join(',')
+  const res = await axios.get(`https://min-api.cryptocompare.com/data/price?fsym=USD&tsyms=${fsyms}`)
+  if (!res.data) {
+    return {}
+  }
+  const prices: Record<string, number> = {}
+  for (let i in res.data) {
+    prices[i] = 1 / res.data[i]
+  }
+  return prices
+}

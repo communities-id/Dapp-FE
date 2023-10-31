@@ -5,7 +5,6 @@ import { chainBlockNumberMap, testnetChainBlockNumberMap } from './init-cache'
 
 import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
 
-const t = (v: string): string => v
 
 export default async function handler(
   req: NextApiRequest,

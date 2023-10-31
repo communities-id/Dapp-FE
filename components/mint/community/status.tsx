@@ -3,7 +3,7 @@ import { FC, ReactNode, useMemo } from 'react'
 import { useDetails } from '@/contexts/details'
 import { CHAINS_NETWORK_TO_ID, CHAIN_ID, CHAIN_ID_MAP, CHAINS_MINT_TOOLTIPS } from "@/shared/constant"
 
-import MintButton from '@/components/mint/button'
+import ConnectButton from '@/components/common/connectButton'
 import Select from '@/components/common/select'
 
 import MintRightIcon from '~@/icons/mint/right-circle.svg'
@@ -63,7 +63,7 @@ const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ mintNetwork, loadin
             handleNetworkChange?.(Number(value))
           }}
         />
-        <MintButton
+        <ConnectButton
           loading={loading}
           disabled={disabled}
           size='auto'
@@ -72,7 +72,7 @@ const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ mintNetwork, loadin
           onClick={() => handleNext()}
         >
           Start
-        </MintButton>
+        </ConnectButton>
       </div>
       { children }
     </div>
