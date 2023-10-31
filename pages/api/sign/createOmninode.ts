@@ -3,7 +3,6 @@ import { keccak256 } from '@/shared/helper';
 import { Wallet } from 'ethers';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const t = (v: string): string => v
 
 export default async function handler(
   req: NextApiRequest,

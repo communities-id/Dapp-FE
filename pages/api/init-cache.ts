@@ -4,7 +4,6 @@ import { prisma } from '@/shared/prisma';
 import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
 import { MAIN_CHAIN_ID } from '@/shared/constant';
 
-const t = (v: string): string => v
 
 export const testnetChainBlockNumberMap: Record<SupportedTestnetChainIDs, number> = {
   5: 9780000,

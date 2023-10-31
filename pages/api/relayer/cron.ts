@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { syncRelayerEvents } from '@/shared/asyncJob'
 import axios from 'axios'
 
-const t = (v: string): string => v
 
 export default async function handler(
   req: NextApiRequest,
