@@ -5,7 +5,6 @@ import { BigNumber } from 'ethers'
 
 import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
 
-const t = (v: string): string => v
 
 async function getTVL() {
   const communities = await prisma.community.findMany({

@@ -5,7 +5,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import qs from 'querystring'
 
-const t = (v: string): string => v
 
 export default async function handler(
   req: NextApiRequest,
