@@ -111,6 +111,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
           owner: ZERO_ADDRESS
         }, { chainId })
       }
+      // to do: update brand
       await refreshInfo()
       handleMintSuccess?.({ community, owner: _mintTo, avatar: '' }, 'community')
     } catch (err: any) {

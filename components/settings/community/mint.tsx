@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { DEFAULT_TOKEN_SYMBOL, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
 import { calcCurrentMintPrice, priceModeFormulaMap } from '@/utils/formula'
+import { constantsRule, decimalsRule } from '@/utils/price'
 
 import PriceModeChart from '@/components/common/priceModeChart'
 import Input from '@/components/common/input'
@@ -348,7 +349,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'a',
             disabled: priceModelDisabled,
             value: forms.price.a,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             primary: true,
             child: true
           }
@@ -375,7 +376,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'a',
             disabled: priceModelDisabled,
             value: forms.price.a,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             primary: true,
             child: true
           },
@@ -388,7 +389,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'b',
             disabled: priceModelDisabled,
             value: forms.price.b,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             child: true
           }
         ],
@@ -416,7 +417,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'a',
             disabled: priceModelDisabled,
             value: forms.price.a,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             primary: true,
             child: true
           },
@@ -429,7 +430,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'b',
             disabled: priceModelDisabled,
             value: forms.price.b,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             child: true
           },
           {
@@ -441,7 +442,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'c',
             disabled: priceModelDisabled,
             value: forms.price.c,
-            format: /^[0-9]{1,10}$/,
+            format: constantsRule,
             child: true
           },
           {
@@ -453,7 +454,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'd',
             disabled: priceModelDisabled,
             value: forms.price.d,
-            format: /^[0-9]{1,10}$/,
+            format: constantsRule,
             child: true
           }
         ],
@@ -480,7 +481,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'a',
             disabled: priceModelDisabled,
             value: forms.price.a,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             primary: true,
             child: true
           },
@@ -493,7 +494,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'b',
             disabled: priceModelDisabled,
             value: forms.price.b,
-            format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+            format: decimalsRule,
             child: true
           },
           {
@@ -505,7 +506,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
             unit: 'c',
             disabled: priceModelDisabled,
             value: forms.price.c,
-            format: /^[0-9]{1,10}$/,
+            format: constantsRule,
             child: true
           }
         ],
@@ -530,7 +531,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
     //     unit: <span><span className='text-searchpurple font-medium'>{ coinSymbol }</span> per day</span>,
     //     append: <span className='text-mintLabelGray text-mintTipTitle whitespace-nowrap'>per day</span>,
     //     disabled: priceModelDisabled,
-    //     format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+    //     format: decimalsRule,
     //     // child: true,
     //     value: forms.price.a,
     //   }
@@ -546,7 +547,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
     //     outsideAppend: <span className='text-mintLabelGray text-mintTipTitle whitespace-nowrap'>days</span>,
     //     // disabled: priceModelDisabled,
     //     disabled: true,
-    //     format: /^[0-9]{1,10}[\.]?[0-9]{0,6}$/,
+    //     format: decimalsRule,
     //     // child: true,
     //     value: forms.mint.durationUnit,
     //   }

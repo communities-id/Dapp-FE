@@ -58,7 +58,7 @@ export const getAlchemyHost = (network: number, keys?: string[]) => {
 }
 
 export const getAlchemyProvider = (network: number) => {
-  return new ethers.providers.JsonRpcProvider(getAlchemyHost(network as TotalSupportedChainIDs))
+  return new ethers.providers.JsonRpcProvider(getAlchemyHost(network as TotalSupportedChainIDs), network)
 }
 
 export const getQuickNodeKey = (network: number) => {
@@ -73,7 +73,7 @@ export const getQuickNodeHost = (network: number, keys?: string[]) => {
 }
 
 export const getQuickNodeProvider = (network: number) => {
-  return new ethers.providers.JsonRpcProvider(getQuickNodeHost(network as TotalSupportedChainIDs))
+  return new ethers.providers.JsonRpcProvider(getQuickNodeHost(network as TotalSupportedChainIDs), network)
 }
 
 // export const getblockHost = (network: number) => {
@@ -89,7 +89,7 @@ export const createProvider = (network: number) => {
     // custom provider by endpoint
     if (ethersNetworksWl.includes(network)) {
       providers.set(network, new ethers.providers.AlchemyProvider(
-        ethers.providers.getNetwork(network),
+        network,
         getAlchemyKey(network as TotalSupportedChainIDs)
       ))
       // quicknode provider
@@ -110,7 +110,7 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
 
   return isTestnet ? {
     isTestnet: true,
-    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY as string,
+    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY ?? '',
     Goerli: {
       // RPCUrl: "https://goerli.infura.io/v3/4779964dc9704f6dbf8d63a1e0183ed6",
       RPCUrl: getAlchemyHost(TestnetChainIDs.Goerli, alchemy[TestnetChainIDs.Goerli]),
@@ -131,7 +131,7 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
       RPCUrl: getQuickNodeHost(TestnetChainIDs['Scroll Sepolia Testnet'], quickNode[TestnetChainIDs['Scroll Sepolia Testnet']]),
     },
   } : {
-    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY as string,
+    openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY ?? '',
     Ethereum: {
       RPCUrl: getAlchemyHost(ChainIDs.Ethereum, alchemy[ChainIDs.Ethereum]),
     },
