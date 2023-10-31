@@ -133,6 +133,7 @@ export const updateCommunities = async (name?: string, force: boolean = false) =
         name: name as string
       },
       data: {
+        pool: (communityInfo?.pool ?? 0).toString(),
         communityInfo: JSON.stringify(communityInfo)
       }
     })
