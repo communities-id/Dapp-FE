@@ -10,8 +10,8 @@ export default async function handler(
 
   try {
     const msg = JSON.parse(query.v as string)
-    const ipArr = req.socket.remoteAddress?.split(':')
-    const ip = ipArr?.[ipArr.length - 1] || ''
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
     const refer = req.headers.referer || ''
     await track(msg.event, {
       msg: msg.msg,
