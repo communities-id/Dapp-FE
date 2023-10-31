@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useSearch } from '@/hooks/search'
 import { execSearch } from '@/shared/helper'
+import { formatInputName } from '@/utils/format'
 
 import Button from '@/components/solid/Button'
 
@@ -72,7 +73,7 @@ const SearchForm: FC<Props> = ({ className, inputClassName, buttonClassName, han
             }
             value={searchValue}
             onChange={(e) => {
-              setSearchValue(e.target.value)
+              setSearchValue(formatInputName(e.target.value))
             }}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
