@@ -12,7 +12,7 @@
     "prisma:migrate": "cross-env DATABASE_URL=\"$DATABASE_MIGRATE_URL\" prisma migrate deploy"
   },
   "dependencies": {
-    "@communitiesid/id": "^0.5.7",
+    "@communitiesid/id": "^0.5.10",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@flowlist/react-flowlist": "^0.2.25",

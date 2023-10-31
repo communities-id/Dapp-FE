@@ -1,8 +1,6 @@
 //test net
 import { CommunitiesIDInput, CONTRACT_MAP as contractMap } from "@communitiesid/id";
 
-import { getAlchemyHost, getQuickNodeHost, getSDKOptions } from '@/utils/provider'
-
 import { TestnetChainIDs } from '@communitiesid/id'
 import { ContractAddresses } from '@/types/contract'
 
