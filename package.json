@@ -16,6 +16,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@flowlist/react-flowlist": "^0.2.25",
+    "@joyid/rainbowkit": "^0.1.1",
     "@metamask/eth-sig-util": "^7.0.0",
     "@moralisweb3/common-evm-utils": "^2.22.3",
     "@mui/base": "5.0.0-beta.5",
@@ -33,7 +34,6 @@
     "@types/react-dom": "18.0.11",
     "@types/react-transition-group": "^4.4.6",
     "@vercel/analytics": "^1.1.1",
-    "@wagmi/chains": "^1.8.0",
     "alchemy-sdk": "^2.8.3",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
@@ -67,8 +67,7 @@
     "swiper": "^9.3.1",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4",
-    "wagmi": "~1.4.3",
-    "web3": "^1.10.0"
+    "wagmi": "~1.4.5"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
