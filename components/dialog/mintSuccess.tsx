@@ -35,6 +35,8 @@ const MintSuccessDialog: FC<Props> = ({ open, mode, community, member, owner, av
 
   const keyword = member ? `${member}.${community}` : `.${community}`
 
+  const confirmText = mode === 'community' ? 'Go to Settings' : 'Confirm'
+
   const handleSelfConfirm = () => {
     handleConfirm?.(mode, community, member)
     // if (mode === 'community') {
@@ -76,7 +78,7 @@ const MintSuccessDialog: FC<Props> = ({ open, mode, community, member, owner, av
           <p>Owner: { owner }</p>
           <p className='mt-2 text-[14px]'>The name was successfully registered. you can now view and manage the name.</p>
           <div className='mt-[10px] pt-[20px] flex items-center justify-center gap-[30px]'>
-            <MintButton size='fixed' theme='purple' onClick={handleSelfConfirm}>Confirm</MintButton>
+            <MintButton size='fixed' theme='purple' onClick={handleSelfConfirm}>{ confirmText }</MintButton>
             <div className='flex items-center gap-[10px]'>
               <span>Share To: </span>
               <button type='button'>
