@@ -243,7 +243,8 @@ async function syncEventsInOneBlock(chainId: SupportedChainIds, block: number) {
 
 function listenEventsOnChain(chainId: SupportedChainIds) {
   const provider = createProvider(chainId)
-  provider.on('block', async block => {
+  provider.on('block', async curBlock => {
+    const block = curBlock - 1
     let retryTime = 5
     while (retryTime > 0) {
       try {
