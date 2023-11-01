@@ -3,7 +3,7 @@ import { ethers } from "ethers"
 import { TestnetChainIDs, ChainIDs, CommunitiesIDInput } from '@communitiesid/id'
 import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
-const ethersNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
+// const alchemyNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
 
 export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', Record<TotalSupportedChainIDs, string[]>> => {
@@ -58,7 +58,7 @@ export const getAlchemyHost = (network: number, keys?: string[]) => {
 }
 
 export const getAlchemyProvider = (network: number) => {
-  return new ethers.providers.JsonRpcProvider(getAlchemyHost(network as TotalSupportedChainIDs), network)
+  return new ethers.providers.StaticJsonRpcProvider(getAlchemyHost(network as TotalSupportedChainIDs), network)
 }
 
 export const getQuickNodeKey = (network: number) => {
@@ -73,7 +73,7 @@ export const getQuickNodeHost = (network: number, keys?: string[]) => {
 }
 
 export const getQuickNodeProvider = (network: number) => {
-  return new ethers.providers.JsonRpcProvider(getQuickNodeHost(network as TotalSupportedChainIDs), network)
+  return new ethers.providers.StaticJsonRpcProvider(getQuickNodeHost(network as TotalSupportedChainIDs), network)
 }
 
 // export const getblockHost = (network: number) => {
@@ -81,26 +81,19 @@ export const getQuickNodeProvider = (network: number) => {
 // }
 
 export const createProvider = (network: number) => {
-  const providers = new Map<number, ethers.providers.JsonRpcProvider>()
+  const providers = new Map<number, ethers.providers.StaticJsonRpcProvider>()
   return (() => {
     // providers cache
-    if (providers.has(network)) return providers.get(network) as ethers.providers.JsonRpcProvider
+    if (providers.has(network)) return providers.get(network) as ethers.providers.StaticJsonRpcProvider
     
-    // custom provider by endpoint
-    if (ethersNetworksWl.includes(network)) {
-      providers.set(network, new ethers.providers.AlchemyProvider(
-        network,
-        getAlchemyKey(network as TotalSupportedChainIDs)
-      ))
-      // quicknode provider
-    } else if (quickNodeNetworksWl.includes(network)) {
+    if (quickNodeNetworksWl.includes(network)) {
       providers.set(network, getQuickNodeProvider(network))
     } else {
       // alcemy provider
       providers.set(network, getAlchemyProvider(network))
     }
 
-    return providers.get(network) as ethers.providers.JsonRpcProvider
+    return providers.get(network) as ethers.providers.StaticJsonRpcProvider
   })()
 }
 
