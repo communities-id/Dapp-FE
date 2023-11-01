@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/relayer/cron",
-      "schedule": "* * * * *"
+      "schedule": "*/2 * * * *"
     }
   ]
 }
