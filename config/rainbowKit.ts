@@ -2,13 +2,14 @@ import {
   connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
 import { metaMaskWallet, walletConnectWallet, injectedWallet, okxWallet } from "@rainbow-me/rainbowkit/wallets";
+import { JoyIdWallet } from '@joyid/rainbowkit'
 
 import { Chain, configureChains, createConfig } from "wagmi";
-import { mainnet, polygon, optimism, bsc, base } from '@wagmi/chains'
-import { polygonMumbai, goerli, baseGoerli, optimismGoerli, bscTestnet, scrollSepolia } from "@wagmi/chains";
+import { mainnet, polygon, optimism, bsc, base } from 'wagmi/chains'
+import { polygonMumbai, goerli, baseGoerli, optimismGoerli, bscTestnet, scrollSepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
-import { CHAIN_ID_MAP } from "@/shared/constant";
+import { isTestnet, CHAIN_ID_MAP } from "@/shared/constant";
 import { TotalSupportedChainIDs } from '@/types/chain'
 
 export const scroll = {
@@ -58,6 +59,11 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
   }
 );
 
+const JoyIDOptions = {
+  name: 'Communities ID',
+  logo: 'https://ipfs.io/ipfs/QmS1EdZjjipmD6oH93sZ1npzRG95PD3EaLt9A2hieNoNoK',
+  joyidAppURL: isTestnet ? 'https://testnet.joyid.dev/' : 'https://app.joy.id/'
+}
 
 export const connectors = connectorsForWallets([
   {
@@ -67,6 +73,7 @@ export const connectors = connectorsForWallets([
       metaMaskWallet({ chains, shimDisconnect: true, projectId: 'Communities.ID' }),
       okxWallet({ chains, shimDisconnect: true, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' }),
       // coinbaseWallet({ appName: 'Communities.ID', chains }),
+      JoyIdWallet({ chains, options: JoyIDOptions }),
       walletConnectWallet({
         chains,
         projectId: '1cd28d38251a0d1a92b1c0f014d618eb'
