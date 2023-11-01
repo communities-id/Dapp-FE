@@ -68,7 +68,7 @@ export const connectors = connectorsForWallets([
       metaMaskWallet({ chains, shimDisconnect: true, projectId: 'Communities.ID' }),
       okxWallet({ chains, shimDisconnect: true, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' }),
       // coinbaseWallet({ appName: 'Communities.ID', chains }),
-      JoyIdWallet({ chains, options: { name: 'JoyID' } }),
+      JoyIdWallet({ chains, options: { name: 'Communities ID', logo: 'https://ipfs.io/ipfs/QmS1EdZjjipmD6oH93sZ1npzRG95PD3EaLt9A2hieNoNoK' } }),
       walletConnectWallet({
         chains,
         projectId: '1cd28d38251a0d1a92b1c0f014d618eb'
