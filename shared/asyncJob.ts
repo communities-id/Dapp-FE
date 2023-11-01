@@ -89,11 +89,7 @@ export const syncRelayerEvents = async (chainId?: number) => {
   }
 
   const allChains = chainId ? [chainId] : Object.keys(CHAINS_ID_TO_NETWORK).map(v => Number(v))
-  const res: any = {}
-  for (let i = 0; i < allChains.length; i++) {
-    console.log('sync relayer events in chain', allChains[i])
-    res[allChains[i]] = await syncRelayerEventsInOneChain(allChains[i])
-  }
+  const res = await Promise.all(allChains.map(chain => syncRelayerEventsInOneChain(chain)))
   return res
 }
 
@@ -133,6 +129,7 @@ export const updateCommunities = async (name?: string, force: boolean = false) =
         name: name as string
       },
       data: {
+        pool: (communityInfo?.pool ?? 0).toString(),
         communityInfo: JSON.stringify(communityInfo)
       }
     })
