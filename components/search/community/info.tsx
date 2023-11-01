@@ -358,16 +358,16 @@ const CommunityLayout: FC<Props> = () => {
               (pendingCommunitySet || pendingMintSet) && (
                 <div className='mt-[14px] grid grid-cols-2 gap-3 text-statusTag'>
                   {
-                    pendingCommunitySet && (
-                      <MintTip text='Community Setting' label='Set up your Brand Info:' onClick={() => {
-                        handleSelectMenu(communityPopoverMenus.find(item => item.id === 'profile')!)
+                    pendingMintSet && (
+                      <MintTip text='Mint Settings' label='Customize Minting on demand:' onClick={() => {
+                        handleSelectMenu(communityPopoverMenus.find(item => item.id === 'mint')!)
                       }} />
                     )
                   }
                   {
-                    pendingMintSet && (
-                      <MintTip text='Mint Setting' label='Customize Minting on demand:' onClick={() => {
-                        handleSelectMenu(communityPopoverMenus.find(item => item.id === 'mint')!)
+                    pendingCommunitySet && (
+                      <MintTip text='Profile Settings' label='Set up your Brand Info:' onClick={() => {
+                        handleSelectMenu(communityPopoverMenus.find(item => item.id === 'profile')!)
                       }} />
                     )
                   }

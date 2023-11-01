@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { syncRelayerEvents } from '@/shared/asyncJob'
 import axios from 'axios'
 
-
+export const maxDuration = 120;
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
