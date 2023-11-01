@@ -74,7 +74,7 @@ export const TG_BOT_NAME =  process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? 'Com
 export const testGoreliERC20TokenAddress = '0x638E124448196C34cf03C35c6024038d765eEeFa'
 export const maxApproveValue = '115792089237316195423570985008687907853269984665640564039457'
 
-const isTestnet = process.env.NEXT_PUBLIC_IS_TESTNET === 'true'
+export const isTestnet = process.env.NEXT_PUBLIC_IS_TESTNET === 'true'
 const constants = isTestnet ? testnetConfig : mainnetConfig
 export const CHAIN_ID = constants.CHAIN_ID
 export const MAIN_CHAIN = constants.MAIN_CHAIN
