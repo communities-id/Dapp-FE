@@ -123,7 +123,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, omninodeAd
   }, [handleGetOmniNodeState, isTargetMainnetWork, communityInfo?.chainId])
 
   // omninode state polling event
-  const omninodePollingUpdate = useIntervalAsync(omniNodeStatePollingFunc, 3000)
+  const omninodePollingUpdate = useIntervalAsync(omniNodeStatePollingFunc, 5000)
 
   // omninode state polling update
   useEffect(() => {

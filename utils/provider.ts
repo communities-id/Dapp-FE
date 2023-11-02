@@ -19,16 +19,16 @@ const { alchemy: alchemyKeys, quickNode: quickNodeKeys } = parseRPCKeys(process.
 export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Ethereum]: 'eth-mainnet',
   [ChainIDs.OP]: 'opt-mainnet',
-  [ChainIDs.BSC]: 'smart-solitary-tent.bsc',
+  [ChainIDs.BSC]: 'white-thrilling-daylight.bsc',
   [ChainIDs.Polygon]: 'polygon-mainnet',
   [ChainIDs.Base]: 'base-mainnet',
   [ChainIDs.Scroll]: 'omniscient-dimensional-shadow.scroll-mainnet',
   [TestnetChainIDs.Goerli]: 'eth-goerli',
   [TestnetChainIDs["Optimism Goerli Testnet"]]: 'opt-goerli',
-  [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'lingering-hidden-friday.bsc-testnet',
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'necessary-alpha-owl.bsc-testnet',
   [TestnetChainIDs["Polygon Mumbai"]]: 'polygon-mumbai',
   [TestnetChainIDs["Base Goerli Testnet"]]: 'base-goerli',
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'multi-wandering-daylight.scroll-testnet'
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'wild-long-film.scroll-testnet'
 }
 
 export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
