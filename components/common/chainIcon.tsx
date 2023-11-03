@@ -37,6 +37,9 @@ const ChainIcon: FC<Props> = ({ size = 24, wrapperSize = 0, colorMode, chainId, 
   const ScrollIcon = (
     <img alt='scroll chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/scroll.svg' />
   )
+  const AstarIcon = (
+    <img alt='astar chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/astar.svg' />
+  )
   const chainIcons: Record<TotalSupportedChainIDs, any> = useMemo(() => {
     return {
       1: EthereumIcon,
@@ -51,6 +54,7 @@ const ChainIcon: FC<Props> = ({ size = 24, wrapperSize = 0, colorMode, chainId, 
       420: OPIcon,
       97: BSCIcon,
       534351: ScrollIcon,
+      81: AstarIcon,
     }
   }, [chainId, size, className])
   return chainIcons[chainId as TotalSupportedChainIDs] || null

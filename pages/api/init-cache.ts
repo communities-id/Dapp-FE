@@ -3,24 +3,26 @@ import { prisma } from '@/shared/prisma';
 
 import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
 import { MAIN_CHAIN_ID } from '@/shared/constant';
+import { ChainIDs, TestnetChainIDs } from '@communitiesid/id';
 
 
 export const testnetChainBlockNumberMap: Record<SupportedTestnetChainIDs, number> = {
-  5: 9780000,
-  80001: 38000000,
-  97: 34000000,
-  84531: 10000000,
-  420: 15000000,
-  534351: 1769000
+  [TestnetChainIDs.Goerli]: 9780000,
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: 15000000,
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: 34000000,
+  [TestnetChainIDs["Polygon Mumbai"]]: 38000000,
+  [TestnetChainIDs["Base Goerli Testnet"]]: 10000000,
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 1769000,
+  [TestnetChainIDs['Shibuya Testnet']]: 4995000,
 }
 
 export const chainBlockNumberMap: Record<SupportedChainIDs, number> = {
-  1: 18313000,
-  10: 110639000,
-  56: 32460000,
-  137: 48517000,
-  8453: 5044000,
-  534352: 207000
+  [ChainIDs.Ethereum]: 18313000,
+  [ChainIDs.OP]: 110639000,
+  [ChainIDs.BSC]: 32460000,
+  [ChainIDs.Polygon]: 48517000,
+  [ChainIDs.Base]: 5044000,
+  [ChainIDs.Scroll]: 207000,
 }
 
 // to do: multiple chain

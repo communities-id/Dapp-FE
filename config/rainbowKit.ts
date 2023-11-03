@@ -10,40 +10,98 @@ import { polygonMumbai, goerli, baseGoerli, optimismGoerli, bscTestnet, scrollSe
 import { publicProvider } from "wagmi/providers/public";
 
 import { isTestnet, CHAIN_ID_MAP } from "@/shared/constant";
+import { ChainIDs, TestnetChainIDs } from "@communitiesid/id"
+
 import { TotalSupportedChainIDs } from '@/types/chain'
 
-export const scroll = {
-  id: 534352,
-  name: 'Scroll',
+interface ChainConfigOptions {
+  currency: {
+    name: string
+    symbol?: string
+    decimals?: number
+  }
+  rpc: {
+    http: string
+    wss: string
+  }
+  scan: {
+    name: string
+    url: string
+  }
+  network: string
+}
+
+const generateChainConfig = (id: number, name: string, options: ChainConfigOptions) => {
+  const { currency, rpc, scan, network } = options
+
+  return {
+    id,
+    name,
+    network,
+    nativeCurrency: {
+      decimals: 18,
+      symbol: 'ETH',
+      ...currency
+    },
+    rpcUrls: {
+      public: { http: [rpc.http], webSocket: [rpc.wss] },
+      default: { http: [rpc.http], webSocket: [rpc.wss] },
+    },
+    blockExplorers: {
+      etherscan: scan,
+      default: scan,
+    },
+  } as const satisfies Chain
+}
+
+export const scroll = generateChainConfig(ChainIDs.Scroll, 'scroll', {
   network: 'scroll',
-  nativeCurrency: {
-    decimals: 18,
+  currency: {
     name: 'Scroll',
     symbol: 'ETH',
+    decimals: 18
   },
-  rpcUrls: {
-    public: { http: ['https://rpc.scroll.io'], webSocket: ['wss://rpc.scroll.io/ws'] },
-    default: { http: ['https://rpc.scroll.io'], webSocket: ['wss://rpc.scroll.io/ws'] },
+  rpc: {
+    http: 'https://rpc.scroll.io',
+    wss: 'wss://rpc.scroll.io/ws'
   },
-  blockExplorers: {
-    etherscan: { name: 'Blockscout', url: 'https://blockscout.scroll.io' },
-    default: { name: 'Blockscout', url: 'https://blockscout.scroll.io' },
+  scan: {
+    name: 'Blockscout',
+    url: 'https://blockscout.scroll.io'
+  }
+})
+
+export const Shibuya = generateChainConfig(TestnetChainIDs["Shibuya Testnet"], 'Shibuya', {
+  network: 'shibuya ',
+  currency: {
+    name: 'Shibuya',
+    symbol: 'SBY',
+    decimals: 18
   },
-} as const satisfies Chain
+  rpc: {
+    http: 'https://evm.shibuya.astar.network',
+    wss: ' wss://rpc.shibuya.astar.network'
+  },
+  scan: {
+    name: 'Blockscout',
+    url: 'https://blockscout.com/shibuya'
+  }
+})
 
 const _chains: Record<TotalSupportedChainIDs, Chain> = {
-  1: mainnet,
-  10: optimism,
-  56: bsc,
-  137: polygon,
-  8453: base,
-  534352: scroll,
-  5: goerli,
-  80001: polygonMumbai,
-  84531: baseGoerli,
-  420: optimismGoerli,
-  97: bscTestnet,
-  534351: scrollSepolia
+  [ChainIDs.Ethereum]: mainnet,
+  [ChainIDs.OP]: optimism,
+  [ChainIDs.BSC]: bsc,
+  [ChainIDs.Polygon]: polygon,
+  [ChainIDs.Base]: base,
+  [ChainIDs.Scroll]: scroll,
+  [TestnetChainIDs.Goerli]: goerli,
+  [TestnetChainIDs["Polygon Mumbai"]]: polygonMumbai,
+  [TestnetChainIDs["Base Goerli Testnet"]]: baseGoerli,
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: optimismGoerli,
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: bscTestnet,
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: scrollSepolia,
+  [TestnetChainIDs["Shibuya Testnet"]]: Shibuya,
 }
 
 // 自定义链信息

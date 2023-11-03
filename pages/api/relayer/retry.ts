@@ -23,8 +23,8 @@ export default async function handler(
     })
   }
 
-  // const data = await executeRelayer(record.id, Number(record.dstChain), record.payload, prisma)
-  const data = {}
+  const data = await executeRelayer(record.id, Number(record.dstChain), record.payload, prisma)
+  // const data = {}
 
   return res.status(200).json({
     code: 0,
