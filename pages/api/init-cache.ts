@@ -23,6 +23,7 @@ export const chainBlockNumberMap: Record<SupportedChainIDs, number> = {
   [ChainIDs.Polygon]: 48517000,
   [ChainIDs.Base]: 5044000,
   [ChainIDs.Scroll]: 207000,
+  [ChainIDs.Astar]: 4805000,
 }
 
 // to do: multiple chain

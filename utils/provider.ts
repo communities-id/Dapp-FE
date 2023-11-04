@@ -28,6 +28,7 @@ export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Polygon]: '',
   [ChainIDs.Base]: '',
   [ChainIDs.Scroll]: 'omniscient-dimensional-shadow.scroll-mainnet',
+  [ChainIDs.Astar]: '',
   [TestnetChainIDs.Goerli]: '',
   [TestnetChainIDs["Optimism Goerli Testnet"]]: '',
   [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'necessary-alpha-owl.bsc-testnet',
@@ -44,6 +45,7 @@ export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Polygon]: 'polygon-mainnet',
   [ChainIDs.Base]: 'base-mainnet',
   [ChainIDs.Scroll]: '',
+  [ChainIDs.Astar]: 'astar-mainnet',
   [TestnetChainIDs.Goerli]: 'eth-goerli',
   [TestnetChainIDs["Optimism Goerli Testnet"]]: 'opt-goerli',
   [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'bsc-testnet',
@@ -163,6 +165,9 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
     },
     Scroll: {
       RPCUrl: getQuickNodeHost(ChainIDs.Scroll, quickNode[ChainIDs.Scroll]),
+    },
+    Astar: {
+      RPCUrl: getAlchemyHost(ChainIDs.Astar, alchemy[ChainIDs.Astar]),
     },
     arbitrum: {
       RPCUrl: 'https://arb1.arbitrum.io/rpc'

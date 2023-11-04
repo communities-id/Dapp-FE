@@ -67,7 +67,24 @@ export const scroll = generateChainConfig(ChainIDs.Scroll, 'scroll', {
   },
   scan: {
     name: 'Blockscout',
-    url: 'https://blockscout.scroll.io'
+    url: 'https://blockscout.com/astar'
+  }
+})
+
+export const Astar = generateChainConfig(ChainIDs.Astar, 'Astar', {
+  network: 'astar ',
+  currency: {
+    name: 'Astar',
+    symbol: 'ASTR',
+    decimals: 18
+  },
+  rpc: {
+    http: 'https://evm.astar.network',
+    wss: ' wss://rpc.astar.network'
+  },
+  scan: {
+    name: 'Blockscout',
+    url: 'https://blockscout.com/shibuya'
   }
 })
 
@@ -83,8 +100,8 @@ export const Shibuya = generateChainConfig(TestnetChainIDs["Shibuya Testnet"], '
     wss: ' wss://rpc.shibuya.astar.network'
   },
   scan: {
-    name: 'Blockscout',
-    url: 'https://blockscout.com/shibuya'
+    name: 'AstarScan',
+    url: 'https://astar.subscan.io'
   }
 })
 
@@ -95,6 +112,7 @@ const _chains: Record<TotalSupportedChainIDs, Chain> = {
   [ChainIDs.Polygon]: polygon,
   [ChainIDs.Base]: base,
   [ChainIDs.Scroll]: scroll,
+  [ChainIDs.Astar]: Astar,
   [TestnetChainIDs.Goerli]: goerli,
   [TestnetChainIDs["Polygon Mumbai"]]: polygonMumbai,
   [TestnetChainIDs["Base Goerli Testnet"]]: baseGoerli,

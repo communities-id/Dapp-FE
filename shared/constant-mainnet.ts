@@ -17,7 +17,8 @@ const CHAIN_ID_MAP: Record<string, number> = {
   Base: ChainIDs.Base,
   BSC: ChainIDs.BSC,
   Optimism: ChainIDs.OP,
-  Scroll: ChainIDs.Scroll
+  Scroll: ChainIDs.Scroll,
+  Astar: ChainIDs.Astar
 }
 
 // 跨链 链id
@@ -37,7 +38,8 @@ const DEFAULT_TOKEN_SYMBOL: Record<number, string> = {
   [CHAIN_ID_MAP.Base]: 'ETH',
   [CHAIN_ID_MAP.BSC]: 'BNB',
   [CHAIN_ID_MAP.Optimism]: 'ETH',
-  [CHAIN_ID_MAP.Scroll]: 'ETH'
+  [CHAIN_ID_MAP.Scroll]: 'ETH',
+  [CHAIN_ID_MAP.Astar]: 'ASTR'
 }
 
 const SCAN_MAP: Record<number, string> = {
@@ -46,7 +48,8 @@ const SCAN_MAP: Record<number, string> = {
   [CHAIN_ID_MAP.Base]: 'https://basescan.org/',
   [CHAIN_ID_MAP.BSC]: 'https://bscscan.com/',
   [CHAIN_ID_MAP.Optimism]: 'https://optimistic.etherscan.io/',
-  [CHAIN_ID_MAP.Scroll]: 'https://scrollscan.com'
+  [CHAIN_ID_MAP.Scroll]: 'https://scrollscan.com',
+  [CHAIN_ID_MAP.Astar]: 'https://astar.subscan.io'
 }
 
 const CHAINS_MINT_TOOLTIPS: Record<number, string> = {
@@ -55,16 +58,18 @@ const CHAINS_MINT_TOOLTIPS: Record<number, string> = {
   [CHAIN_ID_MAP.Base]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
   [CHAIN_ID_MAP.BSC]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
   [CHAIN_ID_MAP.Optimism]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
-  [CHAIN_ID_MAP.Scroll]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"'
+  [CHAIN_ID_MAP.Scroll]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
+  [CHAIN_ID_MAP.Astar]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"'
 }
 
 const contractAddresses = contractMap(false)
-const CONTRACT_ADDRESS_MAINNET = contractAddresses[1] as ContractAddresses
-const CONTRACT_ADDRESS_POLYGON = contractAddresses[137] as ContractAddresses
-const CONTRACT_ADDRESS_BASE = contractAddresses[8453] as ContractAddresses
-const CONTRACT_ADDRESS_OP = contractAddresses[10] as ContractAddresses
-const CONTRACT_ADDRESS_BSC = contractAddresses[56] as ContractAddresses
-const CONTRACT_ADDRESS_SCROLL = contractAddresses[534352] as ContractAddresses
+const CONTRACT_ADDRESS_MAINNET = contractAddresses[ChainIDs.Ethereum] as ContractAddresses
+const CONTRACT_ADDRESS_POLYGON = contractAddresses[ChainIDs.Polygon] as ContractAddresses
+const CONTRACT_ADDRESS_BASE = contractAddresses[ChainIDs.Base] as ContractAddresses
+const CONTRACT_ADDRESS_OP = contractAddresses[ChainIDs.OP] as ContractAddresses
+const CONTRACT_ADDRESS_BSC = contractAddresses[ChainIDs.BSC] as ContractAddresses
+const CONTRACT_ADDRESS_SCROLL = contractAddresses[ChainIDs.Scroll] as ContractAddresses
+const CONTRACT_ADDRESS_ASTAR = contractAddresses[ChainIDs.Astar] as ContractAddresses
 
 const CONTRACT_MAP: Record<number, ContractAddresses> = {
   [CHAIN_ID_MAP.Ethereum]: CONTRACT_ADDRESS_MAINNET,
@@ -72,7 +77,8 @@ const CONTRACT_MAP: Record<number, ContractAddresses> = {
   [CHAIN_ID_MAP.Base]: CONTRACT_ADDRESS_BASE,
   [CHAIN_ID_MAP.BSC]: CONTRACT_ADDRESS_BSC,
   [CHAIN_ID_MAP.Optimism]: CONTRACT_ADDRESS_OP,
-  [CHAIN_ID_MAP.Scroll]: CONTRACT_ADDRESS_SCROLL
+  [CHAIN_ID_MAP.Scroll]: CONTRACT_ADDRESS_SCROLL,
+  [CHAIN_ID_MAP.Astar]: CONTRACT_ADDRESS_ASTAR,
 }
 
 const config =  {
