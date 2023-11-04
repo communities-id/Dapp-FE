@@ -51,12 +51,14 @@ export default function ConfigViewer() {
           <option value={ChainIDs.OP}>OP</option>
           <option value={ChainIDs.BSC}>BSC</option>
           <option value={ChainIDs.Scroll}>Scroll</option>
+          <option value={ChainIDs.Astar}>Astar</option>
           <option value={TestnetChainIDs.Goerli}>Goerli</option>
           <option value={TestnetChainIDs["Polygon Mumbai"]}>Polygon Mumbai</option>
           <option value={TestnetChainIDs["Base Goerli Testnet"]}>Base Goerli Testnet</option>
           <option value={TestnetChainIDs["Optimism Goerli Testnet"]}>Optimism Goerli Testnet</option>
           <option value={TestnetChainIDs["BNB Smart Chain Testnet"]}>BNB Smart Chain Testnet</option>
           <option value={TestnetChainIDs["Scroll Sepolia Testnet"]}>Scroll Sepolia Testnet</option>
+          <option value={TestnetChainIDs["Shibuya Testnet"]}>Shibuya Testnet</option>
         </select>
       </div>
       <div className="form-control">
