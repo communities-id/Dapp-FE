@@ -5,7 +5,7 @@ import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
 // const alchemyNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
-const constantsNetworksWl = [TestnetChainIDs['Shibuya Testnet']]
+const constantsNetworksWl = [ChainIDs.Astar, TestnetChainIDs['Shibuya Testnet']]
 
 export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', Record<TotalSupportedChainIDs, string[]>> => {
   const { alchemy, quickNode } = JSON.parse(rpcKeys) as RPCKeys
@@ -18,6 +18,7 @@ export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', R
 const { alchemy: alchemyKeys, quickNode: quickNodeKeys } = parseRPCKeys(process.env.NEXT_PUBLIC_RPC_KEYS ?? '{}')
 
 export const constantsHosts: Partial<Record<TotalSupportedChainIDs, string[]>> = {
+  [ChainIDs.Astar]: ['https://evm.astar.network'],
   [TestnetChainIDs['Shibuya Testnet']]: ['https://evm.shibuya.astar.network'], // 'https://shibuya.public.blastapi.io', 'https://shibuya-rpc.dwellir.com'
 }
 
@@ -167,7 +168,8 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
       RPCUrl: getQuickNodeHost(ChainIDs.Scroll, quickNode[ChainIDs.Scroll]),
     },
     Astar: {
-      RPCUrl: getAlchemyHost(ChainIDs.Astar, alchemy[ChainIDs.Astar]),
+      // RPCUrl: getAlchemyHost(ChainIDs.Astar, alchemy[ChainIDs.Astar]),
+      RPCUrl: getConstantsHost(ChainIDs.Astar),
     },
     arbitrum: {
       RPCUrl: 'https://arb1.arbitrum.io/rpc'

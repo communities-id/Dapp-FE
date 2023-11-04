@@ -83,8 +83,8 @@ export const Astar = generateChainConfig(ChainIDs.Astar, 'Astar', {
     wss: ' wss://rpc.astar.network'
   },
   scan: {
-    name: 'Blockscout',
-    url: 'https://blockscout.com/shibuya'
+    name: 'AstarScan',
+    url: 'https://astar.subscan.io/'
   }
 })
 
