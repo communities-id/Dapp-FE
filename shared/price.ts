@@ -1,7 +1,8 @@
 import Moralis from 'moralis';
 import { EvmChain, EvmChainish } from '@moralisweb3/common-evm-utils'
 
-import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
+import { SupportedChainIDs, SupportedTestnetChainIDs, TotalSupportedChainIDs } from '@/types/chain'
+import { ChainIDs, TestnetChainIDs } from '@communitiesid/id';
 
 export const getTokenPrice = async (tokenAddress: string, chainId: number) => {
   try {
@@ -10,18 +11,21 @@ export const getTokenPrice = async (tokenAddress: string, chainId: number) => {
     });
   } catch(e) {}
 
-  const chainMap: Partial<Record<SupportedChainIDs | SupportedTestnetChainIDs, EvmChainish>> = {
-    1: EvmChain.ETHEREUM,
-    137: EvmChain.POLYGON,
-    56: EvmChain.BSC,
-    8453: 8453,
-    10: EvmChain.OPTIMISM,
-    5: EvmChain.GOERLI,
-    80001: EvmChain.MUMBAI,
-    97: EvmChain.BSC_TESTNET,
-    84531: 84531,
-    420: 420,
-    534351: 534351 // to do
+  const chainMap: Partial<Record<TotalSupportedChainIDs, EvmChainish>> = {
+    [ChainIDs.Ethereum]: EvmChain.ETHEREUM,
+    [ChainIDs.OP]: EvmChain.OPTIMISM,
+    [ChainIDs.BSC]: EvmChain.BSC,
+    [ChainIDs.Polygon]: EvmChain.POLYGON,
+    [ChainIDs.Base]: 8453,
+    [ChainIDs.Scroll]: 534352,
+    [ChainIDs.Astar]: 592,
+    [TestnetChainIDs.Goerli]: EvmChain.GOERLI,
+    [TestnetChainIDs["Optimism Goerli Testnet"]]: 420,
+    [TestnetChainIDs["BNB Smart Chain Testnet"]]: EvmChain.BSC_TESTNET,
+    [TestnetChainIDs["Polygon Mumbai"]]: EvmChain.MUMBAI,
+    [TestnetChainIDs["Base Goerli Testnet"]]: 84531,
+    [TestnetChainIDs["Scroll Sepolia Testnet"]]: 534351,
+    [TestnetChainIDs['Shibuya Testnet']]: 81,
   }
 
   if(!chainMap[chainId as SupportedChainIDs | SupportedTestnetChainIDs]) {

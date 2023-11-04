@@ -3,7 +3,8 @@ import { prisma } from '@/shared/prisma'
 import { batchGetDefaultCoinPrice } from '@/shared/contract'
 import { BigNumber } from 'ethers'
 
-import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
+import { SupportedChainIDs, SupportedTestnetChainIDs, TotalSupportedChainIDs } from '@/types/chain'
+import { ChainIDs, TestnetChainIDs } from '@communitiesid/id'
 
 
 async function getTVL() {
@@ -14,26 +15,28 @@ async function getTVL() {
   })
   
 
-  const price = await batchGetDefaultCoinPrice(['ETH', 'MATIC', 'BNB'])
+  const price = await batchGetDefaultCoinPrice(['ETH', 'MATIC', 'BNB', 'ASTR'])
   const ethPrice = price.ETH
   const maticPrice = price.MATIC
   const bnbPrice = price.BNB
+  const astarPrice = price.ASTR
 
   // to do: multiple chain
-  const defaultCoinPrice: Record<SupportedChainIDs | SupportedTestnetChainIDs, number> = {
-    1: ethPrice,
-    10: ethPrice,
-    56: bnbPrice,
-    137: maticPrice,
-    8453: ethPrice,
-    534352: ethPrice,
-    
-    5: ethPrice,
-    80001: maticPrice,
-    97: bnbPrice,
-    84531: ethPrice,
-    420: ethPrice,
-    534351: ethPrice
+  const defaultCoinPrice: Record<TotalSupportedChainIDs, number> = {
+    [ChainIDs.Ethereum]: ethPrice,
+    [ChainIDs.OP]: ethPrice,
+    [ChainIDs.BSC]: bnbPrice,
+    [ChainIDs.Polygon]: maticPrice,
+    [ChainIDs.Base]: ethPrice,
+    [ChainIDs.Scroll]: ethPrice,
+    [ChainIDs.Astar]: astarPrice,
+    [TestnetChainIDs.Goerli]: ethPrice,
+    [TestnetChainIDs["Optimism Goerli Testnet"]]: ethPrice,
+    [TestnetChainIDs["BNB Smart Chain Testnet"]]: bnbPrice,
+    [TestnetChainIDs["Polygon Mumbai"]]: maticPrice,
+    [TestnetChainIDs["Base Goerli Testnet"]]: ethPrice,
+    [TestnetChainIDs["Scroll Sepolia Testnet"]]: ethPrice,
+    [TestnetChainIDs['Shibuya Testnet']]: astarPrice,
   }
 
   let sum = 0

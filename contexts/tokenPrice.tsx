@@ -1,21 +1,24 @@
 import { batchGetDefaultCoinPrice, getDefaultCoinPrice } from '@/shared/contract'
 import { useState, useContext, createContext, ReactNode, useEffect, useRef, useMemo } from 'react'
 
-import { SupportedChainIDs, SupportedTestnetChainIDs } from '@/types/chain'
+import { SupportedChainIDs, SupportedTestnetChainIDs, TotalSupportedChainIDs } from '@/types/chain'
+import { ChainIDs, TestnetChainIDs } from '@communitiesid/id'
 
-const Context = createContext<Record<SupportedChainIDs | SupportedTestnetChainIDs, number>>({
-  1: 0,
-  137: 0,
-  56: 0,
-  8453: 0,
-  10: 0,
-  534352: 0,
-  5: 0,
-  80001: 0,
-  97: 0,
-  84531: 0,
-  420: 0,
-  534351: 0,
+const Context = createContext<Record<TotalSupportedChainIDs, number>>({
+  [ChainIDs.Ethereum]: 0,
+  [ChainIDs.OP]: 0,
+  [ChainIDs.BSC]: 0,
+  [ChainIDs.Polygon]: 0,
+  [ChainIDs.Base]: 0,
+  [ChainIDs.Scroll]: 0,
+  [ChainIDs.Astar]: 0,
+  [TestnetChainIDs.Goerli]: 0,
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: 0,
+  [TestnetChainIDs["BNB Smart Chain Testnet"]]: 0,
+  [TestnetChainIDs["Polygon Mumbai"]]: 0,
+  [TestnetChainIDs["Base Goerli Testnet"]]: 0,
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 0,
+  [TestnetChainIDs['Shibuya Testnet']]: 0,
 })
 
 export function TokenPriceProvider({ children }: { children: ReactNode }) {
@@ -23,14 +26,16 @@ export function TokenPriceProvider({ children }: { children: ReactNode }) {
   const [ETH, setETH] = useState(1790)
   const [MATIC, setMATIC] = useState(0.6)
   const [BNB, setBNB] = useState(225)
+  const [ASTR, setASTR] = useState(0.1)
 
   useEffect(() => {
     async function getTokenPrice() {
       try {
-        const price = await batchGetDefaultCoinPrice(['ETH', 'MATIC', 'BNB'])
+        const price = await batchGetDefaultCoinPrice(['ETH', 'MATIC', 'BNB', 'ASTR'])
         setETH(price.ETH)
         setMATIC(price.MATIC)
         setBNB(price.BNB)
+        setASTR(price.ASTR)
       } catch (e) {
         console.log(e)
       }
@@ -40,18 +45,20 @@ export function TokenPriceProvider({ children }: { children: ReactNode }) {
 
   return (
     <Context.Provider value={{
-      1: ETH,
-      137: MATIC,
-      56: BNB,
-      8453: ETH,
-      10: ETH,
-      534352: ETH,
-      5: ETH,
-      80001: MATIC,
-      97: BNB,
-      84531: ETH,
-      420: ETH,
-      534351: ETH,
+      [ChainIDs.Ethereum]: ETH,
+      [ChainIDs.OP]: ETH,
+      [ChainIDs.BSC]: BNB,
+      [ChainIDs.Polygon]: MATIC,
+      [ChainIDs.Base]: ETH,
+      [ChainIDs.Scroll]: ETH,
+      [ChainIDs.Astar]: ASTR,
+      [TestnetChainIDs.Goerli]: ETH,
+      [TestnetChainIDs["Optimism Goerli Testnet"]]: 0,
+      [TestnetChainIDs["BNB Smart Chain Testnet"]]: BNB,
+      [TestnetChainIDs["Polygon Mumbai"]]: MATIC,
+      [TestnetChainIDs["Base Goerli Testnet"]]: ETH,
+      [TestnetChainIDs["Scroll Sepolia Testnet"]]: ETH,
+      [TestnetChainIDs['Shibuya Testnet']]: ASTR,
     }}>
       {children}
     </Context.Provider>
