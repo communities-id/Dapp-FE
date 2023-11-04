@@ -3,6 +3,7 @@ import { CHAIN_ID, CONTRACT_MAP, MAIN_CHAIN_ID } from '@/shared/constant'
 import { TotalSupportedChainIDs } from '@/types/chain'
 import { ContractVerison } from '@/types/contract'
 import { CommunityInfo } from '@/types'
+import { ChainIDs, TestnetChainIDs } from '@communitiesid/id'
 
 export const sleep = (ms: number) => {
   return new Promise((resolve) => {
@@ -12,34 +13,37 @@ export const sleep = (ms: number) => {
 
 // to do: Does not support scroll mainnet chain NFT assets in OpenSea
 const chainMap: Record<TotalSupportedChainIDs, string> = {
-  1: 'ethereum',
-  10: 'optimism',
-  56: 'bsc',
-  137: 'matic',
-  8453: 'base',
-  // 534352: 'scroll',
-  534352: '',
-  5: 'goerli',
-  97: 'bsc-testnet',
-  420: 'optimism-goerli',
-  80001: 'mumbai',
-  84531: 'base-goerli',
-  534351: ''
+  [ChainIDs.Ethereum]: 'ethereum',
+  [ChainIDs.OP]: 'optimism',
+  [ChainIDs.BSC]: 'bsc',
+  [ChainIDs.Polygon]: 'matic',
+  [ChainIDs.Base]: 'base',
+  [ChainIDs.Scroll]: '',
+  [ChainIDs.Astar]: '',
+  [TestnetChainIDs.Goerli]: 'goerli',
+  [TestnetChainIDs['BNB Smart Chain Testnet']]: 'bsc-testnet',
+  [TestnetChainIDs['Optimism Goerli Testnet']]: 'optimism-goerli',
+  [TestnetChainIDs['Polygon Mumbai']]: 'mumbai',
+  [TestnetChainIDs['Base Goerli Testnet']]: 'base-goerli',
+  [TestnetChainIDs['Scroll Sepolia Testnet']]: '',
+  [TestnetChainIDs['Shibuya Testnet']]: '',
 }
 
 const openseaHosts: Record<TotalSupportedChainIDs, string> = {
-  1: 'opensea.io',
-  10: 'opensea.io',
-  137: 'opensea.io',
-  56: 'opensea.io',
-  8453: 'opensea.io',
-  534352: 'opensea.io',
-  5: 'testnets.opensea.io',
-  97: 'testnets.opensea.io',
-  420: 'testnets.opensea.io',
-  80001: 'testnets.opensea.io',
-  84531: 'testnets.opensea.io',
-  534351: 'testnets.opensea.io'
+  [ChainIDs.Ethereum]: 'opensea.io',
+  [ChainIDs.OP]: 'opensea.io',
+  [ChainIDs.BSC]: 'opensea.io',
+  [ChainIDs.Polygon]: 'opensea.io',
+  [ChainIDs.Base]: 'opensea.io',
+  [ChainIDs.Scroll]: 'opensea.io',
+  [ChainIDs.Astar]: '',
+  [TestnetChainIDs.Goerli]: 'testnets.opensea.io',
+  [TestnetChainIDs['BNB Smart Chain Testnet']]: 'testnets.opensea.io',
+  [TestnetChainIDs['Optimism Goerli Testnet']]: 'testnets.opensea.io',
+  [TestnetChainIDs['Polygon Mumbai']]: 'testnets.opensea.io',
+  [TestnetChainIDs['Base Goerli Testnet']]: 'testnets.opensea.io',
+  [TestnetChainIDs['Scroll Sepolia Testnet']]: 'testnets.opensea.io',
+  [TestnetChainIDs['Shibuya Testnet']]: '',
 }
 
 const getOpenseaHost = () => {

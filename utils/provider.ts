@@ -5,6 +5,7 @@ import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
 // const alchemyNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
+const constantsNetworksWl = [ChainIDs.Astar, TestnetChainIDs['Shibuya Testnet']]
 
 export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', Record<TotalSupportedChainIDs, string[]>> => {
   const { alchemy, quickNode } = JSON.parse(rpcKeys) as RPCKeys
@@ -16,19 +17,26 @@ export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', R
 
 const { alchemy: alchemyKeys, quickNode: quickNodeKeys } = parseRPCKeys(process.env.NEXT_PUBLIC_RPC_KEYS ?? '{}')
 
+export const constantsHosts: Partial<Record<TotalSupportedChainIDs, string[]>> = {
+  [ChainIDs.Astar]: ['https://evm.astar.network'],
+  [TestnetChainIDs['Shibuya Testnet']]: ['https://evm.shibuya.astar.network'], // 'https://shibuya.public.blastapi.io', 'https://shibuya-rpc.dwellir.com'
+}
+
 export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
-  [ChainIDs.Ethereum]: 'eth-mainnet',
-  [ChainIDs.OP]: 'opt-mainnet',
+  [ChainIDs.Ethereum]: '',
+  [ChainIDs.OP]: '',
   [ChainIDs.BSC]: 'white-thrilling-daylight.bsc',
-  [ChainIDs.Polygon]: 'polygon-mainnet',
-  [ChainIDs.Base]: 'base-mainnet',
+  [ChainIDs.Polygon]: '',
+  [ChainIDs.Base]: '',
   [ChainIDs.Scroll]: 'omniscient-dimensional-shadow.scroll-mainnet',
-  [TestnetChainIDs.Goerli]: 'eth-goerli',
-  [TestnetChainIDs["Optimism Goerli Testnet"]]: 'opt-goerli',
+  [ChainIDs.Astar]: '',
+  [TestnetChainIDs.Goerli]: '',
+  [TestnetChainIDs["Optimism Goerli Testnet"]]: '',
   [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'necessary-alpha-owl.bsc-testnet',
-  [TestnetChainIDs["Polygon Mumbai"]]: 'polygon-mumbai',
-  [TestnetChainIDs["Base Goerli Testnet"]]: 'base-goerli',
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'wild-long-film.scroll-testnet'
+  [TestnetChainIDs["Polygon Mumbai"]]: '',
+  [TestnetChainIDs["Base Goerli Testnet"]]: '',
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'wild-long-film.scroll-testnet',
+  [TestnetChainIDs['Shibuya Testnet']]: '',
 }
 
 export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
@@ -38,12 +46,14 @@ export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
   [ChainIDs.Polygon]: 'polygon-mainnet',
   [ChainIDs.Base]: 'base-mainnet',
   [ChainIDs.Scroll]: '',
+  [ChainIDs.Astar]: 'astar-mainnet',
   [TestnetChainIDs.Goerli]: 'eth-goerli',
   [TestnetChainIDs["Optimism Goerli Testnet"]]: 'opt-goerli',
   [TestnetChainIDs["BNB Smart Chain Testnet"]]: 'bsc-testnet',
   [TestnetChainIDs["Polygon Mumbai"]]: 'polygon-mumbai',
   [TestnetChainIDs["Base Goerli Testnet"]]: 'base-goerli',
-  [TestnetChainIDs["Scroll Sepolia Testnet"]]: ''
+  [TestnetChainIDs["Scroll Sepolia Testnet"]]: '',
+  [TestnetChainIDs['Shibuya Testnet']]: '',
 }
 
 export const getAlchemyKey = (network: number) => {
@@ -76,6 +86,15 @@ export const getQuickNodeProvider = (network: number) => {
   return new ethers.providers.StaticJsonRpcProvider(getQuickNodeHost(network as TotalSupportedChainIDs), network)
 }
 
+export const getConstantsHost = (network: number) => {
+  const hosts = constantsHosts[network as TotalSupportedChainIDs] ?? []
+  return hosts[Math.floor(Math.random() * hosts.length)] ?? ''
+}
+
+export const getConstantsProvider = (network: number) => {
+  return new ethers.providers.StaticJsonRpcProvider(getConstantsHost(network as TotalSupportedChainIDs), network)
+}
+
 // export const getblockHost = (network: number) => {
 //   return 'https://bsc.getblock.io/1a5ea93b-d342-48bd-85c2-754cdae87a19/testnet/'
 // }
@@ -88,6 +107,8 @@ export const createProvider = (network: number) => {
     
     if (quickNodeNetworksWl.includes(network)) {
       providers.set(network, getQuickNodeProvider(network))
+    } else if (constantsNetworksWl.includes(network)) {
+      providers.set(network, getConstantsProvider(network))
     } else {
       // alcemy provider
       providers.set(network, getAlchemyProvider(network))
@@ -123,6 +144,9 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
     'Scroll Sepolia Testnet': {
       RPCUrl: getQuickNodeHost(TestnetChainIDs['Scroll Sepolia Testnet'], quickNode[TestnetChainIDs['Scroll Sepolia Testnet']]),
     },
+    'Shibuya Testnet': {
+      RPCUrl: getConstantsHost(TestnetChainIDs['Shibuya Testnet']),
+    }
   } : {
     openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY ?? '',
     Ethereum: {
@@ -142,6 +166,10 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
     },
     Scroll: {
       RPCUrl: getQuickNodeHost(ChainIDs.Scroll, quickNode[ChainIDs.Scroll]),
+    },
+    Astar: {
+      // RPCUrl: getAlchemyHost(ChainIDs.Astar, alchemy[ChainIDs.Astar]),
+      RPCUrl: getConstantsHost(ChainIDs.Astar),
     },
     arbitrum: {
       RPCUrl: 'https://arb1.arbitrum.io/rpc'

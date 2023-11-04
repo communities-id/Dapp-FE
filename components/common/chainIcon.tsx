@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import EthereumSvg from '~@/icons/chain/ethereum.svg'
 
 import { TotalSupportedChainIDs } from '@/types/chain'
+import { ChainIDs, TestnetChainIDs } from '@communitiesid/id'
 
 interface Props {
   size?: number
@@ -37,20 +38,25 @@ const ChainIcon: FC<Props> = ({ size = 24, wrapperSize = 0, colorMode, chainId, 
   const ScrollIcon = (
     <img alt='scroll chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/scroll.svg' />
   )
+  const AstarIcon = (
+    <img alt='astar chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/astar.svg' />
+  )
   const chainIcons: Record<TotalSupportedChainIDs, any> = useMemo(() => {
     return {
-      1: EthereumIcon,
-      10: OPIcon,
-      56: BSCIcon,
-      137: PolygonIcon,
-      8453: BaseIcon,
-      534352: ScrollIcon,
-      5: EthereumIcon,
-      80001: PolygonIcon,
-      84531: BaseIcon,
-      420: OPIcon,
-      97: BSCIcon,
-      534351: ScrollIcon,
+      [ChainIDs.Ethereum]: EthereumIcon,
+      [ChainIDs.OP]: OPIcon,
+      [ChainIDs.BSC]: BSCIcon,
+      [ChainIDs.Polygon]: PolygonIcon,
+      [ChainIDs.Base]: BaseIcon,
+      [ChainIDs.Scroll]: ScrollIcon,
+      [ChainIDs.Astar]: AstarIcon,
+      [TestnetChainIDs.Goerli]: EthereumIcon,
+      [TestnetChainIDs['Polygon Mumbai']]: PolygonIcon,
+      [TestnetChainIDs['Base Goerli Testnet']]: BaseIcon,
+      [TestnetChainIDs['Optimism Goerli Testnet']]: OPIcon,
+      [TestnetChainIDs['BNB Smart Chain Testnet']]: BSCIcon,
+      [TestnetChainIDs['Scroll Sepolia Testnet']]: ScrollIcon,
+      [TestnetChainIDs['Shibuya Testnet']]: AstarIcon,
     }
   }, [chainId, size, className])
   return chainIcons[chainId as TotalSupportedChainIDs] || null

@@ -53,7 +53,8 @@ export const getPrivateWritableContract = (address: string, ABIKey: keyof typeof
 
 export const getTotalBlock = async (chainId: number = MAIN_CHAIN_ID) => {
   const provider = createProvider(chainId)
-  return provider.getBlockNumber()
+  const blockNumber = await provider.getBlockNumber()
+  return blockNumber - 1
 };
 
 export const getCommunitiesEvent = async (chainId: number, from: number, to?: number): Promise<Event[]> => {

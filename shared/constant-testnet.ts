@@ -18,6 +18,7 @@ const CHAIN_ID_MAP: Record<string, number> = {
   'BNB Smart Chain Testnet': TestnetChainIDs['BNB Smart Chain Testnet'],
   'Optimism Goerli Testnet': TestnetChainIDs['Optimism Goerli Testnet'],
   'Scroll Sepolia Testnet': TestnetChainIDs['Scroll Sepolia Testnet'],
+  'Shibuya Testnet': TestnetChainIDs['Shibuya Testnet']
 }
 
 // 跨链 链id
@@ -37,7 +38,8 @@ const DEFAULT_TOKEN_SYMBOL: Record<number, string> = {
   [CHAIN_ID_MAP['Base Goerli Testnet']]: 'ETH',
   [CHAIN_ID_MAP['BNB Smart Chain Testnet']]: 'tBNB',
   [CHAIN_ID_MAP['Optimism Goerli Testnet']]: 'ETH',
-  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: 'ETH'
+  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: 'ETH',
+  [CHAIN_ID_MAP['Shibuya Testnet']]: 'SBY'
 }
 
 const SCAN_MAP: Record<number, string> = {
@@ -46,7 +48,8 @@ const SCAN_MAP: Record<number, string> = {
   [CHAIN_ID_MAP['Base Goerli Testnet']]: 'https://goerli.basescan.org/',
   [CHAIN_ID_MAP['BNB Smart Chain Testnet']]: 'https://testnet.bscscan.com/',
   [CHAIN_ID_MAP['Optimism Goerli Testnet']]: 'https://goerli-optimism.etherscan.io/',
-  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: 'https://sepolia.scrollscan.dev/'
+  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: 'https://sepolia.scrollscan.dev/',
+  [CHAIN_ID_MAP['Shibuya Testnet']]: 'https://blockscout.com/shibuya/',
 }
 
 const CHAINS_MINT_TOOLTIPS: Record<number, string> = {
@@ -55,17 +58,19 @@ const CHAINS_MINT_TOOLTIPS: Record<number, string> = {
   [CHAIN_ID_MAP['Base Goerli Testnet']]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
   [CHAIN_ID_MAP['BNB Smart Chain Testnet']]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
   [CHAIN_ID_MAP['Optimism Goerli Testnet']]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
-  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"'
+  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"',
+  [CHAIN_ID_MAP['Shibuya Testnet']]: 'Communities ID is an omnichain protocol.\nDeploying on this network requires payment of cross-chain protocol fees.\nCommunities ID does not profit from cross-chain protocol fees!"'
 }
 
 const contractAddresses = contractMap(true)
 
-const CONTRACT_ADDRESS_GOERLI = contractAddresses[5] as ContractAddresses
-const CONTRACT_ADDRESS_MUMBAI = contractAddresses[80001] as ContractAddresses
-const CONTRACT_ADDRESS_BASE_GOERLI = contractAddresses[84531] as ContractAddresses
-const CONTRACT_ADDRESS_OP_GOERLI = contractAddresses[420] as ContractAddresses
-const CONTRACT_ADDRESS_BSC_TESTNET = contractAddresses[97] as ContractAddresses
-const CONTRACT_ADDRESS_SCROLL_SEPOLIA_TESTNET = contractAddresses[534351] as ContractAddresses
+const CONTRACT_ADDRESS_GOERLI = contractAddresses[TestnetChainIDs.Goerli] as ContractAddresses
+const CONTRACT_ADDRESS_MUMBAI = contractAddresses[TestnetChainIDs["Polygon Mumbai"]] as ContractAddresses
+const CONTRACT_ADDRESS_BASE_GOERLI = contractAddresses[TestnetChainIDs["Base Goerli Testnet"]] as ContractAddresses
+const CONTRACT_ADDRESS_OP_GOERLI = contractAddresses[TestnetChainIDs["Optimism Goerli Testnet"]] as ContractAddresses
+const CONTRACT_ADDRESS_BSC_TESTNET = contractAddresses[TestnetChainIDs["BNB Smart Chain Testnet"]] as ContractAddresses
+const CONTRACT_ADDRESS_SCROLL_SEPOLIA_TESTNET = contractAddresses[TestnetChainIDs["Scroll Sepolia Testnet"]] as ContractAddresses
+const CONtract_ADDRESS_SHIBUYA_TESTNET = contractAddresses[TestnetChainIDs["Shibuya Testnet"]] as ContractAddresses
 
 const CONTRACT_MAP: Record<number, ContractAddresses> = {
   [CHAIN_ID_MAP.Goerli]: CONTRACT_ADDRESS_GOERLI,
@@ -73,7 +78,8 @@ const CONTRACT_MAP: Record<number, ContractAddresses> = {
   [CHAIN_ID_MAP['Base Goerli Testnet']]: CONTRACT_ADDRESS_BASE_GOERLI,
   [CHAIN_ID_MAP['Optimism Goerli Testnet']]: CONTRACT_ADDRESS_OP_GOERLI,
   [CHAIN_ID_MAP['BNB Smart Chain Testnet']]: CONTRACT_ADDRESS_BSC_TESTNET,
-  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: CONTRACT_ADDRESS_SCROLL_SEPOLIA_TESTNET
+  [CHAIN_ID_MAP['Scroll Sepolia Testnet']]: CONTRACT_ADDRESS_SCROLL_SEPOLIA_TESTNET,
+  [CHAIN_ID_MAP['Shibuya Testnet']]: CONtract_ADDRESS_SHIBUYA_TESTNET
 }
 
 const config = {
