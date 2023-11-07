@@ -5,7 +5,7 @@ import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
 // const alchemyNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
-const constantsNetworksWl = [ChainIDs.Astar, TestnetChainIDs['Shibuya Testnet']]
+const constantsNetworksWl = [TestnetChainIDs['Shibuya Testnet']]
 
 export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', Record<TotalSupportedChainIDs, string[]>> => {
   const { alchemy, quickNode } = JSON.parse(rpcKeys) as RPCKeys
