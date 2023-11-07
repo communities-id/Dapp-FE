@@ -18,7 +18,6 @@ export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', R
 const { alchemy: alchemyKeys, quickNode: quickNodeKeys } = parseRPCKeys(process.env.NEXT_PUBLIC_RPC_KEYS ?? '{}')
 
 export const constantsHosts: Partial<Record<TotalSupportedChainIDs, string[]>> = {
-  [ChainIDs.Astar]: ['https://evm.astar.network'],
   [TestnetChainIDs['Shibuya Testnet']]: ['https://evm.shibuya.astar.network'], // 'https://shibuya.public.blastapi.io', 'https://shibuya-rpc.dwellir.com'
 }
 
