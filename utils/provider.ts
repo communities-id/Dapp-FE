@@ -110,7 +110,6 @@ export const createProvider = (network: number) => {
       providers.set(network, getConstantsProvider(network))
     } else {
       // alcemy provider
-      console.log(getAlchemyProvider(network))
       providers.set(network, getAlchemyProvider(network))
     }
 
