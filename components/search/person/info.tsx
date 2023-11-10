@@ -29,7 +29,7 @@ interface Props {
 const PersonInfo: FC<Props> = ({}) => {
 
   const { account } = useWallet()
-  const { address, memberInfoSet, ownerMemberInfo } = useDetails()
+  const { address, memberInfoSet, memberInfo, ownerMemberInfo } = useDetails()
   const { switchNetworkAsync } = useSwitchNetwork()
 
   const [tgIDLoading, setTgIDLoading] = useState(true)
@@ -41,6 +41,7 @@ const PersonInfo: FC<Props> = ({}) => {
     telegram: false
   })
   const isAddressOwner = (account || '').toLowerCase() === address.toLowerCase()/* && process.env.NEXT_PUBLIC_IS_TESTNET === 'true' */
+  const personInfo = isAddressOwner ? ownerMemberInfo : memberInfo
   const tgConnectLink = `/address/${address}/connect`
 
   const memberPopoverMenus: PopoverMenuItem[] = []
@@ -71,8 +72,7 @@ const PersonInfo: FC<Props> = ({}) => {
   }
 
   const socialLinks = useMemo(() => {
-    if (!ownerMemberInfo) return []
-    const { tokenUri } = ownerMemberInfo
+    const { tokenUri } = personInfo
     const { external_url } = tokenUri ?? {}
     const { twitter, telegram, discord } = tokenUri?.attr ?? {}
 
@@ -102,7 +102,7 @@ const PersonInfo: FC<Props> = ({}) => {
         link: external_url
       },
     ].filter(item => !!item.link)
-  }, [ownerMemberInfo])
+  }, [personInfo])
 
   const handleSelectMenu = async (menu: PopoverMenuItem) => {
     // if (shouldSwitchNetwork && menu.id !== 'telegram') {
@@ -128,10 +128,10 @@ const PersonInfo: FC<Props> = ({}) => {
 
   return (
     <div className='w-full pb-[20px]'>
-      <Banner banner={ownerMemberInfo?.tokenUri?.brand_image} />
+      <Banner banner={personInfo?.tokenUri?.brand_image} />
       <div className='w-full px-5'>
         <div className='w-full relative pt-[40px]'>
-          <AvatarCard outline size={100} className='absolute top-[-80px] left-5 rounded-full' src={ownerMemberInfo.tokenUri?.image}/>
+          <AvatarCard outline size={100} className='absolute top-[-80px] left-5 rounded-full' src={personInfo.tokenUri?.image}/>
           <div className="w-full flex flex-col">
             <div className='w-full flex items-center justify-between'>
               <div className='flex-1 flex items-center gap-4'>
@@ -169,8 +169,8 @@ const PersonInfo: FC<Props> = ({}) => {
               memberInfoSet.isValid ? (
                 <>
                   {
-                    ownerMemberInfo?.tokenUri?.description && (
-                      <ExpandableDescription className='mt-[12px] text-searchdesc'>{ ownerMemberInfo?.tokenUri?.description }</ExpandableDescription>
+                    personInfo?.tokenUri?.description && (
+                      <ExpandableDescription className='mt-[12px] text-searchdesc'>{ personInfo?.tokenUri?.description }</ExpandableDescription>
                     )
                   }
                 </>

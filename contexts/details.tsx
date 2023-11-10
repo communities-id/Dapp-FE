@@ -240,14 +240,24 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     return data
   }
 
-  const loadOwnerMemberInfo = async (account: string) => {
-    const did = await getPrimaryMember(account)
+  // const loadOwnerMemberInfo = async (account: string) => {
+  //   const did = await getPrimaryMember(account)
+  //   if (!did) return
+  //   const { type, community, member } = execSearch(did)
+  //   if (type === 'unknown') return
+  //   const ownerDIDCommunityInfo = await searchCommunity(community)
+  //   const ownerDIDMemberInfo = await searchMember(ownerDIDCommunityInfo, community, member)
+  //   setOwnerMemberInfo(ownerDIDMemberInfo)
+  // }
+
+  const loadAddressInfo = async (address: string) => {
+    const did = await getPrimaryMember(address)
     if (!did) return
     const { type, community, member } = execSearch(did)
     if (type === 'unknown') return
-    const ownerDIDCommunityInfo = await searchCommunity(community)
-    const ownerDIDMemberInfo = await searchMember(ownerDIDCommunityInfo, community, member)
-    setOwnerMemberInfo(ownerDIDMemberInfo)
+    const DIDCommunityInfo = await searchCommunity(community)
+    const DIDMemberInfo = await searchMember(DIDCommunityInfo, community, member)
+    return DIDMemberInfo
   }
 
   // Get the did of the address by keywords
@@ -348,7 +358,9 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
 
   useEffect(() => {
     if (!account) return
-    loadOwnerMemberInfo(account)
+    loadAddressInfo(account).then(memberInfo => {
+      memberInfo && setOwnerMemberInfo(memberInfo)
+    })
   }, [account])
 
   return (
