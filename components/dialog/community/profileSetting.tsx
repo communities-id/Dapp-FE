@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import useApi from '@/shared/useApi'
+import { updateCommunity } from '@/shared/apis'
 
 import Dialog from '@/components/common/dialog'
 import CommunityProfileSetting, { CommunityProfileLabels } from '@/components/settings/community/profile'
@@ -11,7 +12,6 @@ import { formatContractError, isColor } from '@/shared/helper'
 import { DEFAULT_AVATAR } from '@/shared/constant'
 
 import TipIcon from '~@/icons/tip.svg'
-import { updateCommunity } from '@/shared/apis'
 
 interface Props {
   open: boolean
@@ -113,7 +113,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
       return
     }
     if (!needUpdate()) {
-      message({ type: 'success', content: 'Nothing to update.' })
+      message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: communityInfo.node.node })
       return
     }
     try {
@@ -130,7 +130,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
         telegram: form.telegram
       }, { chainId })
       await updateCommunity(communityInfo.node.node, true)
-      message({ type: 'success', content: 'Update successfully!' })
+      message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
       // handleClose?.()
       // refreshInfo()
       location.reload()
@@ -139,7 +139,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
       message({
         type: 'error',
         content: 'Failed to update setting: ' + formatContractError(e),
-      })
+      }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
     } finally {
       setLoading(false)
     }
@@ -184,7 +184,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
           setForm({ ...form, [name]: value })
         }}
         handleError={(error) => {
-          message({ type: 'error', content: error })
+          message({ type: 'error', content: error }, { t: 'brand-profile-setting' })
         }}
       />
     </Dialog>

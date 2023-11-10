@@ -440,17 +440,17 @@ const CommunityMintSettingDialog: FC<Props> = ({ open, handleClose }) => {
           }, { chainId })
         }
         await updateCommunity(communityInfo.node.node, true)
-        message({ type: 'success', content: 'Update successfully!' })
+        message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-mint-setting', k: communityInfo.node.node })
         location.reload()
       } else {
-        message({ type: 'warning', content: 'Nothing to update.' })
+        message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-mint-setting', k: communityInfo.node.node })
       }
     } catch (e) {
       console.error(e)
       message({
         type: 'error',
         content: 'Failed to update setting: ' + formatContractError(e),
-      })
+      }, { t: 'brand-mint-setting', k: communityInfo.node.node })
     } finally {
       setSettingLoading(false)
     }

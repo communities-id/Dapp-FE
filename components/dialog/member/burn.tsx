@@ -40,13 +40,13 @@ const MemberBurnDialog: FC<Props> = ({ open, handleClose }) => {
   
   const handleBurn = async () => {
     if (!communityInfo.node || !memberInfo.node) return
+    const DIDName = `${memberInfo.node.node}.${communityInfo.tokenUri?.name}`
     try {
       setLoading(true)
-      const DIDName = `${memberInfo.node.node}.${communityInfo.tokenUri?.name}`
       await burnMember(communityInfo as BrandDID, DIDName)
       // handleClose?.()
       // refreshInfo()
-      message({ type: 'success', content: 'Burn successfully!' })
+      message({ type: 'success', content: 'Burn successfully!' }, { t: 'member-burn', k: DIDName })
       await updateCommunity(communityInfo.node.node, true)
       location.reload()
     } catch (e) {
@@ -54,7 +54,7 @@ const MemberBurnDialog: FC<Props> = ({ open, handleClose }) => {
       message({
         type: 'error',
         content: 'Failed to burn: ' + formatContractError(e),
-      })
+      }, { t: 'member-burn', k: DIDName, i: 1 })
     } finally {
       setLoading(false)
     }

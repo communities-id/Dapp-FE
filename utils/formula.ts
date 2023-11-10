@@ -2,7 +2,7 @@ import { BigNumber, ethers } from 'ethers'
 
 import { PriceMode, CommunityPrice } from '@/types/contract'
 import { formatNumToWei, formatWeiToNum, formatDecimalsPrice, formatToUnitPrice, formatToFormPrice, formatToDecimal } from '@/utils/format'
-import { mathEvaluate, mathMul, mathDiv } from '@/utils/math'
+import { mathEvaluate } from '@/utils/math'
 
 export const priceModeFormulaMap: Record<PriceMode, string> = {
   [PriceMode.CONSTANT]: 'a',

@@ -81,7 +81,7 @@ const CommunitySignatureDialog: FC<Props> = ({ open, handleClose }) => {
       message({
         type: 'error',
         content: 'Failed to generate signature: ' + e.message,
-      })
+      }, { t: 'brand-generate-signature', k: form.name })
       setLoading(false)
     }
   }

@@ -24,12 +24,18 @@ export const getReadableContract = (contractAddress: string, ABIKey: keyof typeo
 export const getWritableContract = (address: string, ABIKey: keyof typeof ABIs, chainId: number = MAIN_CHAIN_ID, signer: ethers.providers.JsonRpcSigner) => {
   const contracts = new Map<string, ethers.Contract>()
   return (() => {
+    const key = `${address}-${ABIKey}-${chainId}`
+    if (contracts.has(key)) {
+      return contracts.get(key) as ethers.Contract
+    }
     const provider = createProvider(chainId)
     const abi = ABIs[ABIKey]
     console.log('address', address, '-ABIKey', ABIKey, '- abi', abi)
     const contract = new ethers.Contract(address, abi, provider)
 
-    return contract.connect(signer)
+    contracts.set(key, contract.connect(signer))
+
+    return contracts.get(key) as ethers.Contract
   })()
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useNetwork, useSwitchNetwork } from 'wagmi'
-import CommunitiesID, { BrandDID, UserDID } from '@communitiesid/id'
+import CommunitiesID, { BrandDID, UserDID, ChainIDs, TestnetChainIDs } from '@communitiesid/id'
 
 import { useWallet } from '@/hooks/wallet'
 import { ZERO_ADDRESS, MAIN_CHAIN_ID, CHAIN_ID, CONTRACT_MAP, maxApproveValue, SDK_OPTIONS } from '@/shared/constant';
@@ -11,12 +11,13 @@ import { encodeString, keccak256, parseTokenURI } from '@/shared/helper'
 import { getTokenSymbol, getReadableContract, getWritableContract } from '@/shared/contract'
 import { useTokenPrice } from '@/contexts/tokenPrice'
 import { formatInfo } from '@/utils/format'
+import { BNMul } from '@/utils/math'
 import { useDetails } from '@/contexts/details'
 
 import { CommunityInfo, MemberInfo, CommunityMember, PersonCommunity, PersonIdentity } from '@/types'
 import { CommunityMemberConfig, ContractVerison, SequenceMode } from '@/types/contract'
-import { TotalSupportedChainIDs } from '@/types/chain'
-import { ContractAddressesKeys, ABIKeys, CommunityMintConfig, CommunityPrice } from '@/types/contract'
+import { SupportedChainIDs, TotalSupportedChainIDs } from '@/types/chain'
+import { GasFeeData, ContractAddressesKeys, ABIKeys, CommunityMintConfig, CommunityPrice } from '@/types/contract'
 
 interface CreateOmniNodeData {
   targetChainId: number
@@ -118,6 +119,23 @@ export function getCommunityWriteableContract(keyOrAddress: string, abiKey: ABIK
   if (!signer) return null
   const communityContractAddress = getContractAddress(keyOrAddress as ContractAddressesKeys, chainId)
   return getWritableContract(communityContractAddress, abiKey, chainId, signer)
+}
+
+const spcialFeeMap: Partial<Record<TotalSupportedChainIDs, number>> = {
+  [ChainIDs.Polygon]: 1.6,
+  [TestnetChainIDs['Polygon Mumbai']]: 1.6,
+}
+export async function getBaseFeeData(contract: ethers.Contract, network: number) {
+  const feeData = await contract.provider.getFeeData()
+  const { gasPrice, ...other } = feeData
+  if (gasPrice && spcialFeeMap[network as TotalSupportedChainIDs]) {
+    console.log('- gasPrice', gasPrice, 'after', BNMul(gasPrice, spcialFeeMap[network as TotalSupportedChainIDs] ?? 1))
+    return {
+      gasPrice: BNMul(gasPrice, spcialFeeMap[network as TotalSupportedChainIDs] ?? 1),
+      ...other
+    }
+  }
+  return feeData
 }
 
 export async function getBrandDIDChainId(name: string, needHash: boolean = true) {
@@ -391,7 +409,8 @@ export default function useApi() {
 
     console.log('---- create omninode commitment', commitment)
 
-    const tx = await RelayerCommunityRegistryInterface.createOmniNode(commitment, signature)
+    const { gasPrice } = await getBaseFeeData(RelayerCommunityRegistryInterface, chainId)
+    const tx = await RelayerCommunityRegistryInterface.createOmniNode(commitment, signature, { gasPrice })
     console.log('- RelayerCommunityRegistryInterface', RelayerCommunityRegistryInterface, RelayerCommunityRegistryInterface.address)
     const receipt = await tx.wait();
     console.log('---- create omninode tx', tx)
@@ -412,7 +431,8 @@ export default function useApi() {
 
     const node = keccak256(name)
     const res = await RelayerReplicaCommunityRegistryInterface.getOmniNodeState(node)
-    const tx = await RelayerReplicaCommunityRegistryInterface.releaseOmniNode(node, res.account)
+    const { gasPrice } = await getBaseFeeData(RelayerReplicaCommunityRegistryInterface, chainId)
+    const tx = await RelayerReplicaCommunityRegistryInterface.releaseOmniNode(node, res.account, { gasPrice })
     const receipt = await tx.wait();
     console.log('---- release omninode tx', tx)
     console.log('---- release omninode receipt', receipt)
@@ -436,8 +456,9 @@ export default function useApi() {
       deadline: 999999999999,
     };
 
+    const { gasPrice } = await getBaseFeeData(MemberRegistryInterfaceFactory, chainId)
     // create members receipt factory, use to receipt member mint
-    const mintTx = await MemberRegistryInterfaceFactory.create(commitment, signature.trim(), mintTo.trim(), { value: price.toString() });
+    const mintTx = await MemberRegistryInterfaceFactory.create(commitment, signature.trim(), mintTo.trim(), { value: price.toString(), gasPrice });
     // to do: tx record
     const receipt = await mintTx.wait();
     console.log('---- mint brand tx', mintTx)
@@ -451,7 +472,8 @@ export default function useApi() {
     const CommunityRegistryInterface = getCommunityWriteableContract('CommunityRegistryInterface', 'CommunityRegistryInterface', chainId, await getSigner())
     if (!CommunityRegistryInterface) return
 
-    const renewTx = await CommunityRegistryInterface.renew(keccak256(name), durationUnit, { value: price.toString() });
+    const { gasPrice } = await getBaseFeeData(CommunityRegistryInterface, chainId)
+    const renewTx = await CommunityRegistryInterface.renew(keccak256(name), durationUnit, { value: price.toString(), gasPrice });
     // to do: tx record
     const receipt = await renewTx.wait();
     return receipt
@@ -464,6 +486,7 @@ export default function useApi() {
     if (!CommunityTokenURI) return
 
     const { image, brandImage, description, backgroundColor, externalUrl, discord, twitter, telegram } = data
+    const { gasPrice } = await getBaseFeeData(CommunityTokenURI, chainId)
     const tx = await CommunityTokenURI.setCommunityConfig(tokenId, {
       image,
       brandImage,
@@ -475,7 +498,7 @@ export default function useApi() {
         { key: 'telegram', displayType: '', value: telegram || ''},
         { key: 'discord', displayType: '', value: discord || ''}
       ],
-    })
+    }, { gasPrice })
 
     const receipt = await tx.wait();
     console.log('updateCommunityBrandConfig tx', tx)
@@ -511,7 +534,8 @@ export default function useApi() {
     }
     console.log('-communityConfigParams', communityConfigParams)
 
-    const tx = await MemberRegistryInterface.setConfig(communityConfigParams)
+    const { gasPrice } = await getBaseFeeData(MemberRegistryInterface, chainId)
+    const tx = await MemberRegistryInterface.setConfig(communityConfigParams, { gasPrice })
     // to do: tx record
     const receipt = await tx.wait();
 
@@ -559,7 +583,8 @@ export default function useApi() {
       multicallParams2.push(MemberRegistry.interface.encodeFunctionData('setConfig', [memberRegistryConfigParams]))
     }
     console.log('-communityConfigParams', memberRegistryInterfaceConfigParams)
-    const tx = await MemberRegistry.multicall(multicallParams1, multicallParams2)
+    const { gasPrice } = await getBaseFeeData(MemberRegistry, chainId)
+    const tx = await MemberRegistry.multicall(multicallParams1, multicallParams2, { gasPrice })
     // to do: tx record
     const receipt = await tx.wait();
 
@@ -622,7 +647,8 @@ export default function useApi() {
       multicallParams2.push(MemberRegistry.interface.encodeFunctionData('setConfig', [memberRegistryConfigParams]))
     }
 
-    const tx = await MemberRegistry.multicall(multicallParams1, multicallParams2)
+    const { gasPrice } = await getBaseFeeData(MemberRegistry, chainId)
+    const tx = await MemberRegistry.multicall(multicallParams1, multicallParams2, { gasPrice })
     // to do: tx record
     const receipt = await tx.wait();
 
@@ -638,7 +664,7 @@ export default function useApi() {
       signature: signature.trim(),
       brandDID: brandInfo,
       mintPrice: price,
-      owner: owner.trim()
+      owner: owner.trim(),
     })
   }
 

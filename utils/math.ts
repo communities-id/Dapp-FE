@@ -21,3 +21,8 @@ export const mathMul = (a: string | number, b: string | number) => {
 export const mathDiv = (num: number, divisor: number, precision = 18) => {
   return math.format(num / divisor, { notation: 'fixed', precision }).slice(0, precision)
 }
+
+export const BNMul = (a: BigNumber, b: number) => {
+  const c = BigNumber.from(Math.ceil(a.toNumber() * b))
+  return c
+}

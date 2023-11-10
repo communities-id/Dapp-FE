@@ -39,7 +39,7 @@ const MemberSettingDialog: FC<Props> = ({ open, handleClose }) => {
   const handleUpdate = async () => {
     if (!communityInfo?.node || !memberInfo?.node) return
     if (!needUpdate()) {
-      message({ type: 'success', content: 'Nothing to update.' })
+      message({ type: 'warning', content: 'Nothing to update.' }, { t: 'member-profile-update', k: memberInfo.node.node })
       return
     }
     try {
@@ -54,14 +54,14 @@ const MemberSettingDialog: FC<Props> = ({ open, handleClose }) => {
       // handleClose?.()
       // refreshInfo()
       await updateMemberInDB(`${memberInfo.node.node}.${communityInfo.node.node}`)
-      message({ type: 'success', content: 'Update successfully!' })
+      message({ type: 'success', content: 'Update successfully!' }, { t: 'member-profile-update', k: memberInfo.node.node })
       location.reload()
     } catch (e) {
       console.error(e)
       message({
         type: 'error',
         content: 'Failed to update: ' + formatContractError(e),
-      })
+      }, { t: 'member-profile-update', k: memberInfo.node.node  })
     } finally {
       setLoading(false)
     }

@@ -34,7 +34,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
   const { refreshInfo, keywords, community } = useDetails()
   const { handleMintSuccess } = useGlobalDialog()
   const router = useRouter()
-  const { message } = useRoot()
+  const { message, tracker } = useRoot()
   const { mintCommunity, releaseOmniNode } = useApi()
   const { switchNetworkAsync } = useSwitchNetwork()
   const { chain } = useNetwork()
@@ -111,6 +111,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
           owner: ZERO_ADDRESS
         }, { chainId })
       }
+      tracker('success:brand-mint', { community, mintTo: _mintTo, price: price.toString() })
       // to do: update brand
       await refreshInfo()
       handleMintSuccess?.({ community, owner: _mintTo, avatar: '' }, 'community')
@@ -119,7 +120,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
       message({
         type: 'error',
         content: 'Failed to mint: ' + formatContractError(err),
-      })
+      }, { t: 'brand-mint', k: community, i: 1 })
     } finally {
       setMintLoading(false)
     }
@@ -138,14 +139,14 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
       message({
         type: 'success',
         content: 'Release success. This community will be able to mint on other network again after about 1 minute',
-      })
+      }, { t: 'brand-release', k: community })
       handleReleased?.()
     } catch (err: any) {
       console.log(err)
       message({
         type: 'error',
         content: 'Failed to release: ' + formatContractError(err),
-      })
+      }, { t: 'brand-release', k: community, i: 1  })
     } finally {
       setMintLoading(false)
     }

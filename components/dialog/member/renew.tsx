@@ -44,7 +44,7 @@ const MemberRenewDialog: FC<Props> = ({ open, handleClose }) => {
       message({
         type: 'error',
         content: 'Failed to get renew price: ' + formatContractError(e),
-      })
+      }, { t: 'member-renew', k: memberInfo.node.node, i: 1 })
     } finally {
       setLoading(false)
     }
@@ -52,10 +52,10 @@ const MemberRenewDialog: FC<Props> = ({ open, handleClose }) => {
   
   const handleRenew = async () => {
     if (!memberInfo?.node || !communityInfo?.node) return
+    const DIDName = `${memberInfo.node.node}.${communityInfo.tokenUri?.name}`
     try {
       setLoading(true)
       const chainId = communityInfo.chainId as number
-      const DIDName = `${memberInfo.node.node}.${communityInfo.tokenUri?.name}`
       if (shouldApproveCoin && communityInfo.config) {
         await approveErc20?.(communityInfo.config.coin, communityInfo.node.registryInterface, { price: renewPrice, chainId })
       }
@@ -64,14 +64,14 @@ const MemberRenewDialog: FC<Props> = ({ open, handleClose }) => {
       // handleClose?.()
       // refreshInfo()
       await updateMember(`${memberInfo.node.node}.${communityInfo.node.node}`, true)
-      message({ type: 'success', content: 'Renew successfully!' })
+      message({ type: 'success', content: 'Renew successfully!' }, { t: 'member-renew', k: DIDName })
       location.reload()
     } catch (e) {
       console.error(e)
       message({
         type: 'error',
         content: 'Failed to renew: ' + formatContractError(e),
-      })
+      }, { t: 'member-renew', k: DIDName, i: 1  })
     } finally {
       setLoading(false)
     }

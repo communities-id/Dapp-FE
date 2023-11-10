@@ -93,3 +93,10 @@ export interface CommunityPrice<T = string> {
   c: T
   d: T
 }
+
+export type GasFeeData = {
+  gasPrice: BigNumber
+  lastBaseFeePerGas: BigNumber
+  maxFeePerGas: BigNumber
+  maxPriorityFeePerGas: BigNumber
+}

@@ -1,5 +1,6 @@
-import { FC, ReactNode, useMemo } from 'react'
+import { FC, ReactNode, useEffect, useMemo } from 'react'
 
+import { useNetwork } from 'wagmi'
 import { useDetails } from '@/contexts/details'
 import { CHAINS_NETWORK_TO_ID, CHAIN_ID, CHAIN_ID_MAP, CHAINS_MINT_TOOLTIPS } from "@/shared/constant"
 
@@ -21,7 +22,7 @@ interface CommunityMintStatusProps {
 }
 
 const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ mintNetwork, loading, disabled, handleNext, handleNetworkChange, children, step, extra }) => {
-
+  const { chain } = useNetwork()
   const { keywords, community, communityInfo, communityInfoSet } = useDetails()
 
   const networks = useMemo(() => {
@@ -35,6 +36,15 @@ const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ mintNetwork, loadin
       }
     })
   }, [mintNetwork, CHAINS_NETWORK_TO_ID])
+
+  // auto switch network
+  useEffect(() => {
+    if (networks.find(({ value }) => value === String(chain?.id))) {
+      handleNetworkChange?.(Number(chain?.id ?? CHAIN_ID))
+    } else {
+      handleNetworkChange?.(CHAIN_ID)
+    }
+  }, [chain?.id])
 
   return (
     <div className="px-[60px] pt-[30px] pb-[40px] flex flex-col items-center bg-white rounded-[10px]">

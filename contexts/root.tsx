@@ -2,6 +2,8 @@ import { useState, useContext, createContext, ReactNode, useEffect, useRef, useM
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
 
+import { track as trackEvt } from '@/shared/track'
+
 import Snackbar, { SnackbarType } from '@/components/common/snackbar'
 
 import 'swiper/css';
@@ -40,7 +42,8 @@ interface RootContextProps {
   sr: any | null
   loaded: boolean
   config: RootContextConfigProps
-  message: (info: SnackbarMessage) => void
+  message: (info: SnackbarMessage, track?: Record<string, string | number>) => void
+  tracker: (t: string, info?: Record<string, string | number>) => void
 }
 
 const Context = createContext<RootContextProps>({
@@ -62,6 +65,7 @@ const Context = createContext<RootContextProps>({
     // toggleScrollTop: () => {},
   },
   message: () => {},
+  tracker: () => {},
 })
 
 export function RootProvider({ children }: { children: ReactNode }) {
@@ -83,12 +87,20 @@ export function RootProvider({ children }: { children: ReactNode }) {
     content: '',
   })
 
-  const showMessage = (info: SnackbarMessage) => {
+  const handleTrack = (t: string, info?: Record<string, string | number>) => {
+    trackEvt(t, info)
+  }
+
+  const showMessage = (info: SnackbarMessage, track?: Record<string, string | number>) => {
     setSnackbarInfo({
       title: 'Tip', // default title
       ...info,
       open: true,
     })
+    if (track) {
+      const { t, i = 1, ...info } = track
+      handleTrack(`${info.type}:${t}:${i}`, { message: info.content, ...info })
+    }
   }
 
   const hideMessage = () => {
@@ -177,7 +189,7 @@ export function RootProvider({ children }: { children: ReactNode }) {
   }, [router.pathname])
 
   return (
-    <Context.Provider value={{ sr: sr!, loaded, config: rootConfig, message: showMessage }}>
+    <Context.Provider value={{ sr: sr!, loaded, config: rootConfig, message: showMessage, tracker: handleTrack }}>
       <Snackbar {...snackbarInfo} handleClose={hideMessage}/>
       <div className={classnames({ 'bg-black': darkMode })} ref={refToComponent}>{children}</div>
     </Context.Provider>

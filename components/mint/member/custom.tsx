@@ -33,7 +33,7 @@ interface MemberCustomMintProps {
 
 const MemberCustomMint: FC<MemberCustomMintProps> = () => {
   const router = useRouter()
-  const { message } = useRoot()
+  const { message, tracker } = useRoot()
   const { keywords, community, communityInfo, memberInfo, memberInfoSet, refreshInfo } = useDetails()
   const { handleMintSuccess } = useGlobalDialog()
   const { mintMember, approveErc20, burnMember } = useApi()
@@ -204,6 +204,7 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
         // public mint or holding mint
         await mintMember?.(communityInfo as BrandDID, DIDName, { price: finalPrice, signature, mintTo: _mintTo, chainId })
       }
+      tracker('success:member-mint', { DIDName, mintTo: _mintTo, price: price.toString() })
       await updateCommunity(node.node, true)
       handleMintSuccess?.({ community, member, owner: _mintTo, avatar: communityInfo.tokenUri?.image }, 'member')
     } catch (e) {
@@ -211,7 +212,7 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
       message({
         type: 'error',
         content: 'Failed to mint: ' + formatContractError(e),
-      })
+      }, { t: 'member-mint', k: DIDName, i: 1 })
     } finally {
       setMintLoading(false)
     }

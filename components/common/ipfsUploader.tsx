@@ -26,6 +26,8 @@ const IpfsUploader: FC<Props> = ({ aspect, description, defaultUrl, minWidth = 0
   const [url, setUrl] = useState('')
   const [cropperOpen, setCropperOpen] = useState(false)
   const [cropUrl, setCropUrl] = useState('')
+  const maxW = minWidth * 5
+  const maxH = minWidth * 5
 
   const handleUpload = async (buffer: Buffer) => {
     setLoading(true)
@@ -44,6 +46,11 @@ const IpfsUploader: FC<Props> = ({ aspect, description, defaultUrl, minWidth = 0
     const { width, height } = await readFileSize(file)
     if (width < minWidth || height < minHeight) {
       handleError?.(`The minimum image size should be at least: ${minWidth} * ${minHeight}`)
+      setLoading(false)
+      return
+    }
+    if (width > maxW || height > maxH) {
+      handleError?.(`The minimum image size should be not exceed: ${maxW} * ${maxH}`)
       setLoading(false)
       return
     }

@@ -31,14 +31,14 @@ const MemberAsPrimaryDialog: FC<Props> = ({ open, memberName, handleClose }) => 
         await switchNetworkAsync?.(CHAIN_ID)
       }
       await setMemberPrimary(memberName)
-      message({ type: 'success', content: 'Set to primary success!' })
+      message({ type: 'success', content: 'Set to primary success!' }, { t: 'member-set-primary', keyword: memberName  })
       location.reload()
     } catch (e) {
       console.error(e)
       message({
         type: 'error',
         content: 'Failed to set as primary: ' + formatContractError(e),
-      })
+      }, { t: 'member-set-primary', keyword: memberName, i: 1 })
     } finally {
       setLoading(false)
     }

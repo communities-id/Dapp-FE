@@ -127,7 +127,7 @@ const CommunityLayout: FC<Props> = () => {
           message({
             type: 'success',
             content: 'Copied Link Success!'
-          })
+          }, { t: 'brand-share-link', k: brandLink })
         }
       },
       {

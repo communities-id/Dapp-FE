@@ -28,7 +28,7 @@ interface CommunityRegisterProps {
 }
 
 const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, omninodeAdvanceMintSetting, omninodeSignatureValidator, disabled, loading, handleDeployed, children, step, extra }) => {
-  const { message } = useRoot()
+  const { message, tracker } = useRoot()
   const { community, communityInfo, communityInfoSet, refreshInfo } = useDetails()
   const { switchNetworkAsync } = useSwitchNetwork()
   const { chain } = useNetwork()
@@ -72,7 +72,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, omninodeAd
       message({
         type: 'error',
         content: 'Failed to release: ' + formatContractError(err),
-      })
+      }, { t: 'brand-pre-mint', i: 1 })
       setDeploying(false)
     }
   }
@@ -97,6 +97,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, omninodeAd
         owner: omninodeAdvanceMintSetting.mintTo
       }, { chainId: MAIN_CHAIN_ID }) // create omninode on mainnet
     }
+    tracker('success:brand-pre-mint', { community, mintTo, targetChainId })
   }
 
   const handleGetOmniNodeState = useCallback(async () => {

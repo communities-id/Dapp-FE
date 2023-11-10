@@ -35,18 +35,18 @@ const TelegramIntegrate: FC<Props> = () => {
       setBindLoading(true)
       const signer = await getSigner()
       if (!signer) {
-        message({ type: 'warning', content: 'Cannot get signer'})
+        message({ type: 'warning', content: 'Cannot get signer' }, { t: 'member-tg-bind', i: 1 })
         return
       }
       const signature = await signer.signMessage('CommunitiesID')
       const res = await bindTelegramUser(signature, telegramUserId, account as string)
       if (res.code !== 0) {
-        message({ type: 'error', content: `Bind telegram error: ${res.message}`})
+        message({ type: 'error', content: `Bind telegram error: ${res.message}` }, { t: 'member-tg-bind', k: signer._address, i: 2 })
         return
       }
-      message({ type: 'success', content: 'Bind success' })
+      message({ type: 'success', content: 'Bind success' }, { t: 'member-tg-bind', k: signer._address })
     } catch(e: any) {
-      message({ type: 'error', content: `Bind telegram error: ${e.message}`})
+      message({ type: 'error', content: `Bind telegram error: ${e.message}` }, { t: 'member-tg-bind', i: 3 })
       return
     } finally {
       setBindLoading(false)

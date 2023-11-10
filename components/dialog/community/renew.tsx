@@ -35,7 +35,7 @@ const CommunityRenewDialog: FC<Props> = ({ open, handleClose }) => {
       message({
         type: 'error',
         content: 'Failed to get renew price: ' + formatContractError(e),
-      })
+      }, { t: 'brand-renew', k: community, i: 1 })
     } finally {
       setLoading(false)
     }
@@ -50,14 +50,14 @@ const CommunityRenewDialog: FC<Props> = ({ open, handleClose }) => {
       // handleClose?.()
       // refreshInfo()
       await updateCommunity(communityInfo.node.node, true)
-      message({ type: 'success', content: 'Renew successfully!' })
+      message({ type: 'success', content: 'Renew successfully!' }, { t: 'brand-renew', k: community  })
       location.reload()
     } catch (e) {
       console.error(e)
       message({
         type: 'error',
         content: 'Failed to renew: ' + formatContractError(e),
-      })
+      }, { t: 'brand-renew', k: community, i: 2  })
     } finally {
       setLoading(false)
     }
