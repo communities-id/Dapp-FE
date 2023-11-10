@@ -29,11 +29,67 @@
   body {
     @apply font-outfit font-normal text-regular text-waterloo relative dark:text-manatee z-1;
   }
+
+  .button-xl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    width: 160px;
+    height: 56px;
+    border-radius: 32px;
+  }
+  .button-lg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 44px;
+    border-radius: 22px;
+  }
+  .button-md {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 40px;
+    border-radius: 20px;
+  }
+  .button-sm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 34px;
+    border-radius: 17px;
+  }
+
+  .icon-lg {
+    @apply w-10 h-10;
+  }
+  .icon-md {
+    @apply w-8 h-8;
+  }
+  .icon-sm {
+    @apply w-5 h-5;
+  }
+  .icon-xs {
+    @apply w-4 h-4;
+  }
+  .icon-xxs {
+    @apply w-3 h-3;
+  }
 }
 
 @layer container {
   .search-container {
     @apply mx-auto max-w-c-840 w-full;
+  }
+  .dapp-container {
+    @apply mx-auto max-w-c-840 w-full;
+    @media screen and (min-width: 1024px) {
+      @apply max-w-c-1024;
+    }
   }
 }
 
@@ -98,3 +154,4 @@
 .cid-price-chart .y-regions .bar {
   display: none;
 }
+

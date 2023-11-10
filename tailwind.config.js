@@ -24,9 +24,7 @@ module.exports = {
     'alert-error'
   ],
   theme: {
-    fontFamily: {
-      outfit: ['Outfit', 'sans-serif'],
-    },
+    fontFamily: require('./_themes/size').fontFamily,
     colors: {
       current: 'currentColor',
       transparent: 'transparent',
@@ -110,7 +108,8 @@ module.exports = {
       'advance-more-active': '#8840FF',
       'loading-icon': '#EAECF0',
       'mint-tip': '#FFB13D',
-      'mint-tip-btn': '#fff'
+      'mint-tip-btn': '#fff',
+      ...require('./_themes/colors')
     },
     extend: {
       fontSize: {
@@ -175,6 +174,7 @@ module.exports = {
         'mint-tip-btn': ['14px', { lineHeight: '26px', fontWeight: '400' }],
         'mint-setting-tab': ['16px', { lineHeight: '20px', fontWeight: '500' }],
         'integrate-tit': ['20px', { lineHeight: '26px', fontWeight: '600' }],
+        ...require('./_themes/size').fontSize
       },
       spacing: {
         4.5: '1.125rem',
@@ -233,7 +233,8 @@ module.exports = {
         'c-840': '840px',
       },
       padding: {
-        'p-20': '20px'
+        'p-20': '20px',
+        ...require('./_themes/size').padding
       },
       zIndex: {
         'snackbar': '5001',
@@ -296,8 +297,10 @@ module.exports = {
         'search-form': '1px',
         'network-btn': '1px',
         'network-btn-active': '1px',
-        'mint-tip-btn': "1px"
+        'mint-tip-btn': "1px",
+        ...require('./_themes/size').borderWidth
       },
+      borderRadius: require('./_themes/size').borderRadius,
       keyframes: {
         line: {
           '0%, 100%': { transform: 'translateY(100%)' },
