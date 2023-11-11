@@ -16,7 +16,7 @@ const SearchFooter: FC<Props> = ({ className }) => {
         <span className='text-gray-logo'>Powered by</span>
         <Link href='/' target='_blank' className='group'>
           <div className='group-hover:block'>
-            <LogoWithColor width='106' height='24' className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
+            <LogoWithColor width={106} height={24} className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
             <DarkLogo width='106' height='24' className="hidden dark:block" />
           </div>
         </Link>
