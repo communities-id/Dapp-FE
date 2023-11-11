@@ -16,14 +16,14 @@ const PageHeaderInfo: FC<Props> = () => {
   const contentLoading = useMemo(() => {
     return (loadingSet.community || loadingSet.member) && !isUnknown
   }, [loadingSet.community, loadingSet.member, isUnknown])
-
+  
   return (
     <div className='w-full'>
       {
         (contentLoading && mode !== 'address') ? (
           <Fragment>
             <Banner />
-            <Loading personal={mode === 'unknown'} className='dapp-container px-5' />
+            <Loading personal={mode === 'unknown'} className='dapp-container' />
           </Fragment>
         ) : (
           <Fragment>
