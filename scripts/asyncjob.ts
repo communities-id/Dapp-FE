@@ -141,6 +141,7 @@ async function syncCommunityEventsInOneChain(chainId: number) {
         price: price.toString(),
         coinId: null,
         pool: communityInfo.pool?.toString(),
+        totalSupply: communityInfo.totalSupply,
         communityInfo: JSON.stringify(communityInfo),
         latestBlock: event.blockNumber - 1
       },
@@ -157,6 +158,7 @@ async function syncCommunityEventsInOneChain(chainId: number) {
         price: price.toString(),
         coinId: null,
         pool: communityInfo.pool?.toString(),
+        totalSupply: communityInfo.totalSupply,
         communityInfo: JSON.stringify(communityInfo),
         latestBlock: event.blockNumber - 1
       },

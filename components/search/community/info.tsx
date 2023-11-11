@@ -354,7 +354,7 @@ const CommunityLayout: FC<Props> = () => {
                 <tr>
                   <td>
                     <p>
-                      <span >Refund Rate</span>
+                      <span>Refund Rate</span>
                       <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
