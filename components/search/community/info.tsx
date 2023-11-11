@@ -51,6 +51,7 @@ import { State } from '@/types'
 import { TotalSupportedChainIDs } from '@/types/chain'
 import { SequenceMode } from '@/types/contract'
 import { formatToDecimal } from '@/utils/format'
+import ExpandableDescription from '@/components/common/expandableDescription'
 
 interface Props {
   children?: ReactNode
@@ -61,7 +62,7 @@ const CommunityLayout: FC<Props> = () => {
   const { keywords, community, communityInfo, communityInfoSet, loadingSet } = useDetails()
   const { showGlobalDialog } = useGlobalDialog()
   const { switchNetworkAsync } = useSwitchNetwork()
-  
+
   const { erc20PriceToUSD } = useApi()
 
   const [dialogOpenSet, setDialogOpenSet] = useState<Record<string, boolean>>({})
@@ -70,44 +71,40 @@ const CommunityLayout: FC<Props> = () => {
     {
       id: 'refresh',
       text: 'Refresh Metadata',
-      icon: <RefreshIcon width={16} height={16} className='text-[#333]'/>,
+      icon: <RefreshIcon width={16} height={16} className='text-[#333]' />,
       global: false
     },
-    {
-      id: 'profile',
-      text: 'Community Settings',
-      icon: <SettingIcon width={16} height={16} className='text-[#333]'/>,
-      global: true
-    },
-
-    {
-      id: 'mint',
-      text: 'Mint Settings',
-      icon: <MintSettingIcon width={16} height={16} className='text-[#333]'/>,
-      global: true
-    },
-    {
-      id: 'renew',
-      text: 'Renew',
-      icon: <RenewIcon width={16} height={16} className='text-[#333]'/>,
-      global: false
-    }
   ]
 
-  // if (process.env.NEXT_PUBLIC_IS_TESTNET === 'true') {
-  communityPopoverMenus.push({
-    id: 'telegram',
-    text: 'Bind telegram group',
-    icon: <TelegramIcon width={16} height={16} className='text-[#333]'/>,
-    global: false
-  })
-  // }
-  
+  if ((communityInfoSet.isOwner || communityInfoSet.isSigner) && !communityInfoSet.isExpired) {
+    communityPopoverMenus.push({
+      id: 'profile',
+      text: 'Community Settings',
+      icon: <SettingIcon width={16} height={16} className='text-[#333]' />,
+      global: true
+    }, {
+      id: 'mint',
+      text: 'Mint Settings',
+      icon: <MintSettingIcon width={16} height={16} className='text-[#333]' />,
+      global: true
+    }, {
+      id: 'renew',
+      text: 'Renew',
+      icon: <RenewIcon width={16} height={16} className='text-[#333]' />,
+      global: false
+    }, {
+      id: 'signature',
+      text: 'Generate Invited Code',
+      icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
+      global: false
+    })
+  }
+
   if (communityInfo.config?.signatureMint && communityInfoSet.isSigner) {
     communityPopoverMenus.push({
       id: 'signature',
       text: 'Generate Invited Code',
-      icon: <SignatureIcon width={16} height={16} className='text-[#333]'/>,
+      icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
       global: false
     })
   }
@@ -133,15 +130,9 @@ const CommunityLayout: FC<Props> = () => {
       {
         id: 'twitter',
         text: 'Share on Twitter',
-        icon: <TwitterIcon width={16} height={16} className='text-[#333]'/>,
+        icon: <TwitterIcon width={16} height={16} className='text-[#333]' />,
         link: getNormalTwitterShareLink(brandLink)
       }
-      // {
-      //   id: 'renew',
-      //   text: 'Renew',
-      //   icon: <RenewIcon width={16} height={16} className='text-[#333]'/>,
-      //   global: false
-      // }
     ]
   }, [communityInfo])
 
@@ -236,10 +227,10 @@ const CommunityLayout: FC<Props> = () => {
 
   const pendingSet = useMemo(() => {
     return Number(totalSupply) === 0
-    && Number(priceModel?.a) === 0
-    && Number(priceModel?.commissionRate) === 1000
-    && config?.coin === ZERO_ADDRESS
-    && pendingMintSet
+      && Number(priceModel?.a) === 0
+      && Number(priceModel?.commissionRate) === 1000
+      && config?.coin === ZERO_ADDRESS
+      && pendingMintSet
   }, [totalSupply, priceModel, config, pendingMintSet])
 
   const pathname = usePathname()
@@ -249,6 +240,10 @@ const CommunityLayout: FC<Props> = () => {
 
   const handleSelectMenu = async (menu: PopoverMenuItem) => {
     if (menu.id === 'refresh') {
+      message({
+        type: 'success',
+        content: 'We\'ve queued this item for an update! Page will reload automaticaly after refresh completed'
+      }, { t: 'brand-refresh-metadata' })
       await updateCommunity(communityInfo.node?.node ?? '', true)
       location.reload()
       return
@@ -260,12 +255,6 @@ const CommunityLayout: FC<Props> = () => {
       showGlobalDialog(menu.id)
     }
     setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
-  }
-
-  const handleSelectShareMenu = async (menu: PopoverMenuItem) => {
-    if (menu.id === 'copy-link') {
-      console.log('-- copy link')
-    }
   }
 
   // to do: set in details
@@ -285,25 +274,25 @@ const CommunityLayout: FC<Props> = () => {
   }, [communityInfo])
 
   if (communityInfoSet.unMint) return (
-    <Banner/>
+    <Banner />
   )
 
   return (
     <div className='relative w-full'>
-      <Banner banner={communityInfo?.tokenUri?.brand_image} brandColor={communityInfo?.tokenUri?.brand_color}/>
-      <div className='px-5 relative'>
-        <div className='w-full pt-[40px]'>
-          <AvatarCard outline size={100} src={communityInfo?.tokenUri?.image} className='absolute top-[-80px] left-5 rounded-[12px]'/>
-          <div className="w-full flex flex-col">
-            <div className='w-full flex items-center justify-between'>
-              <h1 className='flex-1 flex items-center text-searchtitle text-secondaryBlack gap-2'>
+      <Banner banner={communityInfo?.tokenUri?.brand_image} brandColor={communityInfo?.tokenUri?.brand_color} />
+      <div className='dapp-container px-10 pb-10 relative'>
+        <div className='w-full pt-[80px]'>
+          <AvatarCard outline size={120} src={communityInfo?.tokenUri?.image} className='absolute top-[-60px] left-10 rounded-[30px]' />
+          <div className="community-info">
+            <div className="brand-info flex-initial basis-0">
+              <div className="name text-xl text-main-black flex items-center gap-2">
                 {
                   backLink ? (
                     <Link href={backLink} target="_self" className='flex items-center gap-2 hover:underline underline-offset-2'>
-                      <BackIcon width="20" height="24" className="cursor-pointer"/>
-                      <span>{ community }</span>
+                      <BackIcon width="30" height="36" className="cursor-pointer"/>
+                      <span>{communityInfo.node?.node}</span>
                     </Link>
-                  ) : <span>{ community }</span>
+                  ) : <span>{communityInfo.node?.node}</span>
                 }
                 <ValidStatus isExpired={communityInfoSet.isExpired} isRenewal={communityInfoSet.isRenewal}/>
                 {
@@ -311,196 +300,101 @@ const CommunityLayout: FC<Props> = () => {
                     <Tag text='Drafting' tooltip='User DID  minting disabled. Please enable in Mint Settings.'/>
                   )
                 }
-              </h1>
-              <div className='flex items-center justify-end gap-2 text-secondaryBlack'>
+              </div>
+              <div className="owner text-main-black text-lg">
+                <PrimaryDID address={communityInfo.owner || ''} />
+              </div>
+              <div className="actions mt-6 flex items-center gap-[10px]">
+                <button className="button-md bg-main-black text-white min-w-[100px]">Join</button>
+                <button className="button-md bg-main-black text-white min-w-[100px]">Manage</button>
+                <DividerLine mode='horizontal' className='bg-main-black' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
                     return (
-                      <HoverIcon key={idx} link={link}>
-                        { icon }
+                      <HoverIcon className="w-10 h-10" key={idx} link={link}>
+                        {icon}
                       </HoverIcon>
                     )
                   })
                 }
-                <DividerLine mode='horizontal' />
                 <Popover
                   title="Share"
                   className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
                   id={`${keywords}-share`}
                   menus={shareMenus}
-                  // disabled={communityInfoSet.networkDiff}
-                  handleSelect={handleSelectShareMenu}
                 >
-                  <ShareIcon width='24' height='24' className='text-secondaryBlack'/>
+                  <ShareIcon width='24' height='24' className='text-secondaryBlack' />
                 </Popover>
-                {
-                  (communityInfoSet.isOwner || communityInfoSet.isSigner) && !communityInfoSet.isExpired ? (
-                    <Popover
-                      title="Settings"
-                      className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
-                      id={keywords}
-                      menus={communityPopoverMenus}
-                      // disabled={communityInfoSet.networkDiff}
-                      handleSelect={handleSelectMenu}
-                    >
-                      <MoreIcon width='24' height='24' className='text-secondaryBlack'/>
-                    </Popover>
-                  ) : null
-                }
-                {
-                  memberMintLink && (
-                    <Link href={memberMintLink} target='_self' className='join-us-btn'>Join Community</Link>
-                  )
-                }
+                <Popover
+                  title="Settings"
+                  className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
+                  id={keywords}
+                  menus={communityPopoverMenus}
+                  handleSelect={handleSelectMenu}
+                >
+                  <MoreIcon width='24' height='24' className='text-secondaryBlack' />
+                </Popover>
+              </div>
+              <div className="desc mt-6">
+                <ExpandableDescription>
+                  <p className='text-md text-gray-1'>
+                    {communityInfo.tokenUri?.description}
+                  </p>
+                </ExpandableDescription>
               </div>
             </div>
-            {
-              (pendingCommunitySet || pendingMintSet) && (
-                <div className='mt-[14px] grid grid-cols-2 gap-3 text-statusTag'>
-                  {
-                    pendingMintSet && (
-                      <MintTip text='Mint Settings' label='Customize Minting on demand:' onClick={() => {
-                        handleSelectMenu(communityPopoverMenus.find(item => item.id === 'mint')!)
-                      }} />
-                    )
-                  }
-                  {
-                    pendingCommunitySet && (
-                      <MintTip text='Profile Settings' label='Set up your Brand Info:' onClick={() => {
-                        handleSelectMenu(communityPopoverMenus.find(item => item.id === 'profile')!)
-                      }} />
-                    )
-                  }
-                </div>
-              )
-            }
-            <Collapse className={
-              classNames({
-                'mt-5': !communityInfo?.tokenUri?.description,
-                'mt-3': communityInfo?.tokenUri?.description
-              })
-            }>
-              {
-                communityInfo?.tokenUri?.description && (
-                  <div className=''>
-                    <p className='whitespace-pre-wrap'>
-                      { communityInfo?.tokenUri?.description }
-                    </p>
-                  </div>
-                )
-              }
-              <div className={
-                classNames('flex flex-col', {
-                  'mt-5': communityInfo?.tokenUri?.description
-                })
-              }>
-                <div className='py-[6px] flex items-start gap-[50px] whitespace-nowrap'>
-                  <div className='text-secondaryBlack'>
-                    <p className='text-searchTagTitle'>Validity date</p>
-                    <p className='text-searchTagContent text-secondaryBlack'>
-                      { formatDate(communityInfo?.node?.createTime ?? 0) } - { formatDate(communityInfo?.node?.expireTime ?? 0) }
-                    </p>
-                  </div>
-                  <div className='text-secondaryBlack'>
-                    <div className='text-searchTagTitle flex horizontal items-center'>
-                      <span className="mr-1">Commission Rate</span>
+            <div className="mint-info">
+              <table className="mint-info-table">
+                <tr>
+                  <td colSpan={2}>
+                    <p>Current Mint Price</p>
+                    <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      <span >Refund Rate</span>
                       <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
-                    </div>
-                    <p className='text-searchTagContent text-secondaryBlack'>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
-                  </div>
-                  <div className='text-secondaryBlack'>
-                    <p className='text-searchTagTitle'>Owner</p>
-                    <p className='text-searchTagContent'>
-                      <PrimaryDID address={communityInfo?.owner ?? ''}/>
                     </p>
-                  </div>
-                </div>
-                <DividerLine className='!bg-[#E7E7E7]' />
-                <div className='py-[6px] flex items-start gap-[50px]'>
-                  <div className='text-secondaryBlack'>
-                    <div className='text-searchTagTitle flex horizontal items-center'>
-                      <span className="mr-1">TVL</span>
+                    <p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
+                  </td>
+                  <td>
+                    <p>Mint Price Formula</p>
+                    <p>Y = { mintPriceNumericFormula }</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      <span>TVL</span>
                       <ToolTip mode='sm' content={<p><span className='text-mintPurple'>Total value locked:</span> Total value of tokens staked by community members, calculated in USDT.</p>}>
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
-                    </div>
-                    <p className='text-searchTagContent'>
-                      {tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}
                     </p>
-                  </div>
-                  <div className='text-secondaryBlack'>
-                    <p className='text-searchTagTitle'>Mint Price</p>
-                    {
-                      mintPrice ? (
-                        <p className='text-searchTagContent text-secondaryBlack'>{ mintPrice } { communityInfo?.coinSymbol } / year</p>
-                      ) : (
-                        <p className='text-searchTagContent text-secondaryBlack'>Free</p>
-                      )
-                    }
-                  </div>
-                  <div className='text-secondaryBlack'>
-                    <div className='text-searchTagTitle flex horizontal items-center'>
-                      <span className="mr-1">User Count</span>
-                      {
-                        !config?.publicMint && communityInfoSet.isOwner && <ToolTip className='!bottom-[-6px]' content={<p>No new members? Enable public mint in mint settings to make it public.</p>}>
-                          <TipIcon width='14' height='14' className='text-mintPurple'/>
-                        </ToolTip>
-                      }
-                    </div>
-                    <p className='text-searchTagContent'>
-                      { Number(communityInfo?.totalSupply) ?? 0 }
-                    </p>
-                  </div>
-                </div>
-                <DividerLine className='!bg-[#E7E7E7]' />
-                <div className='py-[6px] flex items-start gap-[50px]'>
-                  <div className='text-secondaryBlack'>
-                    <div className='text-searchTagTitle flex horizontal items-center'>
-                      <span className="mr-1">Burn Mode</span>
-                      {/* <ToolTip mode='sm' content={<p><span className='text-mintPurple'>Total value locked:</span> Total value of tokens staked by community members, calculated in USDT.</p>}>
-                        <TipIcon width='14' height='14' className='text-mintPurple'/>
-                      </ToolTip> */}
-                    </div>
-                    <p className='text-searchTagContent text-secondaryBlack'>
-                      { SequenceMode[communityInfo?.config?.sequenceMode ?? 0] }
-                    </p>
-                  </div>
-                  <div className='text-secondaryBlack'>
-                    <p className='text-searchTagTitle'>Burn Anytime</p>
-                    <p className='text-searchTagContent text-secondaryBlack'>
-                      { communityInfo.config?.burnAnytime ? 'Yes' : 'No' }
-                    </p>
-                  </div>
-                  <div className='text-secondaryBlack'>
-                    <div className='text-searchTagTitle flex horizontal items-center'>
-                      <span className="mr-1">Formula of Mint Price</span>
-                      {/* {
-                        !config?.publicMint && communityInfoSet.isOwner && <ToolTip className='!bottom-[-6px]' content={<p>No new members? Enable public mint in mint settings to make it public.</p>}>
-                          <TipIcon width='14' height='14' className='text-mintPurple'/>
-                        </ToolTip>
-                      } */}
-                    </div>
-                    <p className='text-searchTagContent text-secondaryBlack'>
-                      Y = { mintPriceNumericFormula }
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Collapse>
-            <CommunityRenewDialog
-              open={Boolean(dialogOpenSet['renew'])}
-              handleClose={() => setDialogOpenSet(prev => ({ ...prev, renew: false }))} />
-            <CommunitySignatureDialog
-              open={Boolean(dialogOpenSet['signature'])}
-              handleClose={() => setDialogOpenSet(prev => ({ ...prev, signature: false }))} />
-            <CommunityBindTelegram
-              open={Boolean(dialogOpenSet['telegram'])}
-              handleClose={() => setDialogOpenSet(prev => ({ ...prev, telegram: false }))} />
+                    <p>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
+                  </td>
+                  <td>
+                    <p>User Count</p>
+                    <p>{Number(communityInfo?.totalSupply) ?? 0}</p>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      <CommunityRenewDialog
+        open={Boolean(dialogOpenSet['renew'])}
+        handleClose={() => setDialogOpenSet(prev => ({ ...prev, renew: false }))} />
+      <CommunitySignatureDialog
+        open={Boolean(dialogOpenSet['signature'])}
+        handleClose={() => setDialogOpenSet(prev => ({ ...prev, signature: false }))} />
+      <CommunityBindTelegram
+        open={Boolean(dialogOpenSet['telegram'])}
+        handleClose={() => setDialogOpenSet(prev => ({ ...prev, telegram: false }))} />
     </div>
   )
 }

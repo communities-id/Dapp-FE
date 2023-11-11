@@ -8,7 +8,7 @@ export default function Search() {
 
   return (
     <main className='min-h-screen bg-[#FAFAFA]'>
-      <SearchHeader className='absolute top-0 left-0'/>
+      <SearchHeader/>
       <NotFound/>
     </main>
   )

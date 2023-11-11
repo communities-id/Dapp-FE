@@ -44,12 +44,12 @@ export const WrapperProvider = ({ mode, keywords, children }: { mode: SearchMode
     <WrapperContext.Provider value={{}}>
       <DetailsProvider mode={SearchMode[mode] as SearchModeType} keywords={keywords}>
         <GlobalDialogProvider>
-          <SearchHeader className='absolute top-0 left-0'/>
+          <SearchHeader />
           {
             mounted && (
               <main className='min-h-screen bg-[#FAFAFA]'>
                 <img src='/search/blur-bg.png' className='absolute top-0 left-0 z-0 w-full h-full bg-cover pointer-events-none'/>
-                <header className='search-container bg-white relative z-1 rounded-[10px]'>
+                <header className='bg-white relative z-1 rounded-[10px]'>
                   <SearchHeaderInfo />
                 </header>
                 {children}

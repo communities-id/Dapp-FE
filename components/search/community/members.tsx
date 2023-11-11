@@ -1,8 +1,9 @@
 import { FC, useEffect, useMemo, useState, Fragment, useCallback } from 'react'
 
 import useApi from '@/shared/useApi'
-import { formatPrice, formatTime, formatTransaction, parseImgSrc } from '@/shared/helper'
-import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP, SCAN_MAP } from '@/shared/constant'
+import { Tabs, TabsList } from '@mui/base'
+import Tab from '@/components/common/tab'
+import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
 
 import InfiniteList from '@/components/common/infiniteList'
@@ -55,8 +56,15 @@ const CommunityMembers: FC<Props> = () => {
 
   return (
     <div className='pt-[10px]'>
+      <Tabs defaultValue={0}>
+        <TabsList className='pt-[10px] pb-6'>
+          <Tab value={0}>
+            User DID
+          </Tab>
+        </TabsList>
+      </Tabs>
       <InfiniteList<CommunityMember>
-        className='grid grid-cols-4 gap-5'
+        className='card-grid grid gap-5'
         items={members}
         loadMore={loadMore}
         renderItem={(row) => {

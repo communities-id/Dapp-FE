@@ -20,7 +20,7 @@ const Banner: FC<Props> = ({ banner, brandColor, className }) => {
   
   return (
     <div className={
-      classnames('h-[210px]', {
+      classnames('h-[260px]', {
         '!bg-cover !bg-center': !!banner,
         'bg-default-search-banner' : !banner
       }, className)

@@ -5,10 +5,11 @@ interface Props {
   children?: ReactNode
   className?: string
   lineHeight?: number
+  collapsedLine?: number
   collapsedClass?: string
 }
 
-const ExpandableDescription: FC<Props> = ({ className, children, lineHeight = 24, collapsedClass = 'h-[24px]' }) => {
+const ExpandableDescription: FC<Props> = ({ className, children, lineHeight = 24, collapsedLine = 3, collapsedClass = 'h-[72px]' }) => {
   const [showExpandBtn, setShowExpandBtn] = useState(true)
   const [expanded, setExpanded] = useState(false)
   const textElement = useRef<HTMLParagraphElement | null>(null)
@@ -16,7 +17,8 @@ const ExpandableDescription: FC<Props> = ({ className, children, lineHeight = 24
   useEffect(() => {
     if (!textElement.current) return
     const height = textElement.current?.scrollHeight || 0
-    if (height > lineHeight) {
+    console.log(height, lineHeight, collapsedLine)
+    if (height > lineHeight * collapsedLine) {
       setShowExpandBtn(true)
       setExpanded(false)
     } else {

@@ -38,6 +38,7 @@
     width: 160px;
     height: 56px;
     border-radius: 32px;
+    cursor: pointer;
   }
   .button-lg {
     display: flex;
@@ -46,6 +47,7 @@
     padding: 0 20px;
     height: 44px;
     border-radius: 22px;
+    cursor: pointer;
   }
   .button-md {
     display: flex;
@@ -54,6 +56,7 @@
     padding: 0 20px;
     height: 40px;
     border-radius: 20px;
+    cursor: pointer;
   }
   .button-sm {
     display: flex;
@@ -62,6 +65,7 @@
     padding: 0 20px;
     height: 34px;
     border-radius: 17px;
+    cursor: pointer;
   }
 
   .icon-lg {
@@ -86,9 +90,46 @@
     @apply mx-auto max-w-c-840 w-full;
   }
   .dapp-container {
-    @apply mx-auto max-w-c-840 w-full;
+    margin: 0 auto;
+    width: 840px;
     @media screen and (min-width: 1024px) {
-      @apply max-w-c-1024;
+      width: 840px;
+    }
+    @media screen and (min-width: 1440px) {
+      width: 1160px;
+    }
+    @media screen and (min-width: 1920px) {
+      width: 1352px;
+    }
+    @media screen and (min-width: 2560px) {
+      width: 1760px;
+    }
+    .search-form {
+      @media screen and (min-width: 1024px) {
+        width: 253px;
+      }
+      @media screen and (min-width: 1440px) {
+        width: 459px;
+      }
+      @media screen and (min-width: 1920px) {
+        width: 651px;
+      }
+      @media screen and (min-width: 2560px) {
+        width: 800px;
+      }
+    }
+    
+  }
+  .card-grid {
+    @apply grid-cols-3;
+    @media screen and (min-width: 1440px) {
+      @apply grid-cols-4;
+    }
+    @media screen and (min-width: 1920px) {
+      @apply grid-cols-5;
+    }
+    @media screen and (min-width: 2560px) {
+      @apply grid-cols-6;
     }
   }
 }
@@ -130,25 +171,41 @@
   }
 }
 
-/* @keyframes normal-breath {
-  0% {
-    opacity: 0.6;
+.community-info {
+  .mint-info {
+    width: 100%;
+    margin-top: 40px;
+    table {
+      width: 100%;
+    }
   }
-  50% {
-    opacity: 0.8;
+  @media screen and (min-width: 1440px) {
+    @apply flex justify-between items-start gap-30;
+    .mint-info {
+      width: auto;
+      margin-top: 0;
+    }
   }
-  100% {
-    opacity: 0.6;
-  }
-} */
+}
 
-.selection-text {
-  /* &::selection {
-    @apply !bg-mintPurple !text-white;
+.mint-info-table {
+  border-collapse: collapse;
+  border-radius: 24px;
+  border-style: hidden;
+  box-shadow: 0 0 0 1px #eaeaea;
+  td {
+    padding: 10px 20px;
+    border: 1px solid #eaeaea;
+    p {
+      &:first-child {
+        @apply text-gray-1 text-sm flex items-center gap-1;
+      }
+      &:nth-child(2) {
+        @apply text-main-black text-md;
+        font-weight: 600;
+      }
+    }
   }
-  &::-moz-selection {
-    @apply !bg-mintPurple !text-white;
-  } */
 }
 
 .cid-price-chart .y-regions .bar {

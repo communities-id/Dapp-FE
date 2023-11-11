@@ -281,7 +281,7 @@ module.exports = {
       },
       outlineWidth: {
         'search-form': '1px',
-        'avatar': '2px'
+        'avatar': '4px'
       },
       borderColor: {
         'home-search': '#DCDCDC',

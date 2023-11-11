@@ -1,24 +1,26 @@
 import { FC } from 'react'
 import classnames from 'classnames'
-import TransparentLogo from '~@/logo/inline-transparent.svg'
-import LightLogo from '~@/logo/inline-light.svg'
 import DarkLogo from '~@/logo/inline-dark.svg'
 import Link from 'next/link'
+import LogoWithColor from './LogoWithColor'
+import { useDetails } from '@/contexts/details'
 interface Props {
   className?: string
 }
 
 const SearchFooter: FC<Props> = ({ className }) => {
+  const { communityInfo } = useDetails()
   return (
-    <div className={classnames(`mt-[10px] flex items-center gap-[12px] ${className}`)}>
-      <span className='text-gray-logo'>Powered by</span>
-      <Link href='/' target='_blank' className='group'>
-        <TransparentLogo width='106' height='24' className="text-gray-logo block group-hover:hidden" />
-        <div className='hidden group-hover:block'>
-          <LightLogo width='106' height='24' className="block dark:hidden" />
-          <DarkLogo width='106' height='24' className="hidden dark:block" />
-        </div>
-      </Link>
+    <div className={classnames(`fixed bottom-0 left-0 right-0 max-w-full flex justify-center bg-white py-5 ${className}`)}>
+      <div className="flex items-center gap-[12px]">
+        <span className='text-gray-logo'>Powered by</span>
+        <Link href='/' target='_blank' className='group'>
+          <div className='group-hover:block'>
+            <LogoWithColor width='106' height='24' className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
+            <DarkLogo width='106' height='24' className="hidden dark:block" />
+          </div>
+        </Link>
+      </div>
     </div>
   )
 }

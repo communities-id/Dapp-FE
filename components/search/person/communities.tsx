@@ -60,7 +60,7 @@ const Communities: FC<Props> = () => {
   return (
     <div className=''>
       <InfiniteList<PersonCommunity>
-        className='grid grid-cols-4 gap-5'
+        className='card-grid grid gap-5'
         items={communities}
         loadMore={loadMore}
         renderItem={(row) => {
