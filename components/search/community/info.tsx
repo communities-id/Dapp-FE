@@ -8,7 +8,7 @@ import { DEFAULT_AVATAR, MAIN_CHAIN_ID, SCAN_MAP, ZERO_ADDRESS } from '@/shared/
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
-import { formatDate, formatPrice, formatConstantsPrice, parseImgSrc } from '@/shared/helper'
+import { formatDate, formatPrice, formatConstantsPrice, parseImgSrc, calcMintPrice } from '@/shared/helper'
 import useApi from '@/shared/useApi'
 import { getOpenseaLink, getCommunityOpenseaLink } from '@/utils/tools'
 import { calcCurrentMintPrice, parseToDurationPrice, parseNumericFormula } from '@/utils/formula'
@@ -52,6 +52,7 @@ import { TotalSupportedChainIDs } from '@/types/chain'
 import { SequenceMode } from '@/types/contract'
 import { formatToDecimal } from '@/utils/format'
 import ExpandableDescription from '@/components/common/expandableDescription'
+import { BrandDID } from '@communitiesid/id'
 
 interface Props {
   children?: ReactNode
@@ -188,20 +189,7 @@ const CommunityLayout: FC<Props> = () => {
   const { totalSupply, config, tokenUri, priceModel } = communityInfo
 
   const mintPrice = useMemo(() => {
-    if (!priceModel) return '-'
-    const input = {
-      a_: priceModel.a ?? '0',
-      b_: priceModel.b ?? '0',
-      c_: priceModel.c ?? '0',
-      d_: priceModel.d ?? '0',
-    }
-    const formulaParams = parseToDurationPrice(priceModel.mode, input, config?.durationUnit ?? 1)
-    const params = {
-      mode: priceModel.mode,
-      ...formulaParams
-    }
-    const { price } = calcCurrentMintPrice(totalSupply ?? 0, params)
-    return formatConstantsPrice(price)
+    return calcMintPrice(communityInfo as BrandDID)
   }, [totalSupply, priceModel, config])
 
   const mintPriceNumericFormula = useMemo(() => {

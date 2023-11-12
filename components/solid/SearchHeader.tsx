@@ -17,6 +17,7 @@ import AccountSvg from '~@/icons/header/account.svg'
 import LogoutSvg from '~@/icons/header/logout.svg'
 import LogoWithColor from "../common/LogoWithColor"
 import { useDetails } from "@/contexts/details"
+import SearchSuggestion from "../dialog/searchSuggestion"
 
 const SearchHeader: FC = () => {
   const { handleSearch } = useSearch()
@@ -24,6 +25,7 @@ const SearchHeader: FC = () => {
   const { communityInfo } = useDetails()
   const keywords = useSearchParams().get('keywords') as string
   const [searchValue, setSearchValue] = useState('')
+  const [searchSuggestionOpen, setSearchSuggestionOpen] = useState(false)
 
   useEffect(() => {
     if (!keywords) return
@@ -120,17 +122,9 @@ const SearchHeader: FC = () => {
             <DarkLogo className="hidden dark:block w-full"/>
           </Link>
           <div className="search">
-            <div className="search-form bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4">
+            <div className="search-form bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-text" role="button" onClick={() => setSearchSuggestionOpen(true)}>
               <SearchSvg className="w-6 h-6" />
-              <form onSubmit={handleSearchSubmit} className="w-full">
-                <input
-                  type="text"
-                  className="w-full bg-transparent outline-none placeholder:text-gray-4"
-                  placeholder="Search brand, user and address"
-                  value={searchValue}
-                  onChange={e => setSearchValue(e.target.value)}
-                />
-              </form>
+              <span>{searchValue}</span>
             </div>
           </div>
         </div>
@@ -138,6 +132,7 @@ const SearchHeader: FC = () => {
           {props => renderAccountButton(props)}
         </ConnectButton.Custom>
       </div>
+      <SearchSuggestion open={searchSuggestionOpen} handleClose={() => setSearchSuggestionOpen(false)}/>
     </header>
   )
 }

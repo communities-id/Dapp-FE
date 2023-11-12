@@ -208,6 +208,10 @@
   }
 }
 
+.search-suggestion-container {
+  align-items: flex-start;
+}
+
 .cid-price-chart .y-regions .bar {
   display: none;
 }

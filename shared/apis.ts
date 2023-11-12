@@ -160,3 +160,8 @@ export const bindTelegramGrouop = async (signature: string, brandDID: string, gr
   })
   return res.data
 }
+
+export const searchSuggestion = async (keyword: string) => {
+  const res = await axios.get(`/api/community/search?name=${keyword}`)
+  return res.data
+}

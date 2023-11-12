@@ -6,6 +6,8 @@ import { CHAIN_ID, CONTRACT_MAP, MAIN_CHAIN_ID, ZERO_ADDRESS } from "@/shared/co
 import { formatToDecimal } from '@/utils/format'
 
 import { SearchModeType } from '@/types'
+import { BrandDID } from '@communitiesid/id'
+import { calcCurrentMintPrice, parseToDurationPrice } from '@/utils/formula'
 
 export function isAddress(str: string) {
   return /^0x[0-9A-F]{40}$/i.test(str)
@@ -361,4 +363,22 @@ export const getMemberSignPayload = (node: string, owner: string, registry: stri
     types,
     commitment,
   }
+}
+
+export const calcMintPrice = (communityInfo: BrandDID) => {
+  const { priceModel, totalSupply, config } = communityInfo
+  if (!priceModel) return '-'
+  const input = {
+    a_: priceModel.a ?? '0',
+    b_: priceModel.b ?? '0',
+    c_: priceModel.c ?? '0',
+    d_: priceModel.d ?? '0',
+  }
+  const formulaParams = parseToDurationPrice(priceModel.mode, input, config?.durationUnit ?? 1)
+  const params = {
+    mode: priceModel.mode,
+    ...formulaParams
+  }
+  const { price } = calcCurrentMintPrice(totalSupply ?? 0, params)
+  return formatConstantsPrice(price)
 }

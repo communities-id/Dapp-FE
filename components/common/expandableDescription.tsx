@@ -17,7 +17,6 @@ const ExpandableDescription: FC<Props> = ({ className, children, lineHeight = 24
   useEffect(() => {
     if (!textElement.current) return
     const height = textElement.current?.scrollHeight || 0
-    console.log(height, lineHeight, collapsedLine)
     if (height > lineHeight * collapsedLine) {
       setShowExpandBtn(true)
       setExpanded(false)
