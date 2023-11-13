@@ -13,9 +13,10 @@ import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useRoot } from '@/contexts/root'
 import { useSignUtils } from '@/hooks/sign'
 import { useWallet } from '@/hooks/wallet'
-import { parseToDurationPrice } from '@/utils/formula'
+import { calcCurrentMintPrice, parseToDurationPrice } from '@/utils/formula'
 import { formatInputName } from '@/utils/format'
 
+import NumberInput from '@/components/common/numberInput'
 import ConnectButton from '@/components/common/connectButton'
 import PriceModeChart from '@/components/common/priceModeChart'
 import AdvancedMintSetting from '@/components/common/advanceMintSetting'
@@ -41,8 +42,9 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
   const { verifyMemberTypedMessage } = useSignUtils()
   const { address: account } = useWallet()
 
+  const [slippage, setSlippage] = useState(1)
   const [member, setMemberInput] = useState('')
-  const [mintPrice, setPrice] = useState<BigNumber>(BigNumber.from(0))
+  // const [mintPrice, setPrice] = useState<BigNumber>(BigNumber.from(0))
   // const [protocolFee, setProtocoFee] = useState<BigNumber>(BigNumber.from(0))
   const [switchNetworkLoading, setSwitchNetworkLoading] = useState(false)
   const [mintLoading, setMintLoading] = useState(false)
@@ -52,6 +54,25 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
   })
   const [isMounted, setIsMounted] = useState(false)
   const DIDName = `${member}.${community}`
+  const { totalSupply, config, tokenUri, priceModel } = communityInfo
+  
+  const mintPrice = useMemo(() => {
+    if (!priceModel) return BigNumber.from(0)
+    const input = {
+      a_: priceModel.a ?? '0',
+      b_: priceModel.b ?? '0',
+      c_: priceModel.c ?? '0',
+      d_: priceModel.d ?? '0',
+    }
+    const formulaParams = parseToDurationPrice(priceModel.mode, input, config?.durationUnit ?? 1)
+    const params = {
+      mode: priceModel.mode,
+      ...formulaParams
+    }
+    const { priceWei } = calcCurrentMintPrice(slippage ?? totalSupply ?? 0, params)
+    return priceWei
+  }, [totalSupply, priceModel, config, slippage])
+  console.log('- mintPrice', mintPrice)
 
   const priceChartParams = useMemo(() => {
     if (!communityInfo.priceModel || !communityInfo?.config) return {
@@ -182,7 +203,8 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
       const chainId = await swichToCorrectChain()
       setMintLoading(true)
       const { node } = communityInfo
-      const { price, fee } = await getPrice()
+      const { price: _price, fee } = await getPrice()
+      const price = mintPrice.gte(_price) ? mintPrice : _price
       // const chainId = communityInfo.chainId as number
       if (shouldApproveCoin && communityInfo.config) {
         await approveErc20?.(communityInfo.config.coin, communityInfo.node.registryInterface, { price, chainId })
@@ -229,7 +251,7 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
     try {
       const DIDName = `${member}.${community}`
       const { price, protocolFee: fee } = await getMintMemberPrice(DIDName, communityInfo as BrandDID)
-      setPrice(price || 0)
+      // setPrice(price || 0)
       // setProtocoFee(fee)
       return {
         price,
@@ -352,6 +374,14 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
           className='px-[34px] w-full'
           disabled={isMintDisabled}
           onClick={handleMint}>Mint Now</ConnectButton>
+      </div>
+      <div className='mt-[24px]'>
+        <h3 className='mb-[16px] text-center'>Slippage Index</h3>
+        <NumberInput
+          min={0}
+          max={100}
+          value={slippage}
+          onChange={(e, val) => setSlippage(Number(val))} />
       </div>
     </div>
   )

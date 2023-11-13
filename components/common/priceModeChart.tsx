@@ -35,7 +35,6 @@ const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200,
     }
   }]
 
-  console.log('- datasetsValues', datasetsValues)
   return (
     <LinearChart
       key={name}
