@@ -42,6 +42,7 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
   useEffect(() => {
     async function fetchSuggestion() {
       const res = getSearchSuggestions(searchValue)
+      if (res.length === 0) return
       const list = await Promise.all(res.map(async (v) => {
         const { priceModel, totalSupply, durationUnit, coin, chainID } = v
         const mintPrice = calcMintPrice(formatInfo({
@@ -66,6 +67,7 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
 
   function handleSearchSubmit(e: FormEvent) {
     e.preventDefault()
+    handleClose()
     handleSearch(searchValue)
   }
 
