@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { styled } from '@mui/system'
-import Switch, { switchClasses, SwitchInputSlotProps } from '@mui/base/Switch'
+import { Switch, switchClasses, SwitchInputSlotProps } from '@mui/base'
 
 interface CustomSwitchProps extends SwitchInputSlotProps {
 

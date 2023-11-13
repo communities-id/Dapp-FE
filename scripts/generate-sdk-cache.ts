@@ -9,7 +9,7 @@ async function main() {
     }
   })
   const res: any = {}
-  communities.forEach(({ registry, name, chainId }) => {
+  communities.forEach(({ name, chainId }) => {
     res[name] = chainId
   })
 

@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import classnames from 'classnames'
 import styled from '@emotion/styled';
 
-import Input, { InputProps } from '@mui/base/Input';
+import { Input, InputProps } from '@mui/base';
 
 const CustomInput = forwardRef(function CustomInput(
   props: InputProps & { inputclassname?: string },
