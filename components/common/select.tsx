@@ -1,10 +1,8 @@
 import { FC, ReactNode, forwardRef } from 'react'
 
 import { styled } from '@mui/system'
-import Select, { SelectProps, SelectRootSlotProps, selectClasses } from '@mui/base/Select'
-import Option, { optionClasses } from '@mui/base/Option'
-import OptionGroup, { OptionGroupProps } from '@mui/base/OptionGroup'
-import Popper from '@mui/base/Popper'
+import { Select, SelectProps, SelectRootSlotProps, selectClasses } from '@mui/base'
+import { Option, optionClasses, OptionGroup, OptionGroupProps, Popper } from '@mui/base'
 import UnfoldMoreIcon from '~@/icons/unfold-more.svg'
 
 interface Props<T = string> {

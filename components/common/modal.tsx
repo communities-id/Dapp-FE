@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import Fade from '@/components/transitions/fade'
 
-import Modal from '@mui/base/Modal';
+import { Modal } from '@mui/base';
 import { styled } from '@mui/system';
 import FadeSlide from '../transitions/fade-slide';
 
