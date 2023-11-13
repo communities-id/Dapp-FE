@@ -4,8 +4,7 @@ import {
   NumberInputProps,
 } from '@mui/base';
 import { styled } from '@mui/system';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
+import { Remove as RemoveIcon, Add as AddIcon } from '@mui/icons-material';
 
 const NumberInput = React.forwardRef(function CustomNumberInput(
   props: NumberInputProps,

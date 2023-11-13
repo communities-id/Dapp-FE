@@ -6,7 +6,7 @@ import FadeSlide from '@/components/transitions/fade-slide'
 
 import MintButton from '@/components/mint/button';
 
-import Modal from '@mui/base/Modal';
+import { Modal } from '@mui/base';
 import { Box, styled } from '@mui/system';
 
 import CloseIcon from '~@/icons/close.svg'
