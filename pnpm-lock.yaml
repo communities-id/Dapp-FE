@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@communitiesid/id':
-    specifier: ^0.5.13
-    version: 0.5.13(@siddomains/sid-contracts@0.1.31)
+    specifier: ^0.6.2
+    version: 0.6.2(@siddomains/sid-contracts@0.1.31)
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.0.33)(react@18.2.0)
@@ -1558,8 +1558,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@communitiesid/id@0.5.13(@siddomains/sid-contracts@0.1.31):
-    resolution: {integrity: sha512-KhFIxafrPoHg78rOti97oPzMdEsDHla48y9/RI4+NKlCx4Dk9wA87EoIyRmTitAq0m4N/0CP2/2UK2qADzJBEA==}
+  /@communitiesid/id@0.6.2(@siddomains/sid-contracts@0.1.31):
+    resolution: {integrity: sha512-gLCOa3dxvMEXVTzweY/OJetdtVMcPDDGF9UcDlk5nOWpKg7GeSoVyzipfJDuOdXybdnPneY4RXwmhQVO0I420w==}
     dependencies:
       '@siddomains/sidjs': 0.1.29(@siddomains/sid-contracts@0.1.31)(ethers@5.7.2)
       axios: 1.4.0

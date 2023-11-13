@@ -56,8 +56,11 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
   const DIDName = `${member}.${community}`
   const { totalSupply, config, tokenUri, priceModel } = communityInfo
   
-  const mintPrice = useMemo(() => {
-    if (!priceModel) return BigNumber.from(0)
+  const mintPriceData = useMemo(() => {
+    if (!priceModel) return {
+      priceWei: BigNumber.from(0),
+      nonezeroPriceWei: BigNumber.from(0)
+    }
     const input = {
       a_: priceModel.a ?? '0',
       b_: priceModel.b ?? '0',
@@ -70,9 +73,19 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
       ...formulaParams
     }
     const { priceWei } = calcCurrentMintPrice(slippage ?? totalSupply ?? 0, params)
-    return priceWei
+    const { priceWei: nonezeroPriceWei } = calcCurrentMintPrice(100, params)
+    return {
+      priceWei,
+      nonezeroPriceWei
+    }
   }, [totalSupply, priceModel, config, slippage])
+
+  const mintPrice = mintPriceData.priceWei
   console.log('- mintPrice', mintPrice)
+
+  const isFreeMint = useMemo(() => {
+    return mintPriceData.nonezeroPriceWei.eq(0)
+  }, [mintPriceData])
 
   const priceChartParams = useMemo(() => {
     if (!communityInfo.priceModel || !communityInfo?.config) return {
@@ -375,14 +388,18 @@ const MemberCustomMint: FC<MemberCustomMintProps> = () => {
           disabled={isMintDisabled}
           onClick={handleMint}>Mint Now</ConnectButton>
       </div>
-      <div className='mt-[24px]'>
-        <h3 className='mb-[16px] text-center'>Slippage Index</h3>
-        <NumberInput
-          min={0}
-          max={100}
-          value={slippage}
-          onChange={(e, val) => setSlippage(Number(val))} />
-      </div>
+      {
+        !isFreeMint && (
+          <div className='mt-[24px]'>
+            <h3 className='mb-[16px] text-center'>Slippage Index</h3>
+            <NumberInput
+              min={0}
+              max={100}
+              value={slippage}
+              onChange={(e, val) => setSlippage(Number(val))} />
+          </div>
+        )
+      }
     </div>
   )
 }
