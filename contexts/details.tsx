@@ -2,7 +2,7 @@ import { createContext, use, useContext, useEffect, useMemo, useRef, useState } 
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useNetwork } from 'wagmi'
-import { BrandDID } from '@communitiesid/id'
+import { BrandDID, SupportedChainIds } from '@communitiesid/id'
 // import { useRoot } from '@/contexts/root'
 import { useWallet } from '@/hooks/wallet'
 import { execSearch } from '@/shared/helper'
@@ -12,6 +12,7 @@ import { verifyContractVersion } from '@/utils/tools'
 
 import { SearchMode, SearchModeType, CommunityInfo, MemberInfo, State, CommunityNode } from '@/types'
 import { ContractVerison } from '@/types/contract'
+import { searchSuggestion } from '@/shared/apis'
 
 interface DetailsContextProps {
   version: ContractVerison
@@ -24,6 +25,15 @@ interface DetailsContextProps {
   memberInfo: Partial<MemberInfo>
   ownerMemberInfo: Partial<MemberInfo>
   isUnknown: boolean
+  communityCache: {
+    name: string,
+    imge: string,
+    chainID: SupportedChainIds,
+    totalSupply: number,
+    durationUnit: number,
+    priceModel: BrandDID["priceModel"],
+    coin: string
+  }[]
   loadingSet: Record<'community' | 'member' | 'did', boolean>
   communityInfoSet: {
     isValid: boolean // is info valid
@@ -66,6 +76,7 @@ const DetailsContext = createContext<DetailsContextProps>({
   memberInfo: {},
   ownerMemberInfo: {},
   isUnknown: false,
+  communityCache: [],
   loadingSet: {
     community: true,
     member: true,
@@ -117,6 +128,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
   const [communityInfo, setCommunityInfo] = useState<Partial<CommunityInfo>>({})
   const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>({})
   const [ownerMemberInfo, setOwnerMemberInfo] = useState<Partial<MemberInfo>>({})
+  const [communityCache, setCommunityCache] = useState<DetailsContextProps["communityCache"]>([])
   const requestId = useRef(0)
 
   const version = useMemo(() => {
@@ -187,6 +199,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     }
   }, [account, communityInfo, loadingSet.community, chain?.id, mainMulChainID])
 
+
   // current member status info
   const memberInfoSet = useMemo(() => {
     if (loadingSet.member) {
@@ -240,16 +253,6 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     return data
   }
 
-  // const loadOwnerMemberInfo = async (account: string) => {
-  //   const did = await getPrimaryMember(account)
-  //   if (!did) return
-  //   const { type, community, member } = execSearch(did)
-  //   if (type === 'unknown') return
-  //   const ownerDIDCommunityInfo = await searchCommunity(community)
-  //   const ownerDIDMemberInfo = await searchMember(ownerDIDCommunityInfo, community, member)
-  //   setOwnerMemberInfo(ownerDIDMemberInfo)
-  // }
-
   const loadAddressInfo = async (address: string) => {
     const did = await getPrimaryMember(address)
     if (!did) return
@@ -260,26 +263,6 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     return DIDMemberInfo
   }
 
-  // Get the did of the address by keywords
-  const loadAddressDID = async (address: string) => {
-    // if (type !== 'address') {
-    //   setLoadingSet((prev) => ({ ...prev, did: false }))
-    //   return
-    // }
-    // setLoadingSet((prev) => ({ ...prev, did: true }))
-    // const did = await getPrimaryMember(address)
-    // if (!did) {
-    //   // setCommunityInfo({})
-    //   // setDomainInfo({})
-    //   clearInfo()
-    //   setLoadingSet((prev) => ({ ...prev, community: false }))
-    //   setLoadingSet((prev) => ({ ...prev, member: false }))
-    // } else {
-    //   setAddressDID(did)
-    // }
-    // setLoadingSet((prev) => ({ ...prev, did: false }))
-    // return did
-  }
 
   const clearInfo = () => {
     // setAddressDID('')
@@ -363,6 +346,28 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     })
   }, [account])
 
+  useEffect(() => {
+    async function getCommunityCache() {
+      const storage = localStorage.getItem('communityCache')
+      try {
+        const { data, expired } = JSON.parse(storage || '{}')
+        if (data && expired > Date.now()) {
+          setCommunityCache(data)
+          return
+        }
+        throw new Error('no cache for community')
+      } catch (e) {
+        const res = await searchSuggestion()
+        if (res.data) {
+          const expired = Date.now() + 1000 * 60 * 10
+          localStorage.setItem('communityCache', JSON.stringify({ data: res.data, expired }))
+          setCommunityCache(JSON.parse(JSON.stringify(res.data)))
+        }
+      }
+    }
+    getCommunityCache()
+  }, [])
+
   return (
     <DetailsContext.Provider value={{
       version,
@@ -370,6 +375,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
       keywords,
       member,
       address: type === 'address' ? keywords : '',
+      communityCache,
       community,
       communityInfo,
       memberInfo,

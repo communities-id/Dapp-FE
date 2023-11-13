@@ -55,14 +55,14 @@ export const toBN = (num: BigNumber | number | string) => {
 
 export const formatInfo = (info: any) => {
   if (info.pool) {
-    info.pool = BigNumber.from(info.pool.hex)
+    info.pool = BigNumber.from(info.pool.hex || info.pool._hex)
   }
   if (info.priceModel) {
-    info.priceModel.a = BigNumber.from(info.priceModel.a.hex)
-    info.priceModel.b = BigNumber.from(info.priceModel.b.hex)
-    info.priceModel.c = BigNumber.from(info.priceModel.c.hex)
-    info.priceModel.d = BigNumber.from(info.priceModel.d.hex)
-    info.priceModel.commissionRate = BigNumber.from(info.priceModel.commissionRate.hex)
+    info.priceModel.a = BigNumber.from(info.priceModel.a.hex || info.priceModel.a._hex)
+    info.priceModel.b = BigNumber.from(info.priceModel.b.hex || info.priceModel.b._hex)
+    info.priceModel.c = BigNumber.from(info.priceModel.c.hex || info.priceModel.c._hex)
+    info.priceModel.d = BigNumber.from(info.priceModel.d.hex || info.priceModel.d._hex)
+    info.priceModel.commissionRate = BigNumber.from(info.priceModel.commissionRate.hex || info.priceModel.commissionRate._hex)
   }
   return info
 }
