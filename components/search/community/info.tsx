@@ -1,5 +1,4 @@
 import { FC, ReactNode, useEffect, useMemo, useState, Fragment } from 'react'
-import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -15,7 +14,6 @@ import { calcCurrentMintPrice, parseToDurationPrice, parseNumericFormula } from 
 import { getNormalTwitterShareLink, formatDiscordLink, formatTelegramLink, formatTwitterLink } from '@/utils/share'
 import { updateCommunity } from '@/shared/apis'
 
-import Collapse from '@/components/common/collapse'
 import AvatarCard from '@/components/common/avatar'
 import Popover, { PopoverMenuItem } from '@/components/common/popover'
 import PrimaryDID from '@/components/common/primaryDID'
@@ -27,7 +25,6 @@ import ChainIcon from '@/components/common/chainIcon'
 import ToolTip from '@/components/common/tooltip'
 import Banner from '@/components/search/banner'
 import HoverIcon from '@/components/common/hoverIcon'
-import MintTip from '@/components/common/mintTip'
 import DividerLine from '@/components/common/dividerLine'
 import Tag from '@/components/common/tag'
 
@@ -342,7 +339,7 @@ const CommunityLayout: FC<Props> = () => {
                 <tr>
                   <td colSpan={2}>
                     <div className="flex justify-between items-center">
-                      <div>
+                      <div className='col'>
                         <p>Current Mint Price</p>
                         <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
                       </div>

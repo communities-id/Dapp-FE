@@ -197,7 +197,7 @@
   td {
     padding: 10px 20px;
     border: 1px solid #eaeaea;
-    > p {
+    > p, .col > p {
       &:first-child {
         @apply text-gray-1 text-sm flex items-center gap-1;
       }
