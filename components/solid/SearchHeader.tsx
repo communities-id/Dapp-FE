@@ -109,7 +109,7 @@ const SearchHeader: FC = () => {
   }
 
   return (
-    <header className="header-container fixed top-7 w-full z-30">
+    <header className="header-container sticky top-7 w-full z-30">
       <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7">
         <div className="flex justify-start gap-[30px] items-center">
           <Link href="/" className='inline-block w-[165px]'>

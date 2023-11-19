@@ -58,7 +58,7 @@ export default function Dapp() {
     <DetailsProvider mode="community" keywords="">
       <div className="dapp-page">
         <SearchHeader />
-        <div className="main pt-[185px] text-center flex flex-col items-center mb-40">
+        <div className="main pt-[105px] text-center flex flex-col items-center mb-40">
           <h1 className="title font-Saira">Your <span><span>Web3</span></span> Brand Name</h1>
           <p className="mt-5 text-md text-gray-2 font-Saira">Your Exclusive Brand DID Across All Supported Chains in Web3<br />One Name to Start Building Your Own Community.</p>
           <div className="forms mt-8 w-[800px]">
@@ -117,20 +117,20 @@ export default function Dapp() {
             </div>
           </div>
           <form
-            className="mt-20 border-[6px] border-primary border-w-3 w-[600px] rounded-full flex justify-between items-center bg-white overflow-hidden px-3 py-3"
+            className="mt-20 border-[6px] border-primary border-w-3 w-[600px] rounded-full flex justify-between items-center bg-white overflow-hidden px-3 py-3 gap-4"
             onSubmit={(e) => handleSubmit(e)}
           >
-            <div className='flex items-center'>
-              <RoundedLogo width="58" height="58" />
+            <div className='flex items-center w-full'>
+              <RoundedLogo width="58" height="58" className="flex-shrink-0" />
               <input
                 type="text"
                 placeholder='Search for a name'
-                className="text-lg outline-none text-[20px]"
+                className="text-lg outline-none text-[20px] w-full"
                 value={name}
                 onChange={e => setName(e.target.value)}
               />
             </div>
-            <button className="button-xl bg-primary text-white text-lg w-auto text-[20px]">
+            <button className="button-xl bg-primary text-white text-lg w-auto text-[20px] flex-shrink-0">
               <StarIcon width="20" height="20" />
               <span className='ml-2.5'>Create Brand</span>
             </button>
