@@ -18,7 +18,7 @@ const CommunityDuplicate: FC<Props> = ({ open, handleClose }) => {
   }
 
   function handleClickOutside(e: Event) {
-    const searchBox = document.querySelector('.search-box')
+    const searchBox = document.querySelector('.duplicate-content')
     if (!searchBox?.contains(e.target as Node)) {
       handleClose()
     }
@@ -29,7 +29,7 @@ const CommunityDuplicate: FC<Props> = ({ open, handleClose }) => {
       direction: 'X',
       offset: 800
     }}>
-      <div className="fixed w-[800px] max-w-[100vw] top-0 right-0 h-[100vh] bg-white">
+      <div className="fixed w-[800px] max-w-[100vw] top-0 right-0 h-[100vh] bg-white duplicate-content">
         <div className="dapp-page h-full relative">
           <div className="main pt-[70px]  text-center flex flex-col items-center mb-40">
             <h1 className="title font-Saira">Create Your <span><span>Own</span></span> Community</h1>

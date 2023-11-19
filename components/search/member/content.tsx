@@ -193,6 +193,7 @@ const PersonContent: FC<Props> = () => {
                     {
                       memberInfoSet.isOwner && (
                         <Popover
+                          className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                           id={Number(memberInfo.node?.tokenId)}
                           menus={memberPopoverMenus}
                           // disabled={shouldSwitchNetwork}
@@ -219,6 +220,7 @@ const PersonContent: FC<Props> = () => {
                     </ul>
                     <DividerLine mode='horizontal' wrapClassName='!mx-3' />
                     <Popover
+                      className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                       id={Number(memberInfo.node?.tokenId) + 'share'}
                       menus={memberSharePopoverMenus}
                       // disabled={shouldSwitchNetwork}

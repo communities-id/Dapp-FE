@@ -375,7 +375,12 @@ const CommunityLayout: FC<Props> = () => {
                   <td>
                     <p>
                       <span>TVL</span>
-                      <ToolTip mode='sm' content={<p><span className='text-mintPurple'>Total value locked:</span> Total value of tokens staked by community members, calculated in USDT.</p>}>
+                      <ToolTip mode='sm' content={
+                        <>
+                          <p className='text-primary'>Total value locked:</p>
+                          <p>Total value of tokens staked by community members, calculated in USDT.</p>
+                        </>
+                      }>
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
                     </p>
