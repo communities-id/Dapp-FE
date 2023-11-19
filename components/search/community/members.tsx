@@ -8,11 +8,11 @@ import { useDetails } from '@/contexts/details'
 
 import InfiniteList from '@/components/common/infiniteList'
 import ListCard from '@/components/search/card'
-import Empty from '@/components/search/empty'
 import Loading from '@/components/loading/list'
 
 import { CommunityMember } from '@/types'
 import PlusIconWithColor from '@/components/common/PlusWithColor'
+import MintSettingIcon from '~@/icons/mint-settings.svg'
 
 interface Props {
 }
@@ -34,8 +34,8 @@ const CommunityMembers: FC<Props> = () => {
 
   const pendingMintSet = useMemo(() => {
     const { config } = communityInfo
-    return !config?.publicMint && !config?.signatureMint && !config?.holdingMint && communityInfoSet.isOwner
-  }, [communityInfo, communityInfoSet.isOwner])
+    return !config?.publicMint && !config?.signatureMint && !config?.holdingMint
+  }, [communityInfo])
 
   async function fetchData({ page, pageSize }: { page: number; pageSize: number }) {
     if (!communityInfo?.node?.registry || noMore) return
@@ -108,24 +108,44 @@ const CommunityMembers: FC<Props> = () => {
         firstLoading={fetchInfo.page === 1 && loading}
         renderFirstLoading={<Loading className=''/>}
         hasMore={!noMore}
-        empty={pendingMintSet}
-        renderEmpty={<button
-          className='group border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
-          style={{
-            color: communityInfo.tokenUri?.brand_color,
-          }}
-        >
-          <div>
-            <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
-          </div>
-          <div className="mt-2.5">Join Community</div>
-          <div
-            className='absolute left-0 top-0 right-0 bottom-0 opacity-0 bg-primary group-hover:opacity-10'
-            style={{
-              backgroundColor: communityInfo.tokenUri?.brand_color,
-            }}
-          ></div>
-        </button>}
+        empty={members.length === 0}
+        renderEmpty={
+            pendingMintSet ? (
+              <div
+                className='border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
+                style={{
+                  color: communityInfo.tokenUri?.brand_color,
+                }}
+              >
+                <div>
+                  Mint setting has not finished yet, user cannot join this brand now
+                </div>
+                { communityInfoSet.isOwner && <button className="button-md btn-primary text-white mt-5">
+                    <MintSettingIcon className="mr-1.5" />
+                    <span>Update mint setting</span>
+                  </button>
+                }
+              </div>
+            ) : (
+              <button
+                className='group border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
+                style={{
+                  color: communityInfo.tokenUri?.brand_color,
+                }}
+              >
+                <div>
+                  <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
+                </div>
+                <div className="mt-2.5">Join Community</div>
+                <div
+                className='absolute left-0 top-0 right-0 bottom-0 opacity-0 bg-primary group-hover:opacity-10'
+                style={{
+                  backgroundColor: communityInfo.tokenUri?.brand_color,
+                }}
+              ></div>
+            </button>
+            )
+          }
       />
     </div>
   )
