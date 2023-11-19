@@ -6,7 +6,7 @@ import Empty from '@/components/search/empty'
 import LoadingIcon from '~@/icons/loading.svg'
 
 interface InfiniteListProps<T = unknown> {
-  renderItem: (item: T) => JSX.Element
+  renderItem: (item: T, index?: number) => JSX.Element
   loadMore: () => void
   items: T[]
   hasMore: boolean
@@ -47,7 +47,7 @@ function InfiniteList<T>(props: InfiniteListProps<T>) {
       <ul className={className}>
         { items.map((item, idx) => (
           <li key={idx}>
-            { renderItem(item) }
+            { renderItem(item, idx) }
           </li>
         )) }
       </ul>

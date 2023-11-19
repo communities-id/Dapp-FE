@@ -11,7 +11,7 @@ module.exports = {
   },
   fontFamily: {
     outfit: ['Outfit', 'sans-serif'],
-    Saira: ['Saira', 'sans-serif'],
+    Saira: ['Saira Variable', 'sans-serif'],
   },
   height: {
   },

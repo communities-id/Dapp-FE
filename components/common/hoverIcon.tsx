@@ -17,7 +17,7 @@ const HoverIcon: FC<Props> = ({ size = 24, link, noPad, noHover, className, chil
       classnames(
         'inline-flex items-center justify-center text-iconGray',
         {
-          'rounded-full hover:bg-iconHoverBg': !noHover,
+          'rounded-[10px] hover:bg-iconHoverBg': !noHover,
           'p-2': !link && !noPad,
         },
         className

@@ -1,23 +1,24 @@
 import { forwardRef } from 'react'
 import { useSpring, animated } from '@react-spring/web';
 
-interface FadeSlideProps {
+export interface FadeSlideProps {
   children: React.ReactElement;
   in?: boolean;
   offset?: number;
   disabled?: boolean
   className?: string;
   onClick?: any;
+  direction?: 'X' | 'Y'
   onEnter?: (node: HTMLElement, isAppearing: boolean) => void;
   onExited?: (node: HTMLElement, isAppearing: boolean) => void;
 }
 
 const FadeSlide = forwardRef<HTMLDivElement, FadeSlideProps>(function Fade(props, ref) {
-  const { in: open, offset = -30, disabled, children, onEnter, onExited, ...other } = props;
+  const { in: open, offset = -30, direction = 'Y', disabled, children, onEnter, onExited, ...other } = props;
 
   const style = useSpring({
-    from: { opacity: 0, transform: `translateY(${offset}px)` },
-    to: { opacity: open ? 1 : 0, transform: `translateY(0px)` },
+    from: { opacity: 0, transform: `translate${direction}(${offset}px)` },
+    to: { opacity: open ? 1 : 0, transform: `translate${direction}(0px)` },
     onStart: () => {
       if (open && onEnter) {
         onEnter(null as any, true);

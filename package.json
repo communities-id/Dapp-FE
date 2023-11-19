@@ -16,6 +16,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@flowlist/react-flowlist": "^0.2.25",
+    "@fontsource-variable/saira": "^5.0.18",
     "@joyid/rainbowkit": "^0.1.1",
     "@metamask/eth-sig-util": "^7.0.0",
     "@moralisweb3/common-evm-utils": "^2.22.3",

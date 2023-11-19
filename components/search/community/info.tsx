@@ -46,13 +46,13 @@ import RefreshIcon from '~@/icons/settings/refresh.svg'
 import SignatureIcon from '~@/icons/settings/signature.svg'
 import LinkIcon from '~@/icons/link.svg'
 import BackIcon from '~@/icons/back.svg'
+import DuplicateIcon from '~@/icons/duplicate.svg'
 
 import { State } from '@/types'
 import { TotalSupportedChainIDs } from '@/types/chain'
-import { SequenceMode } from '@/types/contract'
-import { formatToDecimal } from '@/utils/format'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
+import CommunityDuplicate from '@/components/dialog/community/duplicate'
 
 interface Props {
   children?: ReactNode
@@ -60,7 +60,7 @@ interface Props {
 
 const CommunityLayout: FC<Props> = () => {
   const { message } = useRoot()
-  const { keywords, community, communityInfo, communityInfoSet, loadingSet } = useDetails()
+  const { keywords, community, communityInfo, communityInfoSet } = useDetails()
   const { showGlobalDialog } = useGlobalDialog()
   const { switchNetworkAsync } = useSwitchNetwork()
 
@@ -293,8 +293,14 @@ const CommunityLayout: FC<Props> = () => {
                 <PrimaryDID address={communityInfo.owner || ''} />
               </div>
               <div className="actions mt-6 flex items-center gap-[10px]">
-                <button className="button-md bg-main-black text-white min-w-[100px]">Join</button>
-                <button className="button-md bg-main-black text-white min-w-[100px]">Manage</button>
+                <div className="btn-group button-md bg-main-black text-white flex gap-3">
+                  <button>Invite</button>
+                  <DividerLine mode='horizontal' className='bg-white' />
+                  <button>Join</button>
+                </div>
+                <button className="button-md bg-white text-main-black border-2 border-main-black flex gap-3">
+                  Manage
+                </button>
                 <DividerLine mode='horizontal' className='bg-main-black' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
@@ -307,7 +313,7 @@ const CommunityLayout: FC<Props> = () => {
                 }
                 <Popover
                   title="Share"
-                  className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
+                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                   id={`${keywords}-share`}
                   menus={shareMenus}
                 >
@@ -315,7 +321,7 @@ const CommunityLayout: FC<Props> = () => {
                 </Popover>
                 <Popover
                   title="Settings"
-                  className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
+                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                   id={keywords}
                   menus={communityPopoverMenus}
                   handleSelect={handleSelectMenu}
@@ -335,8 +341,19 @@ const CommunityLayout: FC<Props> = () => {
               <table className="mint-info-table">
                 <tr>
                   <td colSpan={2}>
-                    <p>Current Mint Price</p>
-                    <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p>Current Mint Price</p>
+                        <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                      </div>
+                      <button
+                        className='bg-white text-main-black text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
+                        onClick={() => setDialogOpenSet(prev => ({ ...prev, duplicate: true })) }
+                      >
+                        <span>Duplicate</span>
+                        <DuplicateIcon />
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -383,6 +400,9 @@ const CommunityLayout: FC<Props> = () => {
       <CommunityBindTelegram
         open={Boolean(dialogOpenSet['telegram'])}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, telegram: false }))} />
+      <CommunityDuplicate
+        open={Boolean(dialogOpenSet['duplicate'])}
+        handleClose={() => setDialogOpenSet(prev => ({ ...prev, duplicate: false }))} />
     </div>
   )
 }

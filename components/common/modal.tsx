@@ -5,11 +5,12 @@ import Fade from '@/components/transitions/fade'
 
 import { Modal } from '@mui/base';
 import { styled } from '@mui/system';
-import FadeSlide from '../transitions/fade-slide';
+import FadeSlide, { FadeSlideProps } from '../transitions/fade-slide';
 
 interface Props {
   open: boolean
   wrapClassName?: string
+  slideProps?: Partial<FadeSlideProps>
   handleClose?: () => void
   onClick?: (e: Event) => void
   backdropClassName?: string
@@ -17,7 +18,7 @@ interface Props {
   children: ReactElement
 }
 
-const CIDModal: FC<Props> = ({ open, wrapClassName, backdropClassName, children, disabledAnimate, handleClose, onClick }) => {
+const CIDModal: FC<Props> = ({ open, wrapClassName, backdropClassName, children, disabledAnimate, slideProps, handleClose, onClick }) => {
 
   return (
     <StyledModal
@@ -31,7 +32,7 @@ const CIDModal: FC<Props> = ({ open, wrapClassName, backdropClassName, children,
       slotProps={{ backdrop: { className: backdropClassName } }}
       onClick={onClick}
     >
-      <FadeSlide disabled={disabledAnimate} in={open} className='relative z-dialog-content outline-none'>
+      <FadeSlide {...slideProps} disabled={disabledAnimate} in={open} className='relative z-dialog-content outline-none'>
         {children}
       </FadeSlide>
     </StyledModal>

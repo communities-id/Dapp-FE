@@ -1,4 +1,4 @@
-import { FC, FormEvent, useCallback, useEffect, useState } from 'react'
+import { FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import Modal from '@/components/common/modal';
 import SearchSvg from '~@/icons/search.svg'
 import { SearchMode } from '@/types';
@@ -64,6 +64,16 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
       fetchSuggestion()
     }
   }, [searchValue])
+  
+  useEffect(() => {
+    setTimeout(() => {
+      const input = document.querySelector('#search-header-input')
+      if (open && input) {
+        (input as HTMLInputElement).focus()
+      }
+    }, 200)
+    
+  }, [open])
 
   function handleSearchSubmit(e: FormEvent) {
     e.preventDefault()
@@ -91,6 +101,7 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
                   className="w-full bg-transparent outline-none placeholder:text-gray-4"
                   placeholder="Search brand, user and address"
                   value={searchValue}
+                  id="search-header-input"
                   onChange={e => setSearchValue(e.target.value)}
                 />
               </form>

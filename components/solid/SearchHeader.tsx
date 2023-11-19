@@ -37,11 +37,6 @@ const SearchHeader: FC = () => {
     }
   }, [keywords])
 
-  function handleSearchSubmit(e: FormEvent) {
-    e.preventDefault()
-    handleSearch(searchValue)
-  }
-  
   function renderAccountButton(options: any) {
     const { account, chain, openAccountModal, openChainModal, openConnectModal, mounted }= options
     const className = "button-xl bg-primary text-white flex items-center gap-[10px]"
@@ -114,8 +109,8 @@ const SearchHeader: FC = () => {
   }
 
   return (
-    <header className="header-container absolute top-7 w-full z-10 ">
-      <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center">
+    <header className="header-container fixed top-7 w-full z-30">
+      <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7">
         <div className="flex justify-start gap-[30px] items-center">
           <Link href="/" className='inline-block w-[165px]'>
             <LogoWithColor className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />

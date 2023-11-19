@@ -12,6 +12,7 @@ module.exports = {
   'gray-4': '#CBCDDB',
   'gray-5': '#D2D2D2',
   'gray-6': '#F6F7F9',
+  'gray-7': '#e8e8e8',
   'link-1': '#883FFF',
   'link-2': '#8840FF',
   'disabled-1': '#F6F7F9',

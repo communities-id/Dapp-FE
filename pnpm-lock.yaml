@@ -17,6 +17,9 @@ dependencies:
   '@flowlist/react-flowlist':
     specifier: ^0.2.25
     version: 0.2.25
+  '@fontsource-variable/saira':
+    specifier: ^5.0.18
+    version: 5.0.18
   '@joyid/rainbowkit':
     specifier: ^0.1.1
     version: 0.1.1(@rainbow-me/rainbowkit@1.1.1)(viem@1.19.0)(wagmi@1.4.5)
@@ -2230,6 +2233,10 @@ packages:
       '@flowlist/js-core': 2.3.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@fontsource-variable/saira@5.0.18:
+    resolution: {integrity: sha512-heT9lWaQGYu+8KBkT6Lb7cfE/5AdcTWYu4SwFl9wEsLhx76kypCPCBDbEKFhrI3PU/pzIYqLMg7UY9GJ48iG8w==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.13:
