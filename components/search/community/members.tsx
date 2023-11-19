@@ -108,7 +108,7 @@ const CommunityMembers: FC<Props> = () => {
         firstLoading={fetchInfo.page === 1 && loading}
         renderFirstLoading={<Loading className=''/>}
         hasMore={!noMore}
-        empty={members.length === 0}
+        empty={isEmpty}
         renderEmpty={
             pendingMintSet ? (
               <div
