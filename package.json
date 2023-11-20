@@ -8,7 +8,7 @@
     "build:dev": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:generate": "cross-env PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate --data-proxy",
+    "prisma:generate": "prisma generate --no-engine",
     "prisma:migrate": "cross-env DATABASE_URL=\"$DATABASE_MIGRATE_URL\" prisma migrate deploy"
   },
   "resolutions": {
@@ -20,6 +20,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@flowlist/react-flowlist": "^0.2.25",
+    "@fontsource-variable/saira": "^5.0.18",
     "@joyid/rainbowkit": "^0.1.1",
     "@metamask/eth-sig-util": "^7.0.0",
     "@moralisweb3/common-evm-utils": "^2.22.3",
@@ -30,7 +31,8 @@
     "@mui/system": "^5.14.17",
     "@mui/utils": "^5.14.17",
     "@next/font": "13.1.2",
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "^5.6.0",
+    "@prisma/extension-accelerate": "^0.6.2",
     "@rainbow-me/rainbowkit": "^1.1.1",
     "@react-spring/web": "^9.7.3",
     "@types/js-cookie": "^3.0.3",
@@ -88,7 +90,7 @@
     "color": "^4.2.3",
     "dotenv": "^16.3.1",
     "postcss-import": "^15.1.0",
-    "prisma": "^4.14.0",
+    "prisma": "^5.6.0",
     "sass": "^1.62.0",
     "ts-node": "^10.9.1"
   }

@@ -23,7 +23,7 @@ const PageContent: FC<Props> = ({ className }) => {
     return (loadingSet.community || loadingSet.member) && !isUnknown
   }, [loadingSet.community, loadingSet.member, isUnknown])
   return (
-    <div className={classnames('pb-[120px]', className)}>
+    <div className={className}>
       {
         (contentLoading && mode !== 'address') ? (
           mode === 'member' ? (
@@ -43,7 +43,7 @@ const PageContent: FC<Props> = ({ className }) => {
           )
         )
       }
-      <SearchFooter className='search-container' />
+      <SearchFooter />
     </div>
   )
 }

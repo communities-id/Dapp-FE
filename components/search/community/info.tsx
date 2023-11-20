@@ -1,5 +1,4 @@
 import { FC, ReactNode, useEffect, useMemo, useState, Fragment } from 'react'
-import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -15,7 +14,6 @@ import { calcCurrentMintPrice, parseToDurationPrice, parseNumericFormula } from 
 import { getNormalTwitterShareLink, formatDiscordLink, formatTelegramLink, formatTwitterLink } from '@/utils/share'
 import { updateCommunity } from '@/shared/apis'
 
-import Collapse from '@/components/common/collapse'
 import AvatarCard from '@/components/common/avatar'
 import Popover, { PopoverMenuItem } from '@/components/common/popover'
 import PrimaryDID from '@/components/common/primaryDID'
@@ -27,7 +25,6 @@ import ChainIcon from '@/components/common/chainIcon'
 import ToolTip from '@/components/common/tooltip'
 import Banner from '@/components/search/banner'
 import HoverIcon from '@/components/common/hoverIcon'
-import MintTip from '@/components/common/mintTip'
 import DividerLine from '@/components/common/dividerLine'
 import Tag from '@/components/common/tag'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
@@ -48,13 +45,13 @@ import RefreshIcon from '~@/icons/settings/refresh.svg'
 import SignatureIcon from '~@/icons/settings/signature.svg'
 import LinkIcon from '~@/icons/link.svg'
 import BackIcon from '~@/icons/back.svg'
+import DuplicateIcon from '~@/icons/duplicate.svg'
 
 import { State } from '@/types'
 import { TotalSupportedChainIDs } from '@/types/chain'
-import { SequenceMode } from '@/types/contract'
-import { formatToDecimal } from '@/utils/format'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
+import CommunityDuplicate from '@/components/dialog/community/duplicate'
 
 interface Props {
   children?: ReactNode
@@ -62,7 +59,7 @@ interface Props {
 
 const CommunityLayout: FC<Props> = () => {
   const { message } = useRoot()
-  const { keywords, community, communityInfo, communityInfoSet, loadingSet } = useDetails()
+  const { keywords, community, communityInfo, communityInfoSet } = useDetails()
   const { showGlobalDialog } = useGlobalDialog()
   const { switchNetworkAsync } = useSwitchNetwork()
 
@@ -299,8 +296,16 @@ const CommunityLayout: FC<Props> = () => {
                 <PrimaryDID address={communityInfo.owner || ''} />
               </div>
               <div className="actions mt-6 flex items-center gap-[10px]">
-                <Button size='normal' theme='black'>Join</Button>
-                <Button size='normal' theme='black' onClick={() => toggleDialogHandler('manage', true)}>Manage</Button>
+                <div className="btn-group button-md bg-main-black text-white flex gap-3">
+                  <button>Invite</button>
+                  <DividerLine mode='horizontal' className='bg-white' />
+                  <button>Join</button>
+                </div>
+                <button
+                  className="button-md bg-white text-main-black border-2 border-main-black flex gap-3"
+                  onClick={() => toggleDialogHandler('manage', true)}>
+                  Manage
+                </button>
                 <DividerLine mode='horizontal' className='bg-main-black' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
@@ -313,7 +318,7 @@ const CommunityLayout: FC<Props> = () => {
                 }
                 <Popover
                   title="Share"
-                  className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
+                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                   id={`${keywords}-share`}
                   menus={shareMenus}
                 >
@@ -321,7 +326,7 @@ const CommunityLayout: FC<Props> = () => {
                 </Popover>
                 <Popover
                   title="Settings"
-                  className='w-[40px] h-[40px] rounded-full hover:bg-iconHoverBg'
+                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                   id={keywords}
                   menus={communityPopoverMenus}
                   handleSelect={handleSelectMenu}
@@ -341,8 +346,19 @@ const CommunityLayout: FC<Props> = () => {
               <table className="mint-info-table">
                 <tr>
                   <td colSpan={2}>
-                    <p>Current Mint Price</p>
-                    <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                    <div className="flex justify-between items-center">
+                      <div className='col'>
+                        <p>Current Mint Price</p>
+                        <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                      </div>
+                      <button
+                        className='bg-white text-main-black text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
+                        onClick={() => setDialogOpenSet(prev => ({ ...prev, duplicate: true })) }
+                      >
+                        <span>Duplicate</span>
+                        <DuplicateIcon />
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -364,7 +380,12 @@ const CommunityLayout: FC<Props> = () => {
                   <td>
                     <p>
                       <span>TVL</span>
-                      <ToolTip mode='sm' content={<p><span className='text-mintPurple'>Total value locked:</span> Total value of tokens staked by community members, calculated in USDT.</p>}>
+                      <ToolTip mode='sm' content={
+                        <>
+                          <p className='text-primary'>Total value locked:</p>
+                          <p>Total value of tokens staked by community members, calculated in USDT.</p>
+                        </>
+                      }>
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
                     </p>
@@ -392,6 +413,9 @@ const CommunityLayout: FC<Props> = () => {
       <BrandManageDialog
         open={Boolean(dialogOpenSet['manage'])}
         handleClose={() => toggleDialogHandler('manage', false)} />
+      <CommunityDuplicate
+        open={Boolean(dialogOpenSet['duplicate'])}
+        handleClose={() => toggleDialogHandler('duplicate', false)} />
     </div>
   )
 }

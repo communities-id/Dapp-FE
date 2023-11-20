@@ -1,3 +1,4 @@
+import '@fontsource-variable/saira';
 import '@/styles/globals.css'
 import '@/styles/site.scss'
 import '@rainbow-me/rainbowkit/styles.css';
@@ -18,7 +19,6 @@ import { TokenPriceProvider } from '@/contexts/tokenPrice';
 (BigInt.prototype as any).toJSON = function() {
   return this.toString()
 }
-
 
 export default function App({ Component, pageProps }: AppProps) {
 
