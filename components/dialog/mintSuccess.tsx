@@ -57,10 +57,8 @@ const MintSuccessDialog: FC<Props> = ({ open, mode, community, member, owner, av
       className='overflow-hidden !min-h-screen w-full h-screen !py-0'
       contentClassName='!overflow-hidden h-full !my-0 !py-0'
       open={open}
-      title='Congratulations!'
       center={false}
       transparent
-      hiddenTitle
       hiddenCloseIcon
       hiddenActions
       disabledAnimate

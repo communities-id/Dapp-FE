@@ -86,6 +86,21 @@
 }
 
 @layer container {
+  .modal-content-box {
+    @apply !h-[80vh] !max-h-[700px] overflow-y-scroll;
+  }
+  .modal-content-container {
+    @apply pb-15;
+  }
+  .modal-content {
+    @apply pt-15 pl-10 pr-20;
+  }
+  .modal-bottom {
+    @apply pl-10 pr-20;
+  }
+  .modal-notice {
+    @apply absolute left-5 bottom-5 right-15 z-notice;
+  }
   .search-container {
     @apply mx-auto max-w-c-840 w-full;
   }
@@ -156,6 +171,54 @@
 
   .img-white {
     filter: invert(0%) sepia(96%) saturate(15%) hue-rotate(249deg) brightness(100%) contrast(105%);
+  }
+
+  .full-size {
+    @apply w-full h-full;
+  }
+
+  .absolute-full {
+    @apply absolute top-0 bottom-0 left-0 right-0;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-justc {
+    @apply flex justify-center;
+  }
+
+  .flex-itmc {
+    @apply flex items-center;
+  }
+
+  .opacity-fade {
+    @apply opacity-0 hover:opacity-100;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .divider-line {
+    @apply w-full h-px bg-gray-3;
+  }
+
+  .abs-hc {
+    @apply absolute left-1/2 transform -translate-x-1/2;
+  }
+  .abs-vc {
+    @apply absolute top-1/2 transform -translate-y-1/2;
+  }
+
+  .underline-normal {
+    @apply underline underline-offset-2;
+  }
+
+  .border-s1 {
+    @apply border border-solid border-gray-3 rounded-xs;
+  }
+
+  .modal-notice-content {
+    @apply flex items-center justify-between py-2 pl-5 pr-2 text-black-tr-40 text-md !font-bold shadow-modal-notice border border-solid border-gray-8 rounded-xxl;
   }
 }
 

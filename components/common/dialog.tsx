@@ -12,7 +12,7 @@ import { Box, styled } from '@mui/system';
 import CloseIcon from '~@/icons/close.svg'
 
 interface Props {
-  title: string | ReactNode
+  title?: string | ReactNode
   open: boolean
   transparent?: boolean
   center?: boolean
@@ -20,7 +20,6 @@ interface Props {
   disableCloseBtn?: boolean
   closeText?: string
   confirmText?: string
-  hiddenTitle?: boolean
   hiddenCloseIcon?: boolean
   hiddenActions?: boolean
   disabledAnimate?: boolean
@@ -33,7 +32,7 @@ interface Props {
   children: ReactNode
 }
 
-const Dialog: FC<Props> = ({ title, open, transparent, center = true, loading, disableCloseBtn, closeText = 'Cancel', confirmText = 'Save', hiddenTitle, hiddenCloseIcon, hiddenActions = false, disabledAnimate, handleClose, handleConfirm, wrapClassName, backdropClassName, contentClassName, className, children }) => {
+const Dialog: FC<Props> = ({ title, open, transparent, center = true, loading, disableCloseBtn, closeText = 'Cancel', confirmText = 'Save', hiddenCloseIcon, hiddenActions = false, disabledAnimate, handleClose, handleConfirm, wrapClassName, backdropClassName, contentClassName, className, children }) => {
   // const nodeRef = useRef(null)
 
   return (
@@ -59,7 +58,7 @@ const Dialog: FC<Props> = ({ title, open, transparent, center = true, loading, d
           )
         }>
         {
-          !hiddenTitle && (
+          title && (
             <h1 className='pb-[20px] text-mintProfileTitle text-dark'>{ title }</h1>
           )
         }

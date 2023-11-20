@@ -14,9 +14,9 @@ export enum MintMode {
 }
 
 export enum MintModeLabels {
-  SIGNATURE = 'Invited mint',
+  SIGNATURE = 'Invited Only',
   PUBLIC = 'Public mint',
-  HOLDING = 'Holding mint',
+  HOLDING = 'Token-gated Mint',
 }
 
 export enum SequenceMode {
@@ -40,9 +40,9 @@ export enum PriceMode {
 
 export enum PriceModeLabels {
   CONSTANT = 'Constant',
-  LINEAR = 'Linear',
-  EXPONENTIAL = 'Exponential',
-  SQUARE = 'Square'
+  LINEAR = 'Linear Increase',
+  EXPONENTIAL = 'Plateau',
+  SQUARE = 'Square Increase'
 }
 
 export type PriceModeKeys = keyof typeof PriceMode

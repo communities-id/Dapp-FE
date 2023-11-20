@@ -30,6 +30,8 @@ import HoverIcon from '@/components/common/hoverIcon'
 import MintTip from '@/components/common/mintTip'
 import DividerLine from '@/components/common/dividerLine'
 import Tag from '@/components/common/tag'
+import BrandManageDialog from '@/components/_dialog/brand/manage'
+import Button from '@/components/_common/button'
 
 import OpenseaIcon from '~@/icons/info/opensea.svg'
 import TwitterIcon from '~@/icons/info/twitter.svg'
@@ -226,6 +228,10 @@ const CommunityLayout: FC<Props> = () => {
   const backLink = pathname === `/community/${community}` ? undefined : `/community/${community}`
   const memberMintLink = pathname === `/community/${community}/mint` ? undefined : `/community/${community}/mint`
 
+  const toggleDialogHandler = (key: string | number, value?: boolean) => {
+    setDialogOpenSet(prev => ({ ...prev, [key]: value ?? !prev[key] }))
+  }
+
   const handleSelectMenu = async (menu: PopoverMenuItem) => {
     if (menu.id === 'refresh') {
       message({
@@ -242,7 +248,7 @@ const CommunityLayout: FC<Props> = () => {
     if (menu.global) {
       showGlobalDialog(menu.id)
     }
-    setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
+    toggleDialogHandler(menu.id, true)
   }
 
   // to do: set in details
@@ -293,8 +299,8 @@ const CommunityLayout: FC<Props> = () => {
                 <PrimaryDID address={communityInfo.owner || ''} />
               </div>
               <div className="actions mt-6 flex items-center gap-[10px]">
-                <button className="button-md bg-main-black text-white min-w-[100px]">Join</button>
-                <button className="button-md bg-main-black text-white min-w-[100px]">Manage</button>
+                <Button size='normal' theme='black'>Join</Button>
+                <Button size='normal' theme='black' onClick={() => toggleDialogHandler('manage', true)}>Manage</Button>
                 <DividerLine mode='horizontal' className='bg-main-black' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
@@ -376,13 +382,16 @@ const CommunityLayout: FC<Props> = () => {
       </div>
       <CommunityRenewDialog
         open={Boolean(dialogOpenSet['renew'])}
-        handleClose={() => setDialogOpenSet(prev => ({ ...prev, renew: false }))} />
+        handleClose={() => toggleDialogHandler('renew', false)} />
       <CommunitySignatureDialog
         open={Boolean(dialogOpenSet['signature'])}
-        handleClose={() => setDialogOpenSet(prev => ({ ...prev, signature: false }))} />
+        handleClose={() => toggleDialogHandler('signature', false)} />
       <CommunityBindTelegram
         open={Boolean(dialogOpenSet['telegram'])}
-        handleClose={() => setDialogOpenSet(prev => ({ ...prev, telegram: false }))} />
+        handleClose={() => toggleDialogHandler('telegram', false)} />
+      <BrandManageDialog
+        open={Boolean(dialogOpenSet['manage'])}
+        handleClose={() => toggleDialogHandler('manage', false)} />
     </div>
   )
 }

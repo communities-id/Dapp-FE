@@ -1,0 +1,51 @@
+import { FC, useRef, ReactNode, forwardRef } from 'react'
+import classnames from 'classnames'
+
+import Modal from '@/components/common/modal';
+import { Box, styled } from '@mui/system';
+
+import CloseIcon from '~@/_brand/close.svg'
+
+interface Props {
+  open: boolean
+  hiddenCloseIcon?: boolean
+  wrapClassName?: string
+  backdropClassName?: string
+  contentClassName?: string
+  className?: string
+  handleClose?: () => void
+  children: ReactNode
+}
+
+const Dialog: FC<Props> = ({ open, hiddenCloseIcon, handleClose, wrapClassName, backdropClassName, contentClassName, className, children }) => {
+
+  return (
+    <Modal
+      wrapClassName={wrapClassName}
+      open={open}
+      handleClose={handleClose}
+      backdropClassName={backdropClassName}
+    >
+      <Box
+        className={
+          classnames(
+            'w-[1098px] max-h-[80vh] rounded-[30px] bg-white outline-none',
+            className
+          )
+        }>
+        {
+          !hiddenCloseIcon && (
+            <div className='absolute top-[30px] right-[30px] z-icon w-8 h-8 flex items-center justify-center rounded-full cursor-pointer border-[1px] border-solid border-gray-1'>
+              <CloseIcon width='16' height='16' className='text-gray-1' onClick={handleClose} />
+            </div>
+          )
+        }
+        <div className={classnames('w-full overflow-auto', contentClassName)}>
+          {children}
+        </div>
+      </Box>
+    </Modal>
+  )
+}
+
+export default Dialog

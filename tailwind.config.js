@@ -40,7 +40,7 @@ module.exports = {
       black: '#181C30',
       blackho: '#2C3149',
       blacksection: '#1C2136',
-      primary: '#995AFF',
+      // primary: '#995AFF',
       primarydark: '#995AFF',
       primaryho: '#AA6AFF',
       primarydarkho: '#AA6AFF',
@@ -247,6 +247,10 @@ module.exports = {
         99999: '99999',
         999: '999',
         1: '1',
+        ...require('./_themes/style').zIndex
+      },
+      lineHeight: {
+        ...require('./_themes/style').lineHeight
       },
       opacity: {
         65: '.65',
@@ -273,7 +277,8 @@ module.exports = {
         none: 'none',
         'tooltip': '0px 4px 40px rgba(0, 0, 0, 0.1)',
         'member-i': '0px 4px 30px 0px rgba(0, 0, 0, 0.10)',
-        'setting-avatar': '0px 0px 15px 0px rgba(0, 0, 0, 0.30)'
+        'setting-avatar': '0px 0px 15px 0px rgba(0, 0, 0, 0.30)',
+        ...require('./_themes/style').boxShadow
       },
       outlineColor: {
         'search-form': '#fff',
@@ -332,6 +337,7 @@ module.exports = {
         'action-text-gradient': "linear-gradient(88.93deg, #000 18.91%, #8840FF 79.91%);",
         'action-text-gradient-dark': "linear-gradient(88.93deg, #fff 18.91%, #8840FF 79.91%);",
         'collapse-mask': "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 80%);",
+        ...require('./_themes/style').backgroundImage
       },
       backgroundSize: {
         'default-search-banner': 'auto 100%',
@@ -356,7 +362,7 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          "primary": "#995AFF",
+          "primary": require('./_themes/colors').primary,
           // "secondary": "#F000B8",
           "accent": "#37CDBE",
           "neutral": "#3D4451",
