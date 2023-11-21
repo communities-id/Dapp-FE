@@ -63,9 +63,9 @@ export const MintModeMap: Record<MintMode, string> = {
 }
 
 export const SequenceModeMap: Record<SequenceMode, string> = {
-  [SequenceMode.INPUT_VALUE]: 'Input Value',
-  [SequenceMode.BURN_INDEX]: 'Burn Index',
-  [SequenceMode.TOTAL_SUPPLY]: 'Total Supply',
+  [SequenceMode.INPUT_VALUE]: 'Locked = Refund',
+  [SequenceMode.BURN_INDEX]: 'Laugh Last, Laugh...',
+  [SequenceMode.TOTAL_SUPPLY]: 'Bonding Curve',
 }
 
 export const TG_BOT_ID = process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? 6453902730 : 6537772128

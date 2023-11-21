@@ -264,6 +264,13 @@
   border-style: hidden;
   background-color: #fafafa;
   box-shadow: 0 0 0 1px #eaeaea;
+  &.pending-set {
+    background: rgba(255, 177, 61, 0.10);
+    box-shadow: 0 0 0 1px #fff;
+    td {
+      border: 1px solid #fff;
+    }
+  }
   td {
     padding: 10px 20px;
     border: 1px solid #eaeaea;

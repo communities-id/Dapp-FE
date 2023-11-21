@@ -13,6 +13,7 @@ import { getOpenseaLink, getCommunityOpenseaLink } from '@/utils/tools'
 import { calcCurrentMintPrice, parseToDurationPrice, parseNumericFormula } from '@/utils/formula'
 import { getNormalTwitterShareLink, formatDiscordLink, formatTelegramLink, formatTwitterLink } from '@/utils/share'
 import { updateCommunity } from '@/shared/apis'
+import themeColor from '@/_themes/colors'
 
 import AvatarCard from '@/components/common/avatar'
 import Popover, { PopoverMenuItem } from '@/components/common/popover'
@@ -28,7 +29,6 @@ import HoverIcon from '@/components/common/hoverIcon'
 import DividerLine from '@/components/common/dividerLine'
 import Tag from '@/components/common/tag'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
-import Button from '@/components/_common/button'
 
 import OpenseaIcon from '~@/icons/info/opensea.svg'
 import TwitterIcon from '~@/icons/info/twitter.svg'
@@ -37,10 +37,8 @@ import MoreIcon from '~@/icons/info/more.svg'
 import TelegramIcon from '~@/icons/social/telegram.svg'
 import DiscordIcon from '~@/icons/social/discord.svg'
 import TipIcon from '~@/icons/tip.svg'
+import BurnIcon from '~@/icons/burn.svg'
 import ShareIcon from '~@/icons/share.svg'
-import SettingIcon from '~@/icons/settings/setting.svg'
-import MintSettingIcon from '~@/icons/settings/mint-setting.svg'
-import RenewIcon from '~@/icons/settings/renew.svg'
 import RefreshIcon from '~@/icons/settings/refresh.svg'
 import SignatureIcon from '~@/icons/settings/signature.svg'
 import LinkIcon from '~@/icons/link.svg'
@@ -53,6 +51,9 @@ import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
 import CommunityDuplicate from '@/components/dialog/community/duplicate'
 import BrandInviteDialog from '@/components/_dialog/brand/invite'
+import styled from '@emotion/styled'
+import { lighten } from '@mui/system'
+import { SequenceMode } from '@/types/contract'
 
 interface Props {
   children?: ReactNode
@@ -268,6 +269,19 @@ const CommunityLayout: FC<Props> = () => {
   if (communityInfoSet.unMint) return (
     <Banner />
   )
+  const BrandColorButton = styled('button')({
+    backgroundColor: `transparent`,
+    '&:hover': {
+      backgroundColor: `${communityInfo.tokenUri?.brand_color || themeColor.primary}1A`
+    }
+  });
+
+  const BrandColorButtonGroup = styled('div')({
+    backgroundColor: communityInfo.tokenUri?.brand_color || themeColor.primary,
+    '& button:hover': {
+      color: lighten(communityInfo.tokenUri?.brand_color || themeColor.primary, 0.8)
+    }
+  });
 
   return (
     <div className='relative w-full'>
@@ -297,18 +311,18 @@ const CommunityLayout: FC<Props> = () => {
                 <PrimaryDID address={communityInfo.owner || ''} />
               </div>
               <div className="actions mt-6 flex items-center gap-[10px]">
-                <div className="btn-group button-md bg-main-black text-white flex gap-3">
+                <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">
                   { communityInfoSet.isOwner && <>
                     <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <DividerLine mode='horizontal' className='bg-white' />
                   </> }
                   <button>Join</button>
-                </div>
-                { communityInfoSet.isOwner && <button
-                  className="button-md bg-white text-main-black border-2 border-main-black flex gap-3"
+                </BrandColorButtonGroup>
+                { communityInfoSet.isOwner && <BrandColorButton
+                  className="button-md text-main-black border-2 border-main-black flex gap-3"
                   onClick={() => toggleDialogHandler('manage', true)}>
                   Manage
-                </button> }
+                </BrandColorButton> }
                 <DividerLine mode='horizontal' className='bg-main-black' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
@@ -346,7 +360,7 @@ const CommunityLayout: FC<Props> = () => {
               </div>
             </div>
             <div className="mint-info">
-              <table className="mint-info-table">
+              <table className={`mint-info-table ${pendingMintSet ? 'pending-set' : ''}`}>
                 <tr>
                   <td colSpan={2}>
                     <div className="flex justify-between items-center">
@@ -354,13 +368,24 @@ const CommunityLayout: FC<Props> = () => {
                         <p>Current Mint Price</p>
                         <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
                       </div>
-                      <button
-                        className='bg-white text-main-black text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
-                        onClick={() => setDialogOpenSet(prev => ({ ...prev, duplicate: true })) }
-                      >
-                        <span>Duplicate</span>
-                        <DuplicateIcon />
+                      { pendingMintSet ? (
+                        <button
+                          className='bg-orange-1 text-white text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
+                          onClick={() => toggleDialogHandler('manage', true)}
+                        >
+                          <TipIcon width='14' height='14' className='text-white'/>
+                          <span>Pending set</span>
+                        </button>
+                      ) : (
+                        <button
+                          className='bg-white text-main-black text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
+                          onClick={() => setDialogOpenSet(prev => ({ ...prev, duplicate: true }))}
+                        >
+                          <span>Duplicate</span>
+                          <DuplicateIcon />
                       </button>
+                      )}
+                      
                     </div>
                   </td>
                 </tr>
@@ -372,14 +397,8 @@ const CommunityLayout: FC<Props> = () => {
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
                     </p>
-                    <p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
+                    <p>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
                   </td>
-                  <td>
-                    <p>Mint Price Formula</p>
-                    <p>Y = { mintPriceNumericFormula }</p>
-                  </td>
-                </tr>
-                <tr>
                   <td>
                     <p>
                       <span>TVL</span>
@@ -394,9 +413,24 @@ const CommunityLayout: FC<Props> = () => {
                     </p>
                     <p>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
                   </td>
+                </tr>
+                <tr>
                   <td>
-                    <p>User Count</p>
-                    <p>{Number(communityInfo?.totalSupply) ?? 0}</p>
+                    <p>Refund Model</p>
+                    <p className='flex items-center gap-1'>
+                      <span>{SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
+                      { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={
+                        <>
+                          <p>Burn any time</p>
+                        </>
+                      }>
+                        <BurnIcon width='16' height='16' className='text-red-1'/>
+                      </ToolTip> }
+                    </p>
+                  </td>
+                  <td>
+                    <p>Mint Price Formula</p>
+                    <p>Y = { mintPriceNumericFormula }</p>
                   </td>
                 </tr>
               </table>

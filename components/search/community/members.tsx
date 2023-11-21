@@ -13,6 +13,8 @@ import Loading from '@/components/loading/list'
 import { CommunityMember } from '@/types'
 import PlusIconWithColor from '@/components/common/PlusWithColor'
 import MintSettingIcon from '~@/icons/mint-settings.svg'
+import themeColor from '@/_themes/colors'
+import { styled } from '@mui/system'
 
 interface Props {
 }
@@ -60,6 +62,14 @@ const CommunityMembers: FC<Props> = () => {
     fetchData({ page: 1, pageSize: fetchInfo.pageSize })
   }, [])
 
+
+  const BrandColorButton = styled('button')({
+    color: communityInfo.tokenUri?.brand_color || themeColor.primary,
+    '&:hover': {
+      backgroundColor: `${communityInfo.tokenUri?.brand_color || themeColor.primary}1A`
+    }
+  });
+
   return (
     <div className='pt-[10px]'>
       <Tabs defaultValue={0}>
@@ -76,7 +86,7 @@ const CommunityMembers: FC<Props> = () => {
         renderItem={(row: CommunityMember, index?: number) => {
           if (index === 0) {
             return (
-              <button
+              <BrandColorButton
                 className='group border-2 border-dashed w-full h-full rounded-[8px] flex flex-col items-center justify-center text-primary relative py-25'
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
@@ -86,13 +96,7 @@ const CommunityMembers: FC<Props> = () => {
                   <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
                 </div>
                 <div className="mt-2.5">Join Community</div>
-                <div
-                  className='absolute left-0 top-0 right-0 bottom-0 opacity-0 bg-primary group-hover:opacity-10'
-                  style={{
-                    backgroundColor: communityInfo.tokenUri?.brand_color,
-                  }}
-                ></div>
-              </button>
+              </BrandColorButton>
             )
           }
           const info = {
@@ -127,7 +131,7 @@ const CommunityMembers: FC<Props> = () => {
                 }
               </div>
             ) : (
-              <button
+              <BrandColorButton
                 className='group border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
@@ -137,13 +141,7 @@ const CommunityMembers: FC<Props> = () => {
                   <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
                 </div>
                 <div className="mt-2.5">Join Community</div>
-                <div
-                className='absolute left-0 top-0 right-0 bottom-0 opacity-0 bg-primary group-hover:opacity-10'
-                style={{
-                  backgroundColor: communityInfo.tokenUri?.brand_color,
-                }}
-              ></div>
-            </button>
+              </BrandColorButton>
             )
           }
       />

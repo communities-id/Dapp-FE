@@ -13,7 +13,7 @@ const SettingNotice: FC<Props> = ({ loading, onReset, onSaveOnChain }) => {
   return (
     <div className='modal-notice'>
       <div className='modal-notice-content bg-white gap-5'>
-        <p className='flex-1'>Notice! You haven't saved your changes yet</p>
+        <p className='flex-1'>Notice! You haven&apos;t saved your changes yet</p>
         <div className='flex items-center gap-4'>
           <BaseButton
             className='w-auto text-xs text-main-black'
