@@ -13,7 +13,7 @@ export const testnetChainBlockNumberMap: Record<SupportedTestnetChainIDs, number
   [TestnetChainIDs["Polygon Mumbai"]]: 38000000,
   [TestnetChainIDs["Base Goerli Testnet"]]: 10000000,
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: 1769000,
-  [TestnetChainIDs['Shibuya Testnet']]: 4995000,
+  [TestnetChainIDs['zKatana Testnet']]: 175000,
 }
 
 export const chainBlockNumberMap: Record<SupportedChainIDs, number> = {

@@ -88,20 +88,20 @@ export const Astar = generateChainConfig(ChainIDs.Astar, 'Astar', {
   }
 })
 
-export const Shibuya = generateChainConfig(TestnetChainIDs["Shibuya Testnet"], 'Shibuya', {
-  network: 'shibuya ',
+export const zKatana = generateChainConfig(TestnetChainIDs["zKatana Testnet"], 'zKatana', {
+  network: 'zKatana ',
   currency: {
-    name: 'Shibuya',
-    symbol: 'SBY',
+    name: 'zKatana',
+    symbol: 'ETH',
     decimals: 18
   },
   rpc: {
-    http: 'https://evm.shibuya.astar.network',
-    wss: ' wss://rpc.shibuya.astar.network'
+    http: 'https://rpc.startale.com/zkatana',
+    wss: 'wss://rpc.startale.com/zkatana'
   },
   scan: {
     name: 'AstarScan',
-    url: 'https://astar.subscan.io'
+    url: 'https://zkatana.explorer.startale.com/'
   }
 })
 
@@ -119,7 +119,7 @@ const _chains: Record<TotalSupportedChainIDs, Chain> = {
   [TestnetChainIDs["Optimism Goerli Testnet"]]: optimismGoerli,
   [TestnetChainIDs["BNB Smart Chain Testnet"]]: bscTestnet,
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: scrollSepolia,
-  [TestnetChainIDs["Shibuya Testnet"]]: Shibuya,
+  [TestnetChainIDs["zKatana Testnet"]]: zKatana,
 }
 
 // 自定义链信息

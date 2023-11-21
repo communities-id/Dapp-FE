@@ -58,7 +58,7 @@ export default function ConfigViewer() {
           <option value={TestnetChainIDs["Optimism Goerli Testnet"]}>Optimism Goerli Testnet</option>
           <option value={TestnetChainIDs["BNB Smart Chain Testnet"]}>BNB Smart Chain Testnet</option>
           <option value={TestnetChainIDs["Scroll Sepolia Testnet"]}>Scroll Sepolia Testnet</option>
-          <option value={TestnetChainIDs["Shibuya Testnet"]}>Shibuya Testnet</option>
+          <option value={TestnetChainIDs["zKatana Testnet"]}>zKatana Testnet</option>
         </select>
       </div>
       <div className="form-control">

@@ -36,7 +36,7 @@ async function getTVL() {
     [TestnetChainIDs["Polygon Mumbai"]]: maticPrice,
     [TestnetChainIDs["Base Goerli Testnet"]]: ethPrice,
     [TestnetChainIDs["Scroll Sepolia Testnet"]]: ethPrice,
-    [TestnetChainIDs['Shibuya Testnet']]: astarPrice,
+    [TestnetChainIDs['zKatana Testnet']]: ethPrice,
   }
 
   let sum = 0
