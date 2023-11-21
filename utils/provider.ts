@@ -5,7 +5,7 @@ import { TotalSupportedChainIDs, RPCKeys } from "@/types/chain"
 
 // const alchemyNetworksWl = [ChainIDs.Ethereum, ChainIDs.Polygon, ChainIDs.OP, TestnetChainIDs.Goerli, TestnetChainIDs["Polygon Mumbai"], TestnetChainIDs["Optimism Goerli Testnet"]]
 const quickNodeNetworksWl = [ChainIDs.BSC, TestnetChainIDs['BNB Smart Chain Testnet'], ChainIDs.Scroll, TestnetChainIDs['Scroll Sepolia Testnet']]
-const constantsNetworksWl = [ChainIDs.Astar, TestnetChainIDs['Shibuya Testnet']]
+const constantsNetworksWl = [ChainIDs.Astar, TestnetChainIDs["zKatana Testnet"]]
 
 export const parseRPCKeys = (rpcKeys: string): Record<'alchemy' | 'quickNode', Record<TotalSupportedChainIDs, string[]>> => {
   const { alchemy, quickNode } = JSON.parse(rpcKeys) as RPCKeys
@@ -19,7 +19,7 @@ const { alchemy: alchemyKeys, quickNode: quickNodeKeys } = parseRPCKeys(process.
 
 export const constantsHosts: Partial<Record<TotalSupportedChainIDs, string[]>> = {
   [ChainIDs.Astar]: ['https://evm.astar.network'],
-  [TestnetChainIDs['Shibuya Testnet']]: ['https://evm.shibuya.astar.network'], // 'https://shibuya.public.blastapi.io', 'https://shibuya-rpc.dwellir.com'
+  [TestnetChainIDs["zKatana Testnet"]]: ['https://rpc.startale.com/zkatana'],
 }
 
 export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
@@ -36,7 +36,7 @@ export const quickNodeHosts: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs["Polygon Mumbai"]]: '',
   [TestnetChainIDs["Base Goerli Testnet"]]: '',
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: 'wild-long-film.scroll-testnet',
-  [TestnetChainIDs['Shibuya Testnet']]: '',
+  [TestnetChainIDs["zKatana Testnet"]]: '',
 }
 
 export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
@@ -53,7 +53,7 @@ export const alchemyHosts: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs["Polygon Mumbai"]]: 'polygon-mumbai',
   [TestnetChainIDs["Base Goerli Testnet"]]: 'base-goerli',
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: '',
-  [TestnetChainIDs['Shibuya Testnet']]: '',
+  [TestnetChainIDs["zKatana Testnet"]]: '',
 }
 
 export const getAlchemyKey = (network: number) => {
@@ -144,8 +144,8 @@ export const getSDKOptions = (rpcKeys = process.env.NEXT_PUBLIC_RPC_KEYS): Commu
     'Scroll Sepolia Testnet': {
       RPCUrl: getQuickNodeHost(TestnetChainIDs['Scroll Sepolia Testnet'], quickNode[TestnetChainIDs['Scroll Sepolia Testnet']]),
     },
-    'Shibuya Testnet': {
-      RPCUrl: getConstantsHost(TestnetChainIDs['Shibuya Testnet']),
+    'zKatana Testnet': {
+      RPCUrl: getConstantsHost(TestnetChainIDs["zKatana Testnet"]),
     }
   } : {
     openseaKey: process.env.NEXT_PUBLIC_OPENSEA_KEY ?? '',

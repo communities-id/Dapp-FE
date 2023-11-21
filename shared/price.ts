@@ -25,7 +25,7 @@ export const getTokenPrice = async (tokenAddress: string, chainId: number) => {
     [TestnetChainIDs["Polygon Mumbai"]]: EvmChain.MUMBAI,
     [TestnetChainIDs["Base Goerli Testnet"]]: 84531,
     [TestnetChainIDs["Scroll Sepolia Testnet"]]: 534351,
-    [TestnetChainIDs['Shibuya Testnet']]: 81,
+    [TestnetChainIDs['zKatana Testnet']]: 1261120,
   }
 
   if(!chainMap[chainId as SupportedChainIDs | SupportedTestnetChainIDs]) {

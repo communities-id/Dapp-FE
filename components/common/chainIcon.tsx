@@ -56,7 +56,7 @@ const ChainIcon: FC<Props> = ({ size = 24, wrapperSize = 0, colorMode, chainId, 
       [TestnetChainIDs['Optimism Goerli Testnet']]: OPIcon,
       [TestnetChainIDs['BNB Smart Chain Testnet']]: BSCIcon,
       [TestnetChainIDs['Scroll Sepolia Testnet']]: ScrollIcon,
-      [TestnetChainIDs['Shibuya Testnet']]: AstarIcon,
+      [TestnetChainIDs['zKatana Testnet']]: AstarIcon,
     }
   }, [chainId, size, className])
   return chainIcons[chainId as TotalSupportedChainIDs] || null

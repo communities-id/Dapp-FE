@@ -18,7 +18,7 @@ const Context = createContext<Record<TotalSupportedChainIDs, number>>({
   [TestnetChainIDs["Polygon Mumbai"]]: 0,
   [TestnetChainIDs["Base Goerli Testnet"]]: 0,
   [TestnetChainIDs["Scroll Sepolia Testnet"]]: 0,
-  [TestnetChainIDs['Shibuya Testnet']]: 0,
+  [TestnetChainIDs['zKatana Testnet']]: 0,
 })
 
 export function TokenPriceProvider({ children }: { children: ReactNode }) {
@@ -58,7 +58,7 @@ export function TokenPriceProvider({ children }: { children: ReactNode }) {
       [TestnetChainIDs["Polygon Mumbai"]]: MATIC,
       [TestnetChainIDs["Base Goerli Testnet"]]: ETH,
       [TestnetChainIDs["Scroll Sepolia Testnet"]]: ETH,
-      [TestnetChainIDs['Shibuya Testnet']]: ASTR,
+      [TestnetChainIDs['zKatana Testnet']]: ETH,
     }}>
       {children}
     </Context.Provider>

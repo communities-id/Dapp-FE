@@ -26,7 +26,7 @@ const chainMap: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs['Polygon Mumbai']]: 'mumbai',
   [TestnetChainIDs['Base Goerli Testnet']]: 'base-goerli',
   [TestnetChainIDs['Scroll Sepolia Testnet']]: '',
-  [TestnetChainIDs['Shibuya Testnet']]: '',
+  [TestnetChainIDs['zKatana Testnet']]: '',
 }
 
 const openseaHosts: Record<TotalSupportedChainIDs, string> = {
@@ -43,7 +43,7 @@ const openseaHosts: Record<TotalSupportedChainIDs, string> = {
   [TestnetChainIDs['Polygon Mumbai']]: 'testnets.opensea.io',
   [TestnetChainIDs['Base Goerli Testnet']]: 'testnets.opensea.io',
   [TestnetChainIDs['Scroll Sepolia Testnet']]: 'testnets.opensea.io',
-  [TestnetChainIDs['Shibuya Testnet']]: '',
+  [TestnetChainIDs['zKatana Testnet']]: '',
 }
 
 const getOpenseaHost = () => {
