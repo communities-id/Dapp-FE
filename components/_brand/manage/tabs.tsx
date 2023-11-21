@@ -27,7 +27,7 @@ export default function UnstyledTabsVertical(props: Props) {
 
   return (
     <Tabs
-      className={classNames('w-full mds:max-w-[904px] lg:max-w-[1098px]', wrapperClassName)}
+      className={classNames('w-full mds:w-[904px] md:w-[1098px]', wrapperClassName)}
       value={value}
       orientation="vertical"
       onChange={(e, v) => {

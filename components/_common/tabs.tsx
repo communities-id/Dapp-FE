@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, CSSProperties, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { styled } from '@mui/system';
 import { Tabs as BaseTabs } from '@mui/base/Tabs';
@@ -22,14 +22,14 @@ interface Props {
 export default function UnstyledTabsVertical(props: Props) {
   const { value, tabs, wrapperClassName, tabsListClassName, tabClassName, tabPanelClassName, onChange } = props
 
-  const [tabWidth, setTabWidth] = React.useState(0)
-  const [tabLeft, setTabLeft] = React.useState(0)
+  const [tabWidth, setTabWidth] = useState(0)
+  const [tabLeft, setTabLeft] = useState(0)
 
-  const tabListStyles = React.useMemo(() => {
+  const tabListStyles = useMemo(() => {
     return {
       '--tab-width': `${tabWidth}px`,
       '--tab-left': `${tabLeft}px`
-    } as React.CSSProperties
+    } as CSSProperties
   }, [tabWidth, tabLeft])
 
   return (
