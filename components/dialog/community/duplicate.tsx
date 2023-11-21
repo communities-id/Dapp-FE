@@ -3,18 +3,22 @@ import Modal from '@/components/common/modal';
 import StarIcon from '@/public/icons/star.svg'
 import RoundedLogo from '@/public/logo-round.svg'
 import CloseIcon from '~@/icons/close.svg'
+import { useRouter } from 'next/router';
 
 interface Props {
   open: boolean
+  duplicateFrom: string
   handleClose: () => void
 }
 
-const CommunityDuplicate: FC<Props> = ({ open, handleClose }) => {
+const CommunityDuplicate: FC<Props> = ({ open, duplicateFrom, handleClose }) => {
 
+  const router = useRouter()
   const [name, setName] = useState('')
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     // handleSearch(name)
+    router.push(`/community/${name}?duplicateFrom=${duplicateFrom}`)
   }
 
   function handleClickOutside(e: Event) {

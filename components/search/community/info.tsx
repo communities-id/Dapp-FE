@@ -77,29 +77,29 @@ const CommunityLayout: FC<Props> = () => {
     },
   ]
 
-  if ((communityInfoSet.isOwner || communityInfoSet.isSigner) && !communityInfoSet.isExpired) {
-    communityPopoverMenus.push({
-      id: 'profile',
-      text: 'Community Settings',
-      icon: <SettingIcon width={16} height={16} className='text-[#333]' />,
-      global: true
-    }, {
-      id: 'mint',
-      text: 'Mint Settings',
-      icon: <MintSettingIcon width={16} height={16} className='text-[#333]' />,
-      global: true
-    }, {
-      id: 'renew',
-      text: 'Renew',
-      icon: <RenewIcon width={16} height={16} className='text-[#333]' />,
-      global: false
-    }, {
-      id: 'signature',
-      text: 'Generate Invited Code',
-      icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
-      global: false
-    })
-  }
+  // if ((communityInfoSet.isOwner || communityInfoSet.isSigner) && !communityInfoSet.isExpired) {
+  //   communityPopoverMenus.push({
+  //     id: 'profile',
+  //     text: 'Community Settings',
+  //     icon: <SettingIcon width={16} height={16} className='text-[#333]' />,
+  //     global: true
+  //   }, {
+  //     id: 'mint',
+  //     text: 'Mint Settings',
+  //     icon: <MintSettingIcon width={16} height={16} className='text-[#333]' />,
+  //     global: true
+  //   }, {
+  //     id: 'renew',
+  //     text: 'Renew',
+  //     icon: <RenewIcon width={16} height={16} className='text-[#333]' />,
+  //     global: false
+  //   }, {
+  //     id: 'signature',
+  //     text: 'Generate Invited Code',
+  //     icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
+  //     global: false
+  //   })
+  // }
 
   if (communityInfo.config?.signatureMint && communityInfoSet.isSigner) {
     communityPopoverMenus.push({
@@ -298,15 +298,17 @@ const CommunityLayout: FC<Props> = () => {
               </div>
               <div className="actions mt-6 flex items-center gap-[10px]">
                 <div className="btn-group button-md bg-main-black text-white flex gap-3">
-                  <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
-                  <DividerLine mode='horizontal' className='bg-white' />
+                  { communityInfoSet.isOwner && <>
+                    <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+                    <DividerLine mode='horizontal' className='bg-white' />
+                  </> }
                   <button>Join</button>
                 </div>
-                <button
+                { communityInfoSet.isOwner && <button
                   className="button-md bg-white text-main-black border-2 border-main-black flex gap-3"
                   onClick={() => toggleDialogHandler('manage', true)}>
                   Manage
-                </button>
+                </button> }
                 <DividerLine mode='horizontal' className='bg-main-black' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
@@ -416,6 +418,7 @@ const CommunityLayout: FC<Props> = () => {
         handleClose={() => toggleDialogHandler('manage', false)} />
       <CommunityDuplicate
         open={Boolean(dialogOpenSet['duplicate'])}
+        duplicateFrom={communityInfo.node?.node ?? ''}
         handleClose={() => toggleDialogHandler('duplicate', false)} />
       <BrandInviteDialog
         open={Boolean(dialogOpenSet['invite'])}
