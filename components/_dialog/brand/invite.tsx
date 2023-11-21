@@ -5,7 +5,7 @@ import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 
 import Dialog from '@/components/_common/dialog'
-import BrandManageContent from '@/components/_brand/manage'
+import BrandInviteContent from '@/components/_brand/invite'
  
 interface Props {
   open: boolean
@@ -23,7 +23,7 @@ const BrandManageDialog: FC<Props> = ({ open, handleClose }) => {
       open={open}
       handleClose={handleClose}
     >
-      <BrandManageContent />
+      <BrandInviteContent />
     </Dialog>
   )
 }

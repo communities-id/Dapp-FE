@@ -8,6 +8,7 @@ module.exports = {
     'renew-bg': 'url(/_brand/img/renew-bg.png)',
   },
   zIndex: {
+    snackbar: 99999,
     dialog: 9999,
     header: 999,
     picker: 199,

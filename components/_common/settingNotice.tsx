@@ -23,7 +23,7 @@ const SettingNotice: FC<Props> = ({ loading, onReset, onSaveOnChain }) => {
             <span>Reset</span>
           </BaseButton>
           <Button
-            className='w-32 flex-center'
+            className='w-32 flex-center var-brand-bgcolor'
             size='short'
             theme='primary'
             loading={loading}

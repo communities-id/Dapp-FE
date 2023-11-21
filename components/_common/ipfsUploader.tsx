@@ -9,6 +9,7 @@ import LoadingIcon from '~@/icons/loading.svg'
 import classNames from 'classnames'
 
 interface Props {
+  relationshipId?: string
   aspect?: number
   defaultUrl?: string
   minWidth?: number
@@ -18,7 +19,7 @@ interface Props {
   children?: React.ReactNode
 }
 
-const IpfsUploader: FC<Props> = ({ aspect, defaultUrl, minWidth = 500, minHeight = 500, onComplete, onError, children }) => {
+const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth = 500, minHeight = 500, onComplete, onError, children }) => {
   const { upload } = useIpfs()
 
   const [loading, setLoading] = useState(false)
@@ -27,6 +28,7 @@ const IpfsUploader: FC<Props> = ({ aspect, defaultUrl, minWidth = 500, minHeight
   const [cropUrl, setCropUrl] = useState('')
   const maxW = minWidth * 5
   const maxH = minWidth * 5
+  const randomId = Math.random().toString(36).substring(7)
 
   const handleUpload = async (buffer: Buffer) => {
     setLoading(true)
@@ -84,7 +86,7 @@ const IpfsUploader: FC<Props> = ({ aspect, defaultUrl, minWidth = 500, minHeight
             'relative w-full h-full flex items-center justify-center leading-none cursor-pointer',
           )
         }>
-          <div className='absolute-full z-normal pointer-events-none select-none'>
+          <div className='absolute-full z-1 pointer-events-none select-none'>
             {
               loading ? (
                 <LoadingIcon width='32' height='32' />
@@ -96,7 +98,7 @@ const IpfsUploader: FC<Props> = ({ aspect, defaultUrl, minWidth = 500, minHeight
             }
           </div>
           { children }
-          <input type='file' accept='image/png,image/jpeg,image/jpg,image/svg' className='w-0 h-0 overflow-hidden invisible' onChange={handleFileChange} />
+          <input id={relationshipId ?? randomId} type='file' accept='image/png,image/jpeg,image/jpg,image/svg' className='w-0 h-0 overflow-hidden invisible' onChange={handleFileChange} />
         </label>
       </div>
     </Fragment>

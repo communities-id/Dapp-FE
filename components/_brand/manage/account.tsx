@@ -23,7 +23,7 @@ export default function BrandMannageAccountManagement() {
   const [form, setForm] = useState<Record<CommunityProfileLabels, string>>({
     image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
     brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-    backgroundColor: communityInfo?.tokenUri?.brand_color ?? '',
+    brandColor: communityInfo?.tokenUri?.brand_color ?? '',
     description: communityInfo?.tokenUri?.description ?? '',
     externalUrl: communityInfo?.tokenUri?.external_url ?? '',
     discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),
@@ -78,7 +78,7 @@ export default function BrandMannageAccountManagement() {
       //   }
       //   return 'Please enter a valid url'
       // },
-      // backgroundColor: (value: string) => {
+      // brandColor: (value: string) => {
       //   if (isColor(value) || !value) {
       //     return
       //   }
@@ -145,7 +145,7 @@ export default function BrandMannageAccountManagement() {
       await updateCommunityBrandConfig(communityInfo.node.tokenId, {
         image: form.image || DEFAULT_AVATAR,
         brandImage: form.brandImage,
-        backgroundColor: form.backgroundColor,
+        brandColor: form.brandColor,
         description: form.description,
         externalUrl: form.externalUrl,
         discord: form.discord,
@@ -180,7 +180,7 @@ export default function BrandMannageAccountManagement() {
     setForm({
       image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
       brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-      backgroundColor: communityInfo?.tokenUri?.brand_color ?? '',
+      brandColor: communityInfo?.tokenUri?.brand_color ?? '',
       description: communityInfo?.tokenUri?.description ?? '',
       externalUrl: communityInfo?.tokenUri?.external_url ?? '',
       discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),

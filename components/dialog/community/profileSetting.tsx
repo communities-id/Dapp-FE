@@ -29,7 +29,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
   const [form, setForm] = useState<Record<CommunityProfileLabels, string>>({
     image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
     brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-    backgroundColor: communityInfo?.tokenUri?.brand_color ?? '',
+    brandColor: communityInfo?.tokenUri?.brand_color ?? '',
     description: communityInfo?.tokenUri?.description ?? '',
     externalUrl: communityInfo?.tokenUri?.external_url ?? '',
     discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),
@@ -51,7 +51,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
         }
         return 'Please enter a valid url'
       },
-      backgroundColor: (value: string) => {
+      brandColor: (value: string) => {
         if (isColor(value) || !value) {
           return
         }
@@ -95,7 +95,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
   const needUpdate = () => {
     const isImageChanged = (form.image || DEFAULT_AVATAR) !== communityInfo?.tokenUri?.image
     const isBrandImageChanged = form.brandImage !== communityInfo?.tokenUri?.brand_image
-    const isBackgroundColorChanged = form.backgroundColor !== communityInfo?.tokenUri?.brand_color
+    const isBackgroundColorChanged = form.brandColor !== communityInfo?.tokenUri?.brand_color
     const isDescriptionChanged = form.description !== communityInfo?.tokenUri?.description
     const isExternalUrlChanged = form.externalUrl !== communityInfo?.tokenUri?.external_url
     const isDiscordChanged = form.discord !== String(communityInfo?.tokenUri?.attr?.discord ?? '')
@@ -122,7 +122,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
       await updateCommunityBrandConfig(communityInfo.node.tokenId, {
         image: form.image || DEFAULT_AVATAR,
         brandImage: form.brandImage,
-        backgroundColor: form.backgroundColor,
+        brandColor: form.brandColor,
         description: form.description,
         externalUrl: form.externalUrl,
         discord: form.discord,
@@ -151,7 +151,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
     setForm({
       image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
       brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-      backgroundColor: communityInfo?.tokenUri?.brand_color ?? '',
+      brandColor: communityInfo?.tokenUri?.brand_color ?? '',
       description: communityInfo?.tokenUri?.description ?? '',
       externalUrl: communityInfo?.tokenUri?.external_url ?? '',
       discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),

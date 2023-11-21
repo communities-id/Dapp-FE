@@ -1,4 +1,15 @@
 module.exports = {
+  container: {
+    center: true,
+  },
+  screens: {
+    '2xl': { min: '1921px' },
+    'xl': { min: '1920px' },
+    'lg': { min: '1440px' },
+    'md': { min: '1024px' },
+    'mds': { max: '1023px' },
+    'sm': { max: '768px' },
+  },
   fontSize: {
     'xxl': ['40px', { lineHeight: '50px', fontWeight: '700' }],
     'xl': ['24px', { lineHeight: '30px', fontWeight: '700' }],

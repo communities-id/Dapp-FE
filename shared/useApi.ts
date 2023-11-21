@@ -49,7 +49,7 @@ interface updateCommunityBrandConfigData {
   image: string
   brandImage: string
   description: string
-  backgroundColor: string
+  brandColor: string
   externalUrl: string
   discord: string
   twitter: string
@@ -485,13 +485,13 @@ export default function useApi() {
     const CommunityTokenURI = getCommunityWriteableContract('CommunityTokenURI', 'CommunityTokenURI', chainId, await getSigner())
     if (!CommunityTokenURI) return
 
-    const { image, brandImage, description, backgroundColor, externalUrl, discord, twitter, telegram } = data
+    const { image, brandImage, description, brandColor, externalUrl, discord, twitter, telegram } = data
     const { gasPrice } = await getBaseFeeData(CommunityTokenURI, chainId)
     const tx = await CommunityTokenURI.setCommunityConfig(tokenId, {
       image,
       brandImage,
       description: encodeString(description),
-      brandColor: backgroundColor,
+      brandColor,
       externalUrl,
       attributes: [
         { key: 'twitter', displayType: '', value: twitter || ''},

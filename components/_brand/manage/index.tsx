@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { CSSProperties, useState } from 'react'
 import classNames from 'classnames'
+
+import { useDetails } from '@/contexts/details'
 
 import Tabs from '@/components/_brand/manage/tabs'
 import ProfileSettings from '@/components/_brand/manage/profile'
@@ -16,6 +18,9 @@ import SocialLinkIcon from '~@/_brand/social.svg'
 
 export default function BrandMannageContent() {
   const [tab, setTab] = useState(0)
+  const { communityInfo, refreshInfo } = useDetails()
+
+  const brandColor = communityInfo?.tokenUri?.brand_color ?? '#8840FF'
 
   const tabs = [
     {
@@ -29,7 +34,7 @@ export default function BrandMannageContent() {
             return <ProfileIcon
               className={
                 classNames('w-5 h-5', {
-                  'text-primary': active,
+                  'var-brand-textcolor': active,
                   'text-main-black': !active
                 })
               }
@@ -44,7 +49,7 @@ export default function BrandMannageContent() {
             return <AccountIcon
               className={
                 classNames('w-5 h-5', {
-                  'text-primary': active,
+                  'var-brand-textcolor': active,
                   'text-main-black': !active
                 })
               }
@@ -64,7 +69,7 @@ export default function BrandMannageContent() {
             return <MintIcon
               className={
                 classNames('w-5 h-5', {
-                  'text-primary': active,
+                  'var-brand-textcolor': active,
                   'text-main-black': !active
                 })
               }
@@ -79,7 +84,7 @@ export default function BrandMannageContent() {
             return <RenewIcon
               className={
                 classNames('w-5 h-5', {
-                  'text-primary': active,
+                  'var-brand-textcolor': active,
                   'text-main-black': !active
                 })
               }
@@ -94,7 +99,7 @@ export default function BrandMannageContent() {
             return <SocialLinkIcon
               className={
                 classNames('w-5 h-5', {
-                  'text-primary': active,
+                  'var-brand-textcolor': active,
                   'text-main-black': !active
                 })
               }
@@ -106,7 +111,7 @@ export default function BrandMannageContent() {
   ]
 
   return (
-    <div>
+    <div style={{ '--var-brand-color': brandColor } as CSSProperties}>
       <Tabs value={tab} tabs={tabs} tabPanelClassName='modal-content-box' onChange={(v) => setTab(v)} />
     </div>
   )

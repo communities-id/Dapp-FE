@@ -27,7 +27,7 @@ export default function UnstyledTabsVertical(props: Props) {
 
   return (
     <Tabs
-      className={classNames('', wrapperClassName)}
+      className={classNames('w-full mds:max-w-[904px] lg:max-w-[1098px]', wrapperClassName)}
       value={value}
       orientation="vertical"
       onChange={(e, v) => {
@@ -37,23 +37,20 @@ export default function UnstyledTabsVertical(props: Props) {
       <TabsList className={classNames('text-md-b bg-gray-6', tabsListClassName)}>
         {
           tabs.map(({ groupId, list }, idx) => {
-            // if (idx < tabs.length) {
-                
-            // }
             return (
-              <div>
+              <div key={idx}>
                 {
                   list.map(({ label, value: v, renderIcon }) => {
                     return (
                       <Tab
-                        className={classNames('flex items-center', tabClassName)}
+                        className={classNames('flex items-center w-[80px] md:w-[274px]', tabClassName)}
                         value={v}
                         key={v}
                         disableRipple
                         disableFocusRipple
                       >
                         { renderIcon(v === value, value) }
-                        <span className='min-w-0 flex-1 text-left'>{ label }</span>
+                        <span className='hidden md:inline-block min-w-0 flex-1 text-left'>{ label }</span>
                       </Tab>
                     )
                   })
@@ -71,10 +68,10 @@ export default function UnstyledTabsVertical(props: Props) {
         }
       </TabsList>
       {
-        tabs.map(({ groupId, list }, idx) => {
-          return list.map(({ label, value: v, renderPanel }) => {
+        tabs.map(({ groupId, list }) => {
+          return list.map(({ label, value: v, renderPanel }, idx) => {
             return (
-              <TabPanel className={classNames('flex-1', tabPanelClassName)} value={v}>
+              <TabPanel key={idx} className={classNames('flex-1', tabPanelClassName)} value={v}>
                 { renderPanel(v === value, value) }
               </TabPanel>
             )
@@ -118,7 +115,7 @@ const Tab = styled(BaseTab)`
 
   &.${tabClasses.selected} {
     background-color: #fff;
-    color: #8840FF;
+    color: var(--var-brand-color);
   }
 `;
 

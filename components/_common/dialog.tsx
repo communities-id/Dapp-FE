@@ -29,7 +29,7 @@ const Dialog: FC<Props> = ({ open, hiddenCloseIcon, handleClose, wrapClassName, 
       <Box
         className={
           classnames(
-            'w-[1098px] max-h-[80vh] rounded-[30px] bg-white outline-none',
+            'max-h-[80vh] rounded-[30px] bg-white outline-none',
             className
           )
         }>
@@ -40,7 +40,7 @@ const Dialog: FC<Props> = ({ open, hiddenCloseIcon, handleClose, wrapClassName, 
             </div>
           )
         }
-        <div className={classnames('w-full overflow-auto', contentClassName)}>
+        <div className={classnames('w-full overflow-auto rounded-[30px]', contentClassName)}>
           {children}
         </div>
       </Box>

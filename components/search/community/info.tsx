@@ -52,6 +52,7 @@ import { TotalSupportedChainIDs } from '@/types/chain'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
 import CommunityDuplicate from '@/components/dialog/community/duplicate'
+import BrandInviteDialog from '@/components/_dialog/brand/invite'
 
 interface Props {
   children?: ReactNode
@@ -297,7 +298,7 @@ const CommunityLayout: FC<Props> = () => {
               </div>
               <div className="actions mt-6 flex items-center gap-[10px]">
                 <div className="btn-group button-md bg-main-black text-white flex gap-3">
-                  <button>Invite</button>
+                  <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                   <DividerLine mode='horizontal' className='bg-white' />
                   <button>Join</button>
                 </div>
@@ -416,6 +417,9 @@ const CommunityLayout: FC<Props> = () => {
       <CommunityDuplicate
         open={Boolean(dialogOpenSet['duplicate'])}
         handleClose={() => toggleDialogHandler('duplicate', false)} />
+      <BrandInviteDialog
+        open={Boolean(dialogOpenSet['invite'])}
+        handleClose={() => toggleDialogHandler('invite', false)} />
     </div>
   )
 }

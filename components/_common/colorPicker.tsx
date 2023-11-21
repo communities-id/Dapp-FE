@@ -10,18 +10,13 @@ const colors = [
 ]
 
 interface Props {
+  value: string
   onChange?: (color: string) => void
 }
 
-const ColorPicker: FC<Props> = ({ onChange }) => {
-  const [activeColor, setActiveColor] = useState(colors[0])
-
+const ColorPicker: FC<Props> = ({ value, onChange }) => {
   const [showPicker, setShowPicker] = useState(false)
 
-  useEffect(() => {
-    onChange?.(activeColor)
-  }, [activeColor])
-  
   return (
     <div className='flex items-center gap-[22px]'>
       <ul className='flex gap-[18px]'>
@@ -30,10 +25,10 @@ const ColorPicker: FC<Props> = ({ onChange }) => {
             return (
               <li key={idx} className='leading-zero'>
                 <ColorItem
-                  active={activeColor === color}
+                  active={value === color}
                   color={color}
                   onClick={() => {
-                    setActiveColor(color)
+                    onChange?.(color)
                   }}
                 />
               </li>
@@ -56,6 +51,9 @@ const ColorPicker: FC<Props> = ({ onChange }) => {
           onClick={() => {
             setShowPicker(!showPicker)
           }}
+          onBlur={() => {
+            setShowPicker(false)
+          }}
         >
           <PencilIcon width='12' height='12'/>
         </button>
@@ -63,9 +61,9 @@ const ColorPicker: FC<Props> = ({ onChange }) => {
           showPicker && (
             <div className='absolute top-0 left-[34px] z-picker'>
               <ChromePicker
-                color={activeColor}
+                color={value}
                 onChange={(color) => {
-                  setActiveColor(color.hex)
+                  onChange?.(color.hex)
                 }}
               />
             </div>
@@ -85,8 +83,10 @@ const ColorItem: FC<ColorItemProps> = ({ color, active, onClick }) => {
   return (
     <button
       className={
-        classNames('w-6 h-6 border-solid border-primary border-0 rounded-full', {
-          '!border-[4px]': active,
+        classNames('w-6 h-6 border-solid rounded-full', {
+          'border-0': !active,
+          '!border-[4px] border-primary': active,
+          '!border border-solid border-gray-3 rounded-ful': color === '#ffffff' && !active
         })
       }
       style={{ backgroundColor: color }}

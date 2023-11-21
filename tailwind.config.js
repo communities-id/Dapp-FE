@@ -25,6 +25,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: require('./_themes/size').fontFamily,
+    container: require('./_themes/size').container,
+    screens: require('./_themes/size').screens,
     colors: {
       current: 'currentColor',
       transparent: 'transparent',

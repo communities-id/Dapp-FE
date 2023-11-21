@@ -10,7 +10,7 @@ import TwitterIcon from '~@/icons/social/twitter.svg'
 import TelegramIcon from '~@/icons/social/telegram.svg'
 import DiscordIcon from '~@/icons/social/discord.svg'
 
-export type CommunityProfileLabels = 'image' | 'brandImage' | 'backgroundColor' | 'description' | 'externalUrl' | 'discord' | 'twitter' | 'telegram'
+export type CommunityProfileLabels = 'image' | 'brandImage' | 'brandColor' | 'description' | 'externalUrl' | 'discord' | 'twitter' | 'telegram'
 
 interface CommunityProfileProps {
   form: Record<CommunityProfileLabels, string>
@@ -66,7 +66,7 @@ const CommunityProfile: FC<CommunityProfileProps> = ({ form, validation, loading
     },
     {
       type: 'text',
-      name: 'backgroundColor',
+      name: 'brandColor',
       label: 'Brand Color',
       placeholder: '#000000 - #FFFFFF',
       unit: 'hex',

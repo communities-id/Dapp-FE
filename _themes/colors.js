@@ -21,5 +21,7 @@ module.exports = {
   'link-2': '#8840FF',
   'disabled-1': '#F6F7F9',
   'red-1': '#F41070',
-  'green-1': '#5CD331'
+  'green-1': '#5CD331',
+  'orange-1': '#FFB13D',
+  'orange-tr-10': '#FFB13D1A', // 0.1
 }
