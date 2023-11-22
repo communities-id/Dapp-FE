@@ -45,7 +45,7 @@ import LinkIcon from '~@/icons/link.svg'
 import BackIcon from '~@/icons/back.svg'
 import DuplicateIcon from '~@/icons/duplicate.svg'
 
-import { State } from '@/types'
+import { CommunityInfo, State } from '@/types'
 import { TotalSupportedChainIDs } from '@/types/chain'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
@@ -283,6 +283,10 @@ const CommunityLayout: FC<Props> = () => {
     }
   });
 
+  const commisionRate = 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)
+  const refundModel = SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]
+  const formula = `Y = ${ mintPriceNumericFormula }`
+
   return (
     <div className='relative w-full'>
       <Banner banner={communityInfo?.tokenUri?.brand_image} brandColor={communityInfo?.tokenUri?.brand_color} />
@@ -393,11 +397,11 @@ const CommunityLayout: FC<Props> = () => {
                   <td>
                     <p>
                       <span>Refund Rate</span>
-                      <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
+                      <ToolTip mode='sm' content={<p>{commisionRate}% of user DID minting fee goes to Brand DID Owner.</p>}>
                         <TipIcon width='14' height='14' className='text-mintPurple'/>
                       </ToolTip>
                     </p>
-                    <p>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
+                    <p>{100 - commisionRate}%</p>
                   </td>
                   <td>
                     <p>
@@ -418,7 +422,7 @@ const CommunityLayout: FC<Props> = () => {
                   <td>
                     <p>Refund Model</p>
                     <p className='flex items-center gap-1'>
-                      <span>{SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
+                      <span>{refundModel}</span>
                       { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={
                         <>
                           <p>Burn any time</p>
@@ -430,7 +434,7 @@ const CommunityLayout: FC<Props> = () => {
                   </td>
                   <td>
                     <p>Mint Price Formula</p>
-                    <p>Y = { mintPriceNumericFormula }</p>
+                    <p>{formula}</p>
                   </td>
                 </tr>
               </table>
@@ -452,7 +456,10 @@ const CommunityLayout: FC<Props> = () => {
         handleClose={() => toggleDialogHandler('manage', false)} />
       <CommunityDuplicate
         open={Boolean(dialogOpenSet['duplicate'])}
-        duplicateFrom={communityInfo.node?.node ?? ''}
+        communityInfo={communityInfo as CommunityInfo}
+        commisionRate={commisionRate}
+        refundModel={refundModel}
+        formula={formula}
         handleClose={() => toggleDialogHandler('duplicate', false)} />
       <BrandInviteDialog
         open={Boolean(dialogOpenSet['invite'])}
