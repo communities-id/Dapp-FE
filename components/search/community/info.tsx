@@ -46,7 +46,7 @@ import LinkIcon from '~@/icons/link.svg'
 import BackIcon from '~@/icons/back.svg'
 import DuplicateIcon from '~@/icons/duplicate.svg'
 
-import { State } from '@/types'
+import { CommunityInfo, State } from '@/types'
 import { TotalSupportedChainIDs } from '@/types/chain'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
@@ -284,6 +284,10 @@ const CommunityLayout: FC<Props> = () => {
     }
   });
 
+  const commisionRate = 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)
+  const refundModel = SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]
+  const formula = `Y = ${ mintPriceNumericFormula }`
+
   return (
     <div className='relative w-full'>
       <Banner banner={communityInfo?.tokenUri?.brand_image} brandColor={communityInfo?.tokenUri?.brand_color} />
@@ -455,7 +459,10 @@ const CommunityLayout: FC<Props> = () => {
         handleClose={() => toggleDialogHandler('manage', false)} />
       <CommunityDuplicate
         open={Boolean(dialogOpenSet['duplicate'])}
-        duplicateFrom={communityInfo.node?.node ?? ''}
+        communityInfo={communityInfo as CommunityInfo}
+        commisionRate={commisionRate}
+        refundModel={refundModel}
+        formula={formula}
         handleClose={() => toggleDialogHandler('duplicate', false)} />
       <BrandInviteDialog
         open={Boolean(dialogOpenSet['invite'])}
