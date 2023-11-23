@@ -21,6 +21,7 @@ const BrandManageDialog: FC<Props> = ({ open, handleClose }) => {
     <Dialog
       className=''
       open={open}
+      center
       handleClose={handleClose}
     >
       <BrandInviteContent />

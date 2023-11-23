@@ -15,12 +15,12 @@ export interface Props {
 
 const BaseButton: FC<Props> = ({ htmlFor, size = 'auto', disabled, loading, onClick, className, children }) => {
   return (
-    <label htmlFor={htmlFor} className='inline-block cursor-pointer'>
+    <label htmlFor={htmlFor} className='inline cursor-pointer'>
       <button
         disabled={disabled || loading}
         className={
           classnames(
-            'flex-center !shadow-none disabled:opacity-50 disabled:cursor-not-allowed',
+            'flex-center !shadow-none disabled:opacity-20 disabled:cursor-not-allowed',
             {
               'h-[24px] text-xs-b': size === 'small',
               'h-[34px] text-xs-b': size === 'short',

@@ -1,4 +1,4 @@
-import { useEffect, CSSProperties, useMemo, useState } from 'react';
+import { useEffect, CSSProperties, useMemo, useState, useRef } from 'react';
 import classNames from 'classnames';
 import { styled } from '@mui/system';
 import { Tabs as BaseTabs } from '@mui/base/Tabs';
@@ -22,6 +22,7 @@ interface Props {
 export default function UnstyledTabsVertical(props: Props) {
   const { value, tabs, wrapperClassName, tabsListClassName, tabClassName, tabPanelClassName, onChange } = props
 
+  const tabsListEl = useRef<HTMLDivElement>(null)
   const [tabWidth, setTabWidth] = useState(0)
   const [tabLeft, setTabLeft] = useState(0)
 
@@ -32,20 +33,30 @@ export default function UnstyledTabsVertical(props: Props) {
     } as CSSProperties
   }, [tabWidth, tabLeft])
 
+  const handleTabChange = (target: HTMLElement, v: number) => {
+    onChange?.(Number(v))
+    setTabWidth(target.offsetWidth)
+    setTabLeft(target.offsetLeft)
+  }
+
+  useEffect(() => {
+    if (!tabsListEl.current) return
+    const tabIndex = tabs.findIndex((tab) => tab.value === value)
+    handleTabChange(tabsListEl.current.children[tabIndex] as HTMLElement, value)
+  }, [tabsListEl.current])
+
   return (
     <Tabs
       className={classNames('flex flex-col w-full', wrapperClassName)}
       value={value}
       orientation="vertical"
       onChange={(e, v) => {
-        console.log('-- target', (e?.target as HTMLElement).getBoundingClientRect())
-        onChange?.(Number(v))
         const target = e?.target as HTMLElement
-        setTabWidth(target.offsetWidth)
-        setTabLeft(target.offsetLeft)
+        handleTabChange(target, Number(v))
       }}
     >
       <TabsList
+        ref={tabsListEl}
         style={tabListStyles}
         className={classNames('py-[10px] flex gap-[30px] text-md-b', tabsListClassName)}
       >

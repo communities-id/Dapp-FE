@@ -29,6 +29,7 @@ import HoverIcon from '@/components/common/hoverIcon'
 import DividerLine from '@/components/common/dividerLine'
 import Tag from '@/components/common/tag'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
+import MemberMintDialog from '@/components/_dialog/member/mint'
 
 import OpenseaIcon from '~@/icons/info/opensea.svg'
 import TwitterIcon from '~@/icons/info/twitter.svg'
@@ -316,7 +317,7 @@ const CommunityLayout: FC<Props> = () => {
                     <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <DividerLine mode='horizontal' className='bg-white' />
                   </> }
-                  <button>Join</button>
+                  <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
                   className="button-md text-main-black border-2 border-main-black flex gap-3"
@@ -361,78 +362,80 @@ const CommunityLayout: FC<Props> = () => {
             </div>
             <div className="mint-info">
               <table className={`mint-info-table ${pendingMintSet ? 'pending-set' : ''}`}>
-                <tr>
-                  <td colSpan={2}>
-                    <div className="flex justify-between items-center">
-                      <div className='col'>
-                        <p>Current Mint Price</p>
-                        <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
-                      </div>
-                      { pendingMintSet ? (
-                        <button
-                          className='bg-orange-1 text-white text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
-                          onClick={() => toggleDialogHandler('manage', true)}
-                        >
-                          <TipIcon width='14' height='14' className='text-white'/>
-                          <span>Pending set</span>
+                <tbody>
+                  <tr>
+                    <td colSpan={2}>
+                      <div className="flex justify-between items-center">
+                        <div className='col'>
+                          <p>Current Mint Price</p>
+                          <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                        </div>
+                        { pendingMintSet ? (
+                          <button
+                            className='bg-orange-1 text-white text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
+                            onClick={() => toggleDialogHandler('manage', true)}
+                          >
+                            <TipIcon width='14' height='14' className='text-white'/>
+                            <span>Pending set</span>
+                          </button>
+                        ) : (
+                          <button
+                            className='bg-white text-main-black text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
+                            onClick={() => setDialogOpenSet(prev => ({ ...prev, duplicate: true }))}
+                          >
+                            <span>Duplicate</span>
+                            <DuplicateIcon />
                         </button>
-                      ) : (
-                        <button
-                          className='bg-white text-main-black text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
-                          onClick={() => setDialogOpenSet(prev => ({ ...prev, duplicate: true }))}
-                        >
-                          <span>Duplicate</span>
-                          <DuplicateIcon />
-                      </button>
-                      )}
-                      
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p>
-                      <span>Refund Rate</span>
-                      <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
-                        <TipIcon width='14' height='14' className='text-mintPurple'/>
-                      </ToolTip>
-                    </p>
-                    <p>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
-                  </td>
-                  <td>
-                    <p>
-                      <span>TVL</span>
-                      <ToolTip mode='sm' content={
-                        <>
-                          <p className='text-primary'>Total value locked:</p>
-                          <p>Total value of tokens staked by community members, calculated in USDT.</p>
-                        </>
-                      }>
-                        <TipIcon width='14' height='14' className='text-mintPurple'/>
-                      </ToolTip>
-                    </p>
-                    <p>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p>Refund Model</p>
-                    <p className='flex items-center gap-1'>
-                      <span>{SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
-                      { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={
-                        <>
-                          <p>Burn any time</p>
-                        </>
-                      }>
-                        <BurnIcon width='16' height='16' className='text-red-1'/>
-                      </ToolTip> }
-                    </p>
-                  </td>
-                  <td>
-                    <p>Mint Price Formula</p>
-                    <p>Y = { mintPriceNumericFormula }</p>
-                  </td>
-                </tr>
+                        )}
+                        
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <span>Refund Rate</span>
+                        <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
+                          <TipIcon width='14' height='14' className='text-mintPurple'/>
+                        </ToolTip>
+                      </div>
+                      <p>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
+                    </td>
+                    <td>
+                      <div>
+                        <span>TVL</span>
+                        <ToolTip mode='sm' content={
+                          <>
+                            <p className='text-primary'>Total value locked:</p>
+                            <p>Total value of tokens staked by community members, calculated in USDT.</p>
+                          </>
+                        }>
+                          <TipIcon width='14' height='14' className='text-mintPurple'/>
+                        </ToolTip>
+                      </div>
+                      <p>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>Refund Model</p>
+                      <div className='flex items-center gap-1'>
+                        <span>{SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
+                        { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={
+                          <>
+                            <p>Burn any time</p>
+                          </>
+                        }>
+                          <BurnIcon width='16' height='16' className='text-red-1'/>
+                        </ToolTip> }
+                      </div>
+                    </td>
+                    <td>
+                      <p>Mint Price Formula</p>
+                      <p>Y = { mintPriceNumericFormula }</p>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -457,6 +460,9 @@ const CommunityLayout: FC<Props> = () => {
       <BrandInviteDialog
         open={Boolean(dialogOpenSet['invite'])}
         handleClose={() => toggleDialogHandler('invite', false)} />
+      <MemberMintDialog
+        open={Boolean(dialogOpenSet['memberMint'])}
+        handleClose={() => toggleDialogHandler('memberMint', false)} />
     </div>
   )
 }

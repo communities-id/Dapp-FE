@@ -29,9 +29,9 @@ const ExpandableDescription: FC<Props> = ({ className, children, lineHeight = 24
 
   return (
     <div>
-      <p ref={textElement} className={classnames(className, 'overflow-hidden whitespace-pre-wrap', expanded ? 'h-auto' : [collapsedClass, 'text-ellipsis'])}>
+      <div ref={textElement} className={classnames(className, 'overflow-hidden whitespace-pre-wrap', expanded ? 'h-auto' : [collapsedClass, 'text-ellipsis'])}>
         {children}
-      </p>
+      </div>
       { showExpandBtn && <a role='button' className="text-mintPurple" onClick={() => setExpanded(!expanded)}>{expanded ? 'Show less' : 'Show more'}</a>}
     </div>
   )

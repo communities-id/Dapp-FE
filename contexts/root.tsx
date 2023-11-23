@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, ReactNode, useEffect, useRef, useMemo } from 'react'
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 
 import { track as trackEvt } from '@/shared/track'
 
@@ -44,6 +45,10 @@ interface RootContextProps {
   config: RootContextConfigProps
   message: (info: SnackbarMessage, track?: Record<string, string | number>) => void
   tracker: (t: string, info?: Record<string, string | number>) => void
+  NetOps: {
+    loading: boolean
+    handleSwitchNetwork: (network: number) => Promise<number>
+  }
 }
 
 const Context = createContext<RootContextProps>({
@@ -66,10 +71,18 @@ const Context = createContext<RootContextProps>({
   },
   message: () => {},
   tracker: () => {},
+  NetOps: {
+    loading: false,
+    handleSwitchNetwork: async () => 0,
+  },
 })
 
 export function RootProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
+  const { chain } = useNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
+  const [switchNetworkLoading, setSwitchNetworkLoading] = useState(false)
+
   const refToComponent = useRef(null)
   const [sr, setSr] = useState()
   const [loaded, setLoaded] = useState(false)
@@ -123,6 +136,21 @@ export function RootProvider({ children }: { children: ReactNode }) {
 
   const toggleStickyMenu = () => {
     setStickyMenu(!stickyMenu)
+  }
+
+  const handleSwitchNetwork = async (network: number) => {
+    if (Number(chain?.id) !== Number(network)) {
+      try {
+        setSwitchNetworkLoading(true)
+        // setIsSwitchNetwork(true)
+        await switchNetworkAsync?.(network)
+        setSwitchNetworkLoading(false)
+      } catch (e) {
+        setSwitchNetworkLoading(false)
+        throw e
+      }
+    }
+    return Number(network)
   }
 
   const rootConfig = useMemo(() => {
@@ -189,7 +217,17 @@ export function RootProvider({ children }: { children: ReactNode }) {
   }, [router.pathname])
 
   return (
-    <Context.Provider value={{ sr: sr!, loaded, config: rootConfig, message: showMessage, tracker: handleTrack }}>
+    <Context.Provider value={{
+      sr: sr!,
+      loaded,
+      config: rootConfig,
+      message: showMessage,
+      tracker: handleTrack,
+      NetOps: {
+        loading: switchNetworkLoading,
+        handleSwitchNetwork,
+      },
+    }}>
       <Snackbar {...snackbarInfo} handleClose={hideMessage}/>
       <div className={classnames({ 'bg-black': darkMode })} ref={refToComponent}>{children}</div>
     </Context.Provider>

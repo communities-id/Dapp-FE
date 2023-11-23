@@ -143,7 +143,7 @@ const MemberMintLatest: FC<MemberMintLatestProps> = ({ member, slot }) => {
 
   const signatureMintValidator = useMemo(() => {
     if (!communityInfo || !communityInfo.node || !communityInfo.owner) return { powerful: false, designated: false }
-    if (!advanceMintSetting.signature || !advanceMintSetting.signature) return { powerful: false, designated: false }
+    if (!advanceMintSetting.signature) return { powerful: false, designated: false }
     return verifyMemberTypedMessage(advanceMintSetting.signature, communityInfo.owner, member, advanceMintSetting.mintTo || account!, communityInfo.node.registry, communityInfo.node.registryInterface, { chainId: communityInfo._chaninId })
   }, [communityMintType.invitedMint, advanceMintSetting.signature, advanceMintSetting.mintTo, account, communityInfo])
 
