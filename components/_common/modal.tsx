@@ -33,7 +33,7 @@ const CIDModal: FC<Props> = ({ open, center = false, wrapClassName, containerCla
       open={open}
       onClose={handleClose}
       slots={{ backdrop: StyledBackdrop }}
-      slotProps={{ backdrop: { className: backdropClassName, enableBackdropClick, onClick: onBackdropClick } }}
+      slotProps={{ backdrop: { className: backdropClassName, enableBackdropClick, onClick: onBackdropClick } as any }}
       onClick={onClick}
     >
       <FadeSlide
@@ -61,7 +61,7 @@ const StyledModal = styled(Modal)(
 
 const Backdrop = forwardRef<
   HTMLDivElement,
-  { open: boolean; className?: string; ownerState: any; enableBackdropClick?: boolean }
+  { open: boolean; className?: string; ownerState: any; enableBackdropClick?: boolean; }
 >((props, ref) => {
   const { open, className, ownerState, enableBackdropClick = false, ...other } = props;
   return (
