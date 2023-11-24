@@ -36,6 +36,7 @@ interface DetailsContextProps {
   }[]
   loadingSet: Record<'community' | 'member' | 'did', boolean>
   communityInfoSet: {
+    initialized: boolean
     isValid: boolean // is info valid
     isOwner: boolean
     isSigner: boolean
@@ -62,7 +63,7 @@ interface DetailsContextProps {
   isMainNetwork: boolean
   mainMulChainID: number
   mintMulChainID: number
-  refreshInfo: () => Promise<void>
+  refreshInfo: (initialize?: boolean) => Promise<void>
 }
 
 const DetailsContext = createContext<DetailsContextProps>({
@@ -83,6 +84,7 @@ const DetailsContext = createContext<DetailsContextProps>({
     did: false
   },
   communityInfoSet: {
+    initialized: false,
     isValid: false,
     isOwner: false,
     isSigner: false,
@@ -125,6 +127,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     did: false
   })
   // const [addressDID, setAddressDID] = useState<string | undefined>('')
+  const [brandInitialized, setBrandInitialized] = useState(false)
   const [communityInfo, setCommunityInfo] = useState<Partial<CommunityInfo>>({})
   const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>({})
   const [ownerMemberInfo, setOwnerMemberInfo] = useState<Partial<MemberInfo>>({})
@@ -169,6 +172,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
   const communityInfoSet = useMemo(() => {
     if (loadingSet.community) {
       return {
+        initialized: brandInitialized,
         isValid: false,
         isOwner: false,
         isSigner: false,
@@ -184,6 +188,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     const isRenewal = communityInfo?.state === State.RESERVED
     const isExpired = communityInfo?.state === State.EXPIRED
     return {
+      initialized: brandInitialized,
       isValid: !!communityInfo?.node,
       isOwner: communityInfo?.owner === account,
       isSigner: communityInfo.config?.signer === account,
@@ -275,7 +280,8 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     })
   }
 
-  const refreshInfo = async () => {
+  const refreshInfo = async (initialize?: boolean) => {
+    setBrandInitialized(initialize ?? false)
     const currentRequestId = requestId.current
     requestId.current = currentRequestId + 1
     await loadCommunityInfo(community, false).then(async (communityInfo) => {

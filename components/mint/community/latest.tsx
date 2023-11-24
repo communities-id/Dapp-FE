@@ -113,7 +113,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
       }
       tracker('success:brand-mint', { community, mintTo: _mintTo, price: price.toString() })
       // to do: update brand
-      await refreshInfo()
+      await refreshInfo(true)
       handleMintSuccess?.({ community, owner: _mintTo, avatar: '' }, 'community')
     } catch (err: any) {
       console.log(err)

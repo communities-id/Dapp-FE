@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 
 import { searchCommunity } from "@/shared/useApi"
 
@@ -13,6 +13,16 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
   const [brandInfo, setBrandInfo] = useState<Partial<CommunityInfo>>(inputBrandInfo ?? {})
   const [brandInfoLoading, setBrandInfoLoading] = useState(false)
 
+  const handleVerifyBrandSet = (info: Partial<CommunityInfo>) => {
+    return {
+      notLoaded: !info.config?.publicMint && !info.config?.signatureMint && !info.config?.holdingMint
+    }
+  }
+
+  const brandNotLoaded = useMemo(() => {
+    return handleVerifyBrandSet(brandInfo).notLoaded
+  }, [brandInfo])
+
   useEffect(() => {
     if (inputBrandInfo) return
     if (!brandName) return
@@ -25,6 +35,8 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
   
   return {
     brandInfo,
-    brandInfoLoading
+    brandInfoLoading,
+    brandNotLoaded,
+    handleVerifyBrandSet
   }
 }

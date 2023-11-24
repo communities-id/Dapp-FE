@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { useWallet } from '@/hooks/wallet'
+
 import Dialog from '@/components/_common/dialog'
 import BrandManageContent from '@/components/_brand/manage'
 
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
+  const { address: account } = useWallet()
   
   return (
     <Dialog
@@ -21,7 +24,7 @@ const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose 
       center
       handleClose={handleClose}
     >
-      <BrandManageContent brandName={brandName} brandInfo={brandInfo} />
+      <BrandManageContent account={account} brandName={brandName} brandInfo={brandInfo} />
     </Dialog>
   )
 }
