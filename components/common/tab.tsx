@@ -15,7 +15,7 @@ const _Tab: FC<Props> = ({ value, children, className }) => {
   return (
     <Tab
       value={value}
-      className={classnames('relative py-[10px] mr-12.5 text-searchTab', className)}>
+      className={classnames('relative py-[10px] mr-12.5 sm:mr-10 text-searchTab', className)}>
         { children }
     </Tab>
   )

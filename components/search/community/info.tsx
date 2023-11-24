@@ -470,7 +470,7 @@ const CommunityLayout: FC<Props> = () => {
           </div>
         </div>
       </div>
-      <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-100 flex gap-2.5 justify-center border-t border-gray-7">
+      <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
         { communityInfoSet.isOwner && <BrandColorButton
           className="button-md text-main-black border-2 border-main-black flex gap-3"
           onClick={() => toggleDialogHandler('manage', true)}>

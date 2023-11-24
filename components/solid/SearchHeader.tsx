@@ -143,7 +143,7 @@ const SearchHeader: FC = () => {
           <div className="search w-full">
             <button className="search-form bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-text w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
               <SearchSvg className="w-6 h-6" />
-              <span>{searchValue}</span>
+              <input value={searchValue} disabled className="bg-transparent" />
             </button>
           </div>
         </div>
