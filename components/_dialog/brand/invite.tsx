@@ -1,30 +1,28 @@
-import { FC, useEffect, useState } from 'react'
-
-import { useWallet } from '@/hooks/wallet'
-import { useRoot } from '@/contexts/root'
-import { useDetails } from '@/contexts/details'
+import { FC } from 'react'
 
 import Dialog from '@/components/_common/dialog'
 import BrandInviteContent from '@/components/_brand/invite'
+
+import { CommunityInfo } from '@/types'
  
 interface Props {
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
   open: boolean
   handleClose?: () => void
 }
 
-const BrandManageDialog: FC<Props> = ({ open, handleClose }) => {
-  const { getSigner } = useWallet()
-  const { message } = useRoot()
-  const { communityInfo } = useDetails()
+const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
   
   return (
     <Dialog
-      className=''
+      className='h-screen'
+      contentClassName='h-full !overflow-hidden'
       open={open}
       center
       handleClose={handleClose}
     >
-      <BrandInviteContent />
+      <BrandInviteContent brandName={brandName} brandInfo={brandInfo} />
     </Dialog>
   )
 }

@@ -11,39 +11,6 @@ import { Popper, Button, PopperPlacementType, ClickAwayListener } from '@mui/bas
 
 export type PopoverMenuItem = { id: string | number; text: string; icon: ReactNode; loading?: boolean; disabled?: boolean; global?: boolean; clipboard?: string; handleCopied?: () => void; link?: string; linkSelf?: boolean; }
 
-interface RenderPopoverMenuItemProps {
-  menu: PopoverMenuItem
-  handleClick?: (event: Event | React.SyntheticEvent, menu: PopoverMenuItem) => void
-}
-
-const RenderPopoverMenuItem: FC<RenderPopoverMenuItemProps> = ({ menu, handleClick }) => {
-  return (
-    <li
-      className={
-        classnames('flex items-center gap-[10px] hover:bg-tag px-[10px] py-[6px] text-popoverTag text-secondaryBlack rounded-[4px] cursor-pointer', {
-          '!cursor-not-allowed !bg-disabled !border-transparent': menu.disabled,
-        })
-      }
-      onClick={(e) => handleClick?.(e, menu)}>
-        {
-          menu.clipboard ? (
-            <CopyToClipboard text={menu.clipboard} onCopy={menu.handleCopied}>
-              <button type='button' className='flex items-center gap-[10px]'>
-                { menu.icon }
-                <span>{ menu.text }</span>
-              </button>
-            </CopyToClipboard>
-          ) : (
-            <Fragment>
-              { menu.icon }
-              <span>{ menu.text }</span>
-            </Fragment>
-          )
-        }
-    </li>
-  )
-}
-
 interface Props {
   id: string | number
   placement?: PopperPlacementType
@@ -123,3 +90,36 @@ const Popover: FC<Props> = ({ id, className, placement = 'bottom-end', menus, di
 }
 
 export default Popover
+
+interface RenderPopoverMenuItemProps {
+  menu: PopoverMenuItem
+  handleClick?: (event: Event | React.SyntheticEvent, menu: PopoverMenuItem) => void
+}
+
+const RenderPopoverMenuItem: FC<RenderPopoverMenuItemProps> = ({ menu, handleClick }) => {
+  return (
+    <li
+      className={
+        classnames('flex items-center gap-[10px] hover:bg-tag px-[10px] py-[6px] text-popoverTag text-secondaryBlack rounded-[4px] cursor-pointer', {
+          '!cursor-not-allowed !bg-disabled !border-transparent': menu.disabled,
+        })
+      }
+      onClick={(e) => handleClick?.(e, menu)}>
+        {
+          menu.clipboard ? (
+            <CopyToClipboard text={menu.clipboard} onCopy={menu.handleCopied}>
+              <button type='button' className='flex items-center gap-[10px]'>
+                { menu.icon }
+                <span>{ menu.text }</span>
+              </button>
+            </CopyToClipboard>
+          ) : (
+            <Fragment>
+              { menu.icon }
+              <span>{ menu.text }</span>
+            </Fragment>
+          )
+        }
+    </li>
+  )
+}

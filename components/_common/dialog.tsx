@@ -33,7 +33,7 @@ const Dialog: FC<Props> = ({ open, center, hiddenCloseIcon, handleClose, wrapCla
       <Box
         className={
           classnames(
-            'h-screen md:max-h-[80vh] rounded-[30px] bg-white outline-none',
+            'md:max-h-[80vh] rounded-[30px] bg-white outline-none',
             className
           )
         }>

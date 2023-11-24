@@ -14,40 +14,41 @@ import Button from '@/components/_common/button'
 import IpfsUploader from '@/components/_common/ipfsUploader'
 import TextArea from '@/components/_common/textarea'
 import PrimaryDID from '@/components/common/primaryDID'
-
-import PencilIcon from '~@/_brand/pencil.svg'
 import { CommunityProfileLabels } from '@/components/settings/community/profile'
 
-interface Props {
+import { CommunityInfo } from '@/types'
 
+import PencilIcon from '~@/_brand/pencil.svg'
+
+interface Props {
+  brandInfo: Partial<CommunityInfo>
 }
 
-const BrandMannageProfileSettings: FC<Props> = () => {
+const BrandMannageProfileSettings: FC<Props> = ({ brandInfo }: Props) => {
   const { message } = useRoot()
-  const { communityInfo, refreshInfo } = useDetails()
   const { updateCommunityBrandConfig } = useApi()
   
   const [loading, setLoading] = useState(false)
   const [validation, setValidation] = useState<Record<string, string | undefined>>({})
   
   const [form, setForm] = useState<Record<CommunityProfileLabels, string>>({
-    image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
-    brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-    brandColor: communityInfo?.tokenUri?.brand_color ?? '',
-    description: communityInfo?.tokenUri?.description ?? '',
-    externalUrl: communityInfo?.tokenUri?.external_url ?? '',
-    discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),
-    twitter: String(communityInfo?.tokenUri?.attr?.twitter ?? ''),
-    telegram: String(communityInfo?.tokenUri?.attr?.telegram ?? ''),
+    image: brandInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (brandInfo?.tokenUri?.image ?? ''),
+    brandImage: brandInfo?.tokenUri?.brand_image ?? '',
+    brandColor: brandInfo?.tokenUri?.brand_color ?? '',
+    description: brandInfo?.tokenUri?.description ?? '',
+    externalUrl: brandInfo?.tokenUri?.external_url ?? '',
+    discord: String(brandInfo?.tokenUri?.attr?.discord ?? ''),
+    twitter: String(brandInfo?.tokenUri?.attr?.twitter ?? ''),
+    telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
   })
 
   const brandName = useMemo(() => {
-    return communityInfo?.node?.node
-  }, [communityInfo])
+    return brandInfo?.node?.node
+  }, [brandInfo])
 
   const brandOwner = useMemo(() => {
-    return communityInfo?.owner ?? ''
-  }, [communityInfo])
+    return brandInfo?.owner ?? ''
+  }, [brandInfo])
 
   const changed = useMemo(() => {
     return {
@@ -87,15 +88,15 @@ const BrandMannageProfileSettings: FC<Props> = () => {
   }
 
   function needUpdate() {
-    const isImageChanged = (form.image || DEFAULT_AVATAR) !== communityInfo?.tokenUri?.image
-    const isBrandImageChanged = form.brandImage !== communityInfo?.tokenUri?.brand_image
-    const isBackgroundColorChanged = form.brandColor !== communityInfo?.tokenUri?.brand_color
-    const isDescriptionChanged = form.description !== communityInfo?.tokenUri?.description
+    const isImageChanged = (form.image || DEFAULT_AVATAR) !== brandInfo?.tokenUri?.image
+    const isBrandImageChanged = form.brandImage !== brandInfo?.tokenUri?.brand_image
+    const isBackgroundColorChanged = form.brandColor !== brandInfo?.tokenUri?.brand_color
+    const isDescriptionChanged = form.description !== brandInfo?.tokenUri?.description
     return isImageChanged || isBrandImageChanged || isBackgroundColorChanged || isDescriptionChanged
   }
   
   const handleSaveOnChain = async () => {
-    if (!communityInfo?.node) return
+    if (!brandInfo?.node) return
     setValidation({})
     const validateResult = validateForm()
     if (Object.keys(validateResult).length > 0) {
@@ -103,13 +104,13 @@ const BrandMannageProfileSettings: FC<Props> = () => {
       return
     }
     if (!changed.profileConfig) {
-      message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: communityInfo.node.node })
+      message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: brandInfo.node.node })
       return
     }
     try {
       setLoading(true)
-      const chainId = communityInfo.chainId as number
-      await updateCommunityBrandConfig(communityInfo.node.tokenId, {
+      const chainId = brandInfo.chainId as number
+      await updateCommunityBrandConfig(brandInfo.node.tokenId, {
         image: form.image || DEFAULT_AVATAR,
         brandImage: form.brandImage,
         brandColor: form.brandColor,
@@ -119,8 +120,8 @@ const BrandMannageProfileSettings: FC<Props> = () => {
         twitter: form.twitter,
         telegram: form.telegram
       }, { chainId })
-      await updateCommunity(communityInfo.node.node, true)
-      message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
+      await updateCommunity(brandInfo.node.node, true)
+      message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
       // handleClose?.()
       // refreshInfo()
       location.reload()
@@ -129,7 +130,7 @@ const BrandMannageProfileSettings: FC<Props> = () => {
       message({
         type: 'error',
         content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
+      }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
     } finally {
       setLoading(false)
     }
@@ -144,14 +145,14 @@ const BrandMannageProfileSettings: FC<Props> = () => {
 
   const handleReset = () => {
     setForm({
-      image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
-      brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-      brandColor: communityInfo?.tokenUri?.brand_color ?? '',
-      description: communityInfo?.tokenUri?.description ?? '',
-      externalUrl: communityInfo?.tokenUri?.external_url ?? '',
-      discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),
-      twitter: String(communityInfo?.tokenUri?.attr?.twitter ?? ''),
-      telegram: String(communityInfo?.tokenUri?.attr?.telegram ?? ''),
+      image: brandInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (brandInfo?.tokenUri?.image ?? ''),
+      brandImage: brandInfo?.tokenUri?.brand_image ?? '',
+      brandColor: brandInfo?.tokenUri?.brand_color ?? '',
+      description: brandInfo?.tokenUri?.description ?? '',
+      externalUrl: brandInfo?.tokenUri?.external_url ?? '',
+      discord: String(brandInfo?.tokenUri?.attr?.discord ?? ''),
+      twitter: String(brandInfo?.tokenUri?.attr?.twitter ?? ''),
+      telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
     })
   }
 

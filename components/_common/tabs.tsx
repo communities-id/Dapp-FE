@@ -47,7 +47,7 @@ export default function UnstyledTabsVertical(props: Props) {
 
   return (
     <Tabs
-      className={classNames('flex flex-col w-full', wrapperClassName)}
+      className={classNames('flex flex-col w-full h-full', wrapperClassName)}
       value={value}
       orientation="vertical"
       onChange={(e, v) => {
@@ -77,15 +77,17 @@ export default function UnstyledTabsVertical(props: Props) {
           })
         }
       </TabsList>
-      {
-        tabs.map(({ renderPanel, value: v }, idx) => {
-          return (
-            <TabPanel key={idx} className={classNames('flex-1', tabPanelClassName)} value={v}>
-              { renderPanel?.(v === value, value) }
-            </TabPanel>
-          )
-        })
-      }
+      <div className={classNames('flex-1 overflow-auto', tabPanelClassName)}>
+        {
+          tabs.map(({ renderPanel, value: v }, idx) => {
+            return (
+              <TabPanel key={idx} value={v}>
+                { renderPanel?.(v === value, value) }
+              </TabPanel>
+            )
+          })
+        }
+      </div>
     </Tabs>
   );
 }

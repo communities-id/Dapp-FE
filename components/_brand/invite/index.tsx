@@ -6,17 +6,21 @@ import { CHAIN_ID } from '@/shared/constant'
 import Tabs from '@/components/_common/tabs'
 import TargetedInvitation from '@/components/_brand/invite/targeted'
 
-interface Props {
+import { CommunityInfo } from '@/types'
+import { useDIDContent } from '@/hooks/content'
 
+interface Props {
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
 }
 
-const BrandInviteContent: FC<Props> = () => {
-  const { communityInfo } = useDetails()
+const BrandInviteContent: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
+  const { brandInfo } = useDIDContent({ brandName, brandInfo: inputBrandInfo })
 
-  const brand = communityInfo?.node?.node || ''
-  const chainId = communityInfo?._chaninId || CHAIN_ID
-  const registry = communityInfo?.node?.registry || ''
-  const registryInterface = communityInfo?.node?.registryInterface || ''
+  const brand = brandInfo?.node?.node || ''
+  const chainId = brandInfo?._chaninId || CHAIN_ID
+  const registry = brandInfo?.node?.registry || ''
+  const registryInterface = brandInfo?.node?.registryInterface || ''
 
   const [tab, setTab] = useState(0)
   const tabs = [
@@ -38,10 +42,15 @@ const BrandInviteContent: FC<Props> = () => {
     // }
   ]
   return (
-    <div className='p-[30px] w-[520px]'>
+    <div className='pt-[30px] w-[520px] h-full flex flex-col'>
       <h1 className='text-xl text-main-black text-center'>Invite Member</h1>
-      <div className='mt-5'>
-        <Tabs value={tab} tabs={tabs} onChange={(val) => setTab(val)} />
+      <div className='mt-5 flex-1 h-full overflow-hidden'>
+        <Tabs
+          tabsListClassName='mx-[30px]'
+          value={tab}
+          tabs={tabs}
+          onChange={(val) => setTab(val)}
+        />
       </div>
     </div>
   )

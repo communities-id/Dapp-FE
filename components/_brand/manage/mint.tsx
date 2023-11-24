@@ -32,6 +32,7 @@ import ForwardsIcon from '~@/_brand/forwards.svg'
 import MinusIcon from '~@/_brand/minus.svg'
 import PlusIcon from '~@/_brand/plus.svg'
 import EditIcon from '~@/_brand/edit.svg'
+import { CommunityInfo } from '@/types'
 
 export type FormItemTypes = 'memberConfig' | 'mint' | 'price' | 'baseUri'
 
@@ -66,9 +67,12 @@ type FormProps<T = MintSettingLabels> = {
   formType?: FormItemTypes
 }
 
-export default function BrandMannageMintSettings() {
+interface Props {
+  brandInfo: Partial<CommunityInfo>
+}
+
+export default function BrandMannageMintSettings({ brandInfo }: Props) {
   const { message } = useRoot()
-  const { communityInfo, communityInfoSet } = useDetails()
   const { updateVariableCommunityMintConfig, updateCommunityMintConfig } = useApi()
 
   const [tab, setTab] = useState(1)
@@ -78,37 +82,37 @@ export default function BrandMannageMintSettings() {
   const [loading, setLoading] = useState(false)
   const [validation, setValidation] = useState<Record<string, string | undefined>>({})
 
-  const { totalSupply, config, tokenUri, priceModel } = communityInfo
+  const { totalSupply, config, tokenUri, priceModel } = brandInfo
 
   const defaultForms: CommunityMemberConfig & CommunityMintConfig & CommunityPrice = useMemo(() => {
     const params = {
-      a_: toBN(communityInfo?.priceModel?.a ?? '0'),
-      b_: toBN(communityInfo?.priceModel?.b ?? '0'),
-      c_: toBN(communityInfo?.priceModel?.c ?? '0'),
-      d_: toBN(communityInfo?.priceModel?.d ?? '0'),
+      a_: toBN(brandInfo?.priceModel?.a ?? '0'),
+      b_: toBN(brandInfo?.priceModel?.b ?? '0'),
+      c_: toBN(brandInfo?.priceModel?.c ?? '0'),
+      d_: toBN(brandInfo?.priceModel?.d ?? '0'),
     }
-    const { a, b, c, d } = parseToDurationPrice(communityInfo.priceModel?.mode, params, communityInfo?.config?.durationUnit ?? 1)
+    const { a, b, c, d } = parseToDurationPrice(brandInfo.priceModel?.mode, params, brandInfo?.config?.durationUnit ?? 1)
     return {
-      publicMint: communityInfo?.config?.publicMint ?? false,
-      signatureMint: communityInfo?.config?.signatureMint ?? false,
-      holdingMint: communityInfo?.config?.holdingMint ?? false,
-      // signer: (communityInfo?.config?.signer === ZERO_ADDRESS) ? account : (communityInfo?.config?.signer ?? ''), // if signer is not set, use current account
-      signer: communityInfo?.config?.signer ?? ZERO_ADDRESS, // if signer is not set, use zero address
-      proofOfHolding: communityInfo?.config?.proofOfHolding.join('\n') ?? '',
-      // coin: (communityInfo?.config?.coin === ZERO_ADDRESS) ? '' : (communityInfo?.config?.coin ?? ''),
-      coin: communityInfo?.config?.coin ?? ZERO_ADDRESS,
-      sequenceMode: communityInfo?.config?.sequenceMode ?? SequenceMode.INPUT_VALUE,
-      durationUnit: communityInfo?.config?.durationUnit ?? 365,
-      reserveDuration: communityInfo.config?.reserveDuration ?? 7 * 24 * 3600,
-      burnAnytime: communityInfo.config?.burnAnytime ?? true,
-      mode: communityInfo?.priceModel?.mode ?? PriceMode.CONSTANT,
+      publicMint: brandInfo?.config?.publicMint ?? false,
+      signatureMint: brandInfo?.config?.signatureMint ?? false,
+      holdingMint: brandInfo?.config?.holdingMint ?? false,
+      // signer: (brandInfo?.config?.signer === ZERO_ADDRESS) ? account : (brandInfo?.config?.signer ?? ''), // if signer is not set, use current account
+      signer: brandInfo?.config?.signer ?? ZERO_ADDRESS, // if signer is not set, use zero address
+      proofOfHolding: brandInfo?.config?.proofOfHolding.join('\n') ?? '',
+      // coin: (brandInfo?.config?.coin === ZERO_ADDRESS) ? '' : (brandInfo?.config?.coin ?? ''),
+      coin: brandInfo?.config?.coin ?? ZERO_ADDRESS,
+      sequenceMode: brandInfo?.config?.sequenceMode ?? SequenceMode.INPUT_VALUE,
+      durationUnit: brandInfo?.config?.durationUnit ?? 365,
+      reserveDuration: brandInfo.config?.reserveDuration ?? 7 * 24 * 3600,
+      burnAnytime: brandInfo.config?.burnAnytime ?? true,
+      mode: brandInfo?.priceModel?.mode ?? PriceMode.CONSTANT,
       a: a,
       b: b,
       c: c,
       d: d,
-      commissionRate: (Number(communityInfo?.priceModel?.commissionRate) / 100) ?? 10,
+      commissionRate: (Number(brandInfo?.priceModel?.commissionRate) / 100) ?? 10,
     }
-  }, [communityInfo])
+  }, [brandInfo])
 
   // is community profile settled
   // const profileSettled = useMemo(() => {
@@ -233,7 +237,7 @@ export default function BrandMannageMintSettings() {
           return 'Please enter a valid address'
         }
         if (value && value !== ZERO_ADDRESS) {
-          const symbol = await getTokenSymbol(value, communityInfo.chainId)
+          const symbol = await getTokenSymbol(value, brandInfo.chainId)
           if (!symbol) {
             return 'Please enter a valid ERC20 token address'
           }
@@ -343,7 +347,7 @@ export default function BrandMannageMintSettings() {
   }
 
   const handleUpdateFullMintSetting = async () => {
-    if (!communityInfo?.node) return
+    if (!brandInfo?.node) return
     const mintValidateResult = await validateMintForm()
     if (Object.keys(mintValidateResult).length > 0) {
       setValidation(mintValidateResult)
@@ -358,7 +362,7 @@ export default function BrandMannageMintSettings() {
 
     try {
       setLoading(true)
-      const chainId = communityInfo.chainId as number
+      const chainId = brandInfo.chainId as number
       if (needUpdateMintConfig() || needUpdatePriceConfig() || needUpdateMemberConfig()) {
         const params = {
           a: Number(priceForm.a ?? 0),
@@ -390,25 +394,25 @@ export default function BrandMannageMintSettings() {
         }
         console.log('-- update payload', mintConfig, priceConfig)
         if (!needUpdatePriceConfig()) {
-          await updateVariableCommunityMintConfig(communityInfo.node.registry, communityInfo.node.registryInterface, mintConfig, { chainId })
+          await updateVariableCommunityMintConfig(brandInfo.node.registry, brandInfo.node.registryInterface, mintConfig, { chainId })
         } else {
-          await updateCommunityMintConfig(communityInfo.node.registry, communityInfo.node.registryInterface, {
+          await updateCommunityMintConfig(brandInfo.node.registry, brandInfo.node.registryInterface, {
             ...mintConfig,
             ...priceConfig
           }, { chainId })
         }
-        await updateCommunity(communityInfo.node.node, true)
-        message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-mint-setting', k: communityInfo.node.node })
+        await updateCommunity(brandInfo.node.node, true)
+        message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-mint-setting', k: brandInfo.node.node })
         location.reload()
       } else {
-        message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-mint-setting', k: communityInfo.node.node })
+        message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-mint-setting', k: brandInfo.node.node })
       }
     } catch (e) {
       console.error(e)
       message({
         type: 'error',
         content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-mint-setting', k: communityInfo.node.node })
+      }, { t: 'brand-mint-setting', k: brandInfo.node.node })
     } finally {
       setLoading(false)
     }
@@ -440,7 +444,7 @@ export default function BrandMannageMintSettings() {
       commissionRate: defaultForms.commissionRate
     })
     // setBaseUriForm({
-    //   imageBaseURI: communityInfo?.config?.imageBaseURI ?? ''
+    //   imageBaseURI: brandInfo?.config?.imageBaseURI ?? ''
     // })
   }
 
@@ -469,17 +473,17 @@ export default function BrandMannageMintSettings() {
 
   useEffect(() => {
     async function getCoinSymbol() {
-      const symbol = await getTokenSymbol((mintForm.coin as string) || ZERO_ADDRESS, communityInfo.chainId)
+      const symbol = await getTokenSymbol((mintForm.coin as string) || ZERO_ADDRESS, brandInfo.chainId)
       setCoinSymbol(symbol)
     }
     getCoinSymbol()
   }, [mintForm.coin])
 
   useEffect(() => {
-    if (!communityInfo.tokenUri) return
+    if (!brandInfo.tokenUri) return
     setValidation({})
     handleReset()
-  }, [communityInfo, defaultForms])
+  }, [brandInfo, defaultForms])
 
   useEffect(() => {
     handleResetTab()

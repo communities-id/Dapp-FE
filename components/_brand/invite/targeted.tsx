@@ -125,7 +125,7 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
   }
 
   return (
-    <div className='mt-[10px] flex flex-col gap-5'>
+    <div className='mt-[10px] px-[30px] pb-[30px] flex flex-col gap-5'>
       <div className='flex-itmc py-[3px] px-[10px] gap-1 text-orange-1 text-md bg-orange-tr-10 rounded-xs'>
         <TipsIcon width='14' height='14' className='' />
         <span className='flex-1'>Targeted invitation codes support allocation to specific IDs and are for one-time use only.</span>
