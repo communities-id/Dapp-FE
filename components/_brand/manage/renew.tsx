@@ -3,6 +3,13 @@ import { FC } from 'react'
 import InputNumber from '@/components/_common/inputNumber'
 import Button from '@/components/_common/button'
 
+import { CommunityInfo } from '@/types'
+
+interface Props {
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
+}
+
 export default function BrandMannageRenew() {
   return (
     <div className="modal-content-container modal-content">

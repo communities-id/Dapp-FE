@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useMemo, useState, Fragment } from 'react'
+import { FC, ReactNode, useEffect, useMemo, useState, Fragment, use } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -246,7 +246,7 @@ const CommunityLayout: FC<Props> = () => {
       await switchNetworkAsync?.(communityInfo?._chaninId)
     }
     if (menu.global) {
-      showGlobalDialog(menu.id)
+      showGlobalDialog(String(menu.id))
     }
     toggleDialogHandler(menu.id, true)
   }
@@ -266,6 +266,11 @@ const CommunityLayout: FC<Props> = () => {
 
     getTVLInUSD()
   }, [communityInfo])
+
+  useEffect(() => {
+    if (!pendingMintSet) return
+    showGlobalDialog('brand-not-loaded', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+  }, [pendingMintSet])
 
   if (communityInfoSet.unMint) return (
     <Banner />
@@ -321,11 +326,15 @@ const CommunityLayout: FC<Props> = () => {
                     <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <DividerLine mode='horizontal' className='bg-white' />
                   </> }
-                  <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>
+                  <button onClick={() => {
+                    showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                  }}>Join</button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
                   className="button-md text-main-black border-2 border-main-black flex gap-3"
-                  onClick={() => toggleDialogHandler('manage', true)}>
+                  onClick={() => {
+                    showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                  }}>
                   Manage
                 </BrandColorButton> }
                 <DividerLine mode='horizontal' className='bg-main-black' />
@@ -377,7 +386,9 @@ const CommunityLayout: FC<Props> = () => {
                         { pendingMintSet ? (
                           <button
                             className='bg-orange-1 text-white text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
-                            onClick={() => toggleDialogHandler('manage', true)}
+                            onClick={() => {
+                              showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                            }}
                           >
                             <TipIcon width='14' height='14' className='text-white'/>
                             <span>Pending set</span>
@@ -454,9 +465,9 @@ const CommunityLayout: FC<Props> = () => {
       <CommunityBindTelegram
         open={Boolean(dialogOpenSet['telegram'])}
         handleClose={() => toggleDialogHandler('telegram', false)} />
-      <BrandManageDialog
+      {/* <BrandManageDialog
         open={Boolean(dialogOpenSet['manage'])}
-        handleClose={() => toggleDialogHandler('manage', false)} />
+        handleClose={() => toggleDialogHandler('manage', false)} /> */}
       <CommunityDuplicate
         open={Boolean(dialogOpenSet['duplicate'])}
         communityInfo={communityInfo as CommunityInfo}
@@ -465,11 +476,10 @@ const CommunityLayout: FC<Props> = () => {
         formula={formula}
         handleClose={() => toggleDialogHandler('duplicate', false)} />
       <BrandInviteDialog
+        brandName={communityInfo.node?.node}
+        brandInfo={communityInfo}
         open={Boolean(dialogOpenSet['invite'])}
         handleClose={() => toggleDialogHandler('invite', false)} />
-      <MemberMintDialog
-        open={Boolean(dialogOpenSet['memberMint'])}
-        handleClose={() => toggleDialogHandler('memberMint', false)} />
     </div>
   )
 }

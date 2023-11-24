@@ -12,23 +12,28 @@ import SettingNotice from "@/components/_common/settingNotice"
 import Input from '@/components/_common/input'
 import { CommunityProfileLabels } from "@/components/settings/community/profile"
 
-export default function BrandMannageAccountManagement() {
+import { CommunityInfo } from "@/types"
+
+interface Props {
+  brandInfo: Partial<CommunityInfo>
+}
+
+export default function BrandMannageAccountManagement({ brandInfo }: Props) {
   const { message } = useRoot()
-  const { communityInfo, refreshInfo } = useDetails()
   const { updateCommunityBrandConfig } = useApi()
   
   const [loading, setLoading] = useState(false)
   const [validation, setValidation] = useState<Record<string, string | undefined>>({})
 
   const [form, setForm] = useState<Record<CommunityProfileLabels, string>>({
-    image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
-    brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-    brandColor: communityInfo?.tokenUri?.brand_color ?? '',
-    description: communityInfo?.tokenUri?.description ?? '',
-    externalUrl: communityInfo?.tokenUri?.external_url ?? '',
-    discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),
-    twitter: String(communityInfo?.tokenUri?.attr?.twitter ?? ''),
-    telegram: String(communityInfo?.tokenUri?.attr?.telegram ?? ''),
+    image: brandInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (brandInfo?.tokenUri?.image ?? ''),
+    brandImage: brandInfo?.tokenUri?.brand_image ?? '',
+    brandColor: brandInfo?.tokenUri?.brand_color ?? '',
+    description: brandInfo?.tokenUri?.description ?? '',
+    externalUrl: brandInfo?.tokenUri?.external_url ?? '',
+    discord: String(brandInfo?.tokenUri?.attr?.discord ?? ''),
+    twitter: String(brandInfo?.tokenUri?.attr?.twitter ?? ''),
+    telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
   })
 
   const socials = [
@@ -120,15 +125,15 @@ export default function BrandMannageAccountManagement() {
   }
 
   function needUpdate() {
-    const isExternalUrlChanged = form.externalUrl !== communityInfo?.tokenUri?.external_url
-    const isDiscordChanged = form.discord !== String(communityInfo?.tokenUri?.attr?.discord ?? '')
-    const isTwitterChanged = form.twitter !== String(communityInfo?.tokenUri?.attr?.twitter ?? '')
-    const isTelegramChanged = form.telegram !== String(communityInfo?.tokenUri?.attr?.telegram ?? '')
+    const isExternalUrlChanged = form.externalUrl !== brandInfo?.tokenUri?.external_url
+    const isDiscordChanged = form.discord !== String(brandInfo?.tokenUri?.attr?.discord ?? '')
+    const isTwitterChanged = form.twitter !== String(brandInfo?.tokenUri?.attr?.twitter ?? '')
+    const isTelegramChanged = form.telegram !== String(brandInfo?.tokenUri?.attr?.telegram ?? '')
     return isExternalUrlChanged || isDiscordChanged || isTwitterChanged || isTelegramChanged
   }
   
   const handleSaveOnChain = async () => {
-    if (!communityInfo?.node) return
+    if (!brandInfo?.node) return
     setValidation({})
     const validateResult = validateForm()
     if (Object.keys(validateResult).length > 0) {
@@ -136,13 +141,13 @@ export default function BrandMannageAccountManagement() {
       return
     }
     if (!changed.accountConfig) {
-      message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: communityInfo.node.node })
+      message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: brandInfo.node.node })
       return
     }
     try {
       setLoading(true)
-      const chainId = communityInfo.chainId as number
-      await updateCommunityBrandConfig(communityInfo.node.tokenId, {
+      const chainId = brandInfo.chainId as number
+      await updateCommunityBrandConfig(brandInfo.node.tokenId, {
         image: form.image || DEFAULT_AVATAR,
         brandImage: form.brandImage,
         brandColor: form.brandColor,
@@ -152,8 +157,8 @@ export default function BrandMannageAccountManagement() {
         twitter: form.twitter,
         telegram: form.telegram
       }, { chainId })
-      await updateCommunity(communityInfo.node.node, true)
-      message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
+      await updateCommunity(brandInfo.node.node, true)
+      message({ type: 'success', content: 'Update successfully!' }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
       // handleClose?.()
       // refreshInfo()
       location.reload()
@@ -162,7 +167,7 @@ export default function BrandMannageAccountManagement() {
       message({
         type: 'error',
         content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
+      }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
     } finally {
       setLoading(false)
     }
@@ -178,22 +183,22 @@ export default function BrandMannageAccountManagement() {
 
   const handleReset = () => {
     setForm({
-      image: communityInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (communityInfo?.tokenUri?.image ?? ''),
-      brandImage: communityInfo?.tokenUri?.brand_image ?? '',
-      brandColor: communityInfo?.tokenUri?.brand_color ?? '',
-      description: communityInfo?.tokenUri?.description ?? '',
-      externalUrl: communityInfo?.tokenUri?.external_url ?? '',
-      discord: String(communityInfo?.tokenUri?.attr?.discord ?? ''),
-      twitter: String(communityInfo?.tokenUri?.attr?.twitter ?? ''),
-      telegram: String(communityInfo?.tokenUri?.attr?.telegram ?? ''),
+      image: brandInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (brandInfo?.tokenUri?.image ?? ''),
+      brandImage: brandInfo?.tokenUri?.brand_image ?? '',
+      brandColor: brandInfo?.tokenUri?.brand_color ?? '',
+      description: brandInfo?.tokenUri?.description ?? '',
+      externalUrl: brandInfo?.tokenUri?.external_url ?? '',
+      discord: String(brandInfo?.tokenUri?.attr?.discord ?? ''),
+      twitter: String(brandInfo?.tokenUri?.attr?.twitter ?? ''),
+      telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
     })
   }
 
   useEffect(() => {
-    if (!communityInfo.tokenUri) return
+    if (!brandInfo.tokenUri) return
     setValidation({})
     handleReset()
-  }, [communityInfo])
+  }, [brandInfo])
 
   return (
     <div className="modal-content-container relative h-full flex flex-col">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Link from 'next/link'
 
 import { useDetails } from '@/contexts/details'
 import { useRoot } from '@/contexts/root'
@@ -8,12 +9,16 @@ import { TG_BOT_NAME } from '@/shared/constant'
 
 import Button from "@/components/_common/button"
 import Input from "@/components/_common/input"
-import Link from 'next/link'
 
-export default function BrandMannageSocialLink() {
+import { CommunityInfo } from '@/types'
+
+interface Props {
+  brandInfo: Partial<CommunityInfo>
+}
+
+export default function BrandMannageSocialLink({ brandInfo }: Props) {
   const { getSigner } = useWallet()
   const { message } = useRoot()
-  const { communityInfo } = useDetails()
   
   const [loading, setLoading] = useState(false)
   const [groupId, setGroupId] = useState('')
@@ -29,7 +34,7 @@ export default function BrandMannageSocialLink() {
         return
       }
       const signature = await signer.signMessage('CommunitiesID')
-      const res = await bindTelegramGrouop(signature, communityInfo.node?.node as string, groupId || '')
+      const res = await bindTelegramGrouop(signature, brandInfo.node?.node as string, groupId || '')
       if (res.code !== 0) {
         message({ type: 'error', content: `Bind telegram error: ${res.message}` }, { t: 'brand-tg-bind', k: signer._address, i: 2 })
         return

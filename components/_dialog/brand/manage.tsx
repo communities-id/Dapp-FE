@@ -1,21 +1,18 @@
-import { FC, useEffect, useState } from 'react'
-
-import { useWallet } from '@/hooks/wallet'
-import { useRoot } from '@/contexts/root'
-import { useDetails } from '@/contexts/details'
+import { FC } from 'react'
 
 import Dialog from '@/components/_common/dialog'
 import BrandManageContent from '@/components/_brand/manage'
- 
+
+import { CommunityInfo } from '@/types'
+
 interface Props {
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
   open: boolean
   handleClose?: () => void
 }
 
-const BrandManageDialog: FC<Props> = ({ open, handleClose }) => {
-  const { getSigner } = useWallet()
-  const { message } = useRoot()
-  const { communityInfo } = useDetails()
+const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
   
   return (
     <Dialog
@@ -24,7 +21,7 @@ const BrandManageDialog: FC<Props> = ({ open, handleClose }) => {
       center
       handleClose={handleClose}
     >
-      <BrandManageContent />
+      <BrandManageContent brandName={brandName} brandInfo={brandInfo} />
     </Dialog>
   )
 }

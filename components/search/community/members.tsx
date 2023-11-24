@@ -1,27 +1,32 @@
 import { FC, useEffect, useMemo, useState, Fragment, useCallback } from 'react'
+import { styled } from '@mui/system'
 
 import useApi from '@/shared/useApi'
-import { Tabs, TabsList } from '@mui/base'
-import Tab from '@/components/common/tab'
 import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
+import { useGlobalDialog } from '@/contexts/globalDialog'
 
+import { Tabs, TabsList } from '@mui/base'
+import Tab from '@/components/common/tab'
 import InfiniteList from '@/components/common/infiniteList'
 import ListCard from '@/components/search/card'
 import Loading from '@/components/loading/list'
+import PlusIconWithColor from '@/components/common/PlusWithColor'
 
 import { CommunityMember } from '@/types'
-import PlusIconWithColor from '@/components/common/PlusWithColor'
-import MintSettingIcon from '~@/icons/mint-settings.svg'
 import themeColor from '@/_themes/colors'
-import { styled } from '@mui/system'
+
+import MintSettingIcon from '~@/icons/mint-settings.svg'
+
 
 interface Props {
 }
 
 const CommunityMembers: FC<Props> = () => {
+  const { showGlobalDialog } = useGlobalDialog()
   const { communityInfo, communityInfoSet } = useDetails()
   const { getMembersOfCommunity } = useApi()
+
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState<CommunityMember[]>([])
   const [fetchInfo, setFetchInfo] = useState<{ page: number; pageSize: number; total: number; error?: string }>({ page: 1, pageSize: 20, total: 0 })
@@ -91,6 +96,9 @@ const CommunityMembers: FC<Props> = () => {
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
                 }}
+                onClick={() => {
+                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                }}
               >
                 <div>
                   <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
@@ -124,10 +132,17 @@ const CommunityMembers: FC<Props> = () => {
                 <div>
                   Mint setting has not finished yet, user cannot join this brand now
                 </div>
-                { communityInfoSet.isOwner && <button className="button-md btn-primary text-white mt-5">
+                { communityInfoSet.isOwner && (
+                  <button
+                    className="button-md btn-primary text-white mt-5"
+                    onClick={() => {
+                      showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                    }}
+                  >
                     <MintSettingIcon className="mr-1.5" />
                     <span>Update mint setting</span>
                   </button>
+                )
                 }
               </div>
             ) : (
@@ -135,6 +150,9 @@ const CommunityMembers: FC<Props> = () => {
                 className='group border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
+                }}
+                onClick={() => {
+                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
                 }}
               >
                 <div>
