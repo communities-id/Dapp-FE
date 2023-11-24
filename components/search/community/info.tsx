@@ -291,32 +291,51 @@ const CommunityLayout: FC<Props> = () => {
   return (
     <div className='relative w-full'>
       <Banner banner={communityInfo?.tokenUri?.brand_image} brandColor={communityInfo?.tokenUri?.brand_color} />
-      <div className='dapp-container px-10 pb-10 relative'>
-        <div className='w-full pt-[80px]'>
-          <AvatarCard outline size={120} src={communityInfo?.tokenUri?.image} className='absolute top-[-60px] left-10 rounded-[30px]' />
+      <div className='dapp-container px-10 sm:px-4 pb-10 sm:pb-6 relative'>
+        <div className='w-full pt-[80px] sm:pt-[35px]'>
+          <AvatarCard outline size={120} src={communityInfo?.tokenUri?.image} className='sm:hidden absolute top-[-60px] left-10 sm:left-4 rounded-[30px]' />
+          <AvatarCard outline size={80} src={communityInfo?.tokenUri?.image} className='pc:hidden absolute top-[-55px] left-4 rounded-[20px]' />
           <div className="community-info">
             <div className="brand-info flex-initial basis-0">
-              <div className="name text-xl text-main-black flex items-center gap-2">
-                {
-                  backLink ? (
-                    <Link href={backLink} target="_self" className='flex items-center gap-2 hover:underline underline-offset-2'>
-                      <BackIcon width="30" height="36" className="cursor-pointer"/>
-                      <span>{communityInfo.node?.node}</span>
-                    </Link>
-                  ) : <span>{communityInfo.node?.node}</span>
-                }
-                <ValidStatus isExpired={communityInfoSet.isExpired} isRenewal={communityInfoSet.isRenewal}/>
-                {
-                  pendingSet && communityInfo.state === State.HOLD && (
-                    <Tag text='Drafting' tooltip='User DID  minting disabled. Please enable in Mint Settings.'/>
-                  )
-                }
+              <div className='flex justify-between items-center'>
+                <div>
+                  <div className="name text-xl text-main-black flex items-center gap-2">
+                    {
+                      backLink ? (
+                        <Link href={backLink} target="_self" className='flex items-center gap-2 hover:underline underline-offset-2'>
+                          <BackIcon width="30" height="36" className="cursor-pointer"/>
+                          <span>{communityInfo.node?.node}</span>
+                        </Link>
+                      ) : <span>{communityInfo.node?.node}</span>
+                    }
+                    <ValidStatus isExpired={communityInfoSet.isExpired} isRenewal={communityInfoSet.isRenewal}/>
+                  </div>
+                  <div className="owner text-main-black text-lg sm:text-sm">
+                    <PrimaryDID address={communityInfo.owner || ''} />
+                  </div>
+                </div>
+                <div className='pc:hidden flex'>
+                  <Popover
+                    title="Share"
+                    className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
+                    id={`${keywords}-share`}
+                    menus={shareMenus}
+                  >
+                    <ShareIcon width='24' height='24' className='text-secondaryBlack' />
+                  </Popover>
+                  <Popover
+                    title="Settings"
+                    className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
+                    id={keywords}
+                    menus={communityPopoverMenus}
+                    handleSelect={handleSelectMenu}
+                  >
+                    <MoreIcon width='24' height='24' className='text-secondaryBlack' />
+                  </Popover>
+                </div>
               </div>
-              <div className="owner text-main-black text-lg">
-                <PrimaryDID address={communityInfo.owner || ''} />
-              </div>
-              <div className="actions mt-6 flex items-center gap-[10px]">
-                <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">
+              <div className="actions mt-6 sm:mt-3 flex items-center gap-[10px]">
+                <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3 sm:hidden">
                   { communityInfoSet.isOwner && <>
                     <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <DividerLine mode='horizontal' className='bg-white' />
@@ -324,11 +343,11 @@ const CommunityLayout: FC<Props> = () => {
                   <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
-                  className="button-md text-main-black border-2 border-main-black flex gap-3"
+                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden"
                   onClick={() => toggleDialogHandler('manage', true)}>
                   Manage
                 </BrandColorButton> }
-                <DividerLine mode='horizontal' className='bg-main-black' />
+                <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='sm:hidden' />
                 {
                   socialLinks.map(({ link, icon }, idx) => {
                     return (
@@ -340,7 +359,7 @@ const CommunityLayout: FC<Props> = () => {
                 }
                 <Popover
                   title="Share"
-                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
+                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg sm:hidden'
                   id={`${keywords}-share`}
                   menus={shareMenus}
                 >
@@ -348,7 +367,7 @@ const CommunityLayout: FC<Props> = () => {
                 </Popover>
                 <Popover
                   title="Settings"
-                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
+                  className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg sm:hidden'
                   id={keywords}
                   menus={communityPopoverMenus}
                   handleSelect={handleSelectMenu}
@@ -356,7 +375,7 @@ const CommunityLayout: FC<Props> = () => {
                   <MoreIcon width='24' height='24' className='text-secondaryBlack' />
                 </Popover>
               </div>
-              <div className="desc mt-6">
+              <div className="desc mt-6 sm:mt-3 sm:text-sm">
                 <ExpandableDescription>
                   <p className='text-md text-gray-1'>
                     {communityInfo.tokenUri?.description}
@@ -371,8 +390,8 @@ const CommunityLayout: FC<Props> = () => {
                     <td colSpan={2}>
                       <div className="flex justify-between items-center">
                         <div className='col'>
-                          <p>Current Mint Price</p>
-                          <p>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                          <p className='config-name'>Current Mint Price</p>
+                          <p className='config-value'>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
                         </div>
                         { pendingMintSet ? (
                           <button
@@ -391,22 +410,21 @@ const CommunityLayout: FC<Props> = () => {
                             <DuplicateIcon />
                         </button>
                         )}
-                        
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <div>
+                      <div className='config-name'>
                         <span>Refund Rate</span>
                         <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
                           <TipIcon width='14' height='14' className='text-mintPurple'/>
                         </ToolTip>
                       </div>
-                      <p>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
+                      <p className='config-value'>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
                     </td>
                     <td>
-                      <div>
+                      <div className='config-name'>
                         <span>TVL</span>
                         <ToolTip mode='sm' content={
                           <>
@@ -417,26 +435,22 @@ const CommunityLayout: FC<Props> = () => {
                           <TipIcon width='14' height='14' className='text-mintPurple'/>
                         </ToolTip>
                       </div>
-                      <p>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
+                      <p className='config-value'>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <p>Refund Model</p>
-                      <div className='flex items-center gap-1'>
+                      <p className='config-name'>Refund Model</p>
+                      <div className='flex items-center gap-1 config-value'>
                         <span>{SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
-                        { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={
-                          <>
-                            <p>Burn any time</p>
-                          </>
-                        }>
+                        { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={<p>Burn any time</p>}>
                           <BurnIcon width='16' height='16' className='text-red-1'/>
                         </ToolTip> }
                       </div>
                     </td>
                     <td>
-                      <p>Mint Price Formula</p>
-                      <p>Y = { mintPriceNumericFormula }</p>
+                      <p className='config-name'>Mint Price Formula</p>
+                      <p className='config-value'>Y = { mintPriceNumericFormula }</p>
                     </td>
                   </tr>
                 </tbody>
@@ -444,6 +458,20 @@ const CommunityLayout: FC<Props> = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-100 flex gap-2.5 justify-center border-t border-gray-7">
+        { communityInfoSet.isOwner && <BrandColorButton
+          className="button-md text-main-black border-2 border-main-black flex gap-3"
+          onClick={() => toggleDialogHandler('manage', true)}>
+          Manage
+        </BrandColorButton> }
+        <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">
+          { communityInfoSet.isOwner && <>
+            <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+            <DividerLine mode='horizontal' className='bg-white' />
+          </> }
+          <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>
+        </BrandColorButtonGroup>
       </div>
       <CommunityRenewDialog
         open={Boolean(dialogOpenSet['renew'])}

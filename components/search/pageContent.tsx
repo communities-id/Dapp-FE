@@ -33,7 +33,7 @@ const PageContent: FC<Props> = ({ className }) => {
           )
         ) : (
           isUnknown ? <NotFound /> : (
-            <div className='dapp-container mt-[10px] px-10'>
+            <div className='dapp-container mt-[10px] px-10 sm:px-4 sm:mt-0'>
               <div className='w-full'>
                 {mode === 'address' && (<PersonContent />)}
                 {mode === 'community' && (<CommunityContent />)}

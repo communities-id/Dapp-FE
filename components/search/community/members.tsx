@@ -71,9 +71,9 @@ const CommunityMembers: FC<Props> = () => {
   });
 
   return (
-    <div className='pt-[10px]'>
+    <div>
       <Tabs defaultValue={0}>
-        <TabsList className='pt-[10px] pb-6'>
+        <TabsList className='pt-[20px] pb-6 sm:pt-0 sm:pb-3'>
           <Tab value={0}>
             User DID
           </Tab>
@@ -87,7 +87,7 @@ const CommunityMembers: FC<Props> = () => {
           if (index === 0) {
             return (
               <BrandColorButton
-                className='group border-2 border-dashed w-full h-full rounded-[8px] flex flex-col items-center justify-center text-primary relative py-25'
+                className='group border-2 border-dashed w-full h-full rounded-[8px] flex flex-col items-center justify-center text-primary relative'
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
                 }}

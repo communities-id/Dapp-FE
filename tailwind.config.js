@@ -358,7 +358,8 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/typography'),
-    require('daisyui')
+    require('daisyui'),
+    require('tailwindcss-safe-area')
   ],
   daisyui: {
     themes: [

@@ -9,6 +9,7 @@ module.exports = {
     'md': { min: '1024px' },
     'mds': { max: '1023px' },
     'sm': { max: '768px' },
+    'pc': { min: '768px' },
   },
   fontSize: {
     'xxl': ['40px', { lineHeight: '50px', fontWeight: '700' }],

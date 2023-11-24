@@ -58,9 +58,9 @@ export default function Dapp() {
     <DetailsProvider mode="community" keywords="">
       <div className="dapp-page">
         <SearchHeader />
-        <div className="main pt-[105px] text-center flex flex-col items-center mb-40 min-h-[100vh] relative z-0">
+        <div className="main pt-[105px] text-center flex flex-col items-center mb-40 relative z-0 sm:w-[84vw] mx-auto">
           <h1 className="title font-Saira">Your <span><span>Web3</span></span> Brand Name</h1>
-          <p className="mt-5 text-md text-gray-2 font-Saira">Your Exclusive Brand DID Across All Supported Chains in Web3<br />One Name to Start Building Your Own Community.</p>
+          <p className="mt-5 text-md text-gray-2 font-Saira sm:text-sm">Your Exclusive Brand DID Across All Supported Chains in Web3. <br className='sm:hidden' />One Name to Start Building Your Own Community.</p>
           {/* <div className="forms mt-8 w-[800px]">
             <div className="flex justify-between">
               <button className="w-[390px] h-12.5 bg-white border border-gray-7 rounded-md flex justify-between items-center px-6 overflow-hidden" onClick={openSelectNetworkMenu}>
@@ -117,7 +117,7 @@ export default function Dapp() {
             </div>
           </div> */}
           <form
-            className="mt-20 border-[6px] border-primary border-w-3 w-[600px] rounded-full flex justify-between items-center bg-white overflow-hidden px-3 py-3 gap-4"
+            className="mt-20 border-[6px] border-primary border-w-3 w-[600px] sm:w-[84vw] rounded-full sm:rounded-[44px] flex justify-between items-center bg-white overflow-hidden px-3 py-3 gap-4 sm:flex-col"
             onSubmit={(e) => handleSubmit(e)}
           >
             <div className='flex items-center w-full'>
@@ -130,7 +130,7 @@ export default function Dapp() {
                 onChange={e => setName(e.target.value)}
               />
             </div>
-            <button className="button-xl bg-primary text-white text-lg w-auto text-[20px] flex-shrink-0">
+            <button className="button-xl bg-primary text-white text-lg w-auto text-[20px] flex-shrink-0 sm:w-full">
               <StarIcon width="20" height="20" />
               <span className='ml-2.5'>Create Brand</span>
             </button>

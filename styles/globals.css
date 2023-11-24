@@ -106,9 +106,9 @@
   }
   .dapp-container {
     margin: 0 auto;
-    width: 840px;
-    @media screen and (min-width: 1024px) {
-      width: 840px;
+    width: 100vw;
+    @media screen and (min-width: 768px) {
+      width: 768px;
     }
     @media screen and (min-width: 1440px) {
       width: 1160px;
@@ -120,7 +120,7 @@
       width: 1760px;
     }
     .search-form {
-      @media screen and (min-width: 1024px) {
+      @media screen and (min-width: 768px) {
         width: 253px;
       }
       @media screen and (min-width: 1440px) {
@@ -136,7 +136,10 @@
     
   }
   .card-grid {
-    @apply grid-cols-3;
+    @apply grid-cols-2;
+    @media screen and (min-width: 1024px) {
+      @apply grid-cols-3;
+    }
     @media screen and (min-width: 1440px) {
       @apply grid-cols-4;
     }
@@ -245,6 +248,7 @@
   .mint-info {
     width: 100%;
     margin-top: 40px;
+    @apply sm:mt-3;
     table {
       width: 100%;
     }
@@ -264,6 +268,7 @@
   border-style: hidden;
   background-color: #fafafa;
   box-shadow: 0 0 0 1px #eaeaea;
+  @apply sm:rounded-[10px];
   &.pending-set {
     background: rgba(255, 177, 61, 0.10);
     box-shadow: 0 0 0 1px #fff;
@@ -274,14 +279,12 @@
   td {
     padding: 10px 20px;
     border: 1px solid #eaeaea;
-    > p, .col > p {
-      &:first-child {
-        @apply text-gray-1 text-sm flex items-center gap-1;
-      }
-      &:nth-child(2) {
-        @apply text-main-black text-md;
-        font-weight: 600;
-      }
+    .config-name {
+      @apply text-gray-1 text-sm flex items-center gap-1 sm:text-xs;
+    }
+    .config-value {
+      @apply text-main-black text-md sm:text-xs;
+      font-weight: 600;
     }
   }
 }
@@ -293,6 +296,7 @@
     font-weight: 800;
     color: #181c30;
     line-height: 56px;
+    @apply sm:text-xl;
     >span {
       position: relative;
       >span {
@@ -308,6 +312,7 @@
         height: 16px;
         background-color: #c49fff;
         z-index: 1;
+        @apply h-3 sm:bottom-1.5;
       }
     }
   }
