@@ -140,11 +140,11 @@ const SearchHeader: FC = () => {
             <LogoWithColor className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
             <DarkLogo className="hidden dark:block w-full"/>
           </Link>
-          <div className="search w-full">
-            <button className="search-form bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-text w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
+          <div className="search-form">
+            <div className="bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-pointer w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
               <SearchSvg className="w-6 h-6" />
-              <input value={searchValue} disabled className="bg-transparent" />
-            </button>
+              <span className="w-full">{searchValue}</span>
+            </div>
           </div>
         </div>
         <ConnectButton.Custom>

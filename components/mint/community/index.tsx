@@ -254,7 +254,7 @@ const CommunityMint: FC<Props> = () => {
             handleNetworkChange={(network) => {
               setMintNetwork(network)
             }}
-            step={<Steps className='mt-[30px] px-[60px]' step={0} steps={steps}/>}
+            step={<Steps className='mt-[30px] px-[60px] sm:px-3' step={0} steps={steps}/>}
             extra={
               <InvitedCodeForm
                 value={crossChainMintSetting.signature}
@@ -312,7 +312,7 @@ const CommunityMint: FC<Props> = () => {
             mintNetwork={mintNetwork}
             handleDeployed={handleOmninodeDeployed}
             disabled={!isMintHandleValid}
-            step={<Steps className='mt-[30px] px-[60px]' step={1} steps={steps}/>}
+            step={<Steps className='mt-[30px] px-[60px] sm:px-3' step={1} steps={steps}/>}
             extra={
               <InvitedCodeForm
                 value={crossChainMintSetting.signature}
@@ -358,7 +358,7 @@ const CommunityMint: FC<Props> = () => {
             price={price}
             gasFee={gasFee}
             mintNetwork={mintNetwork}
-            step={<Steps className='mt-[30px] px-[60px]' step={2} steps={steps}/>}
+            step={<Steps className='mt-[30px] px-[60px] sm:px-3' step={2} steps={steps}/>}
             extra={
               <InvitedCodeForm
                 value={crossChainMintSetting.signature}

@@ -24,7 +24,7 @@ interface Props {
 
 const CommunityDuplicate: FC<Props> = ({ open, communityInfo, commisionRate, refundModel, formula, handleClose }) => {
 
-  const { message } = useRoot()
+  const { message, config } = useRoot()
   const { communityCache } = useDetails()
   
   const router = useRouter()
@@ -84,7 +84,7 @@ const CommunityDuplicate: FC<Props> = ({ open, communityInfo, commisionRate, ref
 
   return (
     <Modal open={open} wrapClassName="duplicate-container" onClick={handleClickOutside} slideProps={{
-      direction: 'X',
+      direction: config.isMobile ? 'Y' : 'X',
       offset: 800
     }}>
       <div className="fixed w-[800px] max-w-[100vw] top-0 right-0 h-[100vh] bg-white duplicate-content overflow-y-auto">

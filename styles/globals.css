@@ -318,6 +318,13 @@
   }
 }
 
+.eco-card {
+  > div {
+    background-image: url(/eco-card-bg.svg);
+    background-size: cover;
+  }
+}
+
 .dapp-network-select-menu {
   .MuiMenu-paper {
     box-shadow: none;

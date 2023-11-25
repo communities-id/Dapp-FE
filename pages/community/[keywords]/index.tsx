@@ -10,7 +10,7 @@ export default function Search() {
 
   return (
     <WrapperProvider mode={SearchMode.community} keywords={keywords}>
-      <SearchContent className='relative z-1' />
+      <SearchContent className='relative z-1 flex-1  flex flex-col' />
     </WrapperProvider>
   )
 }
