@@ -20,7 +20,7 @@ interface GlobalDialogContextProps {
   dialogOpenSet: Partial<Record<GlobalDialogNames, boolean>>
   showGlobalDialog: (name: GlobalDialogNames, payload?: GlobalDialogPayload) => void
   closeGlobalDialog: (name: string | number) => void
-  handleMintSuccess: (info: { owner: string; community: string; member?: string; avatar?: string }, mode: SearchModeType) => void
+  handleMintSuccess: (info: { owner: string; community: string; member?: string; avatar?: string, duplFromBrandInfo?: Partial<CommunityInfo> }, mode: SearchModeType) => void
 }
 
 const GlobalDialogContext = createContext<GlobalDialogContextProps>({
@@ -39,13 +39,14 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
   
   const [dialogOpenSet, setDialogOpenSet] = useState<Partial<Record<GlobalDialogNames, boolean>>>({})
   const [dialogPayload, setDialogPayload] = useState<GlobalDialogPayload>({})
-  const [mintSuccessInfo, setMintSuccessInfo] = useState<{ open: boolean; mode: SearchModeType } & Record<'community' | 'member' | 'owner' | 'avatar', string>>({
+  const [mintSuccessInfo, setMintSuccessInfo] = useState<{ open: boolean; mode: SearchModeType; duplFromBrandInfo?: Partial<CommunityInfo> } & Record<'community' | 'member' | 'owner' | 'avatar', string>>({
     open: false,
     mode: 'unknown',
     community: '',
     member: '',
     owner: '',
-    avatar: ''
+    avatar: '',
+    duplFromBrandInfo: {},
   })
 
   const showGlobalDialog = (name: GlobalDialogNames, payload?: GlobalDialogPayload) => {
@@ -69,8 +70,8 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
       showGlobalDialog,
       closeGlobalDialog,
       handleMintSuccess: (info, mode) => {
-        const { community, member = '', owner, avatar = '' } = info
-        setMintSuccessInfo({ open: true, mode, community, member, owner, avatar })
+        const { community, member = '', owner, avatar = '', duplFromBrandInfo } = info
+        setMintSuccessInfo({ open: true, mode, community, member, owner, avatar, duplFromBrandInfo })
       }
     }}>
       <CommunityProfileSettingDialog
