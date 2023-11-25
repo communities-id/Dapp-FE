@@ -68,6 +68,7 @@ const Context = createContext<RootContextProps>({
     toggleNavigationOpen: () => {},
     scrollTop: false,
     setScrollTop: () => {},
+    isMobile: false,
     // toggleScrollTop: () => {},
   },
   message: () => {},
