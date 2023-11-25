@@ -88,7 +88,7 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
         {
           label: 'Renew',
           value: 3,
-          renderPanel: () => <Renew />,
+          renderPanel: () => <Renew brandInfo={brandInfo} />,
           renderIcon: (active: boolean) => {
             return <RenewIcon
               className={
