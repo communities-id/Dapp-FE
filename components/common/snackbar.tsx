@@ -63,7 +63,7 @@ const _Snackbar: FC<Props> = ({ type, title, content, open, handleClose, handleE
     <Fragment>
       <StyledSnackbar
         className='z-snackbar'
-        autoHideDuration={5000000}
+        autoHideDuration={5000}
         open={open}
         onClose={handleSelfClose}
         exited={exited}
@@ -110,9 +110,9 @@ const StyledSnackbar = styled(Snackbar)`
   position: fixed;
   display: flex;
   bottom: 16px;
-  right: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 560px;
-  min-width: 300px;
   `;
 
 const SnackbarContent = styled('div')(
@@ -122,9 +122,9 @@ const SnackbarContent = styled('div')(
 );
 
 const positioningStyles = {
-  entering: 'translateX(0)',
-  entered: 'translateX(0)',
-  exiting: 'translateX(500px)',
-  exited: 'translateX(500px)',
-  unmounted: 'translateX(500px)',
+  entering: 'translateY(0)',
+  entered: 'translateY(0)',
+  exiting: 'translateY(100px)',
+  exited: 'translateY(100px)',
+  unmounted: 'translateY(100px)',
 };
