@@ -81,10 +81,10 @@ export default function Dapp() {
                     <div className="absolute top-0 left-0 right-0 bottom-0 z-10 bg-primary pt-5 sm:pt-2 flex flex-col justify-between translate-y-full group-hover:translate-y-0 transition-all duration-300">
                       <p className='text-white text-sm whitespace-pre-wrap break-all px-5 line-clamp-5'>{v.desc}</p>
                       <div className='border-t border-white py-[13px] sm:py-[8px] px-5 flex items-center justify-around'>
-                        {v.twitter && <a href={v.twitter} target='_blank'><TwitterIcon width={16} height={16} className='text-white' /></a> }
-                        {v.telegram && <a href={v.telegram} target='_blank'><TelegramIcon width={16} height={16} className='text-white' /></a> }
-                        {v.discord && <a href={v.discord} target='_blank'><DiscordIcon width={16} height={16} className='text-white' /></a> }
-                        {v.website && <a href={v.website} target='_blank'><WebsiteIcon width={16} height={16} className='text-white' /></a> }
+                        {v.twitter && <a href={v.twitter} target='_blank'><TwitterIcon width={20} height={20} className='text-white' /></a> }
+                        {v.telegram && <a href={v.telegram} target='_blank'><TelegramIcon width={20} height={20} className='text-white' /></a> }
+                        {v.discord && <a href={v.discord} target='_blank'><DiscordIcon width={20} height={20} className='text-white' /></a> }
+                        {v.website && <a href={v.website} target='_blank'><WebsiteIcon width={20} height={20} className='text-white' /></a> }
                       </div>
                     </div>
                   </div>
