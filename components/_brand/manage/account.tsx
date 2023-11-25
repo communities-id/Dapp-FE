@@ -231,10 +231,10 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
               })
             }
           </ul>
-          <div className='mt-10 divider-line'></div>
+          {/* <div className='mt-10 divider-line'></div>
           <div className="mt-5 text-right">
             <span className="text-md-b text-primary underline underline-offset-2">Set Token-gated Group -&#62;</span>
-          </div>
+          </div> */}
         </div>
       </div>
       {
