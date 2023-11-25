@@ -147,7 +147,7 @@ const Footer: FC<Props> = () => {
         <div className="py-20 lg:py-25">
           <div className="flex flex-wrap lg:justify-between gap-8 lg:gap-0">
             <div className={classnames("w-1/2 lg:w-1/4", {
-              'sr-item animate_top': true,
+              // 'sr-item animate_top': true,
               // 'sr-item animate_top': !isStatic,
               // '!block !visible': !isStatic
             })}>
@@ -166,7 +166,7 @@ const Footer: FC<Props> = () => {
                 items.map(({ title, links }, index) => {
                   return (
                     <div key={index} className={classnames({
-                      'sr-item animate_top': true,
+                      // 'sr-item animate_top': true,
                       // "sr-item animate_top": !isStatic,
                       // '!block !visible': !isStatic
                     })}>
@@ -222,7 +222,7 @@ const Footer: FC<Props> = () => {
         {/* <!-- Footer Bottom --> */}
         <div className="border-t border-stroke dark:border-strokedark flex flex-wrap flex-col lg:flex-row items-center justify-center lg:justify-between gap-5 lg:gap-0 py-7">
           <div className={classnames({
-            'sr-item animate_top': true,
+            // 'sr-item animate_top': true,
             // "sr-item animate_top": !isStatic
           })}>
             <ul className="flex items-center gap-8">
@@ -246,7 +246,7 @@ const Footer: FC<Props> = () => {
           </div> */}
 
           <div className={classnames({
-            'sr-item animate_top': true,
+            // 'sr-item animate_top': true,
             // "sr-item animate_top": !isStatic
           })}>
             <ul className="flex items-center gap-5">

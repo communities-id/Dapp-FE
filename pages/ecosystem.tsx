@@ -1,56 +1,24 @@
-import React, { FormEvent, useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import { DetailsProvider } from '@/contexts/details'
 import SearchHeader from "@/components/solid/SearchHeader";
-import { CHAINS_MINT_TOOLTIPS, CHAIN_ID, CHAIN_ID_MAP } from '@/shared/constant';
-import ChainIcon from '@/components/common/chainIcon';
 
 import TwitterIcon from '~@/icons/info/twitter.svg'
 import WebsiteIcon from '~@/icons/info/website.svg'
 import TelegramIcon from '~@/icons/social/telegram.svg'
 import DiscordIcon from '~@/icons/social/discord.svg'
 
-import { useWallet } from '@/hooks/wallet';
-import { useSearch } from '@/hooks/search';
 import { EcoSystems } from '@/shared/ecosystem';
+import { useRoot } from '@/contexts/root';
 
 export default function Dapp() {
 
-  const { handleSearch } = useSearch()
-  const { address } = useWallet()
-  const [anchorEl, setAnchorEl] = useState(null);
-  const networkMenuOpen = Boolean(anchorEl);
+  const { message } = useRoot()
 
-  const networks = useMemo(() => {
-    return Object.keys(CHAIN_ID_MAP).map((networkName) => {
-      return {
-        label: networkName,
-        value: String(CHAIN_ID_MAP[networkName]),
-        icon: <ChainIcon colorMode size={14} wrapperSize={22} chainId={CHAIN_ID_MAP[networkName]} className='rounded-full' />,
-        tooltip: CHAINS_MINT_TOOLTIPS[CHAIN_ID_MAP[networkName]],
-        group: CHAIN_ID === CHAIN_ID_MAP[networkName] ? 'Mainnet' : 'EVMs'
-      }
+  function testToast() {
+    message({
+      type: 'success',
+      content: 'Test Test'
     })
-  }, [])
-  const [selectedNetwork, setSelectedNetwork] = useState(networks[0])
-  const [inviteCode, setInviteCode] = useState('')
-  const [mintTo, setMintTo] = useState('')
-  const [name, setName] = useState('')
-
-  useEffect(() => {
-    setMintTo(address as string)
-  }, [address])
-  
-  const openSelectNetworkMenu = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseSelectNetworkMenu = () => {
-    setAnchorEl(null);
-  };
-  
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    handleSearch(name)
   }
 
   return (
@@ -61,7 +29,7 @@ export default function Dapp() {
           <h1 className='text-xxl font-Saira font-normal'>An Ecosystem to Decentralized Future</h1>
           <p className='font-Saira text-md max-w-[800px] mt-1.5 whitespace-pre-wrap break-all'>Texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</p>
           <div className='flex gap-4.5 mt-5'>
-            <button className='button-lg btn-primary text-white min-w-[180px] sm:min-w-[90px]'>XXXXXXX</button>
+            <button className='button-lg btn-primary text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>XXXXXXX</button>
             <button className='button-lg btn-wrhite text-primary border border-primary min-w-[180px] sm:min-w-[90px] hover:bg-primary-tr-10'>XXXXX</button>
           </div>
         </div>
