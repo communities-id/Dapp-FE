@@ -52,6 +52,7 @@ import BrandInviteDialog from '@/components/_dialog/brand/invite'
 import styled from '@emotion/styled'
 import { lighten } from '@mui/system'
 import { SequenceMode } from '@/types/contract'
+import { useDIDContent } from '@/hooks/content'
 
 interface Props {
   children?: ReactNode
@@ -62,6 +63,7 @@ const CommunityLayout: FC<Props> = () => {
   const { keywords, community, communityInfo, communityInfoSet } = useDetails()
   const { showGlobalDialog } = useGlobalDialog()
   const { switchNetworkAsync } = useSwitchNetwork()
+  const { brandNotLoaded } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
 
   const { erc20PriceToUSD } = useApi()
 
@@ -209,8 +211,8 @@ const CommunityLayout: FC<Props> = () => {
 
   // mint setting outside
   const pendingMintSet = useMemo(() => {
-    return !config?.publicMint && !config?.signatureMint && !config?.holdingMint && communityInfoSet.isOwner
-  }, [config, communityInfoSet.isOwner])
+    return brandNotLoaded && communityInfoSet.isOwner
+  }, [brandNotLoaded, communityInfoSet.isOwner])
 
   const pendingSet = useMemo(() => {
     return Number(totalSupply) === 0
@@ -265,9 +267,9 @@ const CommunityLayout: FC<Props> = () => {
   }, [communityInfo])
 
   useEffect(() => {
-    if (!pendingMintSet) return
+    if (!pendingMintSet || !communityInfoSet.isOwner || communityInfoSet.initialized) return
     showGlobalDialog('brand-not-loaded', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
-  }, [pendingMintSet])
+  }, [pendingMintSet, communityInfoSet.isOwner, communityInfoSet.initialized])
 
   if (communityInfoSet.unMint) return (
     <Banner />

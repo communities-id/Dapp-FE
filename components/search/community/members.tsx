@@ -5,6 +5,7 @@ import useApi from '@/shared/useApi'
 import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
+import { useDIDContent } from '@/hooks/content'
 
 import { Tabs, TabsList } from '@mui/base'
 import Tab from '@/components/common/tab'
@@ -26,6 +27,7 @@ const CommunityMembers: FC<Props> = () => {
   const { showGlobalDialog } = useGlobalDialog()
   const { communityInfo, communityInfoSet } = useDetails()
   const { getMembersOfCommunity } = useApi()
+  const { brandNotLoaded } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
 
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState<CommunityMember[]>([])
@@ -38,11 +40,6 @@ const CommunityMembers: FC<Props> = () => {
   const noMore = useMemo(() => {
     return fetchInfo.total && (fetchInfo.page - 1) * fetchInfo.pageSize >= fetchInfo.total
   }, [fetchInfo.page, fetchInfo.total])
-
-  const pendingMintSet = useMemo(() => {
-    const { config } = communityInfo
-    return !config?.publicMint && !config?.signatureMint && !config?.holdingMint
-  }, [communityInfo])
 
   async function fetchData({ page, pageSize }: { page: number; pageSize: number }) {
     if (!communityInfo?.node?.registry || noMore) return
@@ -122,7 +119,7 @@ const CommunityMembers: FC<Props> = () => {
         hasMore={!noMore}
         empty={isEmpty}
         renderEmpty={
-            pendingMintSet ? (
+          brandNotLoaded ? (
               <div
                 className='border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
                 style={{

@@ -22,6 +22,7 @@ import Button from '@/components/_common/button'
 import Input from '@/components/_common/input'
 
 import { CommunityMemberConfig, CommunityMintConfig, CommunityPrice, MintModeLabels, PriceMode, PriceModeLabels, SequenceMode } from '@/types/contract'
+import { CommunityInfo } from '@/types'
 
 import ActiveIcon from '~@/_brand/active.svg'
 import CheckedIcon from '~@/_brand/checked.svg'
@@ -32,7 +33,6 @@ import ForwardsIcon from '~@/_brand/forwards.svg'
 import MinusIcon from '~@/_brand/minus.svg'
 import PlusIcon from '~@/_brand/plus.svg'
 import EditIcon from '~@/_brand/edit.svg'
-import { CommunityInfo } from '@/types'
 
 export type FormItemTypes = 'memberConfig' | 'mint' | 'price' | 'baseUri'
 
@@ -68,10 +68,12 @@ type FormProps<T = MintSettingLabels> = {
 }
 
 interface Props {
+  account?: string
   brandInfo: Partial<CommunityInfo>
+  brandNotLoaded?: boolean
 }
 
-export default function BrandMannageMintSettings({ brandInfo }: Props) {
+export default function BrandMannageMintSettings({ account, brandInfo, brandNotLoaded }: Props) {
   const { message } = useRoot()
   const { updateVariableCommunityMintConfig, updateCommunityMintConfig } = useApi()
 
@@ -173,10 +175,73 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
 
   const editLocked = useMemo(() => {
     return {
-      price: Number(totalSupply) >= 0,
-      burnAnyTime: Number(totalSupply) >= 0,
+      price: Number(totalSupply) > 0,
+      burnAnyTime: Number(totalSupply) > 0,
     }
   }, [totalSupply, priceModel, config, settled.mint])
+
+  async function memberConfigFormPreFilter(input: Partial<CommunityMemberConfig>) {
+    const _form = { ...memberConfigForm, ...input } as CommunityMemberConfig
+    const rules: Record<MintCommunityMemberLabels, (value: CommunityMemberConfig[MintCommunityMemberLabels]) => Promise<CommunityMemberConfig[MintCommunityMemberLabels]>> = {
+      reserveDuration: async (value) => value,
+      burnAnytime: async (value) => value,
+    }
+
+    await Promise.all(
+      Object.keys(rules).map(async (key) => {
+        ;(_form[key as MintCommunityMemberLabels] as CommunityMemberConfig[MintCommunityMemberLabels]) = await rules[key as MintCommunityMemberLabels](_form[key as MintCommunityMemberLabels])
+      })
+    )
+
+    return _form
+  }
+
+  async function priceFormPreFilter(input: Partial<CommunityPrice>) {
+    const _form = { ...priceForm, ...input } as CommunityPrice
+    // const rules: Record<PriceCommunityMintLabels, (value: string | number | boolean | undefined) => Promise<string | number | boolean | undefined>> = {
+    //   mode: async (value) => value,
+    //   a: async (value) => value,
+    //   b: async (value) => value,
+    //   c: async (value) => value,
+    //   d: async (value) => value,
+    //   commissionRate: async (value) => value
+    // }
+
+    // await Promise.all(
+    //   Object.keys(rules).map(async (key) => {
+    //     _form[key as PriceCommunityMintLabels] = await rules[key as PriceCommunityMintLabels](_form[key as PriceCommunityMintLabels])
+    //   })
+    // )
+
+    return _form
+  }
+
+  async function mintFormPreFilter(input: Partial<CommunityMintConfig>) {
+    const _form = { ...mintForm, ...input } as CommunityMintConfig
+    const rules: Record<MintCommunityMintLabels, (value: CommunityMintConfig[keyof CommunityMintConfig]) => Promise<CommunityMintConfig[keyof CommunityMintConfig]>> = {
+      publicMint: async (value) => value,
+      signatureMint: async (value) => value,
+      holdingMint: async (value) => value,
+      signer: async (value) => {
+        const prevSigner = _form.signer ?? ZERO_ADDRESS
+        // less gas if signer is not set
+        if (!_form.signatureMint) return prevSigner
+        return (_form.signer === ZERO_ADDRESS) ? String(account ?? prevSigner) : value // if signer is not set, use current account
+      },
+      proofOfHolding: async (value) => value,
+      coin: async (value) => value,
+      sequenceMode: async (value) => value,
+      durationUnit: async (value) => value,
+    }
+
+    await Promise.all(
+      Object.keys(rules).map(async (key) => {
+        ;(_form[key as MintCommunityMintLabels] as CommunityMintConfig[keyof CommunityMintConfig]) = await rules[key as MintCommunityMintLabels](_form[key as MintCommunityMintLabels])
+      })
+    )
+
+    return _form
+  }
 
   async function validateMemberConfigForm() {
     const rules: Record<MintCommunityMemberLabels, (value: string) => Promise<string | undefined>> = {
@@ -426,9 +491,9 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
     })
     setMintForm({
       publicMint: defaultForms.publicMint,
-      signatureMint: defaultForms.signatureMint,
+      signatureMint: brandNotLoaded ? true : defaultForms.signatureMint,
       holdingMint: defaultForms.holdingMint,
-      signer: defaultForms.signer,
+      signer: brandNotLoaded ? String(account) : defaultForms.signer,
       proofOfHolding: defaultForms.proofOfHolding,
       coin: defaultForms.coin,
       sequenceMode: defaultForms.sequenceMode,
@@ -493,7 +558,7 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
     <div className="modal-content-container relative h-full flex flex-col">
       <div className='flex-1 modal-content overflow-auto'>
         <h1 className='text-main-black text-xl'>Mint Settings</h1>
-        <div className='relative flex gap-10 mt-[30px]'>
+        <div className='relative flex min-h-full gap-10 mt-[30px]'>
           {
             step < 6 && (
               <div className='absolute left-[7px] w-0 h-full border border-dashed border-black-tr-10'></div>
@@ -514,10 +579,10 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
                 checked={tab === 1}
                 settled={settled.mint}
                 handleChoose={() => setTab(1)}
-                handleChange={(payload) => {
+                handleChange={async (payload) => {
                   setMintForm({
                     ...mintForm,
-                    ...payload
+                    ...await mintFormPreFilter(payload)
                   })
                 }}
               />
@@ -536,10 +601,10 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
                 checked={tab === 2}
                 locked={editLocked.price}
                 handleChoose={() => setTab(2)}
-                handleChange={(payload) => {
+                handleChange={async (payload) => {
                   setMintForm({
                     ...mintForm,
-                    ...payload
+                    ...await mintFormPreFilter(payload)
                   })
                 }}
               />
@@ -558,10 +623,10 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
                 checked={tab === 3}
                 locked={editLocked.price}
                 handleChoose={() => setTab(3)}
-                handleChange={(payload) => {
+                handleChange={async (payload) => {
                   setPriceForm({
                     ...priceForm,
-                    ...payload
+                    ...await priceFormPreFilter(payload)
                   })
                 }}
               />
@@ -580,10 +645,10 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
                 checked={tab === 4}
                 locked={editLocked.price}
                 handleChoose={() => setTab(4)}
-                handleChange={(payload) => {
+                handleChange={async (payload) => {
                   setPriceForm({
                     ...priceForm,
-                    ...payload
+                    ...await priceFormPreFilter(payload)
                   })
                 }}
               />
@@ -602,10 +667,10 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
                 checked={tab === 5}
                 locked={editLocked.price}
                 handleChoose={() => setTab(5)}
-                handleChange={(payload) => {
+                handleChange={async (payload) => {
                   setMemberConfigForm({
                     ...memberConfigForm,
-                    ...payload
+                    ...await memberConfigFormPreFilter(payload)
                   })
                 }}
               />
@@ -619,10 +684,10 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
                 checked={tab === 6}
                 locked={editLocked.price}
                 handleChoose={() => setTab(6)}
-                handleChange={(payload) => {
+                handleChange={async (payload) => {
                   setMintForm({
                     ...mintForm,
-                    ...payload
+                    ...await mintFormPreFilter(payload)
                   })
                 }}
               />
@@ -631,7 +696,7 @@ export default function BrandMannageMintSettings({ brandInfo }: Props) {
         </div>
       </div>
       {
-        (changed.memberConfig || changed.mintConfig || changed.priceConfig) && (
+        !brandNotLoaded && (changed.memberConfig || changed.mintConfig || changed.priceConfig) && (
           <SettingNotice loading={loading} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
         )
       }
@@ -1331,6 +1396,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
 
   const activePriceMode = priceModes.find(item => item.active)
   const activePriceModeTab = activePriceMode?.tabs.find(item => item.active)
+  console.log('- activePriceMode', activePriceMode, 'form.mode', form.mode, defaultForms?.mode)
 
   const __formula = activePriceModeTab?.formula ?? ''
   const coefficients = __formula.match(/[abcd]+/g) || []

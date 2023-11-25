@@ -19,14 +19,17 @@ import RenewIcon from '~@/_brand/renew.svg'
 import SocialLinkIcon from '~@/_brand/social.svg'
 
 interface Props {
+  account?: string
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
 }
-export default function BrandMannageContent({ brandName, brandInfo: inputBrandInfo }: Props) {
+export default function BrandMannageContent({ account, brandName, brandInfo: inputBrandInfo }: Props) {
   const [tab, setTab] = useState(0)
-  const { brandInfo, brandInfoLoading } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
 
-  const brandColor = brandInfo?.tokenUri?.brand_color ?? '#8840FF'
+  const [pendingBrandColor, setPendingBrandColor] = useState('')
+
+  const brandColor = pendingBrandColor || brandInfo?.tokenUri?.brand_color || '#8840FF'
 
   const tabs = [
     {
@@ -35,7 +38,7 @@ export default function BrandMannageContent({ brandName, brandInfo: inputBrandIn
         {
           label: 'Profile Settings',
           value: 0,
-          renderPanel: () => <ProfileSettings brandInfo={brandInfo} />,
+          renderPanel: () => <ProfileSettings brandInfo={brandInfo} onBrandColorChange={setPendingBrandColor} />,
           renderIcon: (active: boolean) => {
             return <ProfileIcon
               className={
@@ -70,7 +73,7 @@ export default function BrandMannageContent({ brandName, brandInfo: inputBrandIn
         {
           label: 'Mint Settings',
           value: 2,
-          renderPanel: () => <MintSettings brandInfo={brandInfo} />,
+          renderPanel: () => <MintSettings account={account} brandInfo={brandInfo} brandNotLoaded={brandNotLoaded} />,
           renderIcon: (active: boolean) => {
             return <MintIcon
               className={

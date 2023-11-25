@@ -1,4 +1,4 @@
-import { FC, ReactNode, useMemo, useState } from 'react'
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
 import { useDetails } from '@/contexts/details'
@@ -22,9 +22,10 @@ import PencilIcon from '~@/_brand/pencil.svg'
 
 interface Props {
   brandInfo: Partial<CommunityInfo>
+  onBrandColorChange?: (color: string) => void
 }
 
-const BrandMannageProfileSettings: FC<Props> = ({ brandInfo }: Props) => {
+const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange }: Props) => {
   const { message } = useRoot()
   const { updateCommunityBrandConfig } = useApi()
   
@@ -155,6 +156,10 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo }: Props) => {
       telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
     })
   }
+
+  useEffect(() => {
+    onBrandColorChange?.(form.brandColor)
+  }, [form.brandColor])
 
   return (
     <div className="modal-content-container relative h-full flex flex-col">

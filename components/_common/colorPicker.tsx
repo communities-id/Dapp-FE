@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, Fragment, useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import { ChromePicker } from 'react-color'
@@ -6,7 +6,7 @@ import { ChromePicker } from 'react-color'
 import PencilIcon from '~@/_brand/pencil.svg'
 
 const colors = [
-  '#ffffff', '#3A5CC2', '#61ABD0', '#61B771', '#E4735B', '#ECBD41'
+  '#8840FF', '#3A5CC2', '#61ABD0', '#61B771', '#E4735B', '#ECBD41'
 ]
 
 interface Props {
@@ -52,21 +52,29 @@ const ColorPicker: FC<Props> = ({ value, onChange }) => {
             setShowPicker(!showPicker)
           }}
           onBlur={() => {
-            setShowPicker(false)
+            // setShowPicker(false)
           }}
         >
           <PencilIcon width='12' height='12'/>
         </button>
         {
           showPicker && (
-            <div className='absolute top-0 left-[34px] z-picker'>
-              <ChromePicker
-                color={value}
-                onChange={(color) => {
-                  onChange?.(color.hex)
+            <Fragment>
+              <div
+                className='fixed top-0 bottom-0 left-0 right-0 z-icon bg-transparent'
+                onClick={() => {
+                  setShowPicker(false)
                 }}
-              />
-            </div>
+              ></div>
+              <div className='absolute top-0 left-[34px] z-picker'>
+                <ChromePicker
+                  color={value}
+                  onChange={(color) => {
+                    onChange?.(color.hex)
+                  }}
+                />
+              </div>
+            </Fragment>
           )
         }
       </div>
@@ -85,8 +93,8 @@ const ColorItem: FC<ColorItemProps> = ({ color, active, onClick }) => {
       className={
         classNames('w-6 h-6 border-solid rounded-full', {
           'border-0': !active,
-          '!border-[4px] border-primary': active,
-          '!border border-solid border-gray-3 rounded-ful': color === '#ffffff' && !active
+          '!border-[4px] border-main-black': active,
+          // '!border-main-black': color === '#8840FF' && active
         })
       }
       style={{ backgroundColor: color }}
