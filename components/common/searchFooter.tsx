@@ -11,7 +11,7 @@ interface Props {
 const SearchFooter: FC<Props> = ({ className }) => {
   const { communityInfo } = useDetails()
   return (
-    <div className={classnames(`mt-20 w-full flex justify-center bg-white py-5 sm:hidden ${className}`)}>
+    <div className={classnames(`mt-auto w-full flex justify-center bg-white py-5 sm:hidden ${className}`)}>
       <div className="flex items-center gap-[12px]">
         <span className='text-gray-logo'>Powered by</span>
         <Link href='/' target='_blank' className='group'>

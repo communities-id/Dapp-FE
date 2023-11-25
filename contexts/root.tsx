@@ -36,6 +36,7 @@ interface RootContextConfigProps {
   toggleNavigationOpen: () => void
   scrollTop: boolean
   setScrollTop: (value: boolean) => void
+  isMobile: boolean
   // toggleScrollTop: (value: boolean) => void
 }
 
@@ -92,6 +93,7 @@ export function RootProvider({ children }: { children: ReactNode }) {
   const [stickyMenu, setStickyMenu] = useState<RootContextConfigProps['stickyMenu']>(false)
   const [navigationOpen, setNavigationOpen] = useState<RootContextConfigProps['navigationOpen']>(false)
   const [scrollTop, setScrollTop] = useState<RootContextConfigProps['scrollTop']>(false)
+  const [isMobile, setIsMobile] = useState<RootContextConfigProps['isMobile']>(false)
 
   const [snackbarInfo, setSnackbarInfo] = useState<Required<SnackbarMessage>>({
     open: false,
@@ -167,13 +169,14 @@ export function RootProvider({ children }: { children: ReactNode }) {
       toggleNavigationOpen,
       scrollTop,
       setScrollTop,
+      isMobile
     }
-  }, [page, darkMode, stickyMenu, navigationOpen, scrollTop])
+  }, [page, darkMode, stickyMenu, navigationOpen, scrollTop, isMobile])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     _setDarkMode(localStorage.getItem('darkMode') === 'true')
-
+    setIsMobile(window.innerWidth < 768)
   }, [])
   useEffect(() => {
     if (typeof window === 'undefined') return

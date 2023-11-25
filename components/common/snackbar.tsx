@@ -63,7 +63,7 @@ const _Snackbar: FC<Props> = ({ type, title, content, open, handleClose, handleE
     <Fragment>
       <StyledSnackbar
         className='z-snackbar'
-        autoHideDuration={5000}
+        autoHideDuration={5000000}
         open={open}
         onClose={handleSelfClose}
         exited={exited}
