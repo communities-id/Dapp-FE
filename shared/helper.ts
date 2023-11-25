@@ -171,7 +171,7 @@ export function parseImgSrc(src?: string) {
   return src
 }
 
-export function formatDate(_date: number | BigNumber) {
+export function formatDate(_date: number | BigNumber, format = 'YYYY/MM/DD') {
   if (!_date) {
     return '-'
   }
@@ -179,7 +179,7 @@ export function formatDate(_date: number | BigNumber) {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
-  return `${year}/${month}/${day}`
+  return format.replace('YYYY', year.toString()).replace('MM', month.toString()).replace('DD', day.toString())
 }
 
 export function formatTime(_date: number | BigNumber) {

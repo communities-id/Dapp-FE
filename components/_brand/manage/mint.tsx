@@ -33,6 +33,8 @@ import ForwardsIcon from '~@/_brand/forwards.svg'
 import MinusIcon from '~@/_brand/minus.svg'
 import PlusIcon from '~@/_brand/plus.svg'
 import EditIcon from '~@/_brand/edit.svg'
+import ArrowRightIcon from '~@/_brand/arrow-right.svg'
+import ArrowDownIcon from '~@/_brand/arrow-down.svg'
 
 export type FormItemTypes = 'memberConfig' | 'mint' | 'price' | 'baseUri'
 
@@ -536,6 +538,10 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
     setStep(Math.max(step, next))
   }
 
+  const handleChooseTab = (open: boolean, tab: number) => {
+    setTab(open ? tab : -1)
+  }
+
   useEffect(() => {
     async function getCoinSymbol() {
       const symbol = await getTokenSymbol((mintForm.coin as string) || ZERO_ADDRESS, brandInfo.chainId)
@@ -578,7 +584,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 1}
                 checked={tab === 1}
                 settled={settled.mint}
-                handleChoose={() => setTab(1)}
+                handleChoose={(open) => handleChooseTab(open, 1)}
                 handleChange={async (payload) => {
                   setMintForm({
                     ...mintForm,
@@ -600,7 +606,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 2}
                 checked={tab === 2}
                 locked={editLocked.price}
-                handleChoose={() => setTab(2)}
+                handleChoose={(open) => handleChooseTab(open, 2)}
                 handleChange={async (payload) => {
                   setMintForm({
                     ...mintForm,
@@ -622,7 +628,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 3}
                 checked={tab === 3}
                 locked={editLocked.price}
-                handleChoose={() => setTab(3)}
+                handleChoose={(open) => handleChooseTab(open, 3)}
                 handleChange={async (payload) => {
                   setPriceForm({
                     ...priceForm,
@@ -644,7 +650,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 4}
                 checked={tab === 4}
                 locked={editLocked.price}
-                handleChoose={() => setTab(4)}
+                handleChoose={(open) => handleChooseTab(open, 4)}
                 handleChange={async (payload) => {
                   setPriceForm({
                     ...priceForm,
@@ -666,7 +672,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 5}
                 checked={tab === 5}
                 locked={editLocked.price}
-                handleChoose={() => setTab(5)}
+                handleChoose={(open) => handleChooseTab(open, 5)}
                 handleChange={async (payload) => {
                   setMemberConfigForm({
                     ...memberConfigForm,
@@ -683,7 +689,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 6}
                 checked={tab === 6}
                 locked={editLocked.price}
-                handleChoose={() => setTab(6)}
+                handleChoose={(open) => handleChooseTab(open, 6)}
                 handleChange={async (payload) => {
                   setMintForm({
                     ...mintForm,
@@ -749,13 +755,13 @@ interface BrandMintTabProps<T = CommunityMintConfig> {
   settled?: boolean
   locked?: boolean
   className?: string
-  handleChoose?: () => void
+  handleChoose?: (open: boolean) => void
   handleChange?: (payload: Partial<T>) => void
 }
 
 const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, checked, locked, form, className, handleChange, handleChoose }) => {
 
-  const mintModes: {
+  const originalMintModes: {
     label: string
     name: MintCommunityMintLabels
     active: boolean
@@ -829,6 +835,12 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       ]
     }
   ]
+
+  const mintModes = useMemo(() => {
+    // if (!locked) return originalMintModes
+    // return originalMintModes.filter(item => item.active)
+    return originalMintModes
+  }, [originalMintModes, locked])
 
   const activeMintMode = mintModes.find(item => item.active)
 
@@ -962,16 +974,19 @@ interface TokenGatedInputProps<T = string | number | boolean | undefined> {
   value: T
   placeholder?: string
   startAdornment?: ReactNode
+  locked?: boolean
   onChange?: (value: T) => void
 }
-const TokenGatedInput: FC<TokenGatedInputProps> = ({ value, placeholder, startAdornment, onChange }) => {
+const TokenGatedInput: FC<TokenGatedInputProps> = ({ value, placeholder, startAdornment, locked, onChange }) => {
   return (
     <Fragment>
       <Input
         startAdornment={startAdornment}
         placeholder={placeholder}
         value={value}
+        disabled={locked}
         onChange={(e) => {
+          if (locked) return
           onChange?.(e.target.value)
         }}
       />
@@ -1036,15 +1051,15 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
     }
   ]
 
+  const tokenModesWithActive = useMemo(() => {
+    if (!locked) return tokenModes
+    return tokenModes.filter(item => item.active)
+  }, [tokenModes, locked])
+
   const activeTokenMode = tokenModes.find(item => item.active)
 
   const title = '2、Which token will you accept?'
   const description = 'Warning: You can only choose one token to accept.'
-
-  const handleClick = () => {
-    if (locked) return
-    handleChoose?.()
-  }
 
   return (
     <div className={classNames('flex gap-5', { 'hidden': !active }, className)}>
@@ -1066,28 +1081,30 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
           active={active}
           checked={checked}
           locked={locked}
-          onClick={handleClick}
+          onClick={handleChoose}
         />
         {
           checked && (
             <div className='mt-5'>
               <ul className='relative z-1 w-full flex-itmc gap-[6px]'>
                 {
-                  tokenModes.map(({ name, value, label, active, triangle }, index) => {
+                  tokenModesWithActive.map(({ name, value, label, active, triangle }, index) => {
                     return (
                       <li key={index} className='relative flex-1'>
                         <Fragment>
                           <BaseButton
                             size='normal'
+                            disabled={locked}
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
                                 'bg-primary text-white': active,
                                 'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === tokenModes.length - 1,
+                                'rounded-r-[22px]': index === tokenModesWithActive.length - 1,
                               })
                             }
                             onClick={() => {
+                              if (locked) return
                               handleChange?.({
                                 ...form,
                                 [name]: value
@@ -1119,7 +1136,9 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
                                     value={item.value}
                                     startAdornment={item.startAdornment}
                                     placeholder={item.placeholder}
+                                    disabled={locked}
                                     onChange={(e) => {
+                                      if (locked) return
                                       handleChange?.({
                                         ...form,
                                         [item.name]: e.target.value
@@ -1134,7 +1153,9 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
                                     value={item.value}
                                     startAdornment={item.startAdornment}
                                     placeholder={item.placeholder}
+                                    locked={locked}
                                     onChange={(_value) => {
+                                      if (locked) return
                                       handleChange?.({
                                         ...form,
                                         [item.name]: _value
@@ -1394,6 +1415,11 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
     }
   ]
 
+  const priceModesWithActive = useMemo(() => {
+    if (!locked) return priceModes
+    return priceModes.filter(item => item.active)
+  }, [priceModes, locked])
+
   const activePriceMode = priceModes.find(item => item.active)
   const activePriceModeTab = activePriceMode?.tabs.find(item => item.active)
   console.log('- activePriceMode', activePriceMode, 'form.mode', form.mode, defaultForms?.mode)
@@ -1472,21 +1498,23 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
             <div className='mt-5'>
               <ul className='relative z-1 w-full flex-itmc gap-[6px]'>
                 {
-                  priceModes.map(({ name, label, value, active, triangle }, index) => {
+                  priceModesWithActive.map(({ name, label, value, active, triangle }, index) => {
                     return (
                       <li key={index} className='relative flex-1'>
                         <Fragment>
                           <BaseButton
                             size='normal'
+                            disabled={locked}
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
                                 'bg-primary text-white': active,
                                 'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === priceModes.length - 1,
+                                'rounded-r-[22px]': index === priceModesWithActive.length - 1,
                               })
                             }
                             onClick={() => {
+                              if (locked) return
                               handleChooseTab(value)
                             }}
                           >
@@ -1514,6 +1542,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                                   <li key={index} className='flex-1'>
                                     <BaseButton
                                       size='medium'
+                                      disabled={locked}
                                       className={
                                         classNames('w-full flex-center gap-[6px] rounded-xs', {
                                           'bg-white text-gray-1 border border-solid border-gray-7': !item.active,
@@ -1521,6 +1550,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                                         })
                                       }
                                       onClick={() => {
+                                        if (locked) return
                                         handleChooseTab(item.value)
                                       }}
                                     >
@@ -1601,47 +1631,6 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                         </Fragment>
                       )
                     }
-                    {/* <ul>
-                      {
-                        activeTokenMode.forms.map((item, index) => {
-                          return (
-                            <li key={index} className='flex flex-col gap-5'>
-                              {
-                                item.type === 'text' && (
-                                  <Input
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    onChange={(e) => {
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: e.target.value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              {
-                                item.type === 'multiple' && (
-                                  <TokenGatedInput
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    onChange={(_value) => {
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: _value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              { item.description }
-                            </li>
-                          )
-                        })
-                      }
-                    </ul> */}
                   </div>
                 )
               }
@@ -1692,7 +1681,9 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
               <InputNumber
                 value={form.commissionRate}
                 range={[0, 100]}
+                disabled={locked}
                 handleChange={(val) => {
+                  if (locked) return
                   handleChange?.({ commissionRate: val })
                 }}
               >
@@ -1745,6 +1736,11 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
     }
   ]
 
+  const burnTabsWithActive = useMemo(() => {
+    if (!locked) return burnTabs
+    return burnTabs.filter(item => item.active)
+  }, [burnTabs, locked])
+
   return (
     <div className={classNames('flex gap-5', { 'hidden': !active }, className)}>
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
@@ -1772,21 +1768,23 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
             <Fragment>
               <ul className='mt-5 relative z-1 w-full flex-itmc gap-[6px]'>
                 {
-                  burnTabs.map(({ name, value, label, active }, index) => {
+                  burnTabsWithActive.map(({ name, value, label, active }, index) => {
                     return (
                       <li key={index} className='relative flex-1'>
                         <Fragment>
                           <BaseButton
                             size='normal'
+                            disabled={locked}
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
                                 'bg-primary text-white': active,
                                 'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === burnTabs.length - 1,
+                                'rounded-r-[22px]': index === burnTabsWithActive.length - 1,
                               })
                             }
                             onClick={() => {
+                              if (locked) return
                               handleChange?.({
                                 ...form,
                                 [name]: value
@@ -1870,6 +1868,11 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
     }
   ]
 
+  const economicTabsWithActive = useMemo(() => {
+    if (!locked) return economicTabs
+    return economicTabs.filter(item => item.active)
+  }, [economicTabs, locked])
+
   const activeEconomicModel = economicTabs.find(item => item.active)
 
   return (
@@ -1899,21 +1902,23 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
             <Fragment>
               <ul className='mt-5 relative z-1 w-full flex-itmc gap-[6px]'>
                 {
-                  economicTabs.map(({ name, value, label, active }, index) => {
+                  economicTabsWithActive.map(({ name, value, label, active }, index) => {
                     return (
                       <li key={index} className='relative flex-1 min-w-0'>
                         <Fragment>
                           <BaseButton
                             size='normal'
+                            disabled={locked}
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
                                 'bg-primary text-white': active,
                                 'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === economicTabs.length - 1,
+                                'rounded-r-[22px]': index === economicTabsWithActive.length - 1,
                               })
                             }
                             onClick={() => {
+                              if (locked) return
                               handleChange?.({
                                 ...form,
                                 [name]: value
@@ -1963,31 +1968,53 @@ interface ManageMintTitleProps {
   activeText?: string | ReactNode
   checked?: boolean
   locked?: boolean
-  onClick?: () => void
+  onClick?: (open: boolean) => void
 }
 
 const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active, activeTitle, activeText, checked, locked, onClick }) => {
-  const handleClick = () => {
-    if (locked) return
-    onClick?.()
+  const [collspaed, setCollspaed] = useState(false)
+  const handleClick = (open = true) => {
+    if (locked) {
+      setCollspaed(true)
+    }
+    onClick?.(open)
   }
   return (
     <div className=''>
-      <div className={classNames('flex-itmc text-main-black', {
+      <div className={classNames('w-full flex-itmc text-main-black', {
         'text-lg !font-bold': checked,
         'text-sm-b': !checked,
       })}>
-        { checked && title }
+        {
+          checked && (
+            <div className='w-full flex-itmc justify-between'>
+              <span>{ checked && title }</span>
+              {
+                locked && collspaed && (
+                  <div
+                    className='px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
+                    onClick={() => handleClick(false)}
+                  >
+                    <span>fold</span>
+                    <ArrowDownIcon width='12' height='12' />
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
         {
           active && !checked && (
             <div className='group flex-1 flex-itmc justify-between'>
-              <div>{ activeTitle }</div>
+              <div>
+                <span>{ activeTitle }</span>
+              </div>
               <div
                 className='flex-1 flex-itmc gap-1 cursor-pointer'
-                onClick={handleClick}
+                onClick={() => handleClick()}
               >
                 <div className='text-primary underline-normal font-bold'>
-                  { activeText }
+                  <span>{ activeText }</span>
                 </div>
                 {
                   !locked && (<ForwardsIcon width='12' height='12' className='black-1' />)
@@ -1995,9 +2022,12 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
               </div>
               {
                 locked ? (
-                  <div className='invisible group-hover:visible px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs'>
-                    <TipsIcon width='12' height='12' />
-                    <span>Modification not supported</span>
+                  <div
+                    className='invisible group-hover:visible px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
+                    onClick={() => handleClick()}
+                  >
+                    <span>Modification not supported, check details</span>
+                    <ArrowRightIcon width='12' height='12' />
                   </div>
                 ) : (
                   <BaseButton
@@ -2006,7 +2036,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                     onClick={handleClick}
                   >
                     <EditIcon width='12' height='12' />
-                    <span>编辑</span>
+                    <span>Edit</span>
                   </BaseButton>
                 )
               }

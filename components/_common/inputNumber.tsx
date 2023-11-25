@@ -8,11 +8,12 @@ import PlusIcon from '~@/_brand/plus.svg'
 interface Props {
   value?: number
   range?: [number, number]
+  disabled?: boolean
   handleChange?: (value: number) => void
   children?: React.ReactNode
 }
 
-const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], handleChange, children }) => {
+const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, handleChange, children }) => {
   const isMinimum = value <= range[0]
   const isMaximum = value >= range[1]
 
@@ -31,7 +32,7 @@ const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], handleChange, chil
       <BaseButton
         className='flex-center bg-white rounded-l-xs'
         size='medium'
-        disabled={isMinimum}
+        disabled={isMinimum || disabled}
         onClick={handleMinus}>
         <MinusIcon width='30' height='30' className='text-main-black' />
       </BaseButton>
@@ -41,7 +42,7 @@ const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], handleChange, chil
       <BaseButton
         className='flex-center bg-white rounded-r-xs'
         size='medium'
-        disabled={isMaximum}
+        disabled={isMaximum || disabled}
         onClick={handleAdd}>
         <PlusIcon width='30' height='30' className='text-main-black' />
       </BaseButton>

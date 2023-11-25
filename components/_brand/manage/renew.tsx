@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { formatDate } from '@/shared/helper'
+
 import InputNumber from '@/components/_common/inputNumber'
 import Button from '@/components/_common/button'
 
@@ -10,16 +12,20 @@ interface Props {
   brandInfo?: Partial<CommunityInfo>
 }
 
-export default function BrandMannageRenew() {
+const BrandMannageRenew: FC<Props> = ({ brandInfo }) => {
+  const expiredTime = brandInfo?.node?.expireTime ?? 0
+  console.log('- expiredTime', expiredTime, 'brandInfo', brandInfo)
   return (
     <div className="modal-content-container modal-content">
-      <h1 className='text-main-black text-xl'>Social Media</h1>
+      <h1 className='text-main-black text-xl'>Renew</h1>
       <div className='w-full mt-[30px]'>
-        <Duration />
+        <Duration expiredTime={expiredTime} />
       </div>
     </div>
   )
 }
+
+export default BrandMannageRenew
 
 interface ExpiredProps {
 
@@ -56,13 +62,13 @@ const Expired: FC<ExpiredProps> = () => {
 }
 
 interface DurationProps {
-
+  expiredTime: number
 }
-const Duration: FC<DurationProps> = () => {
+const Duration: FC<DurationProps> = ({ expiredTime }) => {
   return (
     <div className='w-full rounded-md bg-white'>
       <div className='h-[105px] flex-center text-lgx text-white rounded-t-md bg-renew-bg bg-cover'>
-        Expire: 2024-11-01
+        Expire: { formatDate(expiredTime, 'YYYY-MM-DD') }
       </div>
       <div className='flex flex-col gap-[10px] bg-white-tr-50 backdrop-blur-[20px] border border-solid border-gray-7 rounded-b-md'>
         <div className='pt-[100px] pb-[148px] px-[120px] text-md-b'>
