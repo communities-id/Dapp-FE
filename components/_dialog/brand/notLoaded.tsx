@@ -26,7 +26,7 @@ const BrandNotLoaded: FC<Props> = ({ brandName, brandInfo, open, handleConfirm, 
         <img alt='' src='/_brand/unloaded.svg' className='w-[160px] h-[100px]'/>
         <h2 className='mt-[30px] text-lgx'>
           <span>Brand</span>
-          <span className='mx-1 text-primary'>.${brandName}</span>
+          <span className='mx-1 text-primary'>.{brandName}</span>
           <span>was not ready</span>
         </h2>
         <p className='mt-[10px] text-sm !font-medium'>brand should be setting first.</p>
