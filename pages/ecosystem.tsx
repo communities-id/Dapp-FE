@@ -51,8 +51,6 @@ export default function Dapp() {
                       <p className='text-white text-sm whitespace-pre-wrap break-all px-5 line-clamp-5'>{v.desc}</p>
                       <div className='border-t border-white py-[13px] sm:py-[8px] px-5 flex items-center justify-around'>
                         {v.twitter && <a href={v.twitter} target='_blank'><TwitterIcon width={20} height={20} className='text-white' /></a> }
-                        {v.telegram && <a href={v.telegram} target='_blank'><TelegramIcon width={20} height={20} className='text-white' /></a> }
-                        {v.discord && <a href={v.discord} target='_blank'><DiscordIcon width={20} height={20} className='text-white' /></a> }
                         {v.website && <a href={v.website} target='_blank'><WebsiteIcon width={20} height={20} className='text-white' /></a> }
                       </div>
                     </div>
