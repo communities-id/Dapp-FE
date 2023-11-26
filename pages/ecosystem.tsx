@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image';
 import { DetailsProvider } from '@/contexts/details'
 import SearchHeader from "@/components/solid/SearchHeader";
 
@@ -39,8 +40,8 @@ export default function Dapp() {
              EcoSystems.map(v => (
                 <figure key={v.id} className='eco-card group flex flex-col overflow-hidden rounded-[8px] cursor-pointer transition-all duration-300 hover:shadow-member-i'>
                   <div className='w-full bg-primary aspect-square flex flex-col items-center justify-between py-5 relative'>
-                    <div className='pt-11 text-center sm:pt-1'>
-                      <img src={v.logo} alt={v.name} className='h-15 sm:h-8' />
+                    <div className='pt-11 text-center sm:pt-1 flex items-center flex-col'>
+                      <img src={v.logo} alt={v.name} className='w-3/4 h-15 sm:h-8 object-contain' />
                       <p className='text-white text-lgx mt-2.5'>{v.name}</p>
                     </div>
                     <div className='flex gap-2'>
