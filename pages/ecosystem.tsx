@@ -5,8 +5,6 @@ import SearchHeader from "@/components/solid/SearchHeader";
 
 import TwitterIcon from '~@/icons/info/twitter.svg'
 import WebsiteIcon from '~@/icons/info/website.svg'
-import TelegramIcon from '~@/icons/social/telegram.svg'
-import DiscordIcon from '~@/icons/social/discord.svg'
 
 import { EcoSystems } from '@/shared/ecosystem';
 import { useRoot } from '@/contexts/root';
@@ -30,8 +28,7 @@ export default function Dapp() {
           <h1 className='text-xxl font-Saira font-normal'>An Ecosystem to Decentralized Future</h1>
           <p className='font-Saira text-md max-w-[800px] mt-1.5 whitespace-pre-wrap break-all'>Texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</p>
           <div className='flex gap-4.5 mt-5'>
-            <button className='button-lg btn-primary text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>XXXXXXX</button>
-            <button className='button-lg btn-wrhite text-primary border border-primary min-w-[180px] sm:min-w-[90px] hover:bg-primary-tr-10'>XXXXX</button>
+            <button className='button-lg btn-primary text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>List My Dapp</button>
           </div>
         </div>
         <div className='border-t border-gray-7'>
@@ -41,7 +38,7 @@ export default function Dapp() {
                 <figure key={v.id} className='eco-card group flex flex-col overflow-hidden rounded-[8px] cursor-pointer transition-all duration-300 hover:shadow-member-i'>
                   <div className='w-full bg-primary aspect-square flex flex-col items-center justify-between py-5 relative'>
                     <div className='pt-11 text-center sm:pt-1 flex items-center flex-col'>
-                      <img src={v.logo} alt={v.name} className='w-3/4 h-15 sm:h-8 object-contain' />
+                      <Image src={v.logo} alt={v.name} width={120} height={120} className="w-15 h-15 sm:w-8 sm:h-8 object-contain rounded-full" />
                       <p className='text-white text-lgx mt-2.5'>{v.name}</p>
                     </div>
                     <div className='flex gap-2'>

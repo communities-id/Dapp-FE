@@ -2,7 +2,7 @@ export const EcoSystems = [
   {
     id: 1,
     name: 'JoyID',
-    logo: '/ecosystems/joyid.png',
+    logo: '/ecosystems/joyid.svg',
     desc: 'JoyID is a multichain, cross-platform, passwordless and mnemonic-free wallet solution based on FIDO Webauthn protocol and Nervos CKB.',
     field: ['Wallet'],
     twitter: 'https://twitter.com/joy_protocol',
