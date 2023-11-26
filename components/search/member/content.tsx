@@ -160,15 +160,14 @@ const PersonContent: FC<Props> = () => {
     <div className='mt-[20px] flex flex-col gap-4'>
       {
         memberInfoSet.isMinted && (
-          <div className="flex justify-between rounded-[10px] bg-white">
-            <div className="flex flex-1 gap-3 pr-4">
+          <div className="flex justify-between rounded-[10px] bg-white sm:mb-10">
+            <div className="flex flex-1 gap-3 pr-4 sm:flex-col sm:items-center">
               <AvatarCard size={124} src={memberInfo?.tokenUri?.image} />
-              <div className='flex flex-1 gap-3 py-[14px] pl-[6px]'>
+              <div className='flex flex-1 gap-3 py-[14px] pl-[6px] sm:flex-col'>
                 <div className='flex-1 flex flex-col'>
                   <div className='flex flex-col justify-center'>
                     <h3 className='flex items-center gap-2 text-member-d-tit text-secondaryBlack'>
                       { keywords }
-                  
                     </h3>
                     <p className='text-member-d-subtit'>#{Number(memberInfo?.node?.tokenId)}</p>
                   </div>
@@ -188,7 +187,7 @@ const PersonContent: FC<Props> = () => {
                     </div>
                   </div>
                 </div>
-                <div className='flex flex-col justify-between'>
+                <div className='flex flex-col justify-between sm:flex-row-reverse'>
                   <div className='flex items-start justify-end gap-3'>
                     {
                       memberInfoSet.isOwner && (
