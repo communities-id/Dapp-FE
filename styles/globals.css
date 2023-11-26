@@ -254,7 +254,7 @@
     }
   }
   @media screen and (min-width: 1440px) {
-    @apply flex justify-between items-start gap-30;
+    @apply flex justify-between items-start;
     .mint-info {
       width: auto;
       margin-top: 0;
