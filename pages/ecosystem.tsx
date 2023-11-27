@@ -8,6 +8,7 @@ import WebsiteIcon from '~@/icons/info/website.svg'
 
 import { EcoSystems } from '@/shared/ecosystem';
 import { useRoot } from '@/contexts/root';
+import Footer from '@/components/solid/Footer';
 
 export default function Dapp() {
 
@@ -31,7 +32,7 @@ export default function Dapp() {
             <button className='button-lg btn-primary text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>List My Dapp</button>
           </div>
         </div>
-        <div className='border-t border-gray-7'>
+        <div className='border-t border-gray-7 mb-10'>
           <div className="dapp-container pt-7.5 card-grid grid gap-5 px-3">
             {
              EcoSystems.map(v => (
@@ -57,6 +58,7 @@ export default function Dapp() {
             }
           </div>
         </div>
+        <Footer />
       </div>
     </DetailsProvider>
   )
