@@ -78,7 +78,7 @@ const HeroSection: FC<Props> = () => {
             </h1>
             <p>We aim to build stronger consensus within communities and provide use cases for community native tokens.</p>
             <div className="mt-10 min-h-[94px] flex gap-3">
-              <Button onClick={handleLaunch} theme='primary' className='px-12 ease-in-out duration-300'>Launch Community</Button>
+              <Button onClick={handleLaunch} theme='primary' className='px-12 ease-in-out duration-300'>Launch</Button>
               <Button onClick={handleEcosystem} theme='primary' className='px-12 ease-in-out duration-300 border border-primary bg-white !text-primary hover:!bg-primary-tr-10'>Ecosystem</Button>
             </div>
           </div>

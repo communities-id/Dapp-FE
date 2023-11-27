@@ -108,32 +108,16 @@
     margin: 0 auto;
     width: 100vw;
     @media screen and (min-width: 768px) {
-      width: 768px;
+      width: calc(100vw - 120px);
     }
     @media screen and (min-width: 1440px) {
-      width: 1160px;
-    }
-    @media screen and (min-width: 1920px) {
-      width: 1352px;
+      width: calc(100vw - 160px);
     }
     @media screen and (min-width: 2560px) {
       width: 1760px;
     }
-    .search-form {
-      @media screen and (min-width: 768px) {
-        width: 253px;
-      }
-      @media screen and (min-width: 1440px) {
-        width: 459px;
-      }
-      @media screen and (min-width: 1920px) {
-        width: 651px;
-      }
-      @media screen and (min-width: 2560px) {
-        width: 800px;
-      }
-    }
-    
+
+  
   }
   .card-grid {
     @apply grid-cols-2;

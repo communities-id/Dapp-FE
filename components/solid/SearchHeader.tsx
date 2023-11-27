@@ -140,7 +140,7 @@ const SearchHeader: FC = () => {
             <LogoWithColor className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
             <DarkLogo className="hidden dark:block w-full"/>
           </Link>
-          <div className="search-form">
+          <div className="w-full">
             <div className="bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-pointer w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
               <SearchSvg className="w-6 h-6" />
               <span className="w-full overflow-hidden overflow-ellipsis pr-3">{searchValue}</span>
