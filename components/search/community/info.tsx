@@ -348,7 +348,7 @@ const CommunityLayout: FC<Props> = () => {
                 </div>
               </div>
               <div className="actions mt-6 sm:mt-3 flex items-center gap-[10px]">
-                <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white flex sm:hidden">
+                <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex sm:hidden">
                   { communityInfoSet.isOwner && <>
                     <button className="min-w-[98px] px-5 h-full rounded-l-full" onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <div className='divide flex items-center'>
@@ -363,7 +363,7 @@ const CommunityLayout: FC<Props> = () => {
                   </button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
-                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden"
+                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b"
                   onClick={() => {
                     showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
                   }}>
