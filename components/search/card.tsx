@@ -34,7 +34,7 @@ const MemberCard: FC<Props> = ({ info, link, chainId = CHAIN_ID, noOpensea, clas
   return (
     <figure className={
       classnames(
-        'relative group flex flex-col overflow-hidden rounded-[8px] cursor-pointer transition-all duration-300 hover:shadow-member-i',
+        'relative group flex flex-col overflow-hidden rounded-[20px] cursor-pointer transition-all duration-300 hover:shadow-member-i',
         className
       )}
       onClick={() => {

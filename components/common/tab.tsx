@@ -30,7 +30,7 @@ export default styled(_Tab)`
     left: 50%;
     width: 100%;
     height: 3px;
-    background-color: #8840FF;
+    background-color: var(--var-brand-color);
     transform: translateX(-50%);
     pointer-events: none;
     visibility: hidden;

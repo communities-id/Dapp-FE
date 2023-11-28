@@ -10,8 +10,8 @@ overrides:
 
 dependencies:
   '@communitiesid/id':
-    specifier: ^0.7.0
-    version: 0.7.0(@siddomains/sid-contracts@0.1.31)
+    specifier: ^0.7.2
+    version: 0.7.2(@siddomains/sid-contracts@0.1.31)
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.0.33)(react@18.2.0)
@@ -1577,8 +1577,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@communitiesid/id@0.7.0(@siddomains/sid-contracts@0.1.31):
-    resolution: {integrity: sha512-oLzqkixeGX0baHraPMaqJQOGl4JEzj9bkQ/X+Mbd/9Ow2Y8LVlwtGQtZvRBTNeY5PCwoI0G3mFqD4mt/BwloVg==}
+  /@communitiesid/id@0.7.2(@siddomains/sid-contracts@0.1.31):
+    resolution: {integrity: sha512-rIkVNX82J4Ke1awq9jvx89pU64IxoesaH3bctjZTgYW36aho/pAw3qLP/miBBveQ+XctrO95ARfiNmj6ALhFNQ==}
     dependencies:
       '@siddomains/sidjs': 0.1.29(@siddomains/sid-contracts@0.1.31)(ethers@5.7.2)
       axios: 1.6.2

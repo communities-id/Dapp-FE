@@ -127,8 +127,8 @@ const PersonInfo: FC<Props> = ({}) => {
   }, [isAddressOwner, account])
 
   return (
-    <div className='w-full pb-[20px]'>
-      <Banner banner={personInfo?.tokenUri?.brand_image} />
+    <div className='w-full pb-10'>
+      <Banner banner={personInfo?.tokenUri?.brand_image} className='h-[211px]' />
       <div className='dapp-container px-10'>
         <div className='w-full relative pt-[80px] sm:pt-[50px]'>
           <AvatarCard outline size={120} src={personInfo.tokenUri?.image} className='sm:hidden absolute top-[-60px] rounded-full left-1/2 ml-[-60px]' />
