@@ -108,32 +108,14 @@
     margin: 0 auto;
     width: 100vw;
     @media screen and (min-width: 768px) {
-      width: 768px;
+      width: calc(100vw - 120px);
     }
     @media screen and (min-width: 1440px) {
-      width: 1160px;
-    }
-    @media screen and (min-width: 1920px) {
-      width: 1352px;
+      width: calc(100vw - 160px);
     }
     @media screen and (min-width: 2560px) {
       width: 1760px;
     }
-    .search-form {
-      @media screen and (min-width: 768px) {
-        width: 253px;
-      }
-      @media screen and (min-width: 1440px) {
-        width: 459px;
-      }
-      @media screen and (min-width: 1920px) {
-        width: 651px;
-      }
-      @media screen and (min-width: 2560px) {
-        width: 800px;
-      }
-    }
-    
   }
   .card-grid {
     @apply grid-cols-2;
@@ -244,6 +226,10 @@
   }
 }
 
+.header-container.with-bg {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 20.96%, rgba(255, 255, 255, 0.00) 100%);
+}
+
 .community-info {
   .mint-info {
     width: 100%;
@@ -267,7 +253,7 @@
   border-radius: 24px;
   border-style: hidden;
   background-color: #fafafa;
-  box-shadow: 0 0 0 1px #eaeaea;
+  box-shadow: 0 0 0 1px #fff;
   @apply sm:rounded-[10px];
   &.pending-set {
     background: rgba(255, 177, 61, 0.10);
@@ -278,12 +264,12 @@
   }
   td {
     padding: 10px 20px;
-    border: 1px solid #eaeaea;
+    border: 1px solid #fff;
     .config-name {
       @apply text-gray-1 text-sm flex items-center gap-1 sm:text-xs;
     }
     .config-value {
-      @apply text-main-black text-md sm:text-xs;
+      @apply text-main-black text-md sm:text-xs min-w-[200px];
       font-weight: 600;
     }
   }
@@ -291,6 +277,7 @@
 
 .dapp-page {
   background: url(/dapp-bg.svg) repeat;
+  background-color: #fbfbfb;
   .main {
     height: calc(100vh - 80px);
     @media screen and (max-width: 768px) {

@@ -11,7 +11,7 @@ export const EcoSystems = [
   {
     id: 2,
     name: 'Soulland',
-    logo: '/ecosystems/soulland.png',
+    logo: '/ecosystems/soulland.svg',
     desc: 'Global First Social Feeds-Themed Metaverse.',
     field: ['Social-Fi', 'Metaverse'],
     twitter: 'https://twitter.com/soulland_en',
@@ -20,7 +20,7 @@ export const EcoSystems = [
   {
     id: 3,
     name: 'Kolo Market',
-    logo: '/ecosystems/kolo_market.png',
+    logo: '/ecosystems/kolo_market.svg',
     desc: 'The world\'s first web3 classical Music platform.',
     field: ['NFT'],
     twitter: 'https://twitter.com/joy_protocol',
@@ -29,7 +29,7 @@ export const EcoSystems = [
   {
     id: 4,
     name: 'ACG Worlds',
-    logo: '/ecosystems/joyid.svg',
+    logo: '/ecosystems/acg.svg',
     desc: '⛩  Build the world\'s largest Web3.0 #Metaverse theme park.',
     field: ['Metaverse'],
     twitter: 'https://twitter.com/ACGWORLDS_META',
@@ -38,7 +38,7 @@ export const EcoSystems = [
   {
     id: 5,
     name: 'XY Finance',
-    logo: '/ecosystems/XY_Finance.png',
+    logo: '/ecosystems/xyfinance.svg',
     desc: 'Cross-chain swap assets to zkSync, Optimism, Arbitrum, Linea, Base, Scroll and 14 other major EVMs',
     field: ['DEX'],
     twitter: 'https://twitter.com/xyfinance',
@@ -47,7 +47,7 @@ export const EcoSystems = [
   {
     id: 6,
     name: 'IC1101',
-    logo: '/ecosystems/ic1101.png',
+    logo: '/ecosystems/ic1101.svg',
     desc: 'Index Catalogue 1101 (Designation A2029-BCG) is a class S0 supergiant lenticular galaxy at the center of the Abell 2029 galaxy cluster.',
     field: ['Metaverse'],
     twitter: 'https://twitter.com/IC1101World',
@@ -65,7 +65,7 @@ export const EcoSystems = [
   {
     id: 8,
     name: 'Cricket Fly',
-    logo: '/ecosystems/Cricket_fly.jpg',
+    logo: '/ecosystems/Cricket_fly.svg',
     desc: 'World\'s first Play2Win Web3 Cricket Game! Developed in close collaboration with Gamiflyco and UltiverseDAO.',
     field: ['Game-Fi'],
     twitter: 'https://twitter.com/CricketFlyGame',
@@ -83,7 +83,7 @@ export const EcoSystems = [
   {
     id: 10,
     name: 'OWL Networks',
-    logo: '/ecosystems/owl_network.jpg',
+    logo: '/ecosystems/owl_network.svg',
     desc: 'A decentralized SocialFi platform built by the OW Foundation. ',
     field: ['Social-Fi'],
     twitter: 'https://twitter.com/owlweb3',
@@ -100,7 +100,7 @@ export const EcoSystems = [
   {
     id: 12,
     name: 'DeGame',
-    logo: '/ecosystems/degame.png',
+    logo: '/ecosystems/degame.svg',
     desc: 'DeGame is the world\'s largest NFT games aggregator, listing over 4000 blockchain game projects and 1000+ tokens & chains since 2021.',
     field: ['Game-Fi','Campaign'],
     twitter: 'https://twitter.com/degame_l2y',
@@ -109,7 +109,7 @@ export const EcoSystems = [
   {
     id: 13,
     name: 'Trantor',
-    logo: '/ecosystems/trantor.png',
+    logo: '/ecosystems/trantor.svg',
     desc: 'A Unified Web3 Portal Promoting Interconnectivity among communities and brands through Empowered Decentralized Identities ',
     field: ['Campaign', 'DID'],
     twitter: 'https://twitter.com/TrantorDAO',
@@ -118,7 +118,7 @@ export const EcoSystems = [
   {
     id: 14,
     name: 'Puffverse',
-    logo: '/ecosystems/puffverse.png',
+    logo: '/ecosystems/puff.svg',
     desc: 'A dreamland Metaverse with a comprehensive ecosystem.',
     field: ['Metaverse'],
     twitter: 'https://twitter.com/Puffverse',
@@ -136,7 +136,7 @@ export const EcoSystems = [
   {
     id: 16,
     name: 'Chatpuppy',
-    logo: '/ecosystems/chatpuppy.png',
+    logo: '/ecosystems/chatpuppy.svg',
     desc: 'A super secured NFT-based wallet-to-wallet instant messanger dApp for WEB3',
     field: ['NFT','Social-Fi'],
     twitter: 'https://twitter.com/chatpuppynft',
@@ -145,7 +145,7 @@ export const EcoSystems = [
   {
     id: 17,
     name: 'UneMeta',
-    logo: '/ecosystems/unemetawebp.webp',
+    logo: '/ecosystems/unemeta.svg',
     desc: 'The NFT market & social space for icons & The NFT Buddy For You.',
     field: ['NFT','Marketplace'],
     twitter: 'https://twitter.com/UNE_METAVERSE',
@@ -172,7 +172,7 @@ export const EcoSystems = [
   {
     id: 20,
     name: 'RE:DREAMER',
-    logo: '/ecosystems/redreamer.webp',
+    logo: '/ecosystems/redreamer.svg',
     desc: 'Builder of ERC-6672: Multi-redeemable NFTs | Data Exchange Layer for Real-World Assets ',
     field: ['NFT'],
     twitter: 'https://twitter.com/REDREAMER_Lab',
@@ -181,7 +181,7 @@ export const EcoSystems = [
   {
     id: 21,
     name: 'Cassava Network',
-    logo: '/ecosystems/cassavanetwork.webp',
+    logo: '/ecosystems/cassava.svg',
     desc: 'Building African Gateway to web3.',
     field: ['Campaign'],
     twitter: 'https://twitter.com/CassavaNetwork',
@@ -190,7 +190,7 @@ export const EcoSystems = [
   {
     id: 22,
     name: 'Popula',
-    logo: '/ecosystems/popula.png',
+    logo: '/ecosystems/popula.svg',
     desc: 'On-chain tools empowering community ownership. (🐝, 🐝)',
     field: ['Social-Fi'],
     twitter: 'https://twitter.com/beepopula',
@@ -199,7 +199,7 @@ export const EcoSystems = [
   {
     id: 23,
     name: 'Cat Paradise',
-    logo: '/ecosystems/catparadise.png',
+    logo: '/ecosystems/catparadise.svg',
     desc: 'Cat Paradise, the purrfect GameFi platform for cat lovers! 🐾',
     field: ['Game-Fi'],
     twitter: 'https://twitter.com/catparadise_io',
@@ -208,7 +208,7 @@ export const EcoSystems = [
   {
     id: 24,
     name: 'Tap Fantasy',
-    logo: '/ecosystems/tapfantasy.jpg',
+    logo: '/ecosystems/tapfantasy.svg',
     desc: 'Tap Fantasy is an MMORPG blockchain game! Come Tap for Golds! ',
     field: ['Game-Fi'],
     twitter: 'https://twitter.com/tapfantasy2021',
@@ -217,7 +217,7 @@ export const EcoSystems = [
   {
     id: 25,
     name: 'MetaCene',
-    logo: '/ecosystems/metacene.png',
+    logo: '/ecosystems/metacene.svg',
     desc: '🎮Next-gen blockchain MMORPG homeland ',
     field: ['Game-Fi'],
     twitter: 'https://twitter.com/MetaCeneGame',
@@ -226,7 +226,7 @@ export const EcoSystems = [
   {
     id: 26,
     name: 'For Metas',
-    logo: '/ecosystems/4metas.jpg',
+    logo: '/ecosystems/4metas.svg',
     desc: 'For Metas is building Web3 Application platform which servicing multiple industries and ecosystem',
     field: ['Game-Fi', 'DAO'],
     twitter: 'https://twitter.com/4metas',
@@ -244,16 +244,25 @@ export const EcoSystems = [
   {
     id: 28,
     name: 'Reyield Finance',
-    logo: '/ecosystems/reyield.png',
+    logo: '/ecosystems/reyieldfinance.svg',
     desc: 'AI investment platform that simplifies CeFi & DeFi tools.',
     field: ['DeFi'],
     twitter: 'https://twitter.com/REYIELDLabs',
     website: 'https://www.reyield.fi/',
   },
   {
+    id: 29,
+    name: 'BingX',
+    logo: '/ecosystems/bingx.svg',
+    desc: 'Empowering traders, from beginners to pros. Elevate your crypto trading game at BingX',
+    field: ['CEX'],
+    twitter: 'https://twitter.com/BingXOfficial',
+    website: 'https://bingx.com/',
+  },
+  {
     id: 30,
     name: 'Atem',
-    logo: '/ecosystems/atem.webp',
+    logo: '/ecosystems/atem.svg',
     desc: 'Atem Network is a decentralized content creation protocol, we aim at helping creators tokenize their content and build web3 native communities.',
     field: ['Social-Fi'],
     twitter: 'https://twitter.com/atem_network',
@@ -262,7 +271,7 @@ export const EcoSystems = [
   {
     id: 31,
     name: 'NFP',
-    logo: '/ecosystems/nfp.png',
+    logo: '/ecosystems/nfp.svg',
     desc: 'NFPrompt is the first Prompt Artist Platform in Web3, which lets you mint your imagination into an AI-Generated NFT.',
     field: ['AI','NFT'],
     twitter: 'https://twitter.com/nfprompt',
@@ -280,7 +289,7 @@ export const EcoSystems = [
   {
     id: 33,
     name: 'Club3',
-    logo: '/ecosystems/club3.png',
+    logo: '/ecosystems/club3.svg',
     desc: 'The Web3 Community Building Platform',
     field: ['Campaign'],
     twitter: 'https://twitter.com/club3xyz',
@@ -307,7 +316,7 @@ export const EcoSystems = [
   {
     id: 36,
     name: 'WAM',
-    logo: '/ecosystems/wam.png',
+    logo: '/ecosystems/wam.svg',
     desc: 'Creators of the award-winning #web3 gaming ecosystem $WAM.',
     field: ['Game-Fi','NFT'],
     twitter: 'https://twitter.com/playWAM',
@@ -327,7 +336,7 @@ export const EcoSystems = [
   {
     id: 38,
     name: 'Legend of Cards',
-    logo: '/ecosystems/loc.jpg',
+    logo: '/ecosystems/loc.svg',
     desc: 'An exclusive social poker club comprized of Cardslinger NFTs that are driven by the Web3 community.',
     field: ['NFT','Game-Fi'],
     twitter: 'https://twitter.com/LegendofCards',
@@ -337,7 +346,7 @@ export const EcoSystems = [
   {
     id: 39,
     name: 'Afflux',
-    logo: '/ecosystems/afflux.jpg',
+    logo: '/ecosystems/afflux.svg',
     desc: '🌊Brand Creator 🔖BRAND + IP + COMMUNITY + PRODUCT = SUPER BRAND 🪬 web3 🅽 ',
     field: ['Others'],
     twitter: 'https://twitter.com/Afflux_con',
@@ -346,7 +355,7 @@ export const EcoSystems = [
   {
     id: 40,
     name: 'Travel Care',
-    logo: '/ecosystems/travelcare.png',
+    logo: '/ecosystems/travelcare.svg',
     desc: 'Fly with Crypto!',
     field: ['Others'],
     twitter: 'https://twitter.com/TravelCareToken',
@@ -356,7 +365,7 @@ export const EcoSystems = [
   {
     id: 41,
     name: 'Only1',
-    logo: '/ecosystems/only1.jpg',
+    logo: '/ecosystems/only1.svg',
     desc: 'Membership site where creators earn with their fans',
     field: ['Social-Fi'],
     twitter: 'https://twitter.com/JoinOnly1',
@@ -376,7 +385,7 @@ export const EcoSystems = [
   {
     id: 43,
     name: 'DeFi Land',
-    logo: '/ecosystems/defiland.webp',
+    logo: '/ecosystems/defiland.svg',
     desc: 'DeFi, Gaming, NFTs and Alpacas in a new and all-in-one game ecosystem🚜',
     field: ['DeFi','Game-Fi'],
     twitter: 'https://twitter.com/DeFi_Land',
@@ -396,7 +405,7 @@ export const EcoSystems = [
   {
     id: 45,
     name: 'Perion',
-    logo: '/ecosystems/perion.jpg',
+    logo: '/ecosystems/perion.svg',
     desc: 'Accelerating the shift to Web3 gaming.',
     field: ['Game-Fi'],
     twitter: 'https://twitter.com/PerionDAO',
@@ -406,7 +415,7 @@ export const EcoSystems = [
   {
     id: 46,
     name: 'MAP Protocol',
-    logo: '/ecosystems/mapo.webp',
+    logo: '/ecosystems/mapo.svg',
     desc: 'A Bitcoin layer-2 and peer-to-peer omnichain infrastructure built upon light clients and ZK technology, focusing on cross-chain interoperability.',
     field: ['Infrastructure'],
     twitter: 'https://twitter.com/MapProtocol',
@@ -416,8 +425,8 @@ export const EcoSystems = [
   {
     id: 47,
     name: 'Anichess',
-    logo: '/ecosystems/anichess.jpg',
-    desc: 'Community-driven, free-to-play chess game with new strategic layers powered by magical spells.',
+    logo: '/ecosystems/anichess.svg',
+    desc:'Community-driven, free-to-play chess game with new strategic layers powered by magical spells.',
     field: ['Game-Fi'],
     twitter: 'https://twitter.com/AnichessGame',
     website: 'https://anichess.com/',
@@ -426,7 +435,7 @@ export const EcoSystems = [
   {
     id: 48,
     name: 'Blockless',
-    logo: '/ecosystems/blockless.jpg',
+    logo: '/ecosystems/blockless.svg',
     desc: 'Building the first modular application architecture',
     field: ['Infrastructure'],
     twitter: 'https://twitter.com/theblockless',
@@ -436,7 +445,7 @@ export const EcoSystems = [
   {
     id: 49,
     name: 'Hooked Protocol',
-    logo: '/ecosystems/hooked.webp',
+    logo: '/ecosystems/hook.svg',
     desc: 'An immersive edutainment network, on-ramp for next billion people onto web3.  ',
     field: ['Others'],
     twitter: 'https://twitter.com/HookedProtocol',
@@ -446,7 +455,7 @@ export const EcoSystems = [
   {
     id: 50,
     name: 'Joystream',
-    logo: '/ecosystems/joystream.jpg',
+    logo: '/ecosystems/joystream.svg',
     desc: 'A video platform protocol.',
     field: ['Social-Fi','Others'],
     twitter: 'https://twitter.com/JoystreamDAO',
@@ -456,7 +465,7 @@ export const EcoSystems = [
   {
     id: 51,
     name: 'Ender Protocol',
-    logo: '/ecosystems/ender.png',
+    logo: '/ecosystems/ender.svg',
     desc: 'Metaverse Bond backed by Liquid Staking Power (LSP)',
     field: ['DeFi','Metaverse'],
     twitter: 'https://twitter.com/EnderProtocol',
@@ -465,7 +474,7 @@ export const EcoSystems = [
   {
     id: 52,
     name: 'WIS',
-    logo: '/ecosystems/wis.jpg',
+    logo: '/ecosystems/wis.svg',
     desc: 'WIS is a Web3 event platform; Redefine your social experience with WIS, where connection, engagement, and inspiration reach unprecedented levels.',
     field: ['Social-Fi','Campaign'],
     twitter: 'https://twitter.com/WorldinShadow',
@@ -483,7 +492,7 @@ export const EcoSystems = [
   {
     id: 54,
     name: 'Vortex',
-    logo: '/ecosystems/vortex.png',
+    logo: '/ecosystems/vortex.svg',
     desc: 'Aggregate liquidity🚀 ZK-SNARKS dex with sub-sites',
     field: ['DEX','DeFi'],
     twitter: 'https://twitter.com/VortexDexOffice',
@@ -510,7 +519,7 @@ export const EcoSystems = [
   {
     id: 57,
     name: 'Klein Labs',
-    logo: '/ecosystems/kleinlabs.jpg',
+    logo: '/ecosystems/kleinlabs.svg',
     desc: 'Backing top #Web3 startups with funding, advisory & incubation',
     field: ['Others'],
     twitter: 'https://twitter.com/kleinlabsxyz',
@@ -518,11 +527,12 @@ export const EcoSystems = [
   },
   {
     id: 58,
-    name: 'Vino Chain',
-    logo: '/ecosystems/vinochain.jpg',
-    desc: 'A real asset trading platform that capitalizes wine and provides liquidity and a token economic model',
-    field: ['De-Fi','Others'],
-    twitter: 'https://twitter.com/WorldinShadow',
+    name: 'FaTPay',
+    logo: '/ecosystems/fatpay.svg',
+    desc: 'Leading crypto payment service provider. The bridge connecting Web2.0 and Web3.0.',
+    field: ['Infrastructure','Others'],
+    twitter: 'https://twitter.com/realFatPay',
+    website: 'https://www.fatpay.org/',
   },
   {
     id: 59,
@@ -536,7 +546,7 @@ export const EcoSystems = [
   {
     id: 60,
     name: 'MEME Exchange',
-    logo: '/ecosystems/memeexchange.png',
+    logo: '/ecosystems/memeexchange.svg',
     desc: 'MEME Exchange, Mining Pool, Defi, Launch Pad, Top MEME exchange',
     field: ['CEX','Campaign'],
     twitter: 'https://twitter.com/MEMEcex',
@@ -554,7 +564,7 @@ export const EcoSystems = [
   {
     id: 62,
     name: 'Scroll',
-    logo: '/ecosystems/scroll.jpg',
+    logo: '/ecosystems/scroll.svg',
     desc: 'Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM compatibility. The L2 network built by Ethereum devs for Ethereum devs.',
     field: ['Layer 2'],
     twitter: 'https://twitter.com/Scroll_ZKP',

@@ -8,6 +8,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { execSearch, formatAddress } from "@/shared/helper"
 import { SearchMode } from "@/types"
 import { useSearchParams } from "next/navigation"
+import themeColor from '@/_themes/colors'
 
 import SearchSvg from '~@/icons/search.svg'
 import DarkLogo from '~@/logo/inline-dark.svg'
@@ -19,14 +20,26 @@ import UserSvg from '~@/icons/user.svg'
 import LogoWithColor from "../common/LogoWithColor"
 import { useDetails } from "@/contexts/details"
 import SearchSuggestion from "../dialog/searchSuggestion"
+import styled from "@emotion/styled"
+import { useRouter } from 'next/router'
 
 const SearchHeader: FC = () => {
   const { handleSearch } = useSearch()
   const { disconnect } = useDisconnect()
   const { communityInfo } = useDetails()
+  const router = useRouter()
   const keywords = useSearchParams().get('keywords') as string
   const [searchValue, setSearchValue] = useState('')
   const [searchSuggestionOpen, setSearchSuggestionOpen] = useState(false)
+  const [showBg, setShowBg] = useState(false)
+
+  const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
+  const brandStyle = {
+    backgroundColor: brandColor,
+    '&:hover': {
+      backgroundColor: `${brandColor}cc`
+    }
+  }
 
   useEffect(() => {
     if (!keywords) return
@@ -38,13 +51,21 @@ const SearchHeader: FC = () => {
     }
   }, [keywords])
 
-  function renderAccountButton(options: any, isMobile = false) {
-    const { account, chain, openAccountModal, openChainModal, openConnectModal, mounted }= options
-    const className = "button-xl bg-primary text-white flex items-center gap-[10px] flex-shrink-0"
-    const connected = mounted && account && chain
-    const bgStyle = {
-      backgroundColor: communityInfo.tokenUri?.brand_color ?? '#8840FF'
+  useEffect(() => {
+    const scrollContainer = document.querySelector('#__next')
+    if (scrollContainer)  {
+      scrollContainer.addEventListener('scroll', () => {
+        setShowBg(scrollContainer.scrollTop > 100)
+      })
     }
+  }, [router.pathname])
+
+  function renderAccountButton(options: any, isMobile = false) {
+    const { account, chain, openChainModal, openConnectModal, mounted }= options
+    const className = "button-xl w-auto text-white flex items-center gap-[10px] flex-shrink-0"
+    const connected = mounted && account && chain
+    const BrandButton = styled('button')(brandStyle)
+    const BrandLabel = styled('label')(brandStyle)
     if (!connected) {
       if (isMobile) {
         return (
@@ -54,10 +75,10 @@ const SearchHeader: FC = () => {
         )
       }
       return (
-        <button className={className} style={bgStyle} onClick={openConnectModal}>
+        <BrandButton className={className} onClick={openConnectModal}>
           <WalletSvg className="w-5 h-5"/>
           <span>Connect</span>
-        </button>
+        </BrandButton>
       )
     }
     if (chain?.unsupported) {
@@ -69,10 +90,10 @@ const SearchHeader: FC = () => {
         )
       }
       return (
-        <button className={className} style={bgStyle} onClick={openChainModal}>
+        <BrandButton className={className}  onClick={openChainModal}>
           <ConnectionSvg className="w-5 h-5"/>
           <span>Switch chain</span>
-        </button>
+        </BrandButton>
       )
     }
 
@@ -80,31 +101,30 @@ const SearchHeader: FC = () => {
 
     return (
       <>
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end dropdown-hover">
           <div className='leading-[0px]'>
             { isMobile ? (
                 <label tabIndex={0}>
                   <UserSvg className="w-6 h-6" />
                 </label>
               ) : (
-                <label tabIndex={0} className={className} style={bgStyle}>
-                  {formatAddress(address)}
-                </label>
+                <BrandLabel tabIndex={0} className={className}>
+                  <WalletSvg className="w-5 h-5 flex-shrink-0"/>
+                  <span>{formatAddress(address)}</span>
+                </BrandLabel>
               ) 
             }
-            
             <ul
               tabIndex={0}
               className={
                 classnames(
-                  'menu text-base-content p-2 w-48 dropdown-content shadow-section mt-4 bg-base-100 rounded-box',
-                  'bg-search-form-focus-bg',
-                  'text-white'
+                  'menu text-base-content p-2 w-48 dropdown-content shadow-section bg-base-100 rounded-box',
+                  'bg-white text-main-black'
                 )
               }>
               <li className='block rounded-t-[inherit] rounded-b-none'>
                 <div
-                  className='hover:bg-[#313641]'
+                  className='hover:bg-[#0001]'
                   onClick={(e) => {
                     e.stopPropagation()
                     handleSearch(address)
@@ -116,7 +136,7 @@ const SearchHeader: FC = () => {
               </li>
               <li className='rounded-b-[inherit]'>
                 <div
-                  className='w-full rounded-b-[inherit] hover:bg-[#313641]'
+                  className='w-full rounded-b-[inherit] hover:bg-[#0001]'
                   onClick={(e) => {
                     e.stopPropagation()
                     disconnect()
@@ -133,23 +153,26 @@ const SearchHeader: FC = () => {
   }
 
   const searchHeaderPC = (
-    <header className="header-container sticky top-7 w-full z-30 sm:hidden">
+    <header className={`header-container sticky top-0 w-full z-30 sm:hidden py-7 ${showBg ? 'with-bg' : ''}`}>
       <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7 gap-10">
         <div className="flex justify-start gap-[30px] items-center w-full">
           <Link href="/" className='inline-block w-[165px] flex-shrink-0'>
-            <LogoWithColor className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
+            <LogoWithColor className="dark:hidden w-full" color={brandColor} />
             <DarkLogo className="hidden dark:block w-full"/>
           </Link>
-          <div className="search-form">
+          <div className="w-full">
             <div className="bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-pointer w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
-              <SearchSvg className="w-6 h-6" />
-              <span className="w-full overflow-hidden overflow-ellipsis pr-3">{searchValue}</span>
+              <SearchSvg className="w-6 h-6 text-gray-4" />
+              <span className={`w-full overflow-hidden overflow-ellipsis pr-3 ${!searchValue ? 'text-gray-4' : ''}`}>{searchValue || 'Search for brand name, user name or wallet adderss'}</span>
             </div>
           </div>
         </div>
-        <ConnectButton.Custom>
-          {props => renderAccountButton(props)}
-        </ConnectButton.Custom>
+        <div className="flex gap-20 items-center">
+          <Link href="/ecosystem" className="text-main-black text-md-b">Ecosystem</Link>
+          <ConnectButton.Custom>
+            {props => renderAccountButton(props)}
+          </ConnectButton.Custom>
+        </div>
       </div>
     </header>
   )

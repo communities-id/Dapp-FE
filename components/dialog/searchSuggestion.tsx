@@ -90,16 +90,16 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
 
   return (
     <Modal open={open} wrapClassName="search-suggestion-container" onClick={handleClickOutside}>
-      <div className='dapp-container pl-[205px] sm:pl-0'>
-        <div className="bg-white w-min rounded-b-lg search-box sm:w-full">
+      <div className='dapp-container pl-[205px] pr-[105px] sm:pl-0 sm:pr-0'>
+        <div className="bg-white rounded-b-lg search-box w-full">
           <div className="search-bar flex items-center px-5 pt-10 pb-3 sm:pt-safe-offset-3">
-            <div className="search-form bg-white border-sm border-gray-3 h-14 rounded-lg flex justify-start items-center px-6 gap-4">
+            <div className="w-full bg-white border-sm border-gray-3 h-14 rounded-lg flex justify-start items-center px-6 gap-4">
               <SearchSvg className="w-6 h-6"/>
               <form onSubmit={handleSearchSubmit} className="w-full">
                 <input
                   type="text"
                   className="w-full bg-transparent outline-none placeholder:text-gray-4"
-                  placeholder="Search brand, user and address"
+                  placeholder="Search for brand name, user name or wallet adderss"
                   value={searchValue}
                   id="search-header-input"
                   onChange={e => setSearchValue(e.target.value)}

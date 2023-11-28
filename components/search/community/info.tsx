@@ -53,6 +53,7 @@ import styled from '@emotion/styled'
 import { lighten } from '@mui/system'
 import { SequenceMode } from '@/types/contract'
 import { useDIDContent } from '@/hooks/content'
+import PlusIconWithColor from '@/components/common/PlusWithColor'
 
 interface Props {
   children?: ReactNode
@@ -278,17 +279,25 @@ const CommunityLayout: FC<Props> = () => {
   if (communityInfoSet.unMint) return (
     <Banner />
   )
+
+  const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const BrandColorButton = styled('button')({
     backgroundColor: `transparent`,
     '&:hover': {
-      backgroundColor: `${communityInfo.tokenUri?.brand_color || themeColor.primary}1A`
+      backgroundColor: `${brandColor}33`
     }
   });
 
   const BrandColorButtonGroup = styled('div')({
-    backgroundColor: communityInfo.tokenUri?.brand_color || themeColor.primary,
-    '& button:hover': {
-      color: lighten(communityInfo.tokenUri?.brand_color || themeColor.primary, 0.8)
+    '.divide':{
+      height: '100%',
+      backgroundColor: brandColor,
+    },
+    button: {
+      backgroundColor: brandColor,
+      '&:hover': {
+        backgroundColor: `${brandColor}cc`
+      }
     }
   });
 
@@ -307,7 +316,7 @@ const CommunityLayout: FC<Props> = () => {
             <div className="brand-info flex-initial basis-0">
               <div className='flex justify-between items-center'>
                 <div>
-                  <div className="name text-xl text-main-black flex items-center gap-2">
+                  <div className="name text-xxl text-main-black flex items-center gap-2">
                     {
                       backLink ? (
                         <Link href={backLink} target="_self" className='flex items-center gap-2 hover:underline underline-offset-2'>
@@ -343,32 +352,40 @@ const CommunityLayout: FC<Props> = () => {
                 </div>
               </div>
               <div className="actions mt-6 sm:mt-3 flex items-center gap-[10px]">
-                <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3 sm:hidden">
+                <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex sm:hidden">
                   { communityInfoSet.isOwner && <>
-                    <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
-                    <DividerLine mode='horizontal' className='bg-white' />
+                    <button className="min-w-[98px] px-5 h-full rounded-l-full" onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+                    <div className='divide flex items-center'>
+                      <DividerLine mode='horizontal' className='bg-white mx-0' wrapClassName='!h-4 !mx-0' />
+                    </div>
                   </> }
-                  <button onClick={() => {
+                  <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
                     openGlobalDialog('member-mint')
-                  }}>Join</button>
+                  }}>
+                    {!communityInfoSet.isOwner && <PlusIconWithColor color='#fff' className='w-4 h-4'/>}
+                    <span>Join</span>
+                  </button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
-                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden"
+                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b"
                   onClick={() => {
                     openGlobalDialog('brand-manage-setting')
                   }}>
                   Manage
                 </BrandColorButton> }
-                <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='sm:hidden' />
                 {
-                  socialLinks.map(({ link, icon }, idx) => {
+                  socialLinks.map(({ type, link, icon }, idx) => {
                     return (
-                      <HoverIcon className="w-10 h-10" key={idx} link={link}>
-                        {icon}
-                      </HoverIcon>
+                      <>
+                        {type === 'website' && <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='!h-4 sm:hidden' />}
+                        <HoverIcon className="w-10 h-10" key={idx} link={link}>
+                          {icon}
+                        </HoverIcon>
+                      </>
                     )
                   })
                 }
+                { !socialLinks.find(v => v.type === 'website') && <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='!h-4 sm:hidden' /> }
                 <Popover
                   title="Share"
                   className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg sm:hidden'

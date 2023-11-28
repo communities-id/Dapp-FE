@@ -1,14 +1,10 @@
 import React, { FormEvent, useEffect, useMemo, useState } from 'react'
 import { DetailsProvider } from '@/contexts/details'
-import DividerLine from "@/components/common/dividerLine";
 import SearchHeader from "@/components/solid/SearchHeader";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { CHAINS_MINT_TOOLTIPS, CHAIN_ID, CHAIN_ID_MAP, MAIN_CHAIN_ID } from '@/shared/constant';
 import ChainIcon from '@/components/common/chainIcon';
 import Footer from '@/components/solid/Footer'
 
-import ArrorBottomIcon from '@/public/icons/arrow-bottom.svg'
 import StarIcon from '@/public/icons/star.svg'
 import RoundedLogo from '@/public/logo-round.svg'
 import { useWallet } from '@/hooks/wallet';
@@ -120,19 +116,19 @@ export default function Dapp() {
             className="mt-20 border-[6px] border-primary border-w-3 w-[600px] sm:w-[84vw] rounded-full sm:rounded-[44px] flex justify-between items-center bg-white overflow-hidden px-3 py-3 gap-4 sm:flex-col"
             onSubmit={(e) => handleSubmit(e)}
           >
-            <div className='flex items-center w-full'>
+            <div className='flex items-center w-full gap-2.5'>
               <RoundedLogo width="58" height="58" className="flex-shrink-0" />
               <input
                 type="text"
-                placeholder='Search for a name'
-                className="text-lg outline-none text-[20px] w-full"
+                placeholder='Search for a brand name, user name or wallet address'
+                className="text-xl outline-none w-full text-main-black"
                 value={name}
                 onChange={e => setName(e.target.value)}
               />
             </div>
-            <button className="button-xl bg-primary text-white text-lg w-auto text-[20px] flex-shrink-0 sm:w-full">
+            <button className="button-xl bg-primary text-white text-lg w-autoflex-shrink-0 sm:w-full hover:bg-primary-tr-80">
               <StarIcon width="20" height="20" />
-              <span className='ml-2.5'>Create Brand</span>
+              <span className='ml-2.5'>Search</span>
             </button>
           </form>
         </div>

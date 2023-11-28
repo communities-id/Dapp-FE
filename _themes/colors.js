@@ -1,6 +1,7 @@
 module.exports = {
   primary: '#8840FF',
   'primary-tr-10': '#8840FF1a',
+  'primary-tr-80': '#8840FFcc',
   white: '#FFFFFF',
   'main-black': '#363E49',
   'black-1': '#333333',

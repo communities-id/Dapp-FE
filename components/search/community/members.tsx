@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState, Fragment, useCallback } from 'react'
+import { FC, useEffect, useMemo, useState, Fragment, useCallback, CSSProperties } from 'react'
 import { styled } from '@mui/system'
 
 import useApi from '@/shared/useApi'
@@ -64,17 +64,17 @@ const CommunityMembers: FC<Props> = () => {
     fetchData({ page: 1, pageSize: fetchInfo.pageSize })
   }, [])
 
-
+  const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const BrandColorButton = styled('button')({
-    color: communityInfo.tokenUri?.brand_color || themeColor.primary,
+    color: brandColor,
     '&:hover': {
-      backgroundColor: `${communityInfo.tokenUri?.brand_color || themeColor.primary}1A`
+      backgroundColor: `${brandColor}1A`
     }
   });
 
   return (
     <div>
-      <Tabs defaultValue={0}>
+      <Tabs defaultValue={0} style={{ '--var-brand-color': brandColor } as CSSProperties}>
         <TabsList className='pt-[20px] pb-6 sm:pt-0 sm:pb-3'>
           <Tab value={0}>
             User DID
@@ -89,7 +89,7 @@ const CommunityMembers: FC<Props> = () => {
           if (index === 0) {
             return (
               <BrandColorButton
-                className='group border-2 border-dashed w-full h-full rounded-[8px] flex flex-col items-center justify-center text-primary relative'
+                className='group border-2 border-dashed w-full h-full rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
                 }}
@@ -98,7 +98,7 @@ const CommunityMembers: FC<Props> = () => {
                 }}
               >
                 <div>
-                  <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
+                  <PlusIconWithColor color={brandColor} />
                 </div>
                 <div className="mt-2.5">Join Community</div>
               </BrandColorButton>
@@ -121,9 +121,9 @@ const CommunityMembers: FC<Props> = () => {
         renderEmpty={
           brandNotLoaded ? (
               <div
-                className='border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
+                className='border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
                 style={{
-                  color: communityInfo.tokenUri?.brand_color,
+                  color: brandColor,
                 }}
               >
                 <div>
@@ -144,16 +144,16 @@ const CommunityMembers: FC<Props> = () => {
               </div>
             ) : (
               <BrandColorButton
-                className='group border-2 border-dashed w-full h-[306px] rounded-[8px] flex flex-col items-center justify-center text-primary relative'
+                className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
                 style={{
-                  color: communityInfo.tokenUri?.brand_color,
+                  color: brandColor,
                 }}
                 onClick={() => {
                   showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
                 }}
               >
                 <div>
-                  <PlusIconWithColor color={communityInfo.tokenUri?.brand_color ?? ''} />
+                  <PlusIconWithColor color={brandColor} />
                 </div>
                 <div className="mt-2.5">Join Community</div>
               </BrandColorButton>
