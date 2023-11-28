@@ -14,7 +14,6 @@ interface Props {
 
 const BrandMannageRenew: FC<Props> = ({ brandInfo }) => {
   const expiredTime = brandInfo?.node?.expireTime ?? 0
-  console.log('- expiredTime', expiredTime, 'brandInfo', brandInfo)
   return (
     <div className="modal-content-container modal-content">
       <h1 className='text-main-black text-xl'>Renew</h1>

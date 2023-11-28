@@ -1,6 +1,8 @@
-import { FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
+import { CSSProperties, FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
+import { useDIDContent } from '@/hooks/content'
+import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
 import { MAIN_CHAIN_ID, ZERO_ADDRESS } from '@communitiesid/id'
 import { CHAIN_ID, DEFAULT_AVATAR, DEFAULT_TOKEN_SYMBOL } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
@@ -53,6 +55,7 @@ type FormProps<T = MintSettingLabels> = {
   tooltip?: string,
   placeholder: string,
   description?: string | ReactNode,
+  description2?: string | ReactNode,
   unit: ReactNode,
   startAdornment?: ReactNode,
   endAdornment?: ReactNode,
@@ -71,12 +74,14 @@ type FormProps<T = MintSettingLabels> = {
 
 interface Props {
   account?: string
-  brandInfo: Partial<CommunityInfo>
-  brandNotLoaded?: boolean
+  brandInfo?: Partial<CommunityInfo>
+  brandName?: string
+  onClose?: () => void
 }
 
-export default function BrandMannageMintSettings({ account, brandInfo, brandNotLoaded }: Props) {
-  const { message } = useRoot()
+export default function BrandMannageContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
+  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { message, NetOps } = useRoot()
   const { updateVariableCommunityMintConfig, updateCommunityMintConfig } = useApi()
 
   const [tab, setTab] = useState(1)
@@ -85,6 +90,8 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
   const [coinSymbol, setCoinSymbol] = useState('')
   const [loading, setLoading] = useState(false)
   const [validation, setValidation] = useState<Record<string, string | undefined>>({})
+
+  const pending = loading || NetOps.loading
 
   const { totalSupply, config, tokenUri, priceModel } = brandInfo
 
@@ -561,189 +568,221 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
   }, [settled.mint])
 
   return (
-    <div className="modal-content-container relative h-full flex flex-col">
-      <div className='flex-1 modal-content overflow-auto'>
-        <h1 className='text-main-black text-xl'>Mint Settings</h1>
-        <div className='relative flex min-h-full gap-10 mt-[30px]'>
-          {
-            step < 6 && (
-              <div className='absolute left-[7px] w-0 h-full border border-dashed border-black-tr-10'></div>
-            )
-          }
-          <ol className='relative z-normal pb-10 w-full flex flex-col'>
-            <li className='relative pb-[42px]'>
-              {
-                step >= 2 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
-                )
-              }
-              <BrandMintMode
-                className='relative z-normal'
-                form={mintForm}
-                defaultForms={defaultForms}
-                active={step >= 1}
-                checked={tab === 1}
-                settled={settled.mint}
-                handleChoose={(open) => handleChooseTab(open, 1)}
-                handleChange={async (payload) => {
-                  setMintForm({
-                    ...mintForm,
-                    ...await mintFormPreFilter(payload)
-                  })
-                }}
-              />
-            </li>
-            <li className='relative pb-[42px]'>
-              {
-                step >= 3 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
-                )
-              }
-              <BrandMintToken
-                className='relative z-normal'
-                form={mintForm}
-                defaultForms={defaultForms}
-                active={step >= 2}
-                checked={tab === 2}
-                locked={editLocked.price}
-                handleChoose={(open) => handleChooseTab(open, 2)}
-                handleChange={async (payload) => {
-                  setMintForm({
-                    ...mintForm,
-                    ...await mintFormPreFilter(payload)
-                  })
-                }}
-              />
-            </li>
-            <li className='relative pb-[42px]'>
-              {
-                step >= 4 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
-                )
-              }
-              <BrandMintPrice
-                className='relative z-normal'
-                form={priceForm}
-                defaultForms={defaultForms}
-                active={step >= 3}
-                checked={tab === 3}
-                locked={editLocked.price}
-                handleChoose={(open) => handleChooseTab(open, 3)}
-                handleChange={async (payload) => {
-                  setPriceForm({
-                    ...priceForm,
-                    ...await priceFormPreFilter(payload)
-                  })
-                }}
-              />
-            </li>
-            <li className='relative pb-[42px]'>
-              {
-                step >= 5 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
-                )
-              }
-              <BrandMintPercentage
-                className='relative z-normal'
-                form={priceForm}
-                defaultForms={defaultForms}
-                active={step >= 4}
-                checked={tab === 4}
-                locked={editLocked.price}
-                handleChoose={(open) => handleChooseTab(open, 4)}
-                handleChange={async (payload) => {
-                  setPriceForm({
-                    ...priceForm,
-                    ...await priceFormPreFilter(payload)
-                  })
-                }}
-              />
-            </li>
-            <li className='relative pb-[42px]'>
-              {
-                step >= 6 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
-                )
-              }
-              <BrandBurnAnyTime
-                className='relative z-normal'
-                form={memberConfigForm}
-                defaultForms={defaultForms}
-                active={step >= 5}
-                checked={tab === 5}
-                locked={editLocked.price}
-                handleChoose={(open) => handleChooseTab(open, 5)}
-                handleChange={async (payload) => {
-                  setMemberConfigForm({
-                    ...memberConfigForm,
-                    ...await memberConfigFormPreFilter(payload)
-                  })
-                }}
-              />
-            </li>
-            <li>
-              <BrandEconomicModel
-                className='relative z-normal'
-                form={mintForm}
-                defaultForms={defaultForms}
-                active={step >= 6}
-                checked={tab === 6}
-                locked={editLocked.price}
-                handleChoose={(open) => handleChooseTab(open, 6)}
-                handleChange={async (payload) => {
-                  setMintForm({
-                    ...mintForm,
-                    ...await mintFormPreFilter(payload)
-                  })
-                }}
-              />
-            </li>
-          </ol>
-        </div>
+    <MobileBrandManageLayout
+      title='Mint Settings'
+      brandColor={brandInfo?.tokenUri?.brand_color}
+      footer
+      loading={pending}
+      onClose={onClose}
+      onClick={handleSaveOnChain}
+      renderFooter={() => {
+        return (!settled.mint && step < 6) ? (
+          <Button
+            wrapClassName='w-full'
+            className='w-full flex-center gap-1'
+            size='medium'
+            theme='primary'
+            onClick={handleNextTab}
+          >
+            <span>Next {tab}/6</span>
+            <ForwardsIcon width='16' height='16' className='text-white' />
+          </Button>
+        ) : (
+          <Button
+            wrapClassName='w-full'
+            className='w-full flex-center gap-1'
+            size='medium'
+            theme='primary'
+            loading={loading}
+            onClick={handleSaveOnChain}
+          >
+            <span>Save On-Chain</span>
+          </Button>
+        )
+      }}
+    >
+      <div className='relative flex min-h-full gap-10'>
+        {
+          step < 6 && (
+            <div className='absolute left-[7px] w-0 h-full border border-dashed border-black-tr-10'></div>
+          )
+        }
+        <ol className='relative z-normal pb-10 w-full flex flex-col'>
+          <li className='relative pb-[42px]'>
+            {
+              step >= 2 && (
+                <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+              )
+            }
+            <BrandMintMode
+              className='relative z-normal'
+              form={mintForm}
+              defaultForms={defaultForms}
+              active={step >= 1}
+              checked={tab === 1}
+              settled={settled.mint}
+              handleChoose={(open) => handleChooseTab(open, 1)}
+              handleChange={async (payload) => {
+                setMintForm({
+                  ...mintForm,
+                  ...await mintFormPreFilter(payload)
+                })
+              }}
+            />
+          </li>
+          <li className='relative pb-[42px]'>
+            {
+              step >= 3 && (
+                <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+              )
+            }
+            <BrandMintToken
+              className='relative z-normal'
+              form={mintForm}
+              defaultForms={defaultForms}
+              active={step >= 2}
+              checked={tab === 2}
+              locked={editLocked.price}
+              handleChoose={(open) => handleChooseTab(open, 2)}
+              handleChange={async (payload) => {
+                setMintForm({
+                  ...mintForm,
+                  ...await mintFormPreFilter(payload)
+                })
+              }}
+            />
+          </li>
+          <li className='relative pb-[42px]'>
+            {
+              step >= 4 && (
+                <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+              )
+            }
+            <BrandMintPrice
+              className='relative z-normal'
+              form={priceForm}
+              defaultForms={defaultForms}
+              active={step >= 3}
+              checked={tab === 3}
+              locked={editLocked.price}
+              handleChoose={(open) => handleChooseTab(open, 3)}
+              handleChange={async (payload) => {
+                setPriceForm({
+                  ...priceForm,
+                  ...await priceFormPreFilter(payload)
+                })
+              }}
+            />
+          </li>
+          <li className='relative pb-[42px]'>
+            {
+              step >= 5 && (
+                <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+              )
+            }
+            <BrandMintPercentage
+              className='relative z-normal'
+              form={priceForm}
+              defaultForms={defaultForms}
+              active={step >= 4}
+              checked={tab === 4}
+              locked={editLocked.price}
+              handleChoose={(open) => handleChooseTab(open, 4)}
+              handleChange={async (payload) => {
+                setPriceForm({
+                  ...priceForm,
+                  ...await priceFormPreFilter(payload)
+                })
+              }}
+            />
+          </li>
+          <li className='relative pb-[42px]'>
+            {
+              step >= 6 && (
+                <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+              )
+            }
+            <BrandBurnAnyTime
+              className='relative z-normal'
+              form={memberConfigForm}
+              defaultForms={defaultForms}
+              active={step >= 5}
+              checked={tab === 5}
+              locked={editLocked.price}
+              handleChoose={(open) => handleChooseTab(open, 5)}
+              handleChange={async (payload) => {
+                setMemberConfigForm({
+                  ...memberConfigForm,
+                  ...await memberConfigFormPreFilter(payload)
+                })
+              }}
+            />
+          </li>
+          <li>
+            <BrandEconomicModel
+              className='relative z-normal'
+              form={mintForm}
+              defaultForms={defaultForms}
+              active={step >= 6}
+              checked={tab === 6}
+              locked={editLocked.price}
+              handleChoose={(open) => handleChooseTab(open, 6)}
+              handleChange={async (payload) => {
+                setMintForm({
+                  ...mintForm,
+                  ...await mintFormPreFilter(payload)
+                })
+              }}
+            />
+          </li>
+        </ol>
       </div>
-      {
-        !brandNotLoaded && (changed.memberConfig || changed.mintConfig || changed.priceConfig) && (
-          <SettingNotice loading={loading} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
-        )
-      }
-      {
-        !settled.mint && (
-          <div className='modal-bottom'>
-            <div className='w-full h-[1px] bg-gray-6'></div>
-            <div className='mt-5 flex justify-end'>
-              {
-                step < 6 && (
-                  <Button
-                    className='w-60 flex-center gap-1'
-                    size='medium'
-                    theme='primary'
-                    onClick={handleNextTab}
-                  >
-                    <span>Next {tab}/6</span>
-                    <ForwardsIcon width='16' height='16' className='text-white' />
-                  </Button>
-                )
-              }
-              {
-                step >= 6 && (
-                  <Button
-                    className='w-60 flex-center gap-1'
-                    size='medium'
-                    theme='primary'
-                    loading={loading}
-                    onClick={handleSaveOnChain}
-                  >
-                    <span>Save On-Chain</span>
-                  </Button>
-                )
-              }
+      {/* <div className="relative h-full flex flex-col">
+        {
+          !brandNotLoaded && (changed.memberConfig || changed.mintConfig || changed.priceConfig) && (
+            <SettingNotice loading={loading} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
+          )
+        }
+        {
+          !settled.mint && (
+            <div className='modal-bottom'>
+              <div className='w-full h-[1px] bg-gray-6'></div>
+              <div className='mt-5 flex justify-end'>
+                {
+                  step < 6 && (
+                    <Button
+                      className='w-60 flex-center gap-1'
+                      size='medium'
+                      theme='primary'
+                      onClick={handleNextTab}
+                    >
+                      <span>Next {tab}/6</span>
+                      <ForwardsIcon width='16' height='16' className='text-white' />
+                    </Button>
+                  )
+                }
+                {
+                  step >= 6 && (
+                    <Button
+                      className='w-60 flex-center gap-1'
+                      size='medium'
+                      theme='primary'
+                      loading={loading}
+                      onClick={handleSaveOnChain}
+                    >
+                      <span>Save On-Chain</span>
+                    </Button>
+                  )
+                }
+              </div>
             </div>
-          </div>
-        )
-      }
-    </div>
+          )
+        }
+      </div> */}
+    </MobileBrandManageLayout>
   )
 }
+
 
 interface BrandMintTabProps<T = CommunityMintConfig> {
   form: T
@@ -775,7 +814,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       triangle: true,
       forms: [
         {
-          type: 'text',
+          type: 'multiple',
           name: 'signer',
           label: 'Signer',
           // tooltip: 'The wallet address that can generate signature',
@@ -783,17 +822,19 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           unit: 'address',
           child: true,
           value: form.signer,
-          startAdornment: (
-            <div className='flex-itmc mr-5 gap-5'>
-              <span>Signer</span>
-              <div className='w-[1px] h-4 bg-gray-7'></div>
-            </div>
-          ),
           description: (
-            <p className='text-sm text-black-tr-40 text-center'>
+            <p className='text-sm text-black-tr-40 text-left'>
               <b>Note:</b>
               <span> Only the brand owner can invite users to join the community.</span>
             </p>
+          ),
+          description2: (
+            <div className='flex flex-col text-sm text-black-tr-40 text-left'>
+              <b>Signer is the one who generate invitation code</b>
+              <p>
+              If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available. Or, just leave the signer blank, we will take care of the signing process for you and code generation will be more flexible.
+              </p>
+            </div>
           )
         },
       ]
@@ -819,14 +860,8 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           hidden: !form.holdingMint,
           child: true,
           value: form.proofOfHolding,
-          startAdornment: (
-            <div className='flex-itmc mr-5 gap-5 whitespace-nowrap'>
-              <span>Token Contract</span>
-              <div className='w-[1px] h-4 bg-gray-7'></div>
-            </div>
-          ),
           description: (
-            <p className='text-sm text-black-tr-40 text-center'>
+            <p className='text-sm text-black-tr-40 text-left'>
               <b>Note:</b>
               <span> Only the brand owner can invite users to join the community.</span>
             </p>
@@ -869,101 +904,57 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
         />
         {
           checked && (
-            <div className='mt-5'>
-              <ul className='relative z-1 w-full flex-itmc gap-[6px]'>
-                {
-                  mintModes.map(({ name, label, active, triangle }, index) => {
-                    return (
-                      <li key={index} className='relative flex-1'>
-                        <Fragment>
-                          <BaseButton
-                            size='normal'
-                            className={
-                              classNames('w-full flex-center gap-[6px]', {
-                                'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
-                                'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === mintModes.length - 1,
-                              })
-                            }
-                            onClick={() => {
-                              handleChange?.({
-                                ...form,
-                                signatureMint: false,
-                                publicMint: false,
-                                holdingMint: false,
-                                [name]: true
-                              })
-                            }}
-                          >
-                            {
-                              active && <RightIcon width='16' height='16' />
-                            }
-                            <span>{ label }</span>
-                          </BaseButton>
-                          {
-                            (triangle && active) && (
-                              <TriangleIcon
-                                width='27'
-                                height='27'
-                                className='abs-hc text-gray-6 bottom-[-35px]' />
-                            )
-                          }
-                        </Fragment>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
+            <RenderContentBox
+              renderTabs={() => (
+                mintModes.map(({ name, label, active, triangle }, index) => {
+                  return (
+                    <li key={index} className='relative w-full'>
+                      <RenderTabButton
+                        active={active}
+                        label={label}
+                        onClick={() => {
+                          handleChange?.({
+                            ...form,
+                            signatureMint: false,
+                            publicMint: false,
+                            holdingMint: false,
+                            [name]: true
+                          })
+                        }}
+                      />
+                    </li>
+                  )
+                })
+              )}>
               {
                 !!activeMintMode?.forms?.length && (
-                  <div className='relative z-normal mt-[22px] p-[30px] bg-gray-6 rounded-md'>
-                    <ul>
-                      {
-                        activeMintMode.forms.map((item, index) => {
-                          return (
-                            <li key={index} className='flex flex-col gap-5'>
-                              {
-                                item.type === 'text' && (
-                                  <Input
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    onChange={(e) => {
-                                      if (locked) return
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: e.target.value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              {
-                                item.type === 'multiple' && (
-                                  <TokenGatedInput
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    onChange={(_value) => {
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: _value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              { item.description }
-                            </li>
-                          )
-                        })
-                      }
-                    </ul>
-                  </div>
+                  <RenderFormsBox
+                    renderItems={() => (
+                      activeMintMode.forms.map((item, index) => {
+                        return (
+                          <RenderFormItem
+                            key={index}
+                            label={item.label}
+                            value={item.value}
+                            placeholder={item.placeholder}
+                            description={item.description}
+                            description2={item.description2}
+                            onChange={(value) => {
+                              if (locked) return
+                              handleChange?.({
+                                ...form,
+                                [item.name]: value
+                              })
+                            }}
+                          />
+                        )
+                      })
+                    )}
+                  >
+                  </RenderFormsBox>
                 )
               }
-            </div>
+            </RenderContentBox>
           )
         }
       </div>
@@ -1028,21 +1019,15 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
         {
           type: 'text',
           name: 'coin',
-          label: 'Token Contract of Minting Fee',
+          label: 'Token Contract',
           // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
           placeholder: '0x0...',
           unit: 'address',
           disabled: priceModelDisabled,
           value: form.coin,
           child: true,
-          startAdornment: (
-            <div className='flex-itmc mr-5 gap-5 whitespace-nowrap'>
-              <span>Token Contract</span>
-              <div className='w-[1px] h-4 bg-gray-7'></div>
-            </div>
-          ),
           description: (
-            <p className='text-sm text-black-tr-40 text-center'>
+            <p className='text-sm text-black-tr-40 text-left'>
               <b>Note:</b>
               <span> Please enter the Token Contract address.</span>
             </p>
@@ -1086,95 +1071,56 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
         />
         {
           checked && (
-            <div className='mt-5'>
-              <ul className='relative z-1 w-full flex-itmc gap-[6px]'>
-                {
-                  tokenModesWithActive.map(({ name, value, label, active, triangle }, index) => {
-                    return (
-                      <li key={index} className='relative flex-1'>
-                        <Fragment>
-                          <BaseButton
-                            size='normal'
-                            disabled={locked}
-                            className={
-                              classNames('w-full flex-center gap-[6px]', {
-                                'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
-                                'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === tokenModesWithActive.length - 1,
-                              })
-                            }
-                            onClick={() => {
+            <RenderContentBox
+              renderTabs={() => (
+                tokenModesWithActive.map(({ name, value, label, active, triangle }, index) => {
+                  return (
+                    <li key={index} className='relative w-full'>
+                      <RenderTabButton
+                        active={active}
+                        label={label}
+                        disabled={locked}
+                        onClick={() => {
+                          if (locked) return
+                          handleChange?.({
+                            ...form,
+                            [name]: value
+                          })
+                        }}
+                      />
+                    </li>
+                  )
+                })
+              )}>
+              {
+                !!activeTokenMode?.forms?.length && (
+                  <RenderFormsBox
+                    renderItems={() => (
+                      activeTokenMode.forms.map((item, index) => {
+                        return (
+                          <RenderFormItem
+                            key={index}
+                            label={item.label}
+                            value={item.value}
+                            placeholder={item.placeholder}
+                            description={item.description}
+                            description2={item.description2}
+                            onChange={(value) => {
                               if (locked) return
                               handleChange?.({
                                 ...form,
-                                [name]: value
+                                [item.name]: value
                               })
                             }}
-                          >
-                            {
-                              active && <RightIcon width='16' height='16' />
-                            }
-                            <span>{ label }</span>
-                          </BaseButton>
-                        </Fragment>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
-              {
-                !!activeTokenMode?.forms?.length && (
-                  <div className='relative z-normal mt-[22px] p-[30px] bg-gray-6 rounded-md'>
-                    <ul>
-                      {
-                        activeTokenMode.forms.map((item, index) => {
-                          return (
-                            <li key={index} className='flex flex-col gap-5'>
-                              {
-                                item.type === 'text' && (
-                                  <Input
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    disabled={locked}
-                                    onChange={(e) => {
-                                      if (locked) return
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: e.target.value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              {
-                                item.type === 'multiple' && (
-                                  <TokenGatedInput
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    locked={locked}
-                                    onChange={(_value) => {
-                                      if (locked) return
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: _value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              { item.description }
-                            </li>
-                          )
-                        })
-                      }
-                    </ul>
-                  </div>
+                          />
+                        )
+                      })
+                    )}
+                  >
+                  </RenderFormsBox>
                 )
               }
-            </div>
+            </RenderContentBox>
           )
         }
       </div>
@@ -1496,129 +1442,105 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
         />
         {
           checked && (
-            <div className='mt-5'>
-              <ul className='relative z-1 w-full flex-itmc gap-[6px]'>
-                {
-                  priceModesWithActive.map(({ name, label, value, active, triangle }, index) => {
-                    return (
-                      <li key={index} className='relative flex-1'>
-                        <Fragment>
-                          <BaseButton
-                            size='normal'
-                            disabled={locked}
-                            className={
-                              classNames('w-full flex-center gap-[6px]', {
-                                'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
-                                'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === priceModesWithActive.length - 1,
-                              })
-                            }
-                            onClick={() => {
-                              if (locked) return
-                              handleChooseTab(value)
-                            }}
-                          >
-                            {
-                              active && <RightIcon width='16' height='16' />
-                            }
-                            <span>{ label }</span>
-                          </BaseButton>
-                        </Fragment>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
+            <RenderContentBox
+              renderTabs={() => (
+                priceModesWithActive.map(({ name, label, value, active, triangle }, index) => {
+                  return (
+                    <li key={index} className='relative w-full'>
+                      <RenderTabButton
+                        active={active}
+                        label={label}
+                        disabled={locked}
+                        onClick={() => {
+                          if (locked) return
+                          handleChooseTab(value)
+                        }}
+                      />
+                    </li>
+                  )
+                })
+              )}
+            >
               {
                 !!activePriceMode?.tabs?.length && (
-                  <div className='relative z-normal mt-[22px] p-[30px] bg-gray-6 rounded-md'>
-                    {
+                  <RenderFormsBox
+                    renderTabs={() => (
                       activePriceMode.showTab && (
                         <Fragment>
-                          <ul className='flex-itmc gap-[10px]'>
-                            {
-                              activePriceMode.tabs.map((item, index) => {
-                                return (
-                                  <li key={index} className='flex-1'>
-                                    <BaseButton
-                                      size='medium'
-                                      disabled={locked}
-                                      className={
-                                        classNames('w-full flex-center gap-[6px] rounded-xs', {
-                                          'bg-white text-gray-1 border border-solid border-gray-7': !item.active,
-                                          'bg-primary text-white': item.active,
-                                        })
-                                      }
-                                      onClick={() => {
-                                        if (locked) return
-                                        handleChooseTab(item.value)
-                                      }}
-                                    >
-                                      {
-                                        item.active && <RightIcon width='16' height='16' />
-                                      }
-                                      <span>{ item.label }</span>
-                                    </BaseButton>
-                                  </li>
-                                )
-                              })
-                            }
-                          </ul>
-                          <div className='my-5 w-full h-[1px] bg-gray-3'></div>
+                          {
+                            activePriceMode.tabs.map((item, index) => {
+                              return (
+                                <li key={index} className='w-full'>
+                                  <RenderTabButton
+                                    active={item.active}
+                                    label={item.label}
+                                    disabled={locked}
+                                    onClick={() => {
+                                      if (locked) return
+                                      handleChooseTab(item.value)
+                                    }}
+                                  />
+                                </li>
+                              )
+                            })
+                          }
+                          <li className='mt-[10px] mb-5 divider-line'></li>
                         </Fragment>
                       )
-                    }
+                    )}
+                  >
                     {
                       activePriceModeTab && (
                         <Fragment>
-                          <div className='flex-itmc gap-[6px] text-md-b text-main-black whitespace-nowrap'>
+                          <div className='flex flex-col text-md-b text-main-black whitespace-nowrap'>
                             <span>Price Formula: </span>
-                            <div className='ml-[6px]'>Price = </div>
-                            {
-                              words.map((word, idx) => {
-                                const unitItem = activePriceModeTab.forms.find(item => item.name === coefficients[idx])
-                                return (
-                                  <Fragment key={idx}>
-                                    <span>{ word.replace('_', '') }</span>
-                                    {
-                                      unitItem && (
-                                        <Input
-                                          className='!px-3 !py-1 !inline-block min-w-[35px] max-w-[100px] w-auto border-s1 bg-white'
-                                          value={unitItem.value}
-                                          onChange={(e) => {
-                                            const _value = e.target.value
-                                            if (_value && unitItem.format) {
-                                              unitItem.format.test(e.target.value) && handleChange?.({
-                                                ...form,
-                                                [unitItem.name]: _value
-                                              })
-                                              return
-                                            }
-                                            if (_value && unitItem.range) {
-                                              const num = Number(_value)
-                                              if (num >= unitItem.range[0] && num <= unitItem.range[1]) {
-                                                handleChange?.({
+                            <div className='mt-[6px] flex-itmc flex-wrap gap-[6px]'>
+                              <span>Price = </span>
+                              {
+                                words.map((word, idx) => {
+                                  const unitItem = activePriceModeTab.forms.find(item => item.name === coefficients[idx])
+                                  return (
+                                    <Fragment key={idx}>
+                                      <span>{ word.replace('_', '') }</span>
+                                      {
+                                        unitItem && (
+                                          <Input
+                                            className='!px-3 !py-1 !inline-block min-w-[35px] max-w-[100px] w-auto border-s1 bg-white'
+                                            value={unitItem.value}
+                                            onChange={(e) => {
+                                              const _value = e.target.value
+                                              if (_value && unitItem.format) {
+                                                unitItem.format.test(e.target.value) && handleChange?.({
                                                   ...form,
                                                   [unitItem.name]: _value
                                                 })
+                                                return
                                               }
-                                              return
-                                            }
-                                            handleChange?.({
-                                              ...form,
-                                              [unitItem.name]: _value
-                                            })
-                                          }}
-                                        />
-                                      )
-                                    }
-                                  </Fragment>
-                                )
-                              })
-                            }
+                                              if (_value && unitItem.range) {
+                                                const num = Number(_value)
+                                                if (num >= unitItem.range[0] && num <= unitItem.range[1]) {
+                                                  handleChange?.({
+                                                    ...form,
+                                                    [unitItem.name]: _value
+                                                  })
+                                                }
+                                                return
+                                              }
+                                              handleChange?.({
+                                                ...form,
+                                                [unitItem.name]: _value
+                                              })
+                                            }}
+                                          />
+                                        )
+                                      }
+                                    </Fragment>
+                                  )
+                                })
+                              }
+                            </div>
                           </div>
-                          <div className='mt-5 w-full h-[230px] bg-white rounded-xs'>
+                          <div className='mt-[10px] w-full h-[200px] bg-white rounded-xs'>
                             <PriceModeChart
                               params={{
                                 mode: form.mode,
@@ -1632,10 +1554,10 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                         </Fragment>
                       )
                     }
-                  </div>
+                  </RenderFormsBox>
                 )
               }
-            </div>
+            </RenderContentBox>
           )
         }
       </div>
@@ -1678,23 +1600,28 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
         />
         {
           checked && (
-            <div className='relative mt-5 p-[30px] bg-gray-6 rounded-md'>
-              <InputNumber
-                value={form.commissionRate}
-                range={[0, 100]}
-                disabled={locked}
-                onChange={(val) => {
-                  if (locked) return
-                  handleChange?.({ commissionRate: val })
-                }}
-              >
-                <div className='flex-center'>
-                  <span>{ form.commissionRate }</span>
-                  <span> %</span>
-                </div>
-              </InputNumber>
-              { contentDescription }
-            </div>
+            <RenderContentBox className='!mt-0'>
+              <RenderFormsBox>
+                <Fragment>
+                  <InputNumber
+                    mobile
+                    value={form.commissionRate}
+                    range={[0, 100]}
+                    disabled={locked}
+                    onChange={(val) => {
+                      if (locked) return
+                      handleChange?.({ commissionRate: val })
+                    }}
+                  >
+                    <div className='flex-center'>
+                      <span>{ form.commissionRate }</span>
+                      <span> %</span>
+                    </div>
+                  </InputNumber>
+                  { contentDescription }
+                </Fragment>
+              </RenderFormsBox>
+            </RenderContentBox>
           )
         }
       </div>
@@ -1766,47 +1693,32 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
         />
         {
           checked && (
-            <Fragment>
-              <ul className='mt-5 relative z-1 w-full flex-itmc gap-[6px]'>
-                {
-                  burnTabsWithActive.map(({ name, value, label, active }, index) => {
-                    return (
-                      <li key={index} className='relative flex-1'>
-                        <Fragment>
-                          <BaseButton
-                            size='normal'
-                            disabled={locked}
-                            className={
-                              classNames('w-full flex-center gap-[6px]', {
-                                'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
-                                'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === burnTabsWithActive.length - 1,
-                              })
-                            }
-                            onClick={() => {
-                              if (locked) return
-                              handleChange?.({
-                                ...form,
-                                [name]: value
-                              })
-                            }}
-                          >
-                            {
-                              active && <RightIcon width='16' height='16' />
-                            }
-                            <span>{ label }</span>
-                          </BaseButton>
-                        </Fragment>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
-              <div className='mt-[10px] p-[30px] bg-gray-6 rounded-md'>
+            <RenderContentBox
+              renderTabs={() => (
+                burnTabsWithActive.map(({ name, value, label, active }, index) => {
+                  return (
+                    <li key={index} className='relative w-full'>
+                      <RenderTabButton
+                        active={active}
+                        label={label}
+                        disabled={locked}
+                        onClick={() => {
+                          if (locked) return
+                          handleChange?.({
+                            ...form,
+                            [name]: value
+                          })
+                        }}
+                      />
+                    </li>
+                  )
+                })
+              )}
+            >
+              <RenderFormsBox>
                 { contentDescription }
-              </div>
-            </Fragment>
+              </RenderFormsBox>
+            </RenderContentBox>
           )
         }
       </div>
@@ -1900,60 +1812,39 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
         />
         {
           checked && (
-            <Fragment>
-              <ul className='mt-5 relative z-1 w-full flex-itmc gap-[6px]'>
+            <RenderContentBox
+              renderTabs={() => (
+                economicTabsWithActive.map(({ name, value, label, active }, index) => {
+                  return (
+                    <li key={index} className='relative w-full'>
+                      <RenderTabButton
+                        active={active}
+                        label={label}
+                        disabled={locked}
+                        onClick={() => {
+                          if (locked) return
+                          handleChange?.({
+                            ...form,
+                            [name]: value
+                          })
+                        }}
+                      />
+                    </li>
+                  )
+                })
+              )}
+            >
+              <RenderFormsBox>
                 {
-                  economicTabsWithActive.map(({ name, value, label, active }, index) => {
-                    return (
-                      <li key={index} className='relative flex-1 min-w-0'>
-                        <Fragment>
-                          <BaseButton
-                            size='normal'
-                            disabled={locked}
-                            className={
-                              classNames('w-full flex-center gap-[6px]', {
-                                'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
-                                'rounded-l-[22px]': index === 0,
-                                'rounded-r-[22px]': index === economicTabsWithActive.length - 1,
-                              })
-                            }
-                            onClick={() => {
-                              if (locked) return
-                              handleChange?.({
-                                ...form,
-                                [name]: value
-                              })
-                            }}
-                          >
-                            {
-                              active && <RightIcon width='16' height='16' />
-                            }
-                            <span className='inline-block min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{ label }</span>
-                          </BaseButton>
-                          {
-                            active && (
-                              <TriangleIcon
-                                width='27'
-                                height='27'
-                                className='abs-hc text-gray-6 bottom-[-35px]' />
-                            )
-                          }
-                        </Fragment>
-                      </li>
-                    )
-                  })
+                  activeEconomicModel && (
+                    <Fragment>
+                      <div className='w-full h-[200px] bg-white rounded-xs'></div>
+                      { activeEconomicModel.description }
+                    </Fragment>
+                  )
                 }
-              </ul>
-              {
-                activeEconomicModel && (
-                  <div className='mt-5 relative z-normal p-[30px] bg-gray-6 rounded-md'>
-                    <div className='w-full h-[200px] bg-white rounded-xs'></div>
-                    { activeEconomicModel.description }
-                  </div>
-                )
-              }
-            </Fragment>
+              </RenderFormsBox>
+            </RenderContentBox>
           )
         }
       </div>
@@ -1988,9 +1879,16 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
       })}>
         {
           checked && (
-            <div className='w-full flex-itmc justify-between'>
+            <div
+              className='w-full flex-itmc justify-between'
+              onClick={() => {
+                if (locked && collspaed) {
+                  handleClick(false)
+                }
+              }}
+            >
               <span>{ checked && title }</span>
-              {
+              {/* {
                 locked && collspaed && (
                   <div
                     className='px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
@@ -2000,47 +1898,37 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                     <ArrowDownIcon width='12' height='12' />
                   </div>
                 )
-              }
+              } */}
             </div>
           )
         }
         {
           active && !checked && (
-            <div className='group flex-1 flex-itmc justify-between'>
+            <div className='group flex-1 flex flex-col gap-[10px]'>
               <div>
                 <span>{ activeTitle }</span>
               </div>
               <div
-                className='flex-1 flex-itmc gap-1 cursor-pointer'
+                className='flex-1 flex-itmc justify-between gap-1 cursor-pointer'
                 onClick={() => handleClick()}
               >
                 <div className='text-primary underline-normal font-bold'>
                   <span>{ activeText }</span>
                 </div>
                 {
-                  !locked && (<ForwardsIcon width='12' height='12' className='black-1' />)
+                  locked ? (
+                    <div
+                      className='px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
+                      onClick={() => handleClick()}
+                    >
+                      <span>check details</span>
+                      <ArrowRightIcon width='12' height='12' />
+                    </div>
+                  ) : (
+                    <ForwardsIcon width='12' height='12' className='black-1' />
+                  )
                 }
               </div>
-              {
-                locked ? (
-                  <div
-                    className='invisible group-hover:visible px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
-                    onClick={() => handleClick()}
-                  >
-                    <span>Modification not supported, check details</span>
-                    <ArrowRightIcon width='12' height='12' />
-                  </div>
-                ) : (
-                  <BaseButton
-                    size='small'
-                    className='invisible group-hover:visible w-15 gap-1 text-gray-1 bg-gray-6 rounded-xs'
-                    onClick={handleClick}
-                  >
-                    <EditIcon width='12' height='12' />
-                    <span>Edit</span>
-                  </BaseButton>
-                )
-              }
             </div>
           )
         }
@@ -2054,5 +1942,126 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
         )
       }
     </div>
+  )
+}
+
+interface RenderContentBoxProps {
+  renderTabs?: () => ReactNode
+  children: ReactNode
+  className?: string
+}
+
+const RenderContentBox: FC<RenderContentBoxProps> = ({ renderTabs, children, className }) => {
+  return (
+    <div className={classNames('mt-4', className)}>
+      <ul className='relative z-1 w-full flex-itmc flex-col gap-3'>
+        { renderTabs?.() }
+      </ul>
+      { children }
+    </div>
+  )
+}
+
+interface RenderTabButtonProps {
+  active: boolean
+  label: string
+  disabled?: boolean
+  onClick?: () => void
+}
+const RenderTabButton: FC<RenderTabButtonProps> = ({ active, label, disabled, onClick }) => {
+  return (
+    <BaseButton
+      size='normal'
+      wrapClassName='!w-full'
+      disabled={disabled}
+      className={
+        classNames('w-full flex-center gap-[6px] rounded-full', {
+          'bg-white text-gray-1 border border-solid border-gray-7': !active,
+          'bg-primary text-white': active,
+        })
+      }
+      onClick={onClick}
+    >
+      {
+        active && <RightIcon width='16' height='16' />
+      }
+      <span className='inline-block min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{ label }</span>
+    </BaseButton>
+  )
+}
+
+interface RenderFormsBoxProps {
+  renderTabs?: () => ReactNode
+  renderItems?: () => ReactNode
+  children?: ReactNode
+}
+const RenderFormsBox: FC<RenderFormsBoxProps> = ({ renderTabs, renderItems, children }) => {
+  return (
+    <div className='relative z-normal pt-5'>
+      {
+        (renderTabs || renderItems || children) && (
+          <div className='mb-5 divider-line'></div>
+        )
+      }
+      {
+        renderTabs && (
+          <ul className='flex flex-col gap-[10px]'>
+            { renderTabs?.() }
+          </ul>
+        )
+      }
+      {
+        renderItems && (
+          <ul className='flex flex-col gap-[10px]'>
+            { renderItems?.() }
+          </ul>
+        )
+      }
+      {
+        children && (
+          <div className='flex flex-col p-5 bg-gray-6 rounded-md'>
+            { children }
+          </div>
+        )
+      }
+    </div>
+  )
+}
+
+interface RenderFormItemProps {
+  label: string
+  value: FormProps['value']
+  placeholder?: string
+  description?: string | ReactNode
+  description2?: string | ReactNode
+  onChange?: (value: FormProps['value']) => void
+}
+
+const RenderFormItem: FC<RenderFormItemProps> = ({ label, value, placeholder, description, description2, onChange }) => {
+  return (
+    <Fragment>
+      <li className='flex flex-col p-5 bg-gray-6 rounded-md'>
+        <b className='text-md-b !leading-5 text-main-black'>{ label }:</b>
+        <div className='w-full mt-[10px] mb-5'>
+          <Input
+            multiline
+            minRows={3}
+            value={value}
+            placeholder={placeholder}
+            onChange={(e) => {
+              onChange?.(e.target.value)
+            }}
+          />
+        </div>
+        { description }
+      </li>
+      {
+        description2 && (
+          <li className='p-5 bg-gray-6 rounded-md'>
+            { description2 }
+          </li>
+        )
+      }
+    </Fragment>
   )
 }

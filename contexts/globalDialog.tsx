@@ -7,9 +7,17 @@ import MemberMintDialog from '@/components/_dialog/member/mint'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
 import BrandNotLoadedDialog from '@/components/_dialog/brand/notLoaded'
 
+import MobileBrandManageDrawer from '@/components/_dialog/brand/mobile/manageMenus'
+import MobileBrandManageProfileSettingDialog from '@/components/_dialog/brand/mobile/manageProfileSetting'
+import MobileBrandManageAccountSettingDialog from '@/components/_dialog/brand/mobile/manageAccountSetting'
+import MobileBrandManageMintSettingDialog from '@/components/_dialog/brand/mobile/manageMintSetting'
+import MobileBrandManageRenewSettingDialog from '@/components/_dialog/brand/mobile/manageRenewSetting'
+import MobileBrandManageTGSettingDialog from '@/components/_dialog/brand/mobile/manageTGSetting'
+
 import { CommunityInfo, SearchModeType } from '@/types'
 
-type GlobalDialogNames = 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | string
+type MobileGlobalDialogNames = 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting'
+type GlobalDialogNames = MobileGlobalDialogNames | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | string
 
 interface GlobalDialogPayload {
   brandName?: string
@@ -74,6 +82,47 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         setMintSuccessInfo({ open: true, mode, community, member, owner, avatar, duplFromBrandInfo })
       }
     }}>
+      {/* mobile */}
+      <MobileBrandManageDrawer
+        open={Boolean(dialogOpenSet['mobile-manage-drawer'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-manage-drawer')}
+        handleChooseTab={(tabName) => {
+          showGlobalDialog(tabName)
+        }}
+      />
+      <MobileBrandManageProfileSettingDialog
+        open={Boolean(dialogOpenSet['mobile-manage-profile-setting'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-manage-profile-setting')}
+      />
+      <MobileBrandManageAccountSettingDialog
+        open={Boolean(dialogOpenSet['mobile-manage-account-setting'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-manage-account-setting')}
+      />
+      <MobileBrandManageMintSettingDialog
+        open={Boolean(dialogOpenSet['mobile-manage-mint-setting'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-manage-mint-setting')}
+      />
+      <MobileBrandManageRenewSettingDialog
+        open={Boolean(dialogOpenSet['mobile-manage-renew-setting'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-manage-renew-setting')}
+      />
+      <MobileBrandManageTGSettingDialog
+        open={Boolean(dialogOpenSet['mobile-manage-tg-setting'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-manage-tg-setting')}
+      />
+      {/* pc */}
       <CommunityProfileSettingDialog
         open={Boolean(dialogOpenSet['brand-setting-profile'])}
         handleClose={() => closeGlobalDialog('brand-setting-profile')} />

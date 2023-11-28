@@ -1,31 +1,32 @@
-import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
-import classNames from 'classnames'
+import { FC, useMemo, useState } from 'react'
 
-import { useDetails } from '@/contexts/details'
 import { useRoot } from '@/contexts/root'
 import { updateCommunity } from '@/shared/apis'
 import { DEFAULT_AVATAR } from '@/shared/constant'
-import { formatContractError, isColor } from '@/shared/helper'
+import { isColor, formatContractError } from '@/shared/helper'
 import useApi from '@/shared/useApi'
+import { useDIDContent } from '@/hooks/content'
+import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
 
-import SettingNotice from "@/components/_common/settingNotice"
-import ColorPicker from '@/components/_common/colorPicker'
-import Button from '@/components/_common/button'
+import { CommunityProfileLabels } from '@/components/settings/community/profile'
 import IpfsUploader from '@/components/_common/ipfsUploader'
 import TextArea from '@/components/_common/textarea'
-import PrimaryDID from '@/components/common/primaryDID'
-import { CommunityProfileLabels } from '@/components/settings/community/profile'
+import ColorPicker from '@/components/_common/colorPicker'
 
 import { CommunityInfo } from '@/types'
 
 import PencilIcon from '~@/_brand/pencil.svg'
+import ArrowRightIcon from '~@/_brand/arrow-right.svg'
 
 interface Props {
-  brandInfo: Partial<CommunityInfo>
-  onBrandColorChange?: (color: string) => void
+  account?: string
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
+  onClose?: () => void
 }
+export default function MobileBrandMannageProfileSettingContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
+  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
 
-const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange }: Props) => {
   const { message, NetOps } = useRoot()
   const { updateCommunityBrandConfig } = useApi()
   
@@ -45,13 +46,9 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
 
   const pending = loading || NetOps.loading
 
-  const brandName = useMemo(() => {
-    return brandInfo?.node?.node
-  }, [brandInfo])
-
-  const brandOwner = useMemo(() => {
-    return brandInfo?.owner ?? ''
-  }, [brandInfo])
+  // const brandOwner = useMemo(() => {
+  //   return brandInfo?.owner ?? ''
+  // }, [brandInfo])
 
   const changed = useMemo(() => {
     return {
@@ -147,103 +144,90 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
     })
   }
 
-  const handleReset = () => {
-    setForm({
-      image: brandInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (brandInfo?.tokenUri?.image ?? ''),
-      brandImage: brandInfo?.tokenUri?.brand_image ?? '',
-      brandColor: brandInfo?.tokenUri?.brand_color ?? '',
-      description: brandInfo?.tokenUri?.description ?? '',
-      externalUrl: brandInfo?.tokenUri?.external_url ?? '',
-      discord: String(brandInfo?.tokenUri?.attr?.discord ?? ''),
-      twitter: String(brandInfo?.tokenUri?.attr?.twitter ?? ''),
-      telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
-    })
-  }
-
-  useEffect(() => {
-    onBrandColorChange?.(form.brandColor)
-  }, [form.brandColor])
+  // const handleReset = () => {
+  //   setForm({
+  //     image: brandInfo?.tokenUri?.image === DEFAULT_AVATAR ? '' : (brandInfo?.tokenUri?.image ?? ''),
+  //     brandImage: brandInfo?.tokenUri?.brand_image ?? '',
+  //     brandColor: brandInfo?.tokenUri?.brand_color ?? '',
+  //     description: brandInfo?.tokenUri?.description ?? '',
+  //     externalUrl: brandInfo?.tokenUri?.external_url ?? '',
+  //     discord: String(brandInfo?.tokenUri?.attr?.discord ?? ''),
+  //     twitter: String(brandInfo?.tokenUri?.attr?.twitter ?? ''),
+  //     telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
+  //   })
+  // }
 
   return (
-    <div className="modal-content-container relative h-full flex flex-col">
-      <div className='flex-1 modal-content pb-10 overflow-auto'>
-        <h1 className='text-main-black text-xl'>Profile Settings</h1>
-        <div className='flex gap-10 mt-[30px]'>
-          <div className='flex-1 flex flex-col gap-5'>
-            <div className='w-full'>
-              <ProfileTitle title='Avatar:' />
-              <div>
-                <Button htmlFor='avatar-uploader' size='normal' className='var-brand-bgcolor'>Change</Button>
-              </div>
-              <div className='w-full h-[1px] bg-gray-3 mt-5'></div>
-            </div>
-            <div className='w-full'>
-              <ProfileTitle title='Banner:' />
-              <div>
-                <Button htmlFor='banner-uploader' size='normal' className='var-brand-bgcolor'>Change</Button>
-              </div>
-              <div className='w-full h-[1px] bg-gray-3 mt-5'></div>
-            </div>
-            <div className='w-full'>
-              <ProfileTitle title='Color:' />
-              <div className='py-[6px]'>
-                <ColorPicker
-                  value={form.brandColor}
-                  onChange={(color) => {
-                    handleFormChange({ brandColor: color })
-                  }}
-                />
-              </div>
-              <div className='w-full h-[1px] bg-gray-3 mt-5'></div>
-            </div>
+    <MobileBrandManageLayout
+      title='Profile Settings'
+      loading={pending}
+      brandColor={form.brandColor}
+      footer
+      onClose={onClose}
+      onClick={handleSaveOnChain}
+    >
+      <ul className='flex flex-col gap-4 text-main-black'>
+        <li className='w-full'>
+          <div className='h-10 flex-center gap-[10px]'>
+            <h3 className='flex-1 text-md-b !leading-5'>Avatar</h3>
+            <ProfileAvatarUploader
+              relationshipId={brandInfo?.node?.node}
+              url={form.image || DEFAULT_AVATAR}
+              onChange={(url) => handleFormChange({ image: url })}
+            />
+            <ArrowRightIcon width='18' height='18' />
           </div>
-          <div className='w-[302px]'>
-            <ProfileTitle title='Preview:' />
-            <div className='relative rounded-lg shadow-brand-preview'>
-              <div className='h-[108px] rounded-t-lg bg-primary overflow-hidden'>
-                <ProfileBannerUploader
-                  relationshipId='banner-uploader'
-                  url={form.brandImage}
-                  onChange={(val) => handleFormChange({ brandImage: val })}
-                />
-              </div>
-              <div className='relative z-normal flex flex-col -mt-[38px] px-10 pb-[52px] rounded-b-lg'>
-                <ProfileAvatarUploader
-                  relationshipId='avatar-uploader'
-                  url={form.image}
-                  onChange={(val) => handleFormChange({ image: val })}
-                />
-                <h2 className='mt-5 text-xl text-main-black'>{ brandName }</h2>
-                <div className='mt-1 text-xs-b text-main-black'>
-                  <PrimaryDID address={brandOwner} />
-                </div>
-              </div>
-            </div>
+        </li>
+        <li className='w-full'>
+          <div className='divider-line'></div>
+        </li>
+        <li className='w-full'>
+          <div className='h-10 flex-center gap-[10px]'>
+            <h3 className='flex-1 text-md-b !leading-5'>Banner</h3>
+            <ProfileBannerUploader
+              relationshipId='banner-uploader'
+              url={form.brandImage}
+              onChange={(val) => handleFormChange({ brandImage: val })}
+            />
+            <ArrowRightIcon width='18' height='18' />
           </div>
-        </div>
-        <div className='mt-5'>
-          <ProfileTitle title='Bio:' />
-          <TextArea
-            value={form.description}
-            placeholder='Placeholder content'
-            onChange={(val) => handleFormChange({ description: val })}
-          />
-        </div>
-      </div>
-      {
-        changed.profileConfig && (
-          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
-        )
-      }
-    </div>
+        </li>
+        <li className='w-full'>
+          <div className='divider-line'></div>
+        </li>
+        <li className='w-full'>
+          <div className='h-10 flex-center gap-[10px]'>
+            <h3 className='flex-1 text-md-b !leading-5'>Color</h3>
+            <div className='w-10 h-10 rounded-full'>
+              <ColorPicker
+                mobile
+                value={form.brandColor}
+                onChange={(color) => {
+                  handleFormChange({ brandColor: color })
+                }}
+              />
+            </div>
+            <ArrowRightIcon width='18' height='18' />
+          </div>
+        </li>
+        <li className='w-full'>
+          <div className='divider-line'></div>
+        </li>
+        <li className='w-full'>
+          <div className='flex flex-col gap-[10px]'>
+            <h3 className='flex-1 text-md-b !leading-5'>Bio:</h3>
+            <TextArea
+              value={form.description}
+              placeholder='Placeholder content'
+              onChange={(val) => handleFormChange({ description: val })}
+            />
+          </div>
+        </li>
+      </ul>
+    </MobileBrandManageLayout>
   )
 }
 
-const ProfileTitle = ({ title, className }: { title: string; className?: string }) => {
-  return (
-    <h3 className={classNames('mb-[10px] text-main-black text-sm-b !leading-[18px]', className)}>{ title }</h3>
-  )
-}
 
 interface ProfileAvatarProps {
   relationshipId?: string
@@ -254,19 +238,12 @@ const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, on
   const minWidth = 260
   const minHeight = 260
   return (
-    <div className='w-20 h-20 -outline-offset-1 outline outline-4 outline-white rounded-lg overflow-hidden'>
+    <div className='w-10 h-10 -outline-offset-1 outline outline-4 outline-white rounded-lg overflow-hidden'>
       <IpfsUploader defaultUrl={url} relationshipId={relationshipId} aspect={1} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
         {
           !url && (
             <div className='relative full-size flex-center bg-gray-6'>
               <PencilIcon width='20' height='20' className='text-tr-black-4' />
-            </div>
-          )
-        }
-        {
-          url && (
-            <div className='z-normal group-hover:opacity-100 flex-center opacity-fade absolute-full bg-uploader-mask'>
-              <PencilIcon width='20' height='20' className='text-white' />
             </div>
           )
         }
@@ -285,14 +262,16 @@ const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, on
   const minHeight = 210
   const aspect = 4 / 1
   return (
-    <div className='full-size'>
+    <div className='w-[70px] h-10'>
       <IpfsUploader defaultUrl={url} relationshipId={relationshipId} aspect={aspect} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
-        <div className='z-normal group-hover:opacity-100 full-size flex-center opacity-fade bg-uploader-mask'>
-          <p className='text-xs !font-bold text-white'>upload banner</p>
-        </div>
+        {
+          !url && (
+            <div className='relative full-size flex-center bg-gray-6'>
+              <PencilIcon width='20' height='20' className='text-tr-black-4' />
+            </div>
+          )
+        }
       </IpfsUploader>
     </div>
   )
 }
-
-export default BrandMannageProfileSettings

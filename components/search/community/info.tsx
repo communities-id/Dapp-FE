@@ -250,6 +250,10 @@ const CommunityLayout: FC<Props> = () => {
     toggleDialogHandler(menu.id, true)
   }
 
+  const openGlobalDialog = (name: string) => {
+    showGlobalDialog(name, { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+  }
+
   // to do: set in details
   useEffect(() => {
     if (!communityInfo?.pool) return
@@ -268,7 +272,7 @@ const CommunityLayout: FC<Props> = () => {
 
   useEffect(() => {
     if (!pendingMintSet || !communityInfoSet.isOwner || communityInfoSet.initialized) return
-    showGlobalDialog('brand-not-loaded', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+    openGlobalDialog('brand-not-loaded')
   }, [pendingMintSet, communityInfoSet.isOwner, communityInfoSet.initialized])
 
   if (communityInfoSet.unMint) return (
@@ -345,13 +349,13 @@ const CommunityLayout: FC<Props> = () => {
                     <DividerLine mode='horizontal' className='bg-white' />
                   </> }
                   <button onClick={() => {
-                    showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                    openGlobalDialog('member-mint')
                   }}>Join</button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
                   className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden"
                   onClick={() => {
-                    showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                    openGlobalDialog('brand-manage-setting')
                   }}>
                   Manage
                 </BrandColorButton> }
@@ -405,7 +409,7 @@ const CommunityLayout: FC<Props> = () => {
                           <button
                             className='bg-orange-1 text-white text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
                             onClick={() => {
-                              showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                              openGlobalDialog('brand-manage-setting')
                             }}
                           >
                             <TipIcon width='14' height='14' className='text-white'/>
@@ -472,7 +476,7 @@ const CommunityLayout: FC<Props> = () => {
       <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
         { communityInfoSet.isOwner && <BrandColorButton
           className="button-md text-main-black border-2 border-main-black flex gap-3"
-          onClick={() => toggleDialogHandler('manage', true)}>
+          onClick={() => openGlobalDialog('mobile-manage-drawer')}>
           Manage
         </BrandColorButton> }
         <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">

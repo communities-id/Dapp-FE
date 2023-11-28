@@ -14,12 +14,14 @@ export interface Props {
   disabled?: boolean
   onClick?: () => void
   className?: string
+  wrapClassName?: string
   children?: ReactNode
 }
 
-const Button: FC<Props> = ({ htmlFor, size = 'normal', mode = 'auto', theme = 'primary', disabled, loading, onClick, className, children }) => {
+const Button: FC<Props> = ({ htmlFor, size = 'normal', mode = 'auto', theme = 'primary', disabled, loading, onClick, wrapClassName, className, children }) => {
   return (
     <BaseButton
+      wrapClassName={wrapClassName}
       className={
         classnames(
           'py-[5px] px-[20px]',
