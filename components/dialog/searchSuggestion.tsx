@@ -99,7 +99,7 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
                 <input
                   type="text"
                   className="w-full bg-transparent outline-none placeholder:text-gray-4"
-                  placeholder="Search brand, user and address"
+                  placeholder="Search for brand name, user name or wallet adderss"
                   value={searchValue}
                   id="search-header-input"
                   onChange={e => setSearchValue(e.target.value)}

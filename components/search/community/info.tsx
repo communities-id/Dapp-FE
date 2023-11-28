@@ -280,7 +280,7 @@ const CommunityLayout: FC<Props> = () => {
   const BrandColorButton = styled('button')({
     backgroundColor: `transparent`,
     '&:hover': {
-      backgroundColor: `${brandColor}cc`
+      backgroundColor: `${brandColor}33`
     }
   });
 
