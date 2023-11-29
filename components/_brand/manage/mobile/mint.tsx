@@ -895,7 +895,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       <div className='flex-1'>
         <ManageMintTitle
           title={title}
-          activeTitle='There is your mint mode：'
+          activeTitle='Current Mint Mode:'
           activeText={activeMintMode?.label}
           // description={description}
           active={active}
@@ -1062,7 +1062,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your token：'
+          activeTitle='Current Token Accepted for Minting:'
           activeText={activeTokenMode?.label}
           active={active}
           checked={checked}
@@ -1433,7 +1433,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your price mode：'
+          activeTitle='Current Mint Price Model:'
           activeText={activePriceModeTab?.label}
           active={active}
           checked={checked}
@@ -1591,7 +1591,7 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your royalty fee：'
+          activeTitle='Current Royalty Percentage:'
           activeText={`${form.commissionRate}%`}
           active={active}
           checked={checked}
@@ -1684,7 +1684,7 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your burn mode:'
+          activeTitle='Current Burn Mode:'
           activeText={form.burnAnytime ? 'BurnAnytime' : 'Burn after expiration'}
           active={active}
           checked={checked}
@@ -1803,7 +1803,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your economic model：'
+          activeTitle='Current Refund Model:'
           activeText={activeEconomicModel?.label}
           active={active}
           checked={checked}
@@ -1909,7 +1909,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                 <span>{ activeTitle }</span>
               </div>
               <div
-                className='flex-1 flex-itmc justify-between gap-1 cursor-pointer'
+                className='flex-1 flex-itmc gap-1 cursor-pointer'
                 onClick={() => handleClick()}
               >
                 <div className='text-primary underline-normal font-bold'>
@@ -1918,7 +1918,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                 {
                   locked ? (
                     <div
-                      className='px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
+                      className='ml-auto px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
                       onClick={() => handleClick()}
                     >
                       <span>check details</span>
