@@ -53,6 +53,7 @@ type FormProps<T = MintSettingLabels> = {
   tooltip?: string,
   placeholder: string,
   description?: string | ReactNode,
+  description2?: string | ReactNode,
   unit: ReactNode,
   startAdornment?: ReactNode,
   endAdornment?: ReactNode,
@@ -76,7 +77,7 @@ interface Props {
 }
 
 export default function BrandMannageMintSettings({ account, brandInfo, brandNotLoaded }: Props) {
-  const { message } = useRoot()
+  const { message, NetOps } = useRoot()
   const { updateVariableCommunityMintConfig, updateCommunityMintConfig } = useApi()
 
   const [tab, setTab] = useState(1)
@@ -85,6 +86,8 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
   const [coinSymbol, setCoinSymbol] = useState('')
   const [loading, setLoading] = useState(false)
   const [validation, setValidation] = useState<Record<string, string | undefined>>({})
+
+  const pending = loading || NetOps.loading
 
   const { totalSupply, config, tokenUri, priceModel } = brandInfo
 
@@ -427,9 +430,10 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
       return
     }
 
+    const chainId = brandInfo.chainId as number
+    await NetOps.handleSwitchNetwork(chainId)
     try {
       setLoading(true)
-      const chainId = brandInfo.chainId as number
       if (needUpdateMintConfig() || needUpdatePriceConfig() || needUpdateMemberConfig()) {
         const params = {
           a: Number(priceForm.a ?? 0),
@@ -545,6 +549,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
   useEffect(() => {
     async function getCoinSymbol() {
       const symbol = await getTokenSymbol((mintForm.coin as string) || ZERO_ADDRESS, brandInfo.chainId)
+      console.log('-- symbol', symbol)
       setCoinSymbol(symbol)
     }
     getCoinSymbol()
@@ -584,6 +589,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 1}
                 checked={tab === 1}
                 settled={settled.mint}
+                coinSymbol={coinSymbol}
                 handleChoose={(open) => handleChooseTab(open, 1)}
                 handleChange={async (payload) => {
                   setMintForm({
@@ -628,6 +634,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 active={step >= 3}
                 checked={tab === 3}
                 locked={editLocked.price}
+                coinSymbol={coinSymbol}
                 handleChoose={(open) => handleChooseTab(open, 3)}
                 handleChange={async (payload) => {
                   setPriceForm({
@@ -703,7 +710,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
       </div>
       {
         !brandNotLoaded && (changed.memberConfig || changed.mintConfig || changed.priceConfig) && (
-          <SettingNotice loading={loading} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
+          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
         )
       }
       {
@@ -730,7 +737,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                     className='w-60 flex-center gap-1'
                     size='medium'
                     theme='primary'
-                    loading={loading}
+                    loading={pending}
                     onClick={handleSaveOnChain}
                   >
                     <span>Save On-Chain</span>
@@ -792,8 +799,16 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           description: (
             <p className='text-sm text-black-tr-40 text-center'>
               <b>Note:</b>
-              <span> Only the brand owner can invite users to join the community.</span>
+              <span>&nbsp;Only who holds your Token can join your community.</span>
             </p>
+          ),
+          description2: (
+            <div className='flex flex-col text-sm text-black-tr-40 text-left'>
+              <b>Signer is the one who generate invitation code</b>
+              <p>
+              If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available. Or, just leave the signer blank, we will take care of the signing process for you and code generation will be more flexible.
+              </p>
+            </div>
           )
         },
       ]
@@ -844,7 +859,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
 
   const activeMintMode = mintModes.find(item => item.active)
 
-  const title = '1、How would you like your community to mint their IDs？'
+  const title = '1、How would you like your community to mint their IDs?'
   // const description = 'Warning: You can only choose one token to accept.'
   return (
     <div className={classNames('flex gap-5', { 'hidden': !active }, className)}>
@@ -860,7 +875,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       <div className='flex-1'>
         <ManageMintTitle
           title={title}
-          activeTitle='There is your mint mode：'
+          activeTitle='Current Mint Mode:'
           activeText={activeMintMode?.label}
           // description={description}
           active={active}
@@ -878,6 +893,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                         <Fragment>
                           <BaseButton
                             size='normal'
+                            wrapClassName='w-full'
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
@@ -917,12 +933,12 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
               </ul>
               {
                 !!activeMintMode?.forms?.length && (
-                  <div className='relative z-normal mt-[22px] p-[30px] bg-gray-6 rounded-md'>
-                    <ul>
-                      {
-                        activeMintMode.forms.map((item, index) => {
-                          return (
-                            <li key={index} className='flex flex-col gap-5'>
+                  <ul className='relative z-normal mt-[22px] flex flex-col gap-[10px]'>
+                    {
+                      activeMintMode.forms.map((item, index) => {
+                        return (
+                          <Fragment key={index}>
+                            <li className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
                               {
                                 item.type === 'text' && (
                                   <Input
@@ -956,11 +972,18 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                               }
                               { item.description }
                             </li>
-                          )
-                        })
-                      }
-                    </ul>
-                  </div>
+                            {
+                              item.description2 && (
+                                <li className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
+                                  { item.description2 }
+                                </li>
+                              )
+                            }
+                          </Fragment>
+                        )
+                      })
+                    }
+                  </ul>
                 )
               }
             </div>
@@ -1060,7 +1083,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
   const activeTokenMode = tokenModes.find(item => item.active)
 
   const title = '2、Which token will you accept?'
-  const description = 'Warning: You can only choose one token to accept.'
+  const description = 'Warning: This setting will be immutable if there is an ID in your community.'
 
   return (
     <div className={classNames('flex gap-5', { 'hidden': !active }, className)}>
@@ -1077,7 +1100,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your token：'
+          activeTitle='Current Token Accepted for Minting:'
           activeText={activeTokenMode?.label}
           active={active}
           checked={checked}
@@ -1096,6 +1119,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
                           <BaseButton
                             size='normal'
                             disabled={locked}
+                            wrapClassName='w-full'
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
@@ -1185,7 +1209,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
 
 const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, defaultForms, coinSymbol, className, handleChoose, handleChange }) => {
   const title = '3、What’s the mint price per year you expect from an ID?'
-  const description = 'Warning: You can only choose one token to accept.'
+  const description = 'Warning: This setting will be immutable if there is an ID in your community.'
   const priceModelDisabled = false
 
   const priceModes: {
@@ -1487,7 +1511,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your price mode：'
+          activeTitle='Current Mint Price Model:'
           activeText={activePriceModeTab?.label}
           active={active}
           checked={checked}
@@ -1506,6 +1530,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                           <BaseButton
                             size='normal'
                             disabled={locked}
+                            wrapClassName='w-full'
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
@@ -1619,6 +1644,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                             }
                           </div>
                           <div className='mt-5 w-full h-[230px] bg-white rounded-xs'>
+                          coinSymbol-{coinSymbol}
                             <PriceModeChart
                               params={{
                                 mode: form.mode,
@@ -1644,8 +1670,8 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
 }
 
 const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
-  const title = '4、How much royalty fee do you plan to charge in percentage？'
-  const description = 'Warning: You can only choose one token to accept.'
+  const title = '4、How much royalty fee do you plan to charge in percentage?'
+  const description = 'Warning: This setting will be immutable if there is an ID in your community.'
 
   const contentDescription = (
     <p className='mt-5 text-sm text-black-tr-40 text-left'>
@@ -1669,7 +1695,7 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your royalty fee：'
+          activeTitle='Current Royalty Percentage:'
           activeText={`${form.commissionRate}%`}
           active={active}
           checked={checked}
@@ -1703,8 +1729,8 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
 }
 
 const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
-  const title = '5、Are you allowed your members to get refund (Burn IDs) at anytime？'
-  const description = 'Warning: You can only choose one token to accept.'
+  const title = '5、Are you allowed your members to get refund (Burn IDs) at anytime?'
+  const description = 'Warning: This setting will be immutable if there is an ID in your community.'
   const contentDescription = (
     <p className='text-sm text-black-tr-40 text-left'>
       <b>Note:</b>
@@ -1757,7 +1783,7 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your burn mode:'
+          activeTitle='Current Burn Mode:'
           activeText={form.burnAnytime ? 'BurnAnytime' : 'Burn after expiration'}
           active={active}
           checked={checked}
@@ -1776,6 +1802,7 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
                           <BaseButton
                             size='normal'
                             disabled={locked}
+                            wrapClassName='w-full'
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
@@ -1815,8 +1842,8 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
 }
 
 const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
-  const title = '6、Which economic model will you accept？'
-  const description = 'Warning: You can only choose one token to accept.'
+  const title = '6、Which economic model will you accept?'
+  const description = 'Warning: This setting will be immutable if there is an ID in your community.'
 
   const economicModelDisabled = false
 
@@ -1891,7 +1918,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
         <ManageMintTitle
           title={title}
           description={description}
-          activeTitle='There is your economic model：'
+          activeTitle='Current Refund Model:'
           activeText={activeEconomicModel?.label}
           active={active}
           checked={checked}
@@ -1910,6 +1937,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
                           <BaseButton
                             size='normal'
                             disabled={locked}
+                            wrapClassName='w-full'
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
@@ -2006,7 +2034,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
         }
         {
           active && !checked && (
-            <div className='group flex-1 flex-itmc justify-between'>
+            <div className='group flex-1 flex-itmc gap-1 justify-between'>
               <div>
                 <span>{ activeTitle }</span>
               </div>

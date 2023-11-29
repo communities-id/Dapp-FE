@@ -67,7 +67,7 @@ const LinearChart: FC<Props> = ({
       height,
       colors: colors ?? ["#883FFF"],
       tooltipOptions: {
-        formatTooltipX: (d) => `TokenID: ${d}`,
+        formatTooltipX: (d) => `UserID: ${d}`,
         formatTooltipY: (d) => `&#8776 ${formatToDecimal(d, 0, 8)} ${markerSymbol}`
       },
       lineOptions: {

@@ -200,7 +200,7 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
           <div className='w-[302px]'>
             <ProfileTitle title='Preview:' />
             <div className='relative rounded-lg shadow-brand-preview'>
-              <div className='h-[108px] rounded-t-lg bg-primary overflow-hidden'>
+              <div className='h-[108px] rounded-t-lg var-brand-bgcolor overflow-hidden'>
                 <ProfileBannerUploader
                   relationshipId='banner-uploader'
                   url={form.brandImage}
@@ -224,6 +224,7 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
         <div className='mt-5'>
           <ProfileTitle title='Bio:' />
           <TextArea
+            maxLength={200}
             value={form.description}
             placeholder='Placeholder content'
             onChange={(val) => handleFormChange({ description: val })}

@@ -208,7 +208,7 @@ export default function MobileBrandMannageAccountSettingContent({ account, brand
   return (
     <MobileBrandManageLayout
       contentClassName='!pt-5'
-      title='Account Management'
+      title='Official Link Settings'
       brandColor={brandInfo?.tokenUri?.brand_color}
       footer
       loading={pending}

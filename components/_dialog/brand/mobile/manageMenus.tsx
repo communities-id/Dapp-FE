@@ -34,7 +34,7 @@ const MobileBrandManageMenus: FC<Props> = ({ brandName, brandInfo, open, handleC
       line: true
     },
     {
-      label: 'Account Management',
+      label: 'Official Link Settings',
       name: 'mobile-manage-account-setting',
       icon: <AccountIcon className='w-5 h-5' />,
       line: true
@@ -51,7 +51,7 @@ const MobileBrandManageMenus: FC<Props> = ({ brandName, brandInfo, open, handleC
       icon: <RenewIcon className='w-5 h-5' />,
     },
     {
-      label: 'Link Telegram Group',
+      label: 'Token-gate Telegram Group',
       name: 'mobile-manage-tg-setting',
       icon: <SocialLinkIcon className='w-5 h-5' />,
     },

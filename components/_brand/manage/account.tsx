@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function BrandMannageAccountManagement({ brandInfo }: Props) {
-  const { message } = useRoot()
+  const { message, NetOps } = useRoot()
   const { updateCommunityBrandConfig } = useApi()
   
   const [loading, setLoading] = useState(false)
@@ -45,7 +45,7 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     },
     {
       name: 'twitter',
-      label: 'Twitter',
+      label: 'Twitter(X.com)',
       value: form.twitter,
       placeholder: 'https://',
     },
@@ -57,11 +57,13 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     },
     {
       name: 'telegram',
-      label: 'Telegram',
+      label: 'Telegram Group Invitation',
       value: form.telegram,
       placeholder: 'https://',
     }
   ]
+
+  const pending = loading || NetOps.loading
 
   const changed = useMemo(() => {
     return {
@@ -137,6 +139,7 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     setValidation({})
     const validateResult = validateForm()
     if (Object.keys(validateResult).length > 0) {
+      message({ type: 'error', content: validateResult[Object.keys(validateResult)[0]] }, { t: 'brand-profile-setting', k: brandInfo.node.node })
       setValidation(validateResult)
       return
     }
@@ -144,9 +147,10 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
       message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: brandInfo.node.node })
       return
     }
+    const chainId = brandInfo.chainId as number
+    await NetOps.handleSwitchNetwork(chainId)
     try {
       setLoading(true)
-      const chainId = brandInfo.chainId as number
       await updateCommunityBrandConfig(brandInfo.node.tokenId, {
         image: form.image || DEFAULT_AVATAR,
         brandImage: form.brandImage,
@@ -203,7 +207,7 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
   return (
     <div className="modal-content-container relative h-full flex flex-col">
       <div className='flex-1 modal-content overflow-auto'>
-        <h1 className='text-main-black text-xl'>Social Media</h1>
+        <h1 className='text-main-black text-xl'>Official Links</h1>
         <div className='w-full mt-[30px] pb-10'>
           <ul className="w-full flex flex-col gap-5">
             {
@@ -239,7 +243,7 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
       </div>
       {
         changed.accountConfig && (
-          <SettingNotice loading={loading} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
+          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
         )
       }
     </div>

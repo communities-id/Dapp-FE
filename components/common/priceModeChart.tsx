@@ -18,7 +18,7 @@ interface Props {
   hiddenMarkers?: boolean
 }
 
-const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200, labels = [0, 1000, 2000, 3000, 4000, 5000, 6000], values, markerSymbol = 'Coin', currentLabel = 1, hiddenMarkers }) => {
+const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200, labels = [0, 1000, 2000, 3000, 4000, 5000, 6000], values, markerSymbol = 'Token', currentLabel = 1, hiddenMarkers }) => {
 
   const datasetsValues = values || labels.map(x => {
     // price is the final price of multiple days
