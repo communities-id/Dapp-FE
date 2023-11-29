@@ -182,6 +182,7 @@ export function RootProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === 'undefined') return
     // console.log('---------- root init', refToComponent.current, router.pathname)
+    const scrollContainer = document.querySelector('#__next')
 
     async function animate() {
       if (!refToComponent.current) return
@@ -190,7 +191,8 @@ export function RootProvider({ children }: { children: ReactNode }) {
       const sr = ScrollReveal({
         distance: '60px',
         duration: 800,
-        reset: false
+        reset: false,
+        container: scrollContainer
       })
       sr.reveal(`.animate_top`, {
         origin: 'top',
@@ -210,14 +212,16 @@ export function RootProvider({ children }: { children: ReactNode }) {
     }
     animate()
 
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 20) {
-        setStickyMenu(true)
-      } else {
-        setStickyMenu(false)
-      }
-      setScrollTop(window.pageYOffset > 50)
-    })
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', () => {
+        if (scrollContainer.scrollTop > 20) {
+          setStickyMenu(true)
+        } else {
+          setStickyMenu(false)
+        }
+        setScrollTop(scrollContainer.scrollTop > 50)
+      })
+    }
   }, [router.pathname])
 
   return (
