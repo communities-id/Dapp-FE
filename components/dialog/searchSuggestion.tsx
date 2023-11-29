@@ -109,7 +109,7 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
                 <CloseIcon width='16' height='16' />
               </button>
             </div>
-            <button className='button-lg bg-transparent text-primary' onClick={handleClose}>Cancel</button>
+            <button className='button-lg bg-transparent text-primary font-bold' onClick={handleClose}>Cancel</button>
           </div>
           { suggestion[searchValue] && suggestion[searchValue].length > 0 && <div className="suggestions border-t-sm border-gray-3 pt-2.5 py-4">
             {
