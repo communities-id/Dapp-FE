@@ -1569,6 +1569,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                                     <BaseButton
                                       size='medium'
                                       disabled={locked}
+                                      wrapClassName='w-full'
                                       className={
                                         classNames('w-full flex-center gap-[6px] rounded-xs', {
                                           'bg-white text-gray-1 border border-solid border-gray-7': !item.active,

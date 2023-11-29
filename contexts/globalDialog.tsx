@@ -14,10 +14,11 @@ import MobileBrandManageMintSettingDialog from '@/components/_dialog/brand/mobil
 import MobileBrandManageRenewSettingDialog from '@/components/_dialog/brand/mobile/manage/manageRenewSetting'
 import MobileBrandManageTGSettingDialog from '@/components/_dialog/brand/mobile/manage/manageTGSetting'
 import MobileBrandInvitationDialog from '@/components/_dialog/brand/mobile/invitation'
+import MobileMemberMintDialog from '@/components/_dialog/member/mobile/mint'
 
 import { CommunityInfo, SearchModeType } from '@/types'
 
-type MobileGlobalDialogNames = 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation'
+type MobileGlobalDialogNames = 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation' | 'mobile-member-mint'
 type GlobalDialogNames = MobileGlobalDialogNames | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | string
 
 interface GlobalDialogPayload {
@@ -128,6 +129,12 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
         handleClose={() => closeGlobalDialog('mobile-brand-invitation')}
+      />
+      <MobileMemberMintDialog
+        open={Boolean(dialogOpenSet['mobile-member-mint'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-member-mint')}
       />
       {/* pc */}
       <CommunityProfileSettingDialog

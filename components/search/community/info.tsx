@@ -501,7 +501,7 @@ const CommunityLayout: FC<Props> = () => {
             <button onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>
             <DividerLine mode='horizontal' className='bg-white' />
           </> }
-          <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>
+          <button onClick={() => openGlobalDialog('mobile-member-mint')}>Join</button>
         </BrandColorButtonGroup>
       </div>
       <CommunityRenewDialog

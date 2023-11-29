@@ -14,7 +14,7 @@ interface Props {
   brandInfo?: Partial<CommunityInfo>
 }
 
-const BrandInviteContent: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
+const MobileBrandInvitationContent: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
   const { brandInfo } = useDIDContent({ brandName, brandInfo: inputBrandInfo })
 
   const brand = brandInfo?.node?.node || ''
@@ -57,4 +57,4 @@ const BrandInviteContent: FC<Props> = ({ brandName, brandInfo: inputBrandInfo })
   )
 }
 
-export default BrandInviteContent
+export default MobileBrandInvitationContent

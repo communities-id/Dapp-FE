@@ -9,7 +9,7 @@ export interface Props {
   htmlFor?: string
   size?: 'small' | 'short' | 'normal' | 'medium'
   mode?: 'auto' | 'full'
-  theme?: 'primary' | 'black'
+  theme?: 'primary' | 'black' | 'variable'
   loading?: boolean
   disabled?: boolean
   onClick?: () => void
@@ -34,6 +34,7 @@ const Button: FC<Props> = ({ htmlFor, size = 'normal', mode = 'auto', theme = 'p
             'whitespace-nowrap': mode === 'auto',
             'bg-primary text-white': theme === 'primary',
             'bg-main-black text-white': theme === 'black',
+            'var-brand-bgcolor text-white': theme === 'variable', // to do: check color deep or light
           },
           className
       )}

@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { BigNumber } from 'ethers'
 import { formatPrice } from '@/shared/helper'
+import classNames from 'classnames'
 
 interface Props {
   list: {
@@ -9,9 +10,10 @@ interface Props {
     amount: number | BigNumber
     symbol: string
   }[]
+  theme?: 'primary' | 'black' | 'variable'
 }
 
-const EstimatedCard: FC<Props> = ({ list }) => {
+const EstimatedCard: FC<Props> = ({ list, theme }) => {
   const total = list.reduce((acc, cur) => {
     return acc.add(BigNumber.from(cur.amount))
   }, BigNumber.from(0))
@@ -33,7 +35,11 @@ const EstimatedCard: FC<Props> = ({ list }) => {
       <div className='my-4 w-full h-[1px] bg-gray-7'></div>
       <div className='flex-itmc justify-between'>
         <span>Estimated Total</span>
-        <span className='!font-bold text-primary'>{ formatPrice(total) } ETH</span>
+        <b className={classNames({
+          'text-primary': theme === 'primary',
+          'text-main-black': theme === 'black',
+          'var-brand-textcolor': theme === 'variable',
+        })}>{ formatPrice(total) } ETH</b>
       </div>
     </div>
   )

@@ -212,6 +212,9 @@
   .var-brand-textcolor {
     color: var(--var-brand-color) !important;
   }
+  .var-brand-bordercolor {
+    border-color: var(--var-brand-color) !important;
+  }
 }
 
 @keyframes skeleton-breath {
