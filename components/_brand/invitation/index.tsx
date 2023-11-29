@@ -4,7 +4,7 @@ import { useDetails } from '@/contexts/details'
 import { CHAIN_ID } from '@/shared/constant'
 
 import Tabs from '@/components/_common/tabs'
-import TargetedInvitation from '@/components/_brand/invite/targeted'
+import TargetedInvitation from '@/components/_brand/invitation/targeted'
 
 import { CommunityInfo } from '@/types'
 import { useDIDContent } from '@/hooks/content'

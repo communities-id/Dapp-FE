@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, use, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import { ZERO_ADDRESS } from '@communitiesid/id'
@@ -35,6 +35,8 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
     memberName: '',
     mintTo: '',
   })
+
+  const boxRef = useRef<HTMLDivElement>(null)
 
   const disabled = !form.memberName || loading
   console.log("- disabled", disabled)
@@ -85,7 +87,6 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
       setValidation(validateResult)
       return
     }
-    setResult('')
     setCopied(false)
     await NetOps.handleSwitchNetwork(chainId)
     if (!brand) return
@@ -124,8 +125,22 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
     })
   }
 
+  const scrollToResultView = (top: number) => {
+    console.log('-- scrollToResultView', top, '--dom', boxRef.current?.parentNode?.parentElement)
+    boxRef.current?.parentNode?.parentElement?.scrollTo({
+      top,
+      behavior: 'smooth',
+    })
+  }
+
+  useEffect(() => {
+    if (result) {
+      scrollToResultView(300)
+    }
+  }, [result])
+
   return (
-    <div className='mt-[10px] px-[30px] pb-[30px] flex flex-col gap-5'>
+    <div ref={boxRef} className='mt-[10px] px-[30px] pb-[30px] flex flex-col gap-5'>
       <div className='flex-itmc py-[3px] px-[10px] gap-1 text-orange-1 text-md bg-orange-tr-10 rounded-xs'>
         <TipsIcon width='14' height='14' className='' />
         <span className='flex-1'>Targeted invitation codes support allocation to specific IDs and are for one-time use only.</span>
@@ -156,7 +171,7 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
             )
           })
         }
-        <li className='w-full'>
+        <li className='w-full flex-justc'>
           <Button
             className=''
             mode='full'
@@ -164,7 +179,9 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
             loading={loading || NetOps.loading}
             disabled={disabled}
             size='medium'
-            onClick={handleSign}
+            onClick={() => {
+              handleSign()
+            }}
           >Generate Invitiation Code</Button>
         </li>
       </ul>

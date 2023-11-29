@@ -45,7 +45,7 @@ export const WrapperProvider = ({ mode, keywords, children }: { mode: SearchMode
           <SearchHeader />
           {
             mounted && (
-              <main className='min-h-screen bg-[#FAFAFA] flex flex-col'>
+              <main className='min-h-screen bg-[#FAFAFA] flex flex-col' style={{marginTop: -136}}>
                 <img src='/search/blur-bg.png' className='absolute top-0 left-0 z-0 w-full h-full bg-cover pointer-events-none'/>
                 <div className='bg-white relative z-10 rounded-[10px]'>
                   <SearchHeaderInfo />

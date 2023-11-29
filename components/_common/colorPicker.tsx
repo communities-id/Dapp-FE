@@ -11,40 +11,54 @@ const colors = [
 
 interface Props {
   value: string
+  mobile?: boolean
   onChange?: (color: string) => void
 }
 
-const ColorPicker: FC<Props> = ({ value, onChange }) => {
+const ColorPicker: FC<Props> = ({ value, mobile, onChange }) => {
   const [showPicker, setShowPicker] = useState(false)
 
   return (
-    <div className='flex items-center gap-[22px]'>
-      <ul className='flex gap-[18px]'>
-        {
-          colors.map((color, idx) => {
-            return (
-              <li key={idx} className='leading-zero'>
-                <ColorItem
-                  active={value === color}
-                  color={color}
-                  onClick={() => {
-                    onChange?.(color)
-                  }}
-                />
-              </li>
-            )
-          })
-        }
-      </ul>
-      <div className='w-[1px] h-4 bg-main-black'></div>
-      <div className='relative'>
+    <div className={classNames({
+      'flex items-center gap-[22px]': !mobile,
+      'full-size flex-center': mobile
+    })}>
+      {
+        !mobile && (
+          <Fragment>
+            <ul className='flex gap-[18px]'>
+              {
+                colors.map((color, idx) => {
+                  return (
+                    <li key={idx} className='leading-zero'>
+                      <ColorItem
+                        active={value === color}
+                        color={color}
+                        onClick={() => {
+                          onChange?.(color)
+                        }}
+                      />
+                    </li>
+                  )
+                })
+              }
+            </ul>
+            <div className='w-[1px] h-4 bg-main-black'></div>
+          </Fragment>
+        )
+      }
+      <div className={classNames('relative', {
+        'full-size': mobile
+      })}>
         <button
           className={
             classNames(
-              'flex items-center justify-center w-6 h-6 border-[1px] border-solid border-main-black bg-gray-6 rounded-full',
-              'opacity-20 hover:opacity-100 active:opacity-100',
+              'flex items-center justify-center rounded-full overflow-hidden',
               {
-                '!opacity-100': showPicker
+                '!opacity-100': showPicker && !mobile,
+                'w-6 h-6 border-[1px] border-solid border-main-black bg-gray-6': !mobile,
+                'hover:opacity-100 active:opacity-100': !mobile,
+                'full-size var-brand-bgcolor': mobile
               }
             )
           }
@@ -55,7 +69,11 @@ const ColorPicker: FC<Props> = ({ value, onChange }) => {
             // setShowPicker(false)
           }}
         >
-          <PencilIcon width='12' height='12'/>
+          {
+            mobile ? null : (
+              <PencilIcon width='12' height='12' className='' />
+            )
+          }
         </button>
         {
           showPicker && (
@@ -66,7 +84,10 @@ const ColorPicker: FC<Props> = ({ value, onChange }) => {
                   setShowPicker(false)
                 }}
               ></div>
-              <div className='absolute top-0 left-[34px] z-picker'>
+              <div className={classNames('absolute top-0 z-picker', {
+                'left-[34px]' : !mobile,
+                'right-0': mobile
+              })}>
                 <ChromePicker
                   color={value}
                   onChange={(color) => {

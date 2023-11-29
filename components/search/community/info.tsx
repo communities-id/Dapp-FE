@@ -48,7 +48,7 @@ import { TotalSupportedChainIDs } from '@/types/chain'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
 import CommunityDuplicate from '@/components/dialog/community/duplicate'
-import BrandInviteDialog from '@/components/_dialog/brand/invite'
+import BrandInviteDialog from '@/components/_dialog/brand/invitation'
 import styled from '@emotion/styled'
 import { lighten } from '@mui/system'
 import { SequenceMode } from '@/types/contract'
@@ -251,6 +251,10 @@ const CommunityLayout: FC<Props> = () => {
     toggleDialogHandler(menu.id, true)
   }
 
+  const openGlobalDialog = (name: string) => {
+    showGlobalDialog(name, { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+  }
+
   // to do: set in details
   useEffect(() => {
     if (!communityInfo?.pool) return
@@ -269,7 +273,7 @@ const CommunityLayout: FC<Props> = () => {
 
   useEffect(() => {
     if (!pendingMintSet || !communityInfoSet.isOwner || communityInfoSet.initialized) return
-    showGlobalDialog('brand-not-loaded', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+    openGlobalDialog('brand-not-loaded')
   }, [pendingMintSet, communityInfoSet.isOwner, communityInfoSet.initialized])
 
   if (communityInfoSet.unMint) return (
@@ -356,7 +360,7 @@ const CommunityLayout: FC<Props> = () => {
                     </div>
                   </> }
                   <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
-                    showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                    openGlobalDialog('member-mint')
                   }}>
                     {!communityInfoSet.isOwner && <PlusIconWithColor color='#fff' className='w-4 h-4'/>}
                     <span>Join</span>
@@ -365,7 +369,7 @@ const CommunityLayout: FC<Props> = () => {
                 { communityInfoSet.isOwner && <BrandColorButton
                   className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b"
                   onClick={() => {
-                    showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                    openGlobalDialog('brand-manage-setting')
                   }}>
                   Manage
                 </BrandColorButton> }
@@ -421,7 +425,7 @@ const CommunityLayout: FC<Props> = () => {
                           <button
                             className='bg-orange-1 text-white text-xs rounded-[10px] h-8 px-2.5 flex items-center gap-[6px]'
                             onClick={() => {
-                              showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                              openGlobalDialog('brand-manage-setting')
                             }}
                           >
                             <TipIcon width='14' height='14' className='text-white'/>
@@ -488,12 +492,12 @@ const CommunityLayout: FC<Props> = () => {
       <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
         { communityInfoSet.isOwner && <BrandColorButton
           className="button-md text-main-black border-2 border-main-black flex gap-3"
-          onClick={() => toggleDialogHandler('manage', true)}>
+          onClick={() => openGlobalDialog('mobile-manage-drawer')}>
           Manage
         </BrandColorButton> }
         <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">
           { communityInfoSet.isOwner && <>
-            <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+            <button onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>
             <DividerLine mode='horizontal' className='bg-white' />
           </> }
           <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>

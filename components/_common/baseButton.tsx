@@ -10,12 +10,13 @@ export interface Props {
   disabled?: boolean
   onClick?: () => void
   className?: string
+  wrapClassName?: string
   children?: ReactNode
 }
 
-const BaseButton: FC<Props> = ({ htmlFor, size = 'auto', disabled, loading, onClick, className, children }) => {
+const BaseButton: FC<Props> = ({ htmlFor, size = 'auto', disabled, loading, onClick, wrapClassName, className, children }) => {
   return (
-    <label htmlFor={htmlFor} className='inline cursor-pointer'>
+    <label htmlFor={htmlFor} className={classnames('inline-block cursor-pointer', wrapClassName)}>
       <button
         disabled={disabled || loading}
         className={

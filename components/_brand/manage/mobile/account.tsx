@@ -1,24 +1,27 @@
-import { useEffect, useMemo, useState } from "react"
+import { CSSProperties, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
-import { useDetails } from "@/contexts/details"
-import { useRoot } from "@/contexts/root"
-import { updateCommunity } from "@/shared/apis"
-import { DEFAULT_AVATAR } from "@/shared/constant"
-import { isColor, formatContractError } from "@/shared/helper"
-import useApi from "@/shared/useApi"
+import { useRoot } from '@/contexts/root'
+import { useDIDContent } from '@/hooks/content'
+import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
+import { updateCommunity } from '@/shared/apis'
+import { DEFAULT_AVATAR } from '@/shared/constant'
+import { formatContractError } from '@/shared/helper'
+import useApi from '@/shared/useApi'
 
-import SettingNotice from "@/components/_common/settingNotice"
+import { CommunityProfileLabels } from '@/components/settings/community/profile'
 import Input from '@/components/_common/input'
-import { CommunityProfileLabels } from "@/components/settings/community/profile"
 
-import { CommunityInfo } from "@/types"
+import { CommunityInfo } from '@/types'
 
 interface Props {
-  brandInfo: Partial<CommunityInfo>
+  account?: string
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
+  onClose?: () => void
 }
-
-export default function BrandMannageAccountManagement({ brandInfo }: Props) {
+export default function MobileBrandMannageAccountSettingContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
+  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
   const { message, NetOps } = useRoot()
   const { updateCommunityBrandConfig } = useApi()
   
@@ -36,6 +39,8 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     telegram: String(brandInfo?.tokenUri?.attr?.telegram ?? ''),
   })
 
+  const pending = loading || NetOps.loading
+
   const socials = [
     {
       name: 'externalUrl',
@@ -45,7 +50,7 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     },
     {
       name: 'twitter',
-      label: 'Twitter(X.com)',
+      label: 'Twitter',
       value: form.twitter,
       placeholder: 'https://',
     },
@@ -57,13 +62,11 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     },
     {
       name: 'telegram',
-      label: 'Telegram Group Invitation',
+      label: 'Telegram',
       value: form.telegram,
       placeholder: 'https://',
     }
   ]
-
-  const pending = loading || NetOps.loading
 
   const changed = useMemo(() => {
     return {
@@ -139,7 +142,6 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
     setValidation({})
     const validateResult = validateForm()
     if (Object.keys(validateResult).length > 0) {
-      message({ type: 'error', content: validateResult[Object.keys(validateResult)[0]] }, { t: 'brand-profile-setting', k: brandInfo.node.node })
       setValidation(validateResult)
       return
     }
@@ -147,10 +149,9 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
       message({ type: 'warning', content: 'Nothing to update.' }, { t: 'brand-profile-setting', k: brandInfo.node.node })
       return
     }
-    const chainId = brandInfo.chainId as number
-    await NetOps.handleSwitchNetwork(chainId)
     try {
       setLoading(true)
+      const chainId = brandInfo.chainId as number
       await updateCommunityBrandConfig(brandInfo.node.tokenId, {
         image: form.image || DEFAULT_AVATAR,
         brandImage: form.brandImage,
@@ -205,47 +206,43 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
   }, [brandInfo])
 
   return (
-    <div className="modal-content-container relative h-full flex flex-col">
-      <div className='flex-1 modal-content overflow-auto'>
-        <h1 className='text-main-black text-xl'>Official Links</h1>
-        <div className='w-full mt-[30px] pb-10'>
-          <ul className="w-full flex flex-col gap-5">
-            {
-              socials.map((item, index) => {
-                return (
-                  <li
-                    key={index}
-                    className={
-                      classNames(
-                        'w-full gap-[10px] flex flex-col',
-                      )
-                    }
-                  >
-                    <p className="text-sm-b text-main-black">{ item.label }</p>
-                    <div className='flex-1'>
-                      <Input
-                        inputclassname='w-full'
-                        value={item.value}
-                        placeholder={item.placeholder}
-                        onChange={(e) => handleFormChange(item.name, e.target.value)}
-                      />
-                    </div>
-                  </li>
-                )
-              })
-            }
-          </ul>
-          {/* <div className='mt-10 divider-line'></div>
-          <div className="mt-5 text-right">
-            <span className="text-md-b text-primary underline underline-offset-2">Set Token-gated Group -&#62;</span>
-          </div> */}
-        </div>
-      </div>
-      {
-        changed.accountConfig && (
-          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
-        )
-      }
-    </div>
+    <MobileBrandManageLayout
+      contentClassName='!pt-5'
+      title='Official Link Settings'
+      brandColor={brandInfo?.tokenUri?.brand_color}
+      footer
+      loading={pending}
+      onClose={onClose}
+      onClick={handleSaveOnChain}
+    >
+      <ul className="w-full flex flex-col gap-5">
+        {
+          socials.map((item, index) => {
+            return (
+              <li
+                key={index}
+                className={
+                  classNames(
+                    'w-full flex flex-col',
+                  )
+                }
+              >
+                <div className="flex-itmc h-[38px] text-sm !font-medium text-black-tr-80">
+                  <span>{ item.label }</span>
+                </div>
+                <div className='flex-1'>
+                  <Input
+                    inputclassname='w-full !p-3 !leading-5'
+                    value={item.value}
+                    placeholder={item.placeholder}
+                    onChange={(e) => handleFormChange(item.name, e.target.value)}
+                  />
+                </div>
+              </li>
+            )
+          })
+        }
+      </ul>
+    </MobileBrandManageLayout>
   )
 }

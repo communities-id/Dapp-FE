@@ -51,7 +51,7 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
           }
         },
         {
-          label: 'Account Management',
+          label: 'Official Link Settings',
           value: 1,
           renderPanel: () => <AccountManagement brandInfo={brandInfo} />,
           renderIcon: (active: boolean) => {
@@ -101,7 +101,7 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
           }
         },
         {
-          label: 'Social Link',
+          label: 'Token-gate Telegram Group',
           value: 4,
           renderPanel: () => <SocialLink brandInfo={brandInfo} />,
           renderIcon: (active: boolean) => {

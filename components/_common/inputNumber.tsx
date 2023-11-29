@@ -4,33 +4,37 @@ import BaseButton from '@/components/_common/baseButton'
 
 import MinusIcon from '~@/_brand/minus.svg'
 import PlusIcon from '~@/_brand/plus.svg'
+import classNames from 'classnames'
 
 interface Props {
   value?: number
-  range?: [number, number]
+  range?: number[]
   disabled?: boolean
-  handleChange?: (value: number) => void
+  mobile?: boolean
+  onChange?: (value: number) => void
   children?: React.ReactNode
 }
 
-const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, handleChange, children }) => {
+const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, mobile, onChange, children }) => {
   const isMinimum = value <= range[0]
   const isMaximum = value >= range[1]
 
   const handleAdd = () => {
     if (isMaximum) return
-    handleChange?.(value + 1)
+    onChange?.(value + 1)
   }
 
   const handleMinus = () => {
     if (isMinimum) return
-    handleChange?.(value - 1)
+    onChange?.(value - 1)
   }
 
   return (
     <div className='w-full h-11 flex-center gap-1'>
       <BaseButton
-        className='flex-center bg-white rounded-l-xs'
+        className={classNames('flex-center bg-white rounded-l-xs', {
+          'px-5': mobile
+        })}
         size='medium'
         disabled={isMinimum || disabled}
         onClick={handleMinus}>
@@ -40,7 +44,9 @@ const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, handleCh
         { children }
       </div>
       <BaseButton
-        className='flex-center bg-white rounded-r-xs'
+        className={classNames('flex-center bg-white rounded-l-xs', {
+          'px-5': mobile
+        })}
         size='medium'
         disabled={isMaximum || disabled}
         onClick={handleAdd}>

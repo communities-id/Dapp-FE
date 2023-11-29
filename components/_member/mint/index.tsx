@@ -285,13 +285,14 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
                   inputclassname="!py-3 !px-8 h-15 outline-none !border-none text-lgx !leading-[34px]"
                   type="text"
                   placeholder='Search for a name'
+                  value={form.memberName}
                   endAdornment={(
                     <div className='flex-itmc'>
                       <div className='mx-5 h-5 w-[1px] bg-main-black'></div>
                       <span className='text-primary'>.{ brand }</span>
                     </div>
                   )}
-                  onChange={(e) => handleFormChange('memberName', e.target.value)}
+                  onChange={(e) => handleFormChange('memberName', e.target.value.toLowerCase())}
                 />
               </div>
             </div>
