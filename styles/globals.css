@@ -90,7 +90,7 @@
     @apply !h-[80vh] !max-h-[700px] overflow-y-scroll;
   }
   .modal-content-container {
-    @apply pb-15;
+    @apply pb-15 overflow-hidden;
   }
   .modal-content {
     @apply pt-15 pl-10 pr-20;
