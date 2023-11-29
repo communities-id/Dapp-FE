@@ -282,7 +282,7 @@
   background: url(/dapp-bg.svg) repeat;
   background-color: #fbfbfb;
   .main {
-    height: calc(100vh - 80px);
+    min-height: calc(100vh - 136px);
     @media screen and (max-width: 768px) {
       height: calc(100vh - 50px);
     }

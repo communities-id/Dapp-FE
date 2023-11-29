@@ -168,7 +168,7 @@ const SearchHeader: FC = () => {
           </div>
         </div>
         <div className="flex gap-20 items-center">
-          <Link href="/ecosystem" className="text-main-black text-md-b">Ecosystem</Link>
+          <Link href="/ecosystem" className="text-main-black text-md-b font-bold">Ecosystem</Link>
           <ConnectButton.Custom>
             {props => renderAccountButton(props)}
           </ConnectButton.Custom>
