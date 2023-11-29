@@ -119,16 +119,16 @@
   }
   .card-grid {
     @apply grid-cols-2;
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 768px) {
       @apply grid-cols-3;
     }
-    @media screen and (min-width: 1440px) {
+    @media screen and (min-width: 1024px) {
       @apply grid-cols-4;
     }
-    @media screen and (min-width: 1920px) {
+    @media screen and (min-width: 1440px) {
       @apply grid-cols-5;
     }
-    @media screen and (min-width: 2560px) {
+    @media screen and (min-width: 1920px) {
       @apply grid-cols-6;
     }
   }

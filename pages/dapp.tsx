@@ -120,7 +120,7 @@ export default function Dapp() {
               <RoundedLogo width="58" height="58" className="flex-shrink-0" />
               <input
                 type="text"
-                placeholder='Search for a brand name, user name or wallet address'
+                placeholder='Search for a name or wallet'
                 className="text-xl outline-none w-full text-main-black"
                 value={name}
                 onChange={e => setName(e.target.value)}
