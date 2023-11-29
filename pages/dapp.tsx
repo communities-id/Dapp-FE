@@ -12,7 +12,7 @@ import { useWallet } from '@/hooks/wallet';
 import DividerLine from '@/components/common/dividerLine';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { isValidLabel } from '@/shared/helper';
+import { isAddress, isValidLabel } from '@/shared/helper';
 import { useRoot } from '@/contexts/root';
 import { useConfiguration } from '@/contexts/configuration';
 import { useSignUtils } from '@/hooks/sign';
@@ -106,7 +106,14 @@ function Dapp() {
     if (!isValidLabel(name)) {
       message({
         type: 'error',
-        content: 'The name you want to mint in invalid'
+        content: 'The name you want to mint is invalid'
+      })
+      return
+    }
+    if (!isAddress(mintTo)) {
+      message({
+        type: 'error',
+        content: 'The address you want to mint to is invalid'
       })
       return
     }
