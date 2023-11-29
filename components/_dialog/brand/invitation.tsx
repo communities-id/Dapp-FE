@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import Dialog from '@/components/_common/dialog'
-import BrandInviteContent from '@/components/_brand/invite'
+import BrandInviteContent from '@/components/_brand/invitation'
 
 import { CommunityInfo } from '@/types'
  

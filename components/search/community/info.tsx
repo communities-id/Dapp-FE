@@ -48,7 +48,7 @@ import { TotalSupportedChainIDs } from '@/types/chain'
 import ExpandableDescription from '@/components/common/expandableDescription'
 import { BrandDID } from '@communitiesid/id'
 import CommunityDuplicate from '@/components/dialog/community/duplicate'
-import BrandInviteDialog from '@/components/_dialog/brand/invite'
+import BrandInviteDialog from '@/components/_dialog/brand/invitation'
 import styled from '@emotion/styled'
 import { lighten } from '@mui/system'
 import { SequenceMode } from '@/types/contract'
@@ -498,7 +498,7 @@ const CommunityLayout: FC<Props> = () => {
         </BrandColorButton> }
         <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">
           { communityInfoSet.isOwner && <>
-            <button onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+            <button onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>
             <DividerLine mode='horizontal' className='bg-white' />
           </> }
           <button onClick={() => toggleDialogHandler('memberMint', true)}>Join</button>

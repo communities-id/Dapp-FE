@@ -7,16 +7,17 @@ import MemberMintDialog from '@/components/_dialog/member/mint'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
 import BrandNotLoadedDialog from '@/components/_dialog/brand/notLoaded'
 
-import MobileBrandManageDrawer from '@/components/_dialog/brand/mobile/manageMenus'
-import MobileBrandManageProfileSettingDialog from '@/components/_dialog/brand/mobile/manageProfileSetting'
-import MobileBrandManageAccountSettingDialog from '@/components/_dialog/brand/mobile/manageAccountSetting'
-import MobileBrandManageMintSettingDialog from '@/components/_dialog/brand/mobile/manageMintSetting'
-import MobileBrandManageRenewSettingDialog from '@/components/_dialog/brand/mobile/manageRenewSetting'
-import MobileBrandManageTGSettingDialog from '@/components/_dialog/brand/mobile/manageTGSetting'
+import MobileBrandManageDrawer from '@/components/_dialog/brand/mobile/manage/manageMenus'
+import MobileBrandManageProfileSettingDialog from '@/components/_dialog/brand/mobile/manage/manageProfileSetting'
+import MobileBrandManageAccountSettingDialog from '@/components/_dialog/brand/mobile/manage/manageAccountSetting'
+import MobileBrandManageMintSettingDialog from '@/components/_dialog/brand/mobile/manage/manageMintSetting'
+import MobileBrandManageRenewSettingDialog from '@/components/_dialog/brand/mobile/manage/manageRenewSetting'
+import MobileBrandManageTGSettingDialog from '@/components/_dialog/brand/mobile/manage/manageTGSetting'
+import MobileBrandInvitationDialog from '@/components/_dialog/brand/mobile/invitation'
 
 import { CommunityInfo, SearchModeType } from '@/types'
 
-type MobileGlobalDialogNames = 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting'
+type MobileGlobalDialogNames = 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation'
 type GlobalDialogNames = MobileGlobalDialogNames | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | string
 
 interface GlobalDialogPayload {
@@ -121,6 +122,12 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
         handleClose={() => closeGlobalDialog('mobile-manage-tg-setting')}
+      />
+      <MobileBrandInvitationDialog
+        open={Boolean(dialogOpenSet['mobile-brand-invitation'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        handleClose={() => closeGlobalDialog('mobile-brand-invitation')}
       />
       {/* pc */}
       <CommunityProfileSettingDialog
