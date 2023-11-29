@@ -373,7 +373,6 @@ const CommunityLayout: FC<Props> = () => {
                   socialLinks.map(({ type, link, icon }, idx) => {
                     return (
                       <>
-                        {type === 'website' && <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='!h-4 sm:hidden' />}
                         <HoverIcon className="w-10 h-10" key={idx} link={link}>
                           {icon}
                         </HoverIcon>
@@ -381,7 +380,7 @@ const CommunityLayout: FC<Props> = () => {
                     )
                   })
                 }
-                { !socialLinks.find(v => v.type === 'website') && <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='!h-4 sm:hidden' /> }
+                <DividerLine mode='horizontal' className='bg-main-black' wrapClassName='!h-4 sm:hidden' />
                 <Popover
                   title="Share"
                   className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg sm:hidden'
