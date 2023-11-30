@@ -89,7 +89,7 @@ const CommunityDuplicate: FC<Props> = ({ open, communityInfo, commisionRate, ref
     }}>
       <div className="fixed w-[800px] max-w-[100vw] top-0 right-0 h-[100vh] bg-white duplicate-content overflow-y-auto">
         <div className="dapp-page pb-[77px] sm:pb-[54px]">
-          <div className="main pt-[70px] text-center flex flex-col items-center !h-auto">
+          <div className="main pt-[70px] text-center flex flex-col items-center !min-h-fit !h-auto">
             <h1 className="title font-Saira">Create Your <span><span>Own</span></span> Community</h1>
             <form
               className="mt-20 border-[6px] border-primary border-w-3 w-[600px] sm:w-[92vw] rounded-full sm:rounded-[44px] flex justify-between items-center bg-white overflow-hidden px-3 py-3 gap-4 sm:flex-col sm:mt-7.5"
@@ -100,7 +100,7 @@ const CommunityDuplicate: FC<Props> = ({ open, communityInfo, commisionRate, ref
                 <input
                   type="text"
                   placeholder='Search for a name'
-                  className="text-lg outline-none text-[20px] w-full"
+                  className="text-lg outline-none text-[20px] w-full px-2"
                   value={name}
                   onChange={e => setName(e.target.value)}
                 />
@@ -128,7 +128,7 @@ const CommunityDuplicate: FC<Props> = ({ open, communityInfo, commisionRate, ref
               <span>{refundModel}</span>
             </div>
             <div className="border border-gray-7 rounded-xs px-5 py-4 sm:px-7.5 sm:py-3 flex items-center justify-between">
-              <span className="opacity-50">Formular:</span>
+              <span className="opacity-50">Formula:</span>
               <span>{formula}</span>
             </div>
           </div>

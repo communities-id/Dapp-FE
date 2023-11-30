@@ -306,7 +306,7 @@ const CommunityLayout: FC<Props> = () => {
   const formula = `Y = ${ mintPriceNumericFormula }`
 
   return (
-    <div className='relative w-full'>
+    <div className='relative w-full'  style={{ '--var-brand-color': brandColor } as CSSProperties}>
       <Banner banner={communityInfo?.tokenUri?.brand_image} brandColor={communityInfo?.tokenUri?.brand_color} />
       <div className='dapp-container px-10 sm:px-4 pb-10 sm:pb-6 relative'>
         <div className='w-full pt-[80px] sm:pt-[35px]'>
@@ -448,7 +448,7 @@ const CommunityLayout: FC<Props> = () => {
                       <div className='config-name'>
                         <span>Refund Rate</span>
                         <ToolTip mode='sm' content={<p>{ Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}% of user DID minting fee goes to Brand DID Owner.</p>}>
-                          <TipIcon width='14' height='14' className='text-mintPurple'/>
+                          <TipIcon width='14' height='14' className='var-brand-textcolor'/>
                         </ToolTip>
                       </div>
                       <p className='config-value'>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
@@ -458,11 +458,11 @@ const CommunityLayout: FC<Props> = () => {
                         <span>TVL</span>
                         <ToolTip mode='sm' content={
                           <>
-                            <p className='text-primary'>Total value locked:</p>
+                            <p className='var-brand-textcolor'>Total value locked:</p>
                             <p>Total value of tokens staked by community members, calculated in USDT.</p>
                           </>
                         }>
-                          <TipIcon width='14' height='14' className='text-mintPurple'/>
+                          <TipIcon width='14' height='14' className='var-brand-textcolor'/>
                         </ToolTip>
                       </div>
                       <p className='config-value'>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>

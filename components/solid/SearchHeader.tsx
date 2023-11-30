@@ -158,7 +158,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
   }
 
   const searchHeaderPC = (
-    <header className={`header-container sticky top-0 w-full z-30 sm:hidden py-7 ${className} ${showBg ? 'with-bg' : ''}`}>
+    <header className={`header-container sticky top-0 w-full z-30 sm:hidden py-7 ${className || ''} ${showBg ? 'with-bg' : ''}`}>
       <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7 gap-10">
         <div className="flex justify-start gap-[30px] items-center w-full">
           <Link href="/" className='inline-block w-[165px] flex-shrink-0'>
