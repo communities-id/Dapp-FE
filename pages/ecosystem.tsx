@@ -12,7 +12,7 @@ import { EcoSystems } from '@/shared/ecosystem';
 import { useRoot } from '@/contexts/root';
 import Footer from '@/components/solid/Footer';
 
-const allCategorys = ['All Categories', 'Wallet', 'Social-Fi', 'Metaverse', 'NFT', 'DEX', 'Game-Fi', 'Campaign', 'DID', 'Marketplace', 'DAO', 'Others', 'Infrastructure', 'DeFi', 'CEX', 'AI', 'Layer 1', 'Layer 2']
+const allCategorys = ['All Categories', 'Wallet', 'Social-Fi', 'Metaverse', 'NFT', 'DEX', 'Game-Fi', 'Campaign', 'DID', 'Marketplace', 'DAO', 'Infrastructure', 'DeFi', 'CEX', 'AI', 'Layer 1', 'Layer 2', 'Others']
 
 export default function Dapp() {
 
