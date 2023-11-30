@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useMemo, useState, Fragment, use } from 'react'
+import { FC, ReactNode, useEffect, useMemo, useState, Fragment, use, CSSProperties } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
