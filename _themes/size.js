@@ -14,7 +14,7 @@ module.exports = {
     'home-md': { min: '768px' },
     'home-lg': { min: '1024px' },
     'home-xl': { min: '1280px' },
-    'home-2xl': { min: '1535px' },
+    'home-2xl': { min: '1536px' },
   },
   fontSize: {
     'xxl': ['40px', { lineHeight: '50px', fontWeight: '700' }],

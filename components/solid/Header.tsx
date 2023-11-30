@@ -69,7 +69,7 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
         'bg-white dark:bg-black': isStatic
       })}
     >
-      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl::px-0 home-lg:flex items-center justify-between relative">
+      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl:px-0 home-lg:flex items-center justify-between relative">
         <div className="w-full home-lg:w-1/4 flex items-center justify-between">
           <div className='w-[115px] home-lg:w-[192px] leading-none'>
             <Link href="/" className='inline-block w-full'>

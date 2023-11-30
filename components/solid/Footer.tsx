@@ -142,7 +142,7 @@ const Footer: FC<Props> = () => {
 
   return (
     <footer className="bg-white dark:bg-blacksection border-t border-stroke dark:border-strokedark">
-      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl::px-0">
+      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl:px-0">
         {/* <!-- Footer Top --> */}
         <div className="py-20 home-lg:py-25">
           <div className="flex flex-wrap home-lg:justify-between gap-8 home-lg:gap-0">
