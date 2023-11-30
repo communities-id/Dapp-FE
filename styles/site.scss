@@ -40,7 +40,7 @@ input[type='search'] {
 
   main {
     flex: 1;
-    @apply sm:mt-safe;
+    @apply sm:mt-safe pc:mt-[-136px];
   }
 
   footer {

@@ -65,8 +65,8 @@ const FeatureSection: FC<Props> = () => {
   ]
   
   return (
-    <section id="features" className="py-20 lg:py-25 xl:py-30">
-      <div className="relative mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+    <section id="features" className="py-20 home-lg:py-25 home-xl:py-30">
+      <div className="relative mx-auto max-w-c-1315 px-4 home-md:px-8 home-xl:px-0">
         <DottedBg/>
         <div className='relative z-1'>
           {/* <!-- Section Title Start --> */}
@@ -77,13 +77,13 @@ const FeatureSection: FC<Props> = () => {
           </div>
           {/* <!-- Section Title End --> */}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5 xl:gap-12.5 mt-12.5 lg:mt-15 xl:mt-20">
+          <div className="grid grid-cols-1 home-md:grid-cols-2 home-lg:grid-cols-3 gap-7.5 home-xl:gap-12.5 mt-12.5 home-lg:mt-15 home-xl:mt-20">
             {/* <!-- Features items --> */}
             {
               features.map((feature, index) => (
                 <div
                   key={index}
-                  className="group sr-item animate_top border border-white shadow-solid-3 rounded-lg p-7.5 xl:p-12.5 transition-all hover:shadow-solid-4 dark:hover:bg-hoverdark dark:border-strokedark bg-white dark:bg-blacksection"
+                  className="group sr-item animate_top border border-white shadow-solid-3 rounded-lg p-7.5 home-xl:p-12.5 transition-all hover:shadow-solid-4 dark:hover:bg-hoverdark dark:border-strokedark bg-white dark:bg-blacksection"
                 >
                   <div
                     className={
@@ -92,7 +92,7 @@ const FeatureSection: FC<Props> = () => {
                     }>
                     {feature.icon}
                   </div>
-                  <h3 className="font-semibold text-xl xl:text-itemtitle text-black dark:text-white mt-7.5 mb-5">{ feature.title }</h3>
+                  <h3 className="font-semibold text-xl home-xl:text-itemtitle text-black dark:text-white mt-7.5 mb-5">{ feature.title }</h3>
                   {
                     feature.descriptions.map((description, index) => (
                       <p key={index} className="mt-3">{ description }</p>

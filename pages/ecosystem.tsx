@@ -12,7 +12,7 @@ import { EcoSystems } from '@/shared/ecosystem';
 import { useRoot } from '@/contexts/root';
 import Footer from '@/components/solid/Footer';
 
-const allCategorys = ['All Categories', 'Wallet', 'Social-Fi', 'Metaverse', 'NFT', 'DEX', 'Game-Fi', 'Campaign', 'DID', 'Marketplace', 'DAO', 'Infrastructure', 'DeFi', 'CEX', 'AI', 'Layer 1', 'Layer 2', 'Others']
+const allCategorys = ['All Categories', 'AI', 'CEX', 'Campaign', 'DAO', 'DEX', 'DID', 'DeFi', 'Game-Fi', 'Infrastructure', 'Layer 1', 'Layer 2', 'Marketplace', 'Metaverse', 'NFT', 'Social-Fi', 'Wallet', 'Others']
 
 export default function Dapp() {
 
@@ -58,7 +58,7 @@ export default function Dapp() {
             <button className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>List My Dapp</button>
           </div>
         </div>
-        <div className="border-t border-gray-7 sticky top-[136px] bg-white z-20">
+        <div className="border-t border-gray-7 sticky top-[136px] sm:top-0 bg-white z-20">
           <div className="dapp-container">
             <div className="h-20 border-b border-gray-7 flex items-center mx-10 sm:mx-3">
               <div className="ml-auto">

@@ -81,7 +81,7 @@ const _Snackbar: FC<Props> = ({ type, title, content, open, handleClose, handleE
             <SnackbarContent
               className={
                 classnames(
-                  'relative flex items-center p-[10px] pr-5 gap-[2px] border border-gray-7 bg-white rounded-[6px] text-[14px] leading-[20px] overflow-hidden snack-toast',
+                  'w-full relative flex items-center p-[10px] pr-5 gap-[2px] border border-gray-7 bg-white rounded-[6px] text-[14px] leading-[20px] overflow-hidden snack-toast',
                   className
                 )
               }
@@ -113,6 +113,9 @@ const StyledSnackbar = styled(Snackbar)`
   left: 50%;
   transform: translateX(-50%);
   max-width: 560px;
+  @media screen and (max-width: 768px) {
+    width: 84vw;
+  }
   `;
 
 const SnackbarContent = styled('div')(

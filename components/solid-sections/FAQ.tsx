@@ -37,11 +37,11 @@ const FAQSection: FC<Props> = () => {
   }
 
   return (
-    <section className="pb-20 lg:pb-25 xl:pb-30 overflow-hidden">
-      <div className="mx-auto max-w-c-1235 px-4 md:px-8 xl:px-0 relative">
+    <section className="pb-20 home-lg:pb-25 home-xl:pb-30 overflow-hidden">
+      <div className="mx-auto max-w-c-1235 px-4 home-md:px-8 home-xl:px-0 relative">
         <DottedBg/>
-        <div className="flex flex-wrap md:flex-nowrap md:items-center gap-8 xl:gap-32.5">
-          <div className="sr-item animate_left md:w-2/5 lg:w-1/2">
+        <div className="flex flex-wrap home-md:flex-nowrap home-md:items-center gap-8 home-xl:gap-32.5">
+          <div className="sr-item animate_left home-md:w-2/5 home-lg:w-1/2">
             <SectionTitle side title={faq.metatitle} subTitle={faq.title} bgTitle={faq.bgtitle} />
             {/* <p>The only service you need to integrate all Web3 name services, including .eth, .bnb, and .arb.</p> */}
 
@@ -52,13 +52,13 @@ const FAQSection: FC<Props> = () => {
             </Link> */}
           </div>
 
-          <div className="sr-item animate_right md:w-3/5 lg:w-1/2">
+          <div className="sr-item animate_right home-md:w-3/5 home-lg:w-1/2">
             <div className="bg-white dark:bg-blacksection dark:border dark:border-strokedark shadow-solid-8 rounded-lg">
               {
                 faq.collapses.map((collapse, index) => (
                   <div key={index} className="flex flex-col border-b border-stroke dark:border-strokedark">
                     <h4
-                      className="cursor-pointer flex justify-between items-center font-bold text-metatitle3 text-black dark:text-white py-5 lg:py-7.5 px-6 lg:px-9"
+                      className="cursor-pointer flex justify-between items-center font-bold text-metatitle3 text-black dark:text-white py-5 home-lg:py-7.5 px-6 home-lg:px-9"
                       onClick={() => {
                         setSelected(selected !== index ? index : null)
                       }}
@@ -69,7 +69,7 @@ const FAQSection: FC<Props> = () => {
                       <img src="/solid/icon/icon-plus-dark.svg" alt="plus" className={classnames('hidden dark:block', `${selected === index ? 'dark:hidden' : 'dark:block'}`)} />
                       <img src="/solid/icon/icon-minus-dark.svg" alt="minus" className={classnames('hidden dark:block', `${selected === index ? 'dark:block' : 'dark:hidden'}`)} />
                     </h4>
-                    <div className={classnames('flex flex-col gap-[12px] py-5 lg:py-7.5 px-6 lg:px-9 border-t border-stroke dark:border-strokedark', {
+                    <div className={classnames('flex flex-col gap-[12px] py-5 home-lg:py-7.5 px-6 home-lg:px-9 border-t border-stroke dark:border-strokedark', {
                       'hidden': selected !== index
                     })}>
                       {

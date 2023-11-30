@@ -142,11 +142,11 @@ const Footer: FC<Props> = () => {
 
   return (
     <footer className="bg-white dark:bg-blacksection border-t border-stroke dark:border-strokedark">
-      <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
+      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl::px-0">
         {/* <!-- Footer Top --> */}
-        <div className="py-20 lg:py-25">
-          <div className="flex flex-wrap lg:justify-between gap-8 lg:gap-0">
-            <div className={classnames("w-1/2 lg:w-1/4", {
+        <div className="py-20 home-lg:py-25">
+          <div className="flex flex-wrap home-lg:justify-between gap-8 home-lg:gap-0">
+            <div className={classnames("w-1/2 home-lg:w-1/4", {
               // 'sr-item animate_top': true,
               // 'sr-item animate_top': !isStatic,
               // '!block !visible': !isStatic
@@ -161,7 +161,7 @@ const Footer: FC<Props> = () => {
               <a target='_blank' href="mailto:support@communities.id" className="text-black dark:text-white font-medium text-itemtitle">support@communities.id</a>
             </div>
 
-            <div className="w-full lg:w-2/3 xl:w-7/12 flex flex-col md:flex-row md:justify-between gap-8 md:gap-0">
+            <div className="w-full home-lg:w-2/3 home-xl::w-7/12 flex flex-col home-md:flex-row home-md:justify-between gap-8 home-md:gap-0">
               {
                 items.map(({ title, links }, index) => {
                   return (
@@ -220,7 +220,7 @@ const Footer: FC<Props> = () => {
         {/* <!-- Footer Top --> */}
 
         {/* <!-- Footer Bottom --> */}
-        <div className="border-t border-stroke dark:border-strokedark flex flex-wrap flex-col lg:flex-row items-center justify-center lg:justify-between gap-5 lg:gap-0 py-7">
+        <div className="border-t border-stroke dark:border-strokedark flex flex-wrap flex-col home-lg:flex-row items-center justify-center home-lg:justify-between gap-5 home-lg:gap-0 py-7">
           <div className={classnames({
             // 'sr-item animate_top': true,
             // "sr-item animate_top": !isStatic

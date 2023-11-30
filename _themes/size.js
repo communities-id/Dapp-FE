@@ -10,6 +10,11 @@ module.exports = {
     'mds': { max: '1023px' },
     'sm': { max: '768px' },
     'pc': { min: '768px' },
+    'home-sm': { min: '640px' },
+    'home-md': { min: '768px' },
+    'home-lg': { min: '1024px' },
+    'home-xl': { min: '1280px' },
+    'home-2xl': { min: '1535px' },
   },
   fontSize: {
     'xxl': ['40px', { lineHeight: '50px', fontWeight: '700' }],

@@ -272,7 +272,7 @@
       @apply text-gray-1 text-sm flex items-center gap-1 sm:text-xs;
     }
     .config-value {
-      @apply text-main-black text-md sm:text-xs min-w-[200px];
+      @apply text-main-black text-md sm:text-xs pc:min-w-[200px];
       font-weight: 600;
     }
   }

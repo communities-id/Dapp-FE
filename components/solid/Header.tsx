@@ -64,14 +64,14 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
 
   return (
     <header
-      className={classnames('fixed left-0 top-0 w-full z-header py-0 lg:py-4 transition-[padding] duration-100', {
+      className={classnames('fixed left-0 top-0 w-full z-header py-0 home-lg:py-4 transition-[padding] duration-100', {
         'bg-navbar dark:bg-navbarDark shadow backdrop-saturate-[180%] backdrop-blur-[16px]' : stickyMenu,
         'bg-white dark:bg-black': isStatic
       })}
     >
-      <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0 lg:flex items-center justify-between relative">
-        <div className="w-full lg:w-1/4 flex items-center justify-between">
-          <div className='w-[115px] lg:w-[192px] leading-none'>
+      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl::px-0 home-lg:flex items-center justify-between relative">
+        <div className="w-full home-lg:w-1/4 flex items-center justify-between">
+          <div className='w-[115px] home-lg:w-[192px] leading-none'>
             <Link href="/" className='inline-block w-full'>
               <LightLogo className="dark:hidden w-full"/>
               <DarkLogo className="hidden dark:block w-full"/>
@@ -79,7 +79,7 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
         </div>
 
           {/* mobile: menu */}
-          <div className="lg:hidden block">
+          <div className="home-lg:hidden block">
             <ConnectButton.Custom>
               {
                 ({
@@ -119,7 +119,7 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
                     handleDisconnect={handleDisconnect}
                     handleSearch={selfHandleSearch}
                     handleSearchDone={toggleNavigationOpen}/>
-                  // return <button className="lg:hidden block" onClick={() => {
+                  // return <button className="home-lg:hidden block" onClick={() => {
                   //   toggleNavigationOpen()
                   // }}>
                   //   <span className="block relative cursor-pointer w-5.5 h-5.5">
@@ -164,18 +164,18 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
 
         {
           showSearch ? (
-            <div className='hidden lg:block'>
+            <div className='hidden home-lg:block'>
               <SearchForm />
             </div>
           ) : null
         }
         <div
-          className={classnames('min-w-[220px] h-0 lg:h-auto invisible lg:visible lg:flex items-center justify-end overflow-hidden lg:overflow-visible', {
+          className={classnames('min-w-[220px] h-0 home-lg:h-auto invisible home-lg:visible home-lg:flex items-center justify-end overflow-hidden home-lg:overflow-visible', {
             '!visible bg-white dark:bg-blacksection shadow-solid-5 h-auto max-h-[400px] overflow-y-scroll rounded-md mt-4 p-4': navigationOpen
           })}
         >
           <div className="flex items-center gap-6">
-            <div className={classnames('hidden lg:block mr-1.5 absolute lg:static top-1 right-17 !visible')}>
+            <div className={classnames('hidden home-lg:block mr-1.5 absolute home-lg:static top-1 right-17 !visible')}>
               <label className="block m-0 relative">
                 <input
                   type="checkbox"
@@ -251,21 +251,21 @@ interface AccountInfoProps {
 export const AccountInfo: FC<AccountInfoProps> = ({ address, theme, darkMode, toggleDarkMode, handleDisconnect, handleSearch, handleSearchDone }) => {
   return (
     <>
-      <div className="dropdown dropdown-end w-full lg:w-auto lg:bg-[#efefef] dark:lg:bg-[transparent] lg:rounded-[16px]">
-        <div className='block lg:hidden'>
+      <div className="dropdown dropdown-end w-full home-lg:w-auto home-lg:bg-[#efefef] dark:home-lg:bg-[transparent] home-lg:rounded-[16px]">
+        <div className='block home-lg:hidden'>
           <SearchForm
             className="block p-0 my-[12px] h-[48px]"
             inputClassName="w-full"
             handleDone={handleSearchDone} />
         </div>
-        <div className='px-4 lg:px-0'>
+        <div className='px-4 home-lg:px-0'>
           <label
             tabIndex={0}
-            className="px-0 lg:px-[16px] h-[50px] lg:h-3 btn !border-none !bg-transparent hover:!bg-[#eee] text-current rounded-btn pointer-events-none lg:pointer-events-auto lg:backdrop-blur-[30px]">
+            className="px-0 home-lg:px-[16px] h-[50px] home-lg:h-3 btn !border-none !bg-transparent hover:!bg-[#eee] text-current rounded-btn pointer-events-none home-lg:pointer-events-auto home-lg:backdrop-blur-[30px]">
             <WalletSvg width="24" height="24" className="mr-[6px] text-[#3D4451] dark:text-white"/>
-            <div className={classnames('text-neutral dark:text-white text-[18px] lg:text-[14px] lowercase')}>&nbsp;<PrimaryDID address={address} noLink/></div>
+            <div className={classnames('text-neutral dark:text-white text-[18px] home-lg:text-[14px] lowercase')}>&nbsp;<PrimaryDID address={address} noLink/></div>
           </label>
-          <label className="lg:hidden h-[50px] flex items-center gap-[0.75rem] font-normal text-[#181C30] dark:text-white m-0 relative">
+          <label className="home-lg:hidden h-[50px] flex items-center gap-[0.75rem] font-normal text-[#181C30] dark:text-white m-0 relative">
             <input
               type="checkbox"
               checked={darkMode}
@@ -282,38 +282,38 @@ export const AccountInfo: FC<AccountInfoProps> = ({ address, theme, darkMode, to
             tabIndex={0}
             className={
               classnames(
-                'menu text-base-content p-0 lg:p-2 w-full lg:w-48 lg:dropdown-content lg:shadow-section lg:mt-4 bg-base-100 rounded-box',
-                'bg-transparent lg:bg-white lg:dark:bg-[rgba(24,28,28,.8)]',
+                'menu text-base-content p-0 home-lg:p-2 w-full home-lg:w-48 home-lg:dropdown-content home-lg:shadow-section home-lg:mt-4 bg-base-100 rounded-box',
+                'bg-transparent home-lg:bg-white home-lg:dark:bg-[rgba(24,28,28,.8)]',
                 'text-black dark:text-white'
               )
             }>
             {/* pc */}
-            <li className='hidden lg:block rounded-t-[inherit] rounded-b-none'>
+            <li className='hidden home-lg:block rounded-t-[inherit] rounded-b-none'>
               <div onClick={() => handleSearch(address)}>
                 <AccountSvg width="22" height="22"/>
                 <span>My Account</span>
               </div>
             </li>
-            <li className='hidden lg:block rounded-b-[inherit]'>
+            <li className='hidden home-lg:block rounded-b-[inherit]'>
               <button className='w-full rounded-b-[inherit]' onClick={() => handleDisconnect()}>
                 <LogoutSvg width="22" height="22"/>
                 <span>Disconnect</span>
               </button>
             </li>
             {/* mobile */}
-            {/* <li className='block lg:hidden'>
+            {/* <li className='block home-lg:hidden'>
               <SearchForm
                 mobile
                 className="block p-0 my-[12px] h-[48px]"
                 inputClassName="w-full" />
             </li> */}
-            <li className='block lg:hidden'>
+            <li className='block home-lg:hidden'>
               <div className='p-0 py-[12px]' onClick={() => handleSearch(address)}>
                 <AccountSvg width="22" height="22"/>
                 <span>My Account</span>
               </div>
             </li>
-            <li className='block lg:hidden'>
+            <li className='block home-lg:hidden'>
               <button className='p-0 py-[12px]' onClick={() => handleDisconnect()}>
                 <LogoutSvg width="22" height="22"/>
                 <span>Disconnect</span>

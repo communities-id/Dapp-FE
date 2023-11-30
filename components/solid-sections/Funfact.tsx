@@ -45,27 +45,27 @@ const FunfactSection: FC<Props> = () => {
     getCommunitiesCount()
   }, [])
   return (
-    <section className="pt-20 lg:pt-22.5 px-4 md:px-8 2xl:px-0">
+    <section className="pt-20 home-lg:pt-22.5 px-4 home-md:px-8 home-2xl:px-0">
       <div
-        className="mx-auto max-w-c-1390 py-22.5 xl:py-27.5 relative z-1 rounded-lg bg-primary shadow-section"
+        className="mx-auto max-w-c-1390 py-22.5 home-xl:py-27.5 relative z-1 rounded-lg bg-primary shadow-section"
       >
         <Image alt="" src="/funfact/common-bg-left.png" width={260} height={300} className="absolute bottom-0 left-0 pointer-events-none select-none -z-1"/>
-        <Image alt="" src="/funfact/common-bg-right.png" width={260} height={300} className="hidden lg:block absolute top-0 right-0 pointer-events-none select-none -z-1"/>
-        {/* <img src="/solid/shape/shape-04.svg" alt="Man" className="absolute -top-25 -left-15 lg:left-0 -z-1" />
+        <Image alt="" src="/funfact/common-bg-right.png" width={260} height={300} className="hidden home-lg:block absolute top-0 right-0 pointer-events-none select-none -z-1"/>
+        {/* <img src="/solid/shape/shape-04.svg" alt="Man" className="absolute -top-25 -left-15 home-lg:left-0 -z-1" />
         <img src="/solid/shape/shape-05.svg" alt="Doodle" className="absolute bottom-0 right-0 -z-1" />
         <img src="/solid/shape/shape-dotted-light-02.svg" alt="Dotted" className="absolute top-0 left-0 -z-1 dark:hidden" />
         <img src="/solid/shape/shape-dotted-dark-02.svg" alt="Dotted" className="absolute top-0 left-0 -z-1 hidden dark:block" /> */}
-        <div className="sr-item animate_top mx-auto text-center md:w-4/5 lg:w-2/3 xl:w-6/10 mb-12.5 lg:mb-17.5 px-4 md:px-0">
-            <h2 className="font-bold text-white dark:text-white text-3xl xl:text-sectiontitle3 mb-4">{ funfact.title }</h2>
+        <div className="sr-item animate_top mx-auto text-center home-md:w-4/5 home-lg:w-2/3 home-xl:w-6/10 mb-12.5 home-lg:mb-17.5 px-4 home-md:px-0">
+            <h2 className="font-bold text-white dark:text-white text-3xl home-xl:text-sectiontitle3 mb-4">{ funfact.title }</h2>
             <p className="lg:w-11/12 mx-auto">{ funfact.desc }</p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8 lg:gap-42.5">
+          <div className="flex flex-wrap justify-center gap-8 home-lg:gap-42.5">
             {
               funfact.stats.map((item, index) => (
                 <div key={index} className="sr-item animate_top text-center">
-                  <h3 className="font-bold text-white dark:text-white text-3xl xl:text-sectiontitle3 mb-2.5">{ formatNumber(item.count, item.digits) }</h3>
-                  <p className="text-lg text-[rgba(255,255,255,.5)] lg:text-para2">{ item.title }</p>
+                  <h3 className="font-bold text-white dark:text-white text-3xl home-xl:text-sectiontitle3 mb-2.5">{ formatNumber(item.count, item.digits) }</h3>
+                  <p className="text-lg text-[rgba(255,255,255,.5)] home-lg:text-para2">{ item.title }</p>
                 </div>
               ))
             }

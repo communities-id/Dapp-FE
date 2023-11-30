@@ -32,8 +32,8 @@ const SectionTitle: FC<Props> = ({ titleTag, title, subTitle, bgTitle, appendSub
           )
         ) : null
       }
-      <h2 className={classnames("font-bold text-3xl xl:text-sectiontitle3 text-black dark:text-white mx-auto mb-4", {
-        "md:w-4/5 xl:w-1/2": !side
+      <h2 className={classnames("font-bold text-3xl home-xl::text-sectiontitle3 text-black dark:text-white mx-auto mb-4", {
+        "home-md:w-4/5 home-xl::w-1/2": !side
       })}>
         { subTitle }
         { bgTitle ? (
@@ -42,7 +42,7 @@ const SectionTitle: FC<Props> = ({ titleTag, title, subTitle, bgTitle, appendSub
         { appendSubTitle }
       </h2>
       <p className={classnames("mx-auto", {
-        "md:w-4/5 lg:w-3/5 xl:w-[46%]": !side
+        "home-md:w-4/5 home-lg:w-3/5 home-xl::w-[46%]": !side
       })}>{ titlePara }</p>
     </>
   )
