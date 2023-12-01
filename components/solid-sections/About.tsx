@@ -30,15 +30,15 @@ const AboutSection: FC<Props> = () => {
     ]
   }
   return (
-    <section className="pb-20 lg:pb-25 xl:pb-30 overflow-hidden">
-      <div className="relative mx-auto max-w-c-1235 px-4 md:px-8 xl:px-0">
+    <section className="pb-20 home-lg:pb-25 home-xl:pb-30 overflow-hidden">
+      <div className="relative mx-auto max-w-c-1235 px-4 home-md:px-8 home-xl:px-0">
         <DottedBg/>
-        <div className="flex items-center gap-8 lg:gap-32.5">
-          <div className="sr-item animate_left hidden md:block md:w-1/2">
+        <div className="flex items-center gap-8 home-lg:gap-32.5">
+          <div className="sr-item animate_left hidden home-md:block home-md:w-1/2">
             <img src="about/wallet-scene.png" alt="About" className="dark:hidden" />
             <img src="about/wallet-scene.png" alt="About" className="hidden dark:block" />
           </div>
-          <div className="sr-item animate_right md:w-1/2">
+          <div className="sr-item animate_right home-md:w-1/2">
             <SectionTitle
               side
               // title={about.metatitle}

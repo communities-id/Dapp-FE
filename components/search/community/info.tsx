@@ -492,16 +492,23 @@ const CommunityLayout: FC<Props> = () => {
       </div>
       <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
         { communityInfoSet.isOwner && <BrandColorButton
-          className="button-md text-main-black border-2 border-main-black flex gap-3"
+          className="button-md text-main-black border-2 border-main-black flex gap-3 text-sm-b"
           onClick={() => openGlobalDialog('mobile-manage-drawer')}>
           Manage
         </BrandColorButton> }
-        <BrandColorButtonGroup className="btn-group button-md text-white flex gap-3">
+        <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex">
           { communityInfoSet.isOwner && <>
-            <button onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>
-            <DividerLine mode='horizontal' className='bg-white' />
+            <button className="min-w-[98px] px-5 h-full rounded-l-full" onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+            <div className='divide flex items-center'>
+              <DividerLine mode='horizontal' className='bg-white mx-0' wrapClassName='!h-4 !mx-0' />
+            </div>
           </> }
-          <button onClick={() => openGlobalDialog('mobile-member-mint')}>Join</button>
+          <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
+            openGlobalDialog('member-mint')
+          }}>
+            {!communityInfoSet.isOwner && <PlusIconWithColor color='#fff' className='w-4 h-4'/>}
+            <span>Join</span>
+          </button>
         </BrandColorButtonGroup>
       </div>
       <CommunityRenewDialog

@@ -160,19 +160,19 @@ const SearchHeader: FC<Props> = ({ className }) => {
   const searchHeaderPC = (
     <header className={`header-container sticky top-0 w-full z-30 sm:hidden py-7 ${className || ''} ${showBg ? 'with-bg' : ''}`}>
       <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7 gap-10">
-        <div className="flex justify-start gap-[30px] items-center w-full">
+        <div className="flex justify-start gap-[30px] items-center w-full overflow-hidden">
           <Link href="/" className='inline-block w-[165px] flex-shrink-0'>
             <LogoWithColor className="dark:hidden w-full" color={brandColor} />
             <DarkLogo className="hidden dark:block w-full"/>
           </Link>
-          <div className="w-full">
+          <div className="w-full overflow-hidden">
             <div className="bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-pointer w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
               <SearchSvg className="w-6 h-6 text-gray-4" />
               <span className={`w-full overflow-hidden overflow-ellipsis pr-3 ${!searchValue ? 'text-gray-4' : ''}`}>{searchValue || 'Search for brand name, user name or wallet adderss'}</span>
             </div>
           </div>
         </div>
-        <div className="flex gap-20 items-center">
+        <div className="flex gap-5 lg:gap-20 items-center flex-shrink-0">
           <Link href="/ecosystem" className="text-main-black text-md-b font-bold">Ecosystem</Link>
           <ConnectButton.Custom>
             {props => renderAccountButton(props)}

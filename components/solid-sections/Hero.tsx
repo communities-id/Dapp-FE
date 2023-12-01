@@ -61,14 +61,14 @@ const HeroSection: FC<Props> = () => {
   }
   
   return (
-    <section className="pt-35 md:pt-40 xl:pt-46 pb-20 xl:pb-25 overflow-hidden">
-      <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-        <div className="flex lg:items-center lg:gap-8 xl:gap-32.5">
-          <div className="sr-item animate_left relative md:w-1/2 overflow-hidden">
+    <section className="pt-35 home-md:pt-40 home-xl:pt-46 pb-20 home-xl:pb-25 overflow-hidden">
+      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl:px-0">
+        <div className="flex home-lg:items-center home-lg:gap-8 home-xl:gap-32.5">
+          <div className="sr-item animate_left relative home-md:w-1/2 overflow-hidden">
             <DottedBg/>
             {/* <h4 className="text-black dark:text-white text-lg font-medium mb-4.5">🔥 One-click deployment of a customized DID system!</h4> */}
             <h4 className="text-black dark:text-white text-lg font-medium mb-4.5">Decentralized-identity as a Service came out!</h4>
-            <h1 className="text-black dark:text-white text-3xl xl:text-hero font-bold mb-5">
+            <h1 className="text-black dark:text-white text-3xl home-xl:text-hero font-bold mb-5">
               <span>
                 The First&nbsp;&nbsp; 
                 <span className="inline-block relative before:absolute before:bottom-2.5 before:left-0 before:w-full before:h-3 before:bg-titlebg dark:before:bg-titlebgdark before:-z-1">DaaS</span>
@@ -82,8 +82,8 @@ const HeroSection: FC<Props> = () => {
               <Button onClick={handleEcosystem} theme='primary' className='px-12 ease-in-out duration-300 border border-primary bg-white !text-primary hover:!bg-primary-tr-10'>Ecosystem</Button>
             </div>
           </div>
-          <div className="sr-item animate_right md:w-1/2 hidden lg:block">
-            <div className="relative 2xl:-mr-7.5">
+          <div className="sr-item animate_right home-md:w-1/2 hidden home-lg:block">
+            <div className="relative home-2xl:-mr-7.5">
               {/* <img src="/solid/shape/shape-01.png" alt="shape" className="absolute -left-11.5 top-0" />
               <img src="/solid/shape/shape-02.svg" alt="shape" className="absolute right-0 bottom-0" />
               <img src="/solid/shape/shape-03.svg" alt="shape" className="absolute -right-6.5 bottom-0" /> */}

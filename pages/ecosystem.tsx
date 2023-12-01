@@ -12,7 +12,7 @@ import { EcoSystems } from '@/shared/ecosystem';
 import { useRoot } from '@/contexts/root';
 import Footer from '@/components/solid/Footer';
 
-const allCategorys = ['All Categories', 'Wallet', 'Social-Fi', 'Metaverse', 'NFT', 'DEX', 'Game-Fi', 'Campaign', 'DID', 'Marketplace', 'DAO', 'Infrastructure', 'DeFi', 'CEX', 'AI', 'Layer 1', 'Layer 2', 'Others']
+const allCategorys = ['All Categories', 'AI', 'CEX', 'Campaign', 'DAO', 'DEX', 'DID', 'DeFi', 'Game-Fi', 'Infrastructure', 'Layer 1', 'Layer 2', 'Marketplace', 'Metaverse', 'NFT', 'Social-Fi', 'Wallet', 'Others']
 
 export default function Dapp() {
 
@@ -29,13 +29,6 @@ export default function Dapp() {
   const handleCloseSelectCategoryMenu = () => {
     setAnchorEl(null);
   };
-
-  function testToast() {
-    message({
-      type: 'success',
-      content: 'Test Test'
-    })
-  }
 
   function selectCategory(cate: string) {
     setCategory(cate)
@@ -55,10 +48,10 @@ export default function Dapp() {
           <h1 className='text-xxl font-Saira font-normal text-main-black'>An Ecosystem to Decentralized Future</h1>
           <p className='font-Saira text-md max-w-[800px] mt-1.5 whitespace-pre-wrap break-all'>Texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</p>
           <div className='flex gap-4.5 mt-5'>
-            <button className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>List My Dapp</button>
+            <a  className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' href="https://communities-id.typeform.com/to/S41zv4ZY" target='_blank'>List My Dapp</a>
           </div>
         </div>
-        <div className="border-t border-gray-7 sticky top-[136px] bg-white z-20">
+        <div className="border-t border-gray-7 sticky top-[136px] sm:top-0 bg-white z-20">
           <div className="dapp-container">
             <div className="h-20 border-b border-gray-7 flex items-center mx-10 sm:mx-3">
               <div className="ml-auto">

@@ -15,10 +15,10 @@ const About2Section: FC<Props> = () => {
     }
   }
   return (
-    <section className='mb-20 lg:mb-22.5'>
-      <div className="mx-auto max-w-c-1235 px-4 md:px-8 2xl:px-0 overflow-hidden">
-        <div className="flex items-center gap-8 lg:gap-32.5">
-          <div className="sr-item animate_left md:w-1/2">
+    <section className='mb-20 home-lg:mb-22.5'>
+      <div className="mx-auto max-w-c-1235 px-4 home-md:px-8 home-2xl:px-0 overflow-hidden">
+        <div className="flex items-center gap-8 home-lg:gap-32.5">
+          <div className="sr-item animate_left home-md:w-1/2">
           <SectionTitle
             side
             title={about2.metatitle}
@@ -31,7 +31,7 @@ const About2Section: FC<Props> = () => {
               <img className="hidden dark:block" src="/solid/icon/icon-arrow-dark.svg" alt="Arrow" />
             </Link> */}
           </div>
-          <div className="sr-item animate_right hidden md:block md:w-1/2">
+          <div className="sr-item animate_right hidden home-md:block home-md:w-1/2">
             <img src="/about/social-scene.png" alt="About" className="dark:hidden" />
             <img src="/about/social-scene.png" alt="About" className="hidden dark:block" />
           </div>
