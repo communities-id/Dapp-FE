@@ -1921,7 +1921,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                       className='ml-auto px-2 py-1 flex items-center gap-1 text-gray-1 text-xs bg-gray-6 rounded-xs cursor-pointer'
                       onClick={() => handleClick()}
                     >
-                      <span>check details</span>
+                      <span>Readonly</span>
                       <ArrowRightIcon width='12' height='12' />
                     </div>
                   ) : (

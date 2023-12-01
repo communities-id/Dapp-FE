@@ -12,6 +12,7 @@ import { Box, styled } from '@mui/system';
 import CloseIcon from '~@/icons/close.svg'
 
 interface Props {
+  fullscreen?: boolean
   title?: string | ReactNode
   open: boolean
   transparent?: boolean
@@ -32,7 +33,7 @@ interface Props {
   children: ReactNode
 }
 
-const Dialog: FC<Props> = ({ title, open, transparent, center = true, loading, disableCloseBtn, closeText = 'Cancel', confirmText = 'Save', hiddenCloseIcon, hiddenActions = false, disabledAnimate, handleClose, handleConfirm, wrapClassName, backdropClassName, contentClassName, className, children }) => {
+const Dialog: FC<Props> = ({ fullscreen = false, title, open, transparent, center = true, loading, disableCloseBtn, closeText = 'Cancel', confirmText = 'Save', hiddenCloseIcon, hiddenActions = false, disabledAnimate, handleClose, handleConfirm, wrapClassName, backdropClassName, contentClassName, className, children }) => {
   // const nodeRef = useRef(null)
 
   return (
@@ -45,10 +46,12 @@ const Dialog: FC<Props> = ({ title, open, transparent, center = true, loading, d
       <Box
         className={
           classnames(
-            'w-[600px] max-h-[80vh] py-[30px] rounded-[10px] bg-white border-[1px] border-solid border-[#e4e4e4] outline-none',
+            'bg-white outline-none',
             'flex flex-col items-center justify-center',
             {
               '!bg-transparent !border-none select-none': transparent,
+              'w-[600px] max-h-[80vh] py-[30px] rounded-[10px] border-[1px] border-solid border-[#e4e4e4]': !fullscreen,
+              'w-screen h-screen': fullscreen
             },
             // {
             //   'items-center': center,
@@ -67,7 +70,12 @@ const Dialog: FC<Props> = ({ title, open, transparent, center = true, loading, d
             <CloseIcon width='20' height='20' className='absolute top-[14px] right-[10px] cursor-pointer' onClick={handleClose} />
           )
         }
-        <div className={classnames('mt-[10px] px-[40px] pb-[10px] flex-1 w-full overflow-auto', contentClassName)}>
+        <div className={
+          classnames(
+            'flex-1 w-full overflow-auto',
+            { 'mt-[10px] px-[40px] pb-[10px] ': !fullscreen },
+            contentClassName)
+          }>
           {children}
         </div>
         {

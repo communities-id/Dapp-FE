@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 
 import { useSwitchNetwork } from 'wagmi'
 import { DEFAULT_AVATAR, MAIN_CHAIN_ID, SCAN_MAP, ZERO_ADDRESS } from '@/shared/constant'
-import { useRoot } from '@/contexts/root'
+import { useRoot, useRootConfig } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
 import { formatDate, formatPrice, formatConstantsPrice, parseImgSrc, calcMintPrice } from '@/shared/helper'
@@ -61,6 +61,7 @@ interface Props {
 
 const CommunityLayout: FC<Props> = () => {
   const { message } = useRoot()
+  const { isMobile } = useRootConfig()
   const { keywords, community, communityInfo, communityInfoSet } = useDetails()
   const { showGlobalDialog } = useGlobalDialog()
   const { switchNetworkAsync } = useSwitchNetwork()
@@ -252,7 +253,7 @@ const CommunityLayout: FC<Props> = () => {
   }
 
   const openGlobalDialog = (name: string) => {
-    showGlobalDialog(name, { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+    showGlobalDialog(name, { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {}, mobile: isMobile })
   }
 
   // to do: set in details

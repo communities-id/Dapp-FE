@@ -2,9 +2,8 @@ import { FC, Fragment } from 'react'
 
 import { useWallet } from '@/hooks/wallet'
 
-import Dialog from '@/components/_common/dialog'
 import Modal from '@/components/_common/modal'
-import MobileMemberMintContent from '@/components/_member/mint/mobile'
+import MobileBrandMintContent from '@/components/_brand/mint/mobile'
 import Banner from '@/components/search/banner'
 
 import CloseIcon from '~@/_brand/close.svg'
@@ -15,11 +14,16 @@ import { CommunityInfo } from '@/types'
 interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  options: {
+    mintNetwork?: number
+    mintTo?: string
+    invitationCode?: string
+  }
   open: boolean
   handleClose?: () => void
 }
 
-const MobileMemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
+const MobileBrandMint: FC<Props> = ({ brandName, brandInfo, options, open, handleClose }) => {
   const { address: account } = useWallet()
 
   return (
@@ -36,7 +40,7 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }
       handleClose={handleClose}
     >
       <div className='relative w-full pb-[30px] bg-white rounded-t-[10px]'>
-        <div className='h-15 overflow-hidden rounded-t-[10px]'>
+      <div className='h-15 overflow-hidden rounded-t-[10px]'>
           <Banner
             className='relative top-[50%] -translate-y-[50%] flex-itmc px-4'
             // banner={brandInfo?.tokenUri?.brand_image}
@@ -48,10 +52,15 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }
         <div className='absolute top-[14px] right-[10px] z-icon' onClick={handleClose}>
           <CloseIcon width='20' height='20' className='text-gray-1' />
         </div>
-        <MobileMemberMintContent brandName={brandName} brandInfo={brandInfo} />
+        <MobileBrandMintContent
+          options={options}
+          account={account}
+          brandName={brandName}
+          brandInfo={brandInfo}
+        />
       </div>
     </Modal>
   )
 }
 
-export default MobileMemberMint
+export default MobileBrandMint

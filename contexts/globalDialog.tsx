@@ -1,12 +1,14 @@
 import { useState, useContext, createContext, ReactNode, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
-import MintSuccessDialog from '@/components/dialog/mintSuccess'
+import MintSuccessDialog from '@/components/_dialog/tools/mintSuccess'
+import MobileMintSuccessDialog from '@/components/_dialog/tools/mobile/mintSuccess'
 import CommunityProfileSettingDialog from '@/components/dialog/community/profileSetting'
 import MemberMintDialog from '@/components/_dialog/member/mint'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
 import BrandNotLoadedDialog from '@/components/_dialog/brand/notLoaded'
 
+import MobileBrandMintDrawer from '@/components/_dialog/brand/mobile/mint'
 import MobileBrandManageDrawer from '@/components/_dialog/brand/mobile/manage/manageMenus'
 import MobileBrandManageProfileSettingDialog from '@/components/_dialog/brand/mobile/manage/manageProfileSetting'
 import MobileBrandManageAccountSettingDialog from '@/components/_dialog/brand/mobile/manage/manageAccountSetting'
@@ -18,19 +20,25 @@ import MobileMemberMintDialog from '@/components/_dialog/member/mobile/mint'
 
 import { CommunityInfo, SearchModeType } from '@/types'
 
-type MobileGlobalDialogNames = 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation' | 'mobile-member-mint'
-type GlobalDialogNames = MobileGlobalDialogNames | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | string
+type MobileGlobalDialogNames = 'mobile-brand-mint' | 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation' | 'mobile-member-mint'
+type GlobalDialogNames = MobileGlobalDialogNames | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | 'mobile-member-mint' | 'brand-mint-success' | 'mobile-brand-mint-success' | string
 
 interface GlobalDialogPayload {
+  mobile?: boolean
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  options: {
+    mintNetwork?: number
+    invitationCode?: string
+    mintTo?: string
+  }
 }
 
 interface GlobalDialogContextProps {
   dialogOpenSet: Partial<Record<GlobalDialogNames, boolean>>
   showGlobalDialog: (name: GlobalDialogNames, payload?: GlobalDialogPayload) => void
   closeGlobalDialog: (name: string | number) => void
-  handleMintSuccess: (info: { owner: string; community: string; member?: string; avatar?: string, duplFromBrandInfo?: Partial<CommunityInfo> }, mode: SearchModeType) => void
+  handleMintSuccess: (info: { mobile?: boolean; owner: string; community: string; member?: string; avatar?: string, duplFromBrandInfo?: Partial<CommunityInfo> }, mode: SearchModeType) => void
 }
 
 const GlobalDialogContext = createContext<GlobalDialogContextProps>({
@@ -48,9 +56,9 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
   
   const [dialogOpenSet, setDialogOpenSet] = useState<Partial<Record<GlobalDialogNames, boolean>>>({})
-  const [dialogPayload, setDialogPayload] = useState<GlobalDialogPayload>({})
-  const [mintSuccessInfo, setMintSuccessInfo] = useState<{ open: boolean; mode: SearchModeType; duplFromBrandInfo?: Partial<CommunityInfo> } & Record<'community' | 'member' | 'owner' | 'avatar', string>>({
-    open: false,
+  const [dialogPayload, setDialogPayload] = useState<GlobalDialogPayload>({ options: {} })
+  const [mintSuccessInfo, setMintSuccessInfo] = useState<{ mobile: boolean, mode: SearchModeType; duplFromBrandInfo?: Partial<CommunityInfo> } & Record<'community' | 'member' | 'owner' | 'avatar', string>>({
+    mobile: false,
     mode: 'unknown',
     community: '',
     member: '',
@@ -65,6 +73,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
       ...prev,
       [name]: true,
     }))
+    console.log('- showGlobalDialog -', name, payload)
   }
 
   const closeGlobalDialog = (name: string | number) => {
@@ -80,11 +89,23 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
       showGlobalDialog,
       closeGlobalDialog,
       handleMintSuccess: (info, mode) => {
-        const { community, member = '', owner, avatar = '', duplFromBrandInfo } = info
-        setMintSuccessInfo({ open: true, mode, community, member, owner, avatar, duplFromBrandInfo })
+        const { mobile = false, community, member = '', owner, avatar = '', duplFromBrandInfo } = info
+        if (mobile) {
+          showGlobalDialog('mobile-brand-mint-success')
+        } else {
+          showGlobalDialog('brand-mint-success')
+        }
+        setMintSuccessInfo({ mobile, mode, community, member, owner, avatar, duplFromBrandInfo })
       }
     }}>
       {/* mobile */}
+      <MobileBrandMintDrawer
+        open={Boolean(dialogOpenSet['mobile-brand-mint'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        options={dialogPayload.options}
+        handleClose={() => closeGlobalDialog('mobile-brand-mint')}
+      />
       <MobileBrandManageDrawer
         open={Boolean(dialogOpenSet['mobile-manage-drawer'])}
         brandName={dialogPayload.brandName}
@@ -136,6 +157,32 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         brandInfo={dialogPayload.brandInfo}
         handleClose={() => closeGlobalDialog('mobile-member-mint')}
       />
+      <MobileMintSuccessDialog
+        open={Boolean(dialogOpenSet['mobile-brand-mint-success'])}
+        { ...mintSuccessInfo }
+        // handleClose={() => {
+        //   location.reload()
+        //   // setShowMintSuccess(false)
+        //   // window.scrollTo({ top: 0, behavior: 'smooth' })
+        // }}
+        handleConfirm={(mode, community, member) => {
+          if (mode === 'community') {
+            router.push(`/community/${community}`)
+            closeGlobalDialog('mobile-brand-mint-success')
+            // showGlobalDialog('mobile-manage-mint-setting', { brandName: community, options: {} })
+            return
+          }
+          if (mode === 'member') {
+            router.push(`/member/${member}.${community}`)
+            closeGlobalDialog('mobile-brand-mint-success')
+            return
+          }
+          location.reload()
+          // location.reload()
+          // setShowMintSuccess(false)
+          // window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+      />
       {/* pc */}
       <CommunityProfileSettingDialog
         open={Boolean(dialogOpenSet['brand-setting-profile'])}
@@ -159,10 +206,15 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         handleClose={() => closeGlobalDialog('brand-not-loaded')}
         handleConfirm={({ brandName, brandInfo }) => {
           closeGlobalDialog('brand-not-loaded')
-          showGlobalDialog('brand-manage-setting', { brandName, brandInfo })
+          if (dialogPayload.mobile) {
+            showGlobalDialog('mobile-manage-drawer', { brandName, brandInfo, options: dialogPayload.options })
+            return
+          }
+          showGlobalDialog('brand-manage-setting', { brandName, brandInfo, options: {} })
         }}
       />
       <MintSuccessDialog
+        open={Boolean(dialogOpenSet['brand-mint-success'])}
         { ...mintSuccessInfo }
         handleClose={() => {
           location.reload()
@@ -172,7 +224,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         handleConfirm={(mode, community, member) => {
           if (mode === 'community') {
             setMintSuccessInfo(prev => ({ ...prev, open: false }))
-            showGlobalDialog('brand-manage-setting', { brandName: community })
+            showGlobalDialog('brand-manage-setting', { brandName: community, options: {} })
             return
           }
           if (mode === 'member') {
