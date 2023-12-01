@@ -30,13 +30,6 @@ export default function Dapp() {
     setAnchorEl(null);
   };
 
-  function testToast() {
-    message({
-      type: 'success',
-      content: 'Test Test'
-    })
-  }
-
   function selectCategory(cate: string) {
     setCategory(cate)
     if (cate === 'All Categories') {
@@ -55,7 +48,7 @@ export default function Dapp() {
           <h1 className='text-xxl font-Saira font-normal text-main-black'>An Ecosystem to Decentralized Future</h1>
           <p className='font-Saira text-md max-w-[800px] mt-1.5 whitespace-pre-wrap break-all'>Texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</p>
           <div className='flex gap-4.5 mt-5'>
-            <button className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' onClick={testToast}>List My Dapp</button>
+            <a  className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' href="https://communities-id.typeform.com/to/S41zv4ZY" target='_blank'>List My Dapp</a>
           </div>
         </div>
         <div className="border-t border-gray-7 sticky top-[136px] sm:top-0 bg-white z-20">
