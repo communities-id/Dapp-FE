@@ -27,7 +27,7 @@ interface GlobalDialogPayload {
   mobile?: boolean
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
-  options: {
+  options?: {
     mintNetwork?: number
     invitationCode?: string
     mintTo?: string

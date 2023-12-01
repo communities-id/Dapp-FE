@@ -14,7 +14,7 @@ import { CommunityInfo } from '@/types'
 interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
-  options: {
+  options?: {
     mintNetwork?: number
     mintTo?: string
     invitationCode?: string

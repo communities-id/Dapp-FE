@@ -94,7 +94,7 @@ const CommunityMembers: FC<Props> = () => {
                   color: communityInfo.tokenUri?.brand_color,
                 }}
                 onClick={() => {
-                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
                 }}
               >
                 <div>
@@ -133,7 +133,7 @@ const CommunityMembers: FC<Props> = () => {
                   <button
                     className="button-md btn-primary text-white mt-5"
                     onClick={() => {
-                      showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                      showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
                     }}
                   >
                     <MintSettingIcon className="mr-1.5" />
@@ -149,7 +149,7 @@ const CommunityMembers: FC<Props> = () => {
                   color: brandColor,
                 }}
                 onClick={() => {
-                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo })
+                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
                 }}
               >
                 <div>

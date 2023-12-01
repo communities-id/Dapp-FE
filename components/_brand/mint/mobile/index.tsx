@@ -25,14 +25,14 @@ interface Props {
   account?: string
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
-  options: {
+  options?: {
     mintNetwork?: number
     mintTo?: string
     invitationCode?: string
   }
 }
 
-const MobileBrandMint: FC<Props> = ({ account, brandInfo, brandName, options }) => {
+const MobileBrandMint: FC<Props> = ({ account, brandInfo, brandName, options = {} }) => {
   const { masterAddress } = useConfiguration()
   const [step, setStep] = useState(0)
   const { message } = useRoot()
