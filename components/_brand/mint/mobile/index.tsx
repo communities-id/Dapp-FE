@@ -142,8 +142,6 @@ const MobileBrandMint: FC<Props> = ({ account, brandInfo, brandName, options }) 
     return verifyCommunityTypedMessage(advanceMintSetting.signature, masterAddress, brandName, advanceMintSetting.mintTo, CommunityRegistryInterface, { chainId: mintNetwork })
   }, [advanceMintSetting.signature, advanceMintSetting.mintTo, brandName, brandInfo, masterAddress, mintNetwork])
 
-  console.log('- mintSignatureValidator', mintSignatureValidator, 'advanceMintSetting.signature', advanceMintSetting.signature, 'mintNetwork', mintNetwork)
-
   // start validator
   const isCommunityStartValid = useMemo(() => {
     if (!isTargetMainnetWork) return true

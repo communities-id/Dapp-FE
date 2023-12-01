@@ -163,7 +163,7 @@ function Dapp() {
             communityCoinSymbol: selectedNetwork.label
           },
           options: {
-            invitationCode,
+            invitationCode: finalInviteCode,
             mintTo,
             mintNetwork: selectedNetwork.value
           }
