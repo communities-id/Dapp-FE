@@ -1,7 +1,7 @@
 import {
   connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
-import { metaMaskWallet, walletConnectWallet, injectedWallet, okxWallet } from "@rainbow-me/rainbowkit/wallets";
+import { metaMaskWallet, walletConnectWallet, injectedWallet, okxWallet, tokenPocketWallet } from "@rainbow-me/rainbowkit/wallets";
 import { JoyIdWallet } from '@joyid/rainbowkit'
 
 import { Chain, configureChains, createConfig } from "wagmi";
@@ -149,6 +149,7 @@ export const connectors = connectorsForWallets([
       metaMaskWallet({ chains, shimDisconnect: true, projectId: 'Communities.ID' }),
       // coinbaseWallet({ appName: 'Communities.ID', chains }),
       JoyIdWallet({ chains, options: JoyIDOptions }),
+      tokenPocketWallet({ chains, projectId: 'Communities.ID' }),
     ]
   },
   {
