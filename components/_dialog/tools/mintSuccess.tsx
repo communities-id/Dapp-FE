@@ -16,6 +16,7 @@ import TwitterIcon from '~@/icons/social/twitter.svg'
 import { SearchModeType } from '@/types'
 
 interface Props {
+  drawer?: boolean
   open: boolean
   mode: SearchModeType
   community: string
@@ -23,11 +24,10 @@ interface Props {
   owner: string
   avatar?: string
   handleClose?: () => void
-  handleConfirm?: (mode: SearchModeType, community: string, member?: string) => void
+  handleConfirm?: (mode: SearchModeType, community: string, member?: string, drawer?: boolean) => void
 }
 
-const MintSuccessDialog: FC<Props> = ({ open, mode, community, member, owner, avatar, handleClose, handleConfirm }) => {
-  const { showGlobalDialog } = useGlobalDialog()
+const MintSuccessDialog: FC<Props> = ({ drawer, open, mode, community, member, owner, avatar, handleClose, handleConfirm }) => {
 
   const lottieRef = useRef<LottieRefCurrentProps>(null)
 
@@ -35,10 +35,14 @@ const MintSuccessDialog: FC<Props> = ({ open, mode, community, member, owner, av
 
   const keyword = member ? `${member}.${community}` : `.${community}`
 
-  const confirmText = mode === 'community' ? 'Go to Settings' : 'Confirm'
+  const confirmText = useMemo(() => {
+    if (mode !== 'community') return 'Confirm'
+    if (drawer) return 'Go to View'
+    return 'Go to Settings'
+  }, [mode, drawer])
 
   const handleSelfConfirm = () => {
-    handleConfirm?.(mode, community, member)
+    handleConfirm?.(mode, community, member, drawer)
     // if (mode === 'community') {
     //   showGlobalDialog('mint')
     // }

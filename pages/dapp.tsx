@@ -2,7 +2,6 @@ import React, { FormEvent, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router';
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useSwitchNetwork } from 'wagmi';
 import axios from 'axios';
 
 import { DetailsProvider, useDetails } from '@/contexts/details'
@@ -131,7 +130,7 @@ function Dapp() {
         return
       }
       const chainId = await getBrandDIDChainId(name)
-      if (chainId) {
+      if (chainId && chainId !== chain?.id) {
         message({
           type: 'error',
           content: chainId === MAIN_CHAIN_ID ? 'This Brand has already been minted' : `This Brand has already been registered on ${CHAINS_ID_TO_NETWORK[chainId]}`
@@ -157,6 +156,7 @@ function Dapp() {
       // }
       if (isMobile) {
         showGlobalDialog('mobile-brand-mint', {
+          mobile: true,
           brandName: name,
           brandInfo: {
             // chainId: selectedNetwork.value,
@@ -170,7 +170,19 @@ function Dapp() {
         })
         return
       }
-      router.push(`/community/${name}?signature=${finalInviteCode}&chainId=${selectedNetwork.value}&address=${mintTo}&autoMint=true`)
+      showGlobalDialog('brand-mint', {
+        brandName: name,
+        brandInfo: {
+          // chainId: selectedNetwork.value,
+          communityCoinSymbol: selectedNetwork.label
+        },
+        options: {
+          invitationCode: finalInviteCode,
+          mintTo,
+          mintNetwork: selectedNetwork.value
+        }
+      })
+      // router.push(`/community/${name}?signature=${finalInviteCode}&chainId=${selectedNetwork.value}&address=${mintTo}&autoMint=true`)
     } catch (e) { } finally {
       setLoading(false)
     }

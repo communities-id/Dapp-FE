@@ -12,9 +12,11 @@ import { formatContractError } from '@/shared/helper'
 import ConnectButton from '@/components/common/connectButton'
 
 import MintRightIcon from '~@/icons/mint/right-circle.svg'
+import DividerLine from '@/components/common/dividerLine'
 
 interface CommunityRegisterProps {
   mintNetwork: number
+  brandChainId: number
   brandName: string
   account?: string
   price: number | BigNumber
@@ -27,19 +29,17 @@ interface CommunityRegisterProps {
   children?: ReactNode
   step?: ReactNode
   extra?: ReactNode
+  handleRefreshBrandChainId?: () => Promise<void>
 }
 
-const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName, omninodeAdvanceMintSetting, omninodeSignatureValidator, disabled, loading, handleDeployed, children, step, extra }) => {
-  const { message, tracker } = useRoot()
-  const { refreshInfo } = useDetails()
-  const { switchNetworkAsync } = useSwitchNetwork()
-  const { chain } = useNetwork()
+const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandChainId, brandName, omninodeAdvanceMintSetting, omninodeSignatureValidator, disabled, loading, handleDeployed, children, step, extra, handleRefreshBrandChainId }) => {
+  const { message, tracker, NetOps } = useRoot()
   const { createOmniNode } = useApi()
 
-  const [switchNetworkLoading, setSwitchNetworkLoading] = useState(false)
   const [deploying, setDeploying] = useState(false)
 
-  const registerLoading = loading || deploying || switchNetworkLoading
+  const registerLoading = loading || deploying
+  console.log('- register loading', loading, 'deploying', deploying)
 
   const mainChainName = MAIN_CHAIN
 
@@ -47,28 +47,15 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
     return mintNetwork === MAIN_CHAIN_ID
   }, [mintNetwork])
 
-  const switchToCurrentNetwork = async () => {
-    if (chain?.id !== CHAIN_ID) {
-      try {
-        setSwitchNetworkLoading(true)
-        await switchNetworkAsync?.(CHAIN_ID)
-        setSwitchNetworkLoading(false)
-      } catch (e) {
-        setSwitchNetworkLoading(false)
-        throw e
-      }
-    }
-    return CHAIN_ID
-  }
-
   // deploy omninode event
   const handleDeploy = async () => {
     if (registerLoading) return
     try {
       setDeploying(true)
-      await switchToCurrentNetwork()
+      await NetOps.handleSwitchNetwork(MAIN_CHAIN_ID)
       await handleCreateOmniNode(mintNetwork)
-      await refreshInfo()
+      await handleRefreshBrandChainId?.()
+      // await refreshInfo()
     } catch (err) {
       message({
         type: 'error',
@@ -108,8 +95,8 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
 
   // omninode state polling function
   const omniNodeStatePollingFunc = useCallback(async () => {
-    console.log('- omniNodeStatePollingFunc chainId', mintNetwork, 'isTargetMainnetWork', isTargetMainnetWork)
-    if (isTargetMainnetWork) return true
+    console.log('- omniNodeStatePollingFunc chainId', brandChainId, 'isTargetMainnetWork', isTargetMainnetWork)
+    if (isTargetMainnetWork || !brandChainId) return true
     // if (!communityInfo?.chainId) return false // to do: check is omninode created
     setDeploying(true)
     const res = await handleGetOmniNodeState()
@@ -122,7 +109,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
       return true
     }
     return false
-  }, [handleGetOmniNodeState, isTargetMainnetWork, mintNetwork])
+  }, [handleGetOmniNodeState, isTargetMainnetWork, brandChainId])
 
   // omninode state polling event
   const omninodePollingUpdate = useIntervalAsync(omniNodeStatePollingFunc, 5000)
@@ -133,8 +120,8 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
   }, [brandName, mintNetwork])
 
   return (
-    <div className="mt-3 flex flex-col bg-white rounded-[10px]">
-      <div className='px-4 pb-[6px] text-center'>
+    <div className="pt-[30px] h-full flex flex-col bg-white rounded-[10px]">
+      <div className='px-15 text-center'>
         <h1 className='text-mintTitle text-dark text-center'>
           .{ brandName }
         </h1>
@@ -143,8 +130,8 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
           <p className='text-mintTag'>Now you are Pre-Minting</p>
         </div>
       </div>
-      <div className='w-full px-4 pb-5 max-h-[60vh] overflow-auto'>
-        <div className='mt-[30px]'>
+      <div className='mt-[30px] w-full px-15'>
+        <div className=''>
           <h3 className='text-mintTipTitle text-secondaryBlack'>Click “<span className='text-mintPurple'>Pre-Mint</span>” to proceed</h3>
           <p className='mt-[4px] text-mintTipDesc text-mainGray'>
             To mint your community on a network other than {mainChainName}, it is required to register an Omni Node on <span className='text-mintPurple'>{ mainChainName }</span> to ensure multi-chain uniqueness. You will be asked to confirm two transactions. If the second transaction is not processed within 7days of the first, you will need to restart from step 1. 
@@ -152,7 +139,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
         </div>
         { step }
         { extra }
-        <div className='mt-[30px] flex flex-col items-center gap-[10px]'>
+        <div className='mt-[30px] flex-center gap-4'>
           {/* <p className='text-mintTipDesc text-mainGray'>The estimated cost is : <b className='text-mintPurple'>0.0170 ETH</b></p> */}
           <div className='flex items-center justify-center gap-[10px]'>
             <ConnectButton
@@ -164,6 +151,9 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandName,
               onClick={handleDeploy}>Pre-Mint</ConnectButton>
           </div>
         </div>
+      </div>
+      <DividerLine wrapClassName='mt-[30px] mb-4' />
+      <div className='flex-1 w-full px-15 pb-10 overflow-auto'>
         { children }
       </div>
     </div>

@@ -9,6 +9,7 @@ import Select from '@/components/common/select'
 
 import MintRightIcon from '~@/icons/mint/right-circle.svg'
 import ChainIcon from '@/components/common/chainIcon'
+import DividerLine from '@/components/common/dividerLine'
 
 interface CommunityMintStatusProps {
   mintNetwork: number
@@ -26,8 +27,8 @@ interface CommunityMintStatusProps {
 const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ loading, brandName, disabled, handleNext, children, step, extra }) => {
 
   return (
-    <div className="mt-3 flex flex-col bg-white rounded-[10px]">
-      <div className='px-4 pb-[6px]'>
+    <div className="pt-[30px] h-full flex flex-col bg-white rounded-[10px]">
+      <div className='px-15 text-center'>
         <h1 className='text-mintTitle text-dark text-center'>
           .{ brandName }
         </h1>
@@ -36,7 +37,7 @@ const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ loading, brandName,
           <p className='text-mintTag'>No User DIDs found under this Brand DID.</p>
         </div>
       </div>
-      <div className='w-full px-4 pb-5 max-h-[60vh] overflow-auto'>
+      <div className='mt-[30px] w-full px-15'>
         <div className=''>
           <h3 className='text-mintTipTitle text-secondaryBlack'>Select Network for Brand DID Deployment</h3>
           <p className='mt-[4px] text-mintTipDesc text-mainGray'>
@@ -59,6 +60,9 @@ const CommunityMintStatus: FC<CommunityMintStatusProps> = ({ loading, brandName,
             Start
           </ConnectButton>
         </div>
+      </div>
+      <DividerLine wrapClassName='mt-[30px] mb-4' />
+      <div className='flex-1 w-full px-15 pb-10 overflow-auto'>
         { children }
       </div>
     </div>

@@ -3,6 +3,8 @@ import { useRouter } from 'next/navigation'
 
 import MintSuccessDialog from '@/components/_dialog/tools/mintSuccess'
 import MobileMintSuccessDialog from '@/components/_dialog/tools/mobile/mintSuccess'
+
+import BrandMintDrawer from '@/components/_dialog/brand/mint'
 import CommunityProfileSettingDialog from '@/components/dialog/community/profileSetting'
 import MemberMintDialog from '@/components/_dialog/member/mint'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
@@ -21,7 +23,7 @@ import MobileMemberMintDialog from '@/components/_dialog/member/mobile/mint'
 import { CommunityInfo, SearchModeType } from '@/types'
 
 type MobileGlobalDialogNames = 'mobile-brand-mint' | 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation' | 'mobile-member-mint'
-type GlobalDialogNames = MobileGlobalDialogNames | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | 'mobile-member-mint' | 'brand-mint-success' | 'mobile-brand-mint-success' | string
+type GlobalDialogNames = MobileGlobalDialogNames | 'brand-mint' | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | 'mobile-member-mint' | 'brand-mint-success' | 'mobile-brand-mint-success' | string
 
 interface GlobalDialogPayload {
   mobile?: boolean
@@ -38,7 +40,7 @@ interface GlobalDialogContextProps {
   dialogOpenSet: Partial<Record<GlobalDialogNames, boolean>>
   showGlobalDialog: (name: GlobalDialogNames, payload?: GlobalDialogPayload) => void
   closeGlobalDialog: (name: string | number) => void
-  handleMintSuccess: (info: { mobile?: boolean; owner: string; community: string; member?: string; avatar?: string, duplFromBrandInfo?: Partial<CommunityInfo> }, mode: SearchModeType) => void
+  handleMintSuccess: (info: { mobile?: boolean; drawer?: boolean, owner: string; community: string; member?: string; avatar?: string, duplFromBrandInfo?: Partial<CommunityInfo> }, mode: SearchModeType) => void
 }
 
 const GlobalDialogContext = createContext<GlobalDialogContextProps>({
@@ -57,8 +59,9 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
   
   const [dialogOpenSet, setDialogOpenSet] = useState<Partial<Record<GlobalDialogNames, boolean>>>({})
   const [dialogPayload, setDialogPayload] = useState<GlobalDialogPayload>({ options: {} })
-  const [mintSuccessInfo, setMintSuccessInfo] = useState<{ mobile: boolean, mode: SearchModeType; duplFromBrandInfo?: Partial<CommunityInfo> } & Record<'community' | 'member' | 'owner' | 'avatar', string>>({
+  const [mintSuccessInfo, setMintSuccessInfo] = useState<{ mobile: boolean, drawer: boolean; mode: SearchModeType; duplFromBrandInfo?: Partial<CommunityInfo> } & Record<'community' | 'member' | 'owner' | 'avatar', string>>({
     mobile: false,
+    drawer: false,
     mode: 'unknown',
     community: '',
     member: '',
@@ -89,13 +92,13 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
       showGlobalDialog,
       closeGlobalDialog,
       handleMintSuccess: (info, mode) => {
-        const { mobile = false, community, member = '', owner, avatar = '', duplFromBrandInfo } = info
+        const { mobile = false, drawer = false, community, member = '', owner, avatar = '', duplFromBrandInfo } = info
         if (mobile) {
           showGlobalDialog('mobile-brand-mint-success')
         } else {
           showGlobalDialog('brand-mint-success')
         }
-        setMintSuccessInfo({ mobile, mode, community, member, owner, avatar, duplFromBrandInfo })
+        setMintSuccessInfo({ mobile, drawer, mode, community, member, owner, avatar, duplFromBrandInfo })
       }
     }}>
       {/* mobile */}
@@ -165,11 +168,14 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         //   // setShowMintSuccess(false)
         //   // window.scrollTo({ top: 0, behavior: 'smooth' })
         // }}
-        handleConfirm={(mode, community, member) => {
+        handleConfirm={(mode, community, member, drawer) => {
           if (mode === 'community') {
-            router.push(`/community/${community}`)
             closeGlobalDialog('mobile-brand-mint-success')
-            // showGlobalDialog('mobile-manage-mint-setting', { brandName: community, options: {} })
+            if (drawer) {
+              router.push(`/community/${community}`)
+            } else {
+              showGlobalDialog('mobile-manage-mint-setting', { brandName: community, options: {} })
+            }
             return
           }
           if (mode === 'member') {
@@ -184,6 +190,13 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         }}
       />
       {/* pc */}
+      <BrandMintDrawer
+        open={Boolean(dialogOpenSet['brand-mint'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        options={dialogPayload.options}
+        handleClose={() => closeGlobalDialog('brand-mint')}
+      />
       <CommunityProfileSettingDialog
         open={Boolean(dialogOpenSet['brand-setting-profile'])}
         handleClose={() => closeGlobalDialog('brand-setting-profile')} />
@@ -221,10 +234,14 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
           // setShowMintSuccess(false)
           // window.scrollTo({ top: 0, behavior: 'smooth' })
         }}
-        handleConfirm={(mode, community, member) => {
+        handleConfirm={(mode, community, member, drawer) => {
           if (mode === 'community') {
-            setMintSuccessInfo(prev => ({ ...prev, open: false }))
-            showGlobalDialog('brand-manage-setting', { brandName: community, options: {} })
+            closeGlobalDialog('brand-mint-success')
+            if (drawer) {
+              router.push(`/community/${community}`)
+            } else {
+              showGlobalDialog('manage-mint-setting', { brandName: community, options: {} })
+            }
             return
           }
           if (mode === 'member') {
