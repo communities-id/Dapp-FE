@@ -16,7 +16,7 @@
     "@types/react-dom": "18.0.11"
   },
   "dependencies": {
-    "@communitiesid/id": "^0.7.2",
+    "@communitiesid/id": "^0.7.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@flowlist/react-flowlist": "^0.2.25",

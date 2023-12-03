@@ -284,7 +284,8 @@
   .main {
     height: calc(100vh - 136px);
     @media screen and (max-width: 768px) {
-      height: calc(100vh - 50px);
+      height: auto;
+      min-height: calc(100vh - 50px);
     }
   }
   .title {

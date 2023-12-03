@@ -151,9 +151,6 @@ function Dapp() {
           return
         }
       }
-      // if (chain?.id !== MAIN_CHAIN_ID) {
-      //   await switchNetworkAsync?.(MAIN_CHAIN_ID)
-      // }
       if (isMobile) {
         showGlobalDialog('mobile-brand-mint', {
           mobile: true,
@@ -182,7 +179,6 @@ function Dapp() {
           mintNetwork: selectedNetwork.value
         }
       })
-      // router.push(`/community/${name}?signature=${finalInviteCode}&chainId=${selectedNetwork.value}&address=${mintTo}&autoMint=true`)
     } catch (e) { } finally {
       setLoading(false)
     }
@@ -294,8 +290,8 @@ function Dapp() {
   return (
     <div className="dapp-page">
       <SearchHeader />
-      <div className="main flex items-center">
-        <div className="text-center flex flex-col items-center relative z-0 sm:w-[84vw] mx-auto pb-[138px] sm:pb-[80px]">
+      <div className="main flex items-center sm:items-start sm:pt-8">
+        <div className="text-center flex flex-col items-center relative z-0 sm:w-[84vw] mx-auto pb-[138px] sm:pb-8">
           <h1 className="title font-Saira">Your <span><span>Web3</span></span> Brand Name</h1>
           <p className="mt-5 text-md text-gray-2 font-Saira sm:text-sm">Your Exclusive Brand DID Across All Supported Chains in Web3. <br className='sm:hidden' />One Name to Start Building Your Own Community.</p>
           {renderMintFormPC()}
