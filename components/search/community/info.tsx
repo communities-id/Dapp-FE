@@ -498,13 +498,15 @@ const CommunityLayout: FC<Props> = () => {
         </BrandColorButton> }
         <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex">
           { communityInfoSet.isOwner && <>
-            <button className="min-w-[98px] px-5 h-full rounded-l-full" onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
+            <button
+              className="min-w-[98px] px-5 h-full rounded-l-full"
+              onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>
             <div className='divide flex items-center'>
               <DividerLine mode='horizontal' className='bg-white mx-0' wrapClassName='!h-4 !mx-0' />
             </div>
           </> }
           <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
-            openGlobalDialog('member-mint')
+            openGlobalDialog('mobile-member-mint')
           }}>
             {!communityInfoSet.isOwner && <PlusIconWithColor color='#fff' className='w-4 h-4'/>}
             <span>Join</span>

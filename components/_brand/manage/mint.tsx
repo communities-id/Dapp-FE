@@ -1645,7 +1645,6 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                             }
                           </div>
                           <div className='mt-5 w-full h-[230px] bg-white rounded-xs'>
-                          coinSymbol-{coinSymbol}
                             <PriceModeChart
                               params={{
                                 mode: form.mode,

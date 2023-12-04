@@ -17,6 +17,7 @@ import { useWallet } from '@/hooks/wallet';
 import { useDIDContent } from '@/hooks/content';
 import { updateCommunity } from '@/shared/apis';
 
+import PriceModeChart from '@/components/common/priceModeChart'
 import Button from '@/components/_common/button';
 import Modal from '@/components/_common/modal';
 import Input from '@/components/_common/input';
@@ -326,11 +327,20 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
             }
           </ul>
           <EstimatedCard list={estimatedList}/>
+          <div className='mt-[10px] w-full bg-white rounded-xs'>
+            <PriceModeChart
+              height={200}
+              params={priceChartParams}
+              markerSymbol={coinSymbol}
+              currentLabel={(brandInfo.totalSupply ?? 0) + 1}
+            />
+          </div>
         </div>
       </div>
       <div className='px-15 pt-[30px] pb-10 border-t-[1px] border-solid border-gray-7'>
         <Button
-          className=''
+          wrapClassName='w-full'
+          className='w-full'
           mode='full'
           theme='primary'
           loading={mintLoading || NetOps.loading}

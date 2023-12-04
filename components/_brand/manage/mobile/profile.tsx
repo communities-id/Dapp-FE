@@ -171,7 +171,7 @@ export default function MobileBrandMannageProfileSettingContent({ account, brand
           <div className='h-10 flex-center gap-[10px]'>
             <h3 className='flex-1 text-md-b !leading-5'>Avatar</h3>
             <ProfileAvatarUploader
-              relationshipId={brandInfo?.node?.node}
+              relationshipId='mobile-avatar-uploader'
               url={form.image || DEFAULT_AVATAR}
               onChange={(url) => handleFormChange({ image: url })}
             />
@@ -185,7 +185,7 @@ export default function MobileBrandMannageProfileSettingContent({ account, brand
           <div className='h-10 flex-center gap-[10px]'>
             <h3 className='flex-1 text-md-b !leading-5'>Banner</h3>
             <ProfileBannerUploader
-              relationshipId='banner-uploader'
+              relationshipId='mobile-banner-uploader'
               url={form.brandImage}
               onChange={(val) => handleFormChange({ brandImage: val })}
             />

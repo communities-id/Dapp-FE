@@ -28,7 +28,7 @@ const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200,
   const currentPrice = formatLocaleDecimalsNumber(formatToDecimal(calcCurrentMintPrice(currentLabel, { ...params }).price, 0, 6))
 
   const markers: Markers = [{
-    label: `Current Price ≈ ${formatDecimalsPrice(currentPrice, 6)}`,
+    label: `Current Price ≈ ${formatDecimalsPrice(currentPrice, 6)} ${markerSymbol}`,
     value: Number(currentPrice),
     options: {
       labelPos: 'left',
