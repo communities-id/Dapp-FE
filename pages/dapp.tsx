@@ -130,7 +130,7 @@ function Dapp() {
         return
       }
       const chainId = await getBrandDIDChainId(name)
-      if (chainId && chainId !== chain?.id) {
+      if (chainId) {
         message({
           type: 'error',
           content: chainId === MAIN_CHAIN_ID ? 'This Brand has already been minted' : `This Brand has already been registered on ${CHAINS_ID_TO_NETWORK[chainId]}`
