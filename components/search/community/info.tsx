@@ -154,7 +154,7 @@ const CommunityLayout: FC<Props> = () => {
     return [
       {
         type: 'chain',
-        icon: <ChainIcon colorMode size={14} wrapperSize={24} chainId={Number(communityInfo._chaninId)} className='rounded-full' />,
+        icon: <ChainIcon colorMode size={14} wrapperSize={24} chainId={Number(communityInfo._chaninId)} className='grayscale' />,
         link: `${SCAN_MAP[communityInfo.chainId]}/address/${registry}`
       },
       Number(totalSupply) ? {
