@@ -825,7 +825,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           description: (
             <p className='text-sm text-black-tr-40 text-left'>
               <b>Note:</b>
-              <span> Only the brand owner can invite users to join the community.</span>
+              <span>&nbsp;Only the brand owner can invite users to join the community.</span>
             </p>
           ),
           description2: (
@@ -863,7 +863,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           description: (
             <p className='text-sm text-black-tr-40 text-left'>
               <b>Note:</b>
-              <span> Only the brand owner can invite users to join the community.</span>
+              <span>&nbsp;Only who holds your Token can join your community.</span>
             </p>
           )
         },

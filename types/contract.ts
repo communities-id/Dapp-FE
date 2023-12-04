@@ -16,7 +16,7 @@ export enum MintMode {
 export enum MintModeLabels {
   SIGNATURE = 'Invited Only',
   PUBLIC = 'Public mint',
-  HOLDING = 'Token-gated Mint',
+  HOLDING = 'NFT-Gated Mint', // Token-gated Mint
 }
 
 export enum SequenceMode {

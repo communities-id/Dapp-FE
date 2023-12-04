@@ -799,7 +799,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           description: (
             <p className='text-sm text-black-tr-40 text-center'>
               <b>Note:</b>
-              <span>&nbsp;Only who holds your Token can join your community.</span>
+              <span>&nbsp;Only the brand owner can invite users to join the community.</span>
             </p>
           ),
           description2: (
@@ -836,14 +836,14 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           value: form.proofOfHolding,
           startAdornment: (
             <div className='flex-itmc mr-5 gap-5 whitespace-nowrap'>
-              <span>Token Contract</span>
+              <span>NFT Contract</span>
               <div className='w-[1px] h-4 bg-gray-7'></div>
             </div>
           ),
           description: (
             <p className='text-sm text-black-tr-40 text-center'>
               <b>Note:</b>
-              <span> Only the brand owner can invite users to join the community.</span>
+              <span>&nbsp;Only who holds your Token can join your community.</span>
             </p>
           )
         },
