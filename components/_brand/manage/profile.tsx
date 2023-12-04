@@ -205,6 +205,9 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
                   relationshipId='banner-uploader'
                   url={form.brandImage}
                   onChange={(val) => handleFormChange({ brandImage: val })}
+                  onError={(err) => {
+                    message({ type: 'error', content: err })
+                  }}
                 />
               </div>
               <div className='relative z-normal flex flex-col -mt-[38px] px-10 pb-[52px] rounded-b-lg'>
@@ -212,6 +215,9 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
                   relationshipId='avatar-uploader'
                   url={form.image}
                   onChange={(val) => handleFormChange({ image: val })}
+                  onError={(err) => {
+                    message({ type: 'error', content: err })
+                  }}
                 />
                 <h2 className='mt-5 text-xl text-main-black'>{ brandName }</h2>
                 <div className='mt-1 text-xs-b text-main-black'>
@@ -250,13 +256,22 @@ interface ProfileAvatarProps {
   relationshipId?: string
   url: string
   onChange?: (url: string) => void
+  onError?: (error: string) => void
 }
-const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, onChange }) => {
+const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, onChange, onError }) => {
   const minWidth = 260
   const minHeight = 260
   return (
     <div className='w-20 h-20 -outline-offset-1 outline outline-4 outline-white rounded-lg overflow-hidden'>
-      <IpfsUploader defaultUrl={url} relationshipId={relationshipId} aspect={1} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
+      <IpfsUploader
+        defaultUrl={url}
+        relationshipId={relationshipId}
+        aspect={1}
+        minWidth={minWidth}
+        minHeight={minHeight}
+        onComplete={onChange}
+        onError={onError}
+      >
         {
           !url && (
             <div className='relative full-size flex-center bg-gray-6'>
@@ -280,14 +295,23 @@ interface ProfileBannerProps {
   relationshipId?: string
   url: string
   onChange?: (url: string) => void
+  onError?: (error: string) => void
 }
-const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, onChange }) => {
+const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, onChange, onError }) => {
   const minWidth = 840
   const minHeight = 210
   const aspect = 4 / 1
   return (
     <div className='full-size'>
-      <IpfsUploader defaultUrl={url} relationshipId={relationshipId} aspect={aspect} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
+      <IpfsUploader
+        defaultUrl={url}
+        relationshipId={relationshipId}
+        aspect={aspect}
+        minWidth={minWidth}
+        minHeight={minHeight}
+        onComplete={onChange}
+        onError={onError}
+      >
         <div className='z-normal group-hover:opacity-100 full-size flex-center opacity-fade bg-uploader-mask'>
           <p className='text-xs !font-bold text-white'>upload banner</p>
         </div>

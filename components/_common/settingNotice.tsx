@@ -18,6 +18,7 @@ const SettingNotice: FC<Props> = ({ loading, onReset, onSaveOnChain }) => {
           <BaseButton
             className='w-auto text-xs text-main-black'
             size='short'
+            disabled={loading}
             onClick={onReset}
           >
             <span>Reset</span>

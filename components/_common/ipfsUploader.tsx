@@ -43,6 +43,7 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true)
     const file = e.target.files?.[0]
+    console.log('-- handleFileChange -- file', file)
     if (!file) return
     const { width, height } = await readFileSize(file)
     if (width < minWidth || height < minHeight) {
