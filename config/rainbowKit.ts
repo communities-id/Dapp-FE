@@ -145,8 +145,8 @@ export const connectors = connectorsForWallets([
   {
     groupName: 'Recommended',
     wallets: [
-      injectedWallet({ chains, shimDisconnect: true }),
-      metaMaskWallet({ chains, shimDisconnect: true, projectId: 'Communities.ID' }),
+      injectedWallet({ chains, shimDisconnect: false }),
+      metaMaskWallet({ chains, shimDisconnect: false, projectId: 'Communities.ID' }),
       // coinbaseWallet({ appName: 'Communities.ID', chains }),
       JoyIdWallet({ chains, options: JoyIDOptions }),
     ]
@@ -154,7 +154,7 @@ export const connectors = connectorsForWallets([
   {
     groupName: 'Popular',
     wallets: [
-      okxWallet({ chains, shimDisconnect: true, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' }),
+      okxWallet({ chains, shimDisconnect: false, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' }),
       walletConnectWallet({
         chains,
         projectId: '1cd28d38251a0d1a92b1c0f014d618eb'

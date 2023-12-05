@@ -17,7 +17,7 @@ interface Props {
 const ChainIcon: FC<Props> = ({ size = 24, wrapperSize = 0, colorMode, chainId, className }) => {
   const EthereumIcon = (
     <div
-      className={classnames('flex items-center justify-center text-white', { 'bg-[#6F7BBA]': colorMode }, className)}
+      className={classnames('flex items-center justify-center text-white rounded-full', { 'bg-[#6F7BBA]': colorMode }, className)}
       style={{ width: wrapperSize, height: wrapperSize, padding: wrapperSize ? `${(wrapperSize - size) / 2 - 1}px` : 0 }}
     >
       <EthereumSvg width={size + 2} height={size + 2} />

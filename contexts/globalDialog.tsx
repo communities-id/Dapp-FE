@@ -21,14 +21,39 @@ import MobileBrandInvitationDialog from '@/components/_dialog/brand/mobile/invit
 import MobileMemberMintDialog from '@/components/_dialog/member/mobile/mint'
 
 import { CommunityInfo, SearchModeType } from '@/types'
+import MobileMemberBurn from '@/components/_dialog/member/mobile/burn'
+import MobileMemberRenew from '@/components/_dialog/member/mobile/renew'
+import MobileMemberPrimary from '@/components/_dialog/member/mobile/primary'
 
-type MobileGlobalDialogNames = 'mobile-brand-mint' | 'mobile-manage-drawer' | 'mobile-manage-profile-setting' | 'mobile-manage-account-setting' | 'mobile-manage-mint-setting' | 'mobile-manage-renew-setting' | 'mobile-manage-tg-setting' | 'mobile-brand-invitation' | 'mobile-member-mint'
-type GlobalDialogNames = MobileGlobalDialogNames | 'brand-mint' | 'brand-profile-setting' | 'brand-manage-setting' | 'brand-not-loaded' | 'member-mint' | 'mobile-member-mint' | 'brand-mint-success' | 'mobile-brand-mint-success' | string
+type MobileGlobalDialogNames = 'mobile-brand-mint'
+  | 'mobile-manage-drawer'
+  | 'mobile-manage-profile-setting'
+  | 'mobile-manage-account-setting'
+  | 'mobile-manage-mint-setting'
+  | 'mobile-manage-renew-setting'
+  | 'mobile-manage-tg-setting'
+  | 'mobile-brand-invitation'
+  | 'mobile-member-mint'
+  | 'mobile-member-burn'
+  | 'mobile-member-renew'
+  | 'mobile-member-primary'
+
+type GlobalDialogNames = MobileGlobalDialogNames
+ | 'brand-mint'
+ | 'brand-profile-setting'
+ | 'brand-manage-setting'
+ | 'brand-not-loaded'
+ | 'member-mint'
+ | 'mobile-member-mint'
+ | 'brand-mint-success'
+ | 'mobile-brand-mint-success'
+ | string
 
 interface GlobalDialogPayload {
   mobile?: boolean
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  memberName?: string
   options?: {
     mintNetwork?: number
     invitationCode?: string
@@ -159,6 +184,19 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
         handleClose={() => closeGlobalDialog('mobile-member-mint')}
+      />
+      <MobileMemberBurn
+        open={Boolean(dialogOpenSet['mobile-member-burn'])}
+        handleClose={() => closeGlobalDialog('mobile-member-burn')}
+      />
+      <MobileMemberRenew
+        open={Boolean(dialogOpenSet['mobile-member-renew'])}
+        handleClose={() => closeGlobalDialog('mobile-member-renew')}
+      />
+      <MobileMemberPrimary
+        memberName={dialogPayload.memberName || ''}
+        open={Boolean(dialogOpenSet['mobile-member-primary'])}
+        handleClose={() => closeGlobalDialog('mobile-member-primary')}
       />
       <MobileMintSuccessDialog
         open={Boolean(dialogOpenSet['mobile-brand-mint-success'])}

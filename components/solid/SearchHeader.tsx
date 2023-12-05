@@ -36,7 +36,6 @@ const SearchHeader: FC<Props> = ({ className }) => {
   const keywords = useSearchParams().get('keywords') as string
   const [searchValue, setSearchValue] = useState('')
   const [searchSuggestionOpen, setSearchSuggestionOpen] = useState(false)
-  const [showBg, setShowBg] = useState(false)
 
   const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const brandStyle = {
@@ -56,18 +55,10 @@ const SearchHeader: FC<Props> = ({ className }) => {
     }
   }, [keywords])
 
-  useEffect(() => {
-    const scrollContainer = document.querySelector('#__next')
-    if (scrollContainer)  {
-      scrollContainer.addEventListener('scroll', () => {
-        setShowBg(scrollContainer.scrollTop > 100)
-      })
-    }
-  }, [router.pathname])
 
   function renderAccountButton(options: any, isMobile = false) {
     const { account, chain, openChainModal, openConnectModal, mounted }= options
-    const className = "button-xl w-auto text-white flex items-center gap-[10px] flex-shrink-0"
+    const className = "button-xl w-auto text-white flex items-center gap-[10px] flex-shrink-0 min-w-[170px]"
     const connected = mounted && account && chain
     const BrandButton = styled('button')(brandStyle)
     const BrandLabel = styled('label')(brandStyle)
@@ -113,7 +104,10 @@ const SearchHeader: FC<Props> = ({ className }) => {
                   <UserSvg className="w-6 h-6" />
                 </label>
               ) : (
-                <BrandLabel tabIndex={0} className={className}>
+                <BrandLabel role="button" tabIndex={0} className={className} onClick={(e) => {
+                  e.stopPropagation()
+                  handleSearch(address)
+                }}>
                   <WalletSvg className="w-5 h-5 flex-shrink-0"/>
                   <span>{formatAddress(address)}</span>
                 </BrandLabel>
@@ -158,8 +152,8 @@ const SearchHeader: FC<Props> = ({ className }) => {
   }
 
   const searchHeaderPC = (
-    <header className={`header-container sticky top-0 w-full z-30 sm:hidden py-7 ${className || ''} ${showBg ? 'with-bg' : ''}`}>
-      <div className="dapp-container bg-white h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7 gap-10">
+    <header className={`header-container sticky top-0 w-full z-30 sm:hidden py-7 ${className || ''}`}>
+      <div className="dapp-container relative bg-white-tr-70 h-20 rounded-[40px] pl-10 pr-3 flex justify-between items-center border border-gray-7 gap-10 backdrop-blur-[10px]">
         <div className="flex justify-start gap-[30px] items-center w-full overflow-hidden">
           <Link href="/" className='inline-block w-[165px] flex-shrink-0'>
             <LogoWithColor className="dark:hidden w-full" color={brandColor} />

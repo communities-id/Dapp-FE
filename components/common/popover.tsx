@@ -3,13 +3,21 @@ import classnames from 'classnames'
 import Link from 'next/link'
 
 import CopyToClipboard from 'react-copy-to-clipboard'
-import Collapse from '@mui/material/Collapse'
-import Fade from '@mui/material/Fade'
 import FadeSlide from '@/components/transitions/fade-slide'
 
 import { Popper, Button, PopperPlacementType, ClickAwayListener } from '@mui/base'
 
-export type PopoverMenuItem = { id: string | number; text: string; icon: ReactNode; loading?: boolean; disabled?: boolean; global?: boolean; clipboard?: string; handleCopied?: () => void; link?: string; linkSelf?: boolean; }
+export type PopoverMenuItem = { 
+  id: string | number;
+  mobileId?: string | number;
+  text: string;
+  icon: ReactNode;
+  loading?: boolean;
+  disabled?: boolean;
+  global?: boolean;
+  clipboard?: string;
+  handleCopied?: () => void; link?: string; linkSelf?: boolean;
+}
 
 interface Props {
   id: string | number

@@ -1,11 +1,9 @@
 import { FC, useMemo, useState, Fragment } from 'react'
-import Link from 'next/link'
 
 import { useSwitchNetwork } from 'wagmi'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
-import { formatAddress, formatContractError, formatDate, parseImgSrc } from '@/shared/helper'
-import { CHAINS_ID_TO_NETWORK, CHAIN_ID, MAIN_CHAIN_ID } from '@/shared/constant'
+import { formatDate } from '@/shared/helper'
 import useApi from '@/shared/useApi'
 import { getOpenseaLink } from '@/utils/tools'
 import { getNormalTwitterShareLink } from '@/utils/share'
@@ -16,11 +14,7 @@ import Popover, { PopoverMenuItem } from '@/components/common/popover'
 import CommunityMint from '@/components/mint/community'
 import MemberMint from '@/components/mint/member'
 import PrimaryDID from '@/components/common/primaryDID'
-import ExpandableDescription from '@/components/common/expandableDescription'
-import MemberSetAsPrimaryDialog from '@/components/dialog/member/asPrimary'
 import MemberProfileSettingDialog from '@/components/dialog/member/profileSetting'
-import MemberRenewDialog from '@/components/dialog/member/renew'
-import MemberBurnDialog from '@/components/dialog/member/burn'
 import HoverIcon from '@/components/common/hoverIcon'
 import DividerLine from '@/components/common/dividerLine'
 
@@ -29,23 +23,25 @@ import WebsiteIcon from '~@/icons/social/website.svg'
 import TwitterIcon from '~@/icons/social/twitter.svg'
 import TelegramIcon from '~@/icons/social/telegram.svg'
 import DiscordIcon from '~@/icons/social/discord.svg'
-import ArrowRightIcon from '~@/icons/arrow-right.svg'
 import MoreIcon from '~@/icons/more.svg'
 import SetIcon from '~@/icons/settings/set.svg'
-import SettingIcon from '~@/icons/settings/setting.svg'
 import RefreshIcon from '~@/icons/settings/refresh.svg'
 import RenewIcon from '~@/icons/settings/renew.svg'
 import BurnIcon from '~@/icons/settings/burn.svg'
-import LoadingIcon from '~@/icons/loading.svg'
 import ShareIcon from '~@/icons/share.svg'
+import { useGlobalDialog } from '@/contexts/globalDialog'
+import MemberPrimary from '@/components/_dialog/member/primary'
+import MemberRenew from '@/components/_dialog/member/renew'
+import MemberBurn from '@/components/_dialog/member/burn'
 
 interface Props {
 }
 
 const PersonContent: FC<Props> = () => {
-  const { message } = useRoot()
+  const { config } = useRoot()
   const { keywords, communityInfo, memberInfo, loadingSet, communityInfoSet, memberInfoSet, shouldSwitchNetwork, isMainNetwork, refreshInfo } = useDetails()
   const { switchNetworkAsync } = useSwitchNetwork()
+  const { showGlobalDialog } = useGlobalDialog()
 
   const [dialogOpenSet, setDialogOpenSet] = useState<Record<'asPrimary' | 'profile' | 'renew' | 'burn', boolean>>({
     asPrimary: false,
@@ -59,6 +55,7 @@ const PersonContent: FC<Props> = () => {
     return [
       !loadingSet.member && memberInfoSet.isOwner && !memberInfoSet.isPrimary ? {
         id: 'asPrimary',
+        mobileId: 'mobile-member-primary',
         text: 'Set as Primary',
         icon: <SetIcon width={16} height={16} className='text-[#333]'/>
       } : null,
@@ -74,11 +71,13 @@ const PersonContent: FC<Props> = () => {
       },
       {
         id: 'renew',
+        mobileId: 'mobile-member-renew',
         text: 'Renew',
         icon: <RenewIcon width={16} height={16} className='text-[#333]'/>
       },
       {
         id: 'burn',
+        mobileId: 'mobile-member-burn',
         text: 'Burn',
         icon: <BurnIcon width={16} height={16} className='text-[#333]'/>
       },
@@ -150,7 +149,11 @@ const PersonContent: FC<Props> = () => {
     if (shouldSwitchNetwork && menu.id !== 'asPrimary') {
       await switchNetworkAsync?.(communityInfo?._chaninId)
     }
-    setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
+    if (config.isMobile) {
+      showGlobalDialog(menu.mobileId as string, { memberName: keywords })
+    } else {
+      setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
+    }
   }
   
   const handleSelectShareMenu = async (menu: PopoverMenuItem) => {
@@ -243,17 +246,17 @@ const PersonContent: FC<Props> = () => {
           ) : null
         )
       }
-      <MemberSetAsPrimaryDialog
+      <MemberPrimary
         open={dialogOpenSet['asPrimary']}
         memberName={keywords}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, asPrimary: false }))} />
       <MemberProfileSettingDialog
         open={dialogOpenSet['profile']}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, profile: false }))} />
-      <MemberRenewDialog
+      <MemberRenew
         open={dialogOpenSet['renew']}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, renew: false }))} />
-      <MemberBurnDialog
+      <MemberBurn
         open={dialogOpenSet['burn']}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, burn: false }))} />
     </div>
