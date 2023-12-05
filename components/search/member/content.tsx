@@ -38,7 +38,7 @@ interface Props {
 }
 
 const PersonContent: FC<Props> = () => {
-  const { config } = useRoot()
+  const { message, config } = useRoot()
   const { keywords, communityInfo, memberInfo, loadingSet, communityInfoSet, memberInfoSet, shouldSwitchNetwork, isMainNetwork, refreshInfo } = useDetails()
   const { switchNetworkAsync } = useSwitchNetwork()
   const { showGlobalDialog } = useGlobalDialog()
@@ -65,7 +65,7 @@ const PersonContent: FC<Props> = () => {
       //   icon: <SettingIcon width={16} height={16} className='text-[#333]'/>
       // },
       {
-        id: 'refresh metadata',
+        id: 'refresh',
         text: 'Refresh',
         icon: <RefreshIcon width={16} height={16} className='text-[#333]'/>
       },
@@ -142,6 +142,10 @@ const PersonContent: FC<Props> = () => {
 
   const handleSelectMenu = async (menu: PopoverMenuItem) => {
     if (menu.id === 'refresh') {
+      message({
+        type: 'success',
+        content: 'We\'ve queued this item for an update! Page will reload automaticaly after refresh completed'
+      }, { t: 'member-refresh-metadata' })
       await updateMember(`${memberInfo.node?.node}.${communityInfo.node?.node}`, true)
       location.reload()
       return
