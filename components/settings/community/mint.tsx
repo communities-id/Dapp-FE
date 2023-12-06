@@ -273,7 +273,7 @@ const CommunityMint: FC<CommunityMintProps> = ({ version, forms, defaultForms, v
     }[]
   } = {
     disabled: priceModelDisabled,
-    label: 'Which economic model will you accept？',
+    label: 'Which refund model will you accept？',
     unit: '',
     formType: 'mint',
     tabs: [

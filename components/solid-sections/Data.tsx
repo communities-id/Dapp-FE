@@ -73,7 +73,7 @@ const DataSection: FC<Props> = () => {
           {
             datas.map((data, index) => {
               return (
-                <div key={index} className="sr-item animate_top block">
+                <div key={index} className={`sr-item animate_top block ${index === 0 ? 'sm:hidden' : ''}`}>
                   {
                     data ? (
                       data.type === 'svg' ? (
