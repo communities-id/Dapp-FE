@@ -1,4 +1,4 @@
-import { FC, useState, Fragment } from 'react'
+import { FC, useState, Fragment, CSSProperties } from 'react'
 
 import { useDetails } from '@/contexts/details'
 
@@ -6,16 +6,15 @@ import { Tabs, TabsList, TabPanel } from '@mui/base'
 import Tab from '@/components/common/tab'
 import Identities from '@/components/search/person/identities'
 import Comunities from '@/components/search/person/communities'
-import Loading from '@/components/loading/content'
+import themeColor from '@/_themes/colors'
 
 interface Props {
 }
 
 const PersonContent: FC<Props> = () => {
-  const { loadingSet } = useDetails()
   return (
     <div className="">
-      <Tabs defaultValue={0}>
+      <Tabs defaultValue={0} style={{ '--var-brand-color': themeColor.primary } as CSSProperties}>
         <TabsList className='py-[10px]'>
           <Tab value={0}>
             User DID
