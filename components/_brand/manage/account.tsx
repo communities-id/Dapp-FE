@@ -47,19 +47,19 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
       name: 'twitter',
       label: 'Twitter(X.com)',
       value: form.twitter,
-      placeholder: 'https://',
+      placeholder: 'https://twitter.com/[id]',
     },
     {
       name: 'discord',
       label: 'Discord',
       value: form.discord,
-      placeholder: 'https://',
+      placeholder: 'https://discord.gg/[invite]',
     },
     {
       name: 'telegram',
       label: 'Telegram Group Invitation',
       value: form.telegram,
-      placeholder: 'https://',
+      placeholder: 'https://t.me/[id]',
     }
   ]
 
