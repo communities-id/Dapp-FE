@@ -58,6 +58,7 @@ interface GlobalDialogPayload {
     mintNetwork?: number
     invitationCode?: string
     mintTo?: string
+    notLoaded?: boolean
   }
 }
 
@@ -248,6 +249,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         open={Boolean(dialogOpenSet['brand-manage-setting'])}
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
+        notLoaded={dialogPayload.options?.notLoaded}
         handleClose={() => closeGlobalDialog('brand-manage-setting')}
       />
       <BrandNotLoadedDialog
@@ -258,10 +260,10 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         handleConfirm={({ brandName, brandInfo }) => {
           closeGlobalDialog('brand-not-loaded')
           if (dialogPayload.mobile) {
-            showGlobalDialog('mobile-manage-drawer', { brandName, brandInfo, options: dialogPayload.options })
+            showGlobalDialog('mobile-manage-drawer', { brandName, brandInfo, options: { ...dialogPayload.options, notLoaded: true } })
             return
           }
-          showGlobalDialog('brand-manage-setting', { brandName, brandInfo, options: {} })
+          showGlobalDialog('brand-manage-setting', { brandName, brandInfo, options: { notLoaded: true } })
         }}
       />
       <MintSuccessDialog

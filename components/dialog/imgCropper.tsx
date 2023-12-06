@@ -21,11 +21,12 @@ const ImgCropperDialog: FC<Props> = ({ open, url, loading, aspect, onCropComplet
 
   return (
     <Dialog
-      // className='!p-0 !m-0'
+      className='!pt-0 overflow-hidden'
       contentClassName='!p-0 !m-0'
       open={open}
       title={null}
       loading={loading}
+      hiddenCloseIcon
       // hiddenTitle
       // title={
       //   <p className='flex items-center justify-center gap-2'>

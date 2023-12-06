@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { CSSProperties, FC } from 'react'
 
 import Dialog from '@/components/_common/dialog'
 import Button from '@/components/_common/button'
@@ -15,6 +15,8 @@ interface Props {
 
 const BrandNotLoaded: FC<Props> = ({ brandName, brandInfo, open, handleConfirm, handleClose }) => {
   
+  const brandColor = brandInfo?.tokenUri?.brand_color || '#8840FF'
+
   return (
     <Dialog
       className=''
@@ -22,18 +24,19 @@ const BrandNotLoaded: FC<Props> = ({ brandName, brandInfo, open, handleConfirm, 
       center
       handleClose={handleClose}
     >
-      <div className='p-10 flex-itmc flex-col'>
+      <div style={{ '--var-brand-color': brandColor } as CSSProperties} className='p-10 flex-itmc flex-col'>
         <img alt='' src='/_brand/unloaded.svg' className='w-[160px] h-[100px]'/>
         <h2 className='mt-[30px] text-lgx'>
           <span>Brand</span>
-          <span className='mx-1 text-primary'>.{brandName}</span>
+          <span className='mx-1 var-brand-textcolor'>.{brandName}</span>
           <span>was not ready</span>
         </h2>
         <p className='mt-[10px] text-sm !font-medium'>brand should be setting first.</p>
         <div className='mt-[30px]'>
           <Button
+            theme='variable'
             size='medium'
-            className='w-60'
+            className='w-60 var-brand-bgcolor'
             onClick={() => {
               handleConfirm?.({ brandName, brandInfo })
             }}

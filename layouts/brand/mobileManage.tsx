@@ -55,7 +55,9 @@ export default function MobileBrandManageLayout({ title, brandColor, footer, loa
                     <Button
                       loading={loading}
                       size='medium'
-                      className='w-full'
+                      theme='variable'
+                      wrapClassName='w-full'
+                      className='w-full var-brand-bgcolor'
                       onClick={onClick}
                     >Save on Chain</Button>
                   )

@@ -11,10 +11,11 @@ interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
   open: boolean
+  notLoaded?: boolean
   handleClose?: () => void
 }
 
-const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
+const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, notLoaded, handleClose }) => {
   const { address: account } = useWallet()
   
   return (
@@ -24,7 +25,7 @@ const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose 
       center
       handleClose={handleClose}
     >
-      <BrandManageContent account={account} brandName={brandName} brandInfo={brandInfo} />
+      <BrandManageContent account={account} brandName={brandName} brandInfo={brandInfo} notLoaded={notLoaded} />
     </Dialog>
   )
 }

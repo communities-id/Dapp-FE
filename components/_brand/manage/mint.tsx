@@ -74,9 +74,10 @@ interface Props {
   account?: string
   brandInfo: Partial<CommunityInfo>
   brandNotLoaded?: boolean
+  brandColor?: string
 }
 
-export default function BrandMannageMintSettings({ account, brandInfo, brandNotLoaded }: Props) {
+export default function BrandMannageMintSettings({ account, brandInfo, brandNotLoaded, brandColor }: Props) {
   const { message, NetOps } = useRoot()
   const { updateVariableCommunityMintConfig, updateCommunityMintConfig } = useApi()
 
@@ -579,7 +580,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
             <li className='relative pb-[42px]'>
               {
                 step >= 2 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+                  <div className='absolute left-[7px] w-[2px] h-full var-brand-bgcolor'></div>
                 )
               }
               <BrandMintMode
@@ -602,7 +603,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
             <li className='relative pb-[42px]'>
               {
                 step >= 3 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+                  <div className='absolute left-[7px] w-[2px] h-full var-brand-bgcolor'></div>
                 )
               }
               <BrandMintToken
@@ -624,7 +625,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
             <li className='relative pb-[42px]'>
               {
                 step >= 4 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+                  <div className='absolute left-[7px] w-[2px] h-full var-brand-bgcolor'></div>
                 )
               }
               <BrandMintPrice
@@ -635,6 +636,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
                 checked={tab === 3}
                 locked={editLocked.price}
                 coinSymbol={coinSymbol}
+                brandColor={brandColor}
                 handleChoose={(open) => handleChooseTab(open, 3)}
                 handleChange={async (payload) => {
                   setPriceForm({
@@ -647,7 +649,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
             <li className='relative pb-[42px]'>
               {
                 step >= 5 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+                  <div className='absolute left-[7px] w-[2px] h-full var-brand-bgcolor'></div>
                 )
               }
               <BrandMintPercentage
@@ -669,7 +671,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
             <li className='relative pb-[42px]'>
               {
                 step >= 6 && (
-                  <div className='absolute left-[7px] w-[2px] h-full bg-primary'></div>
+                  <div className='absolute left-[7px] w-[2px] h-full var-brand-bgcolor'></div>
                 )
               }
               <BrandBurnAnyTime
@@ -721,9 +723,9 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               {
                 step < 6 && (
                   <Button
-                    className='w-60 flex-center gap-1'
+                    className='w-60 flex-center gap-1 var-brand-bgcolor'
                     size='medium'
-                    theme='primary'
+                    theme='variable'
                     onClick={handleNextTab}
                   >
                     <span>Next {tab}/6</span>
@@ -734,9 +736,9 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               {
                 step >= 6 && (
                   <Button
-                    className='w-60 flex-center gap-1'
+                    className='w-60 flex-center gap-1 var-brand-bgcolor'
                     size='medium'
-                    theme='primary'
+                    theme='variable'
                     loading={pending}
                     onClick={handleSaveOnChain}
                   >
@@ -761,6 +763,7 @@ interface BrandMintTabProps<T = CommunityMintConfig> {
   coinSymbol?: string
   settled?: boolean
   locked?: boolean
+  brandColor?: string
   className?: string
   handleChoose?: (open: boolean) => void
   handleChange?: (payload: Partial<T>) => void
@@ -866,9 +869,9 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='text-primary -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='text-primary' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -897,7 +900,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
+                                'var-brand-bgcolor text-white': active,
                                 'rounded-l-[22px]': index === 0,
                                 'rounded-r-[22px]': index === mintModes.length - 1,
                               })
@@ -1090,9 +1093,9 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='text-primary -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='text-primary' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1123,7 +1126,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
+                                'var-brand-bgcolor text-white': active,
                                 'rounded-l-[22px]': index === 0,
                                 'rounded-r-[22px]': index === tokenModesWithActive.length - 1,
                               })
@@ -1207,7 +1210,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
 }
 
 
-const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, defaultForms, coinSymbol, className, handleChoose, handleChange }) => {
+const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, defaultForms, coinSymbol, brandColor, className, handleChoose, handleChange }) => {
   const title = '3、What’s the mint price per year you expect from an ID?'
   const description = 'Warning: This setting will be immutable if there is an ID in your community.'
   const priceModelDisabled = false
@@ -1501,9 +1504,9 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='text-primary -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='text-primary' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1534,7 +1537,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
+                                'var-brand-bgcolor text-white': active,
                                 'rounded-l-[22px]': index === 0,
                                 'rounded-r-[22px]': index === priceModesWithActive.length - 1,
                               })
@@ -1573,7 +1576,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                                       className={
                                         classNames('w-full flex-center gap-[6px] rounded-xs', {
                                           'bg-white text-gray-1 border border-solid border-gray-7': !item.active,
-                                          'bg-primary text-white': item.active,
+                                          'var-brand-bgcolor text-white': item.active,
                                         })
                                       }
                                       onClick={() => {
@@ -1651,6 +1654,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                                 commissionRate: Number(form.commissionRate),
                                 ...chartParams!
                               }}
+                              colors={brandColor ? [brandColor] : undefined}
                               markerSymbol={coinSymbol}
                               hiddenMarkers
                             />
@@ -1685,9 +1689,9 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='text-primary -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='text-primary' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1773,9 +1777,9 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='text-primary -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='text-primary' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1806,7 +1810,7 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
+                                'var-brand-bgcolor text-white': active,
                                 'rounded-l-[22px]': index === 0,
                                 'rounded-r-[22px]': index === burnTabsWithActive.length - 1,
                               })
@@ -1854,6 +1858,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
     value: SequenceMode
     disabled?: boolean
     description?: string | ReactNode
+    previewImg?: ReactNode
   }[] = [
     {
       label: 'Locked = Refund',
@@ -1866,6 +1871,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
           <b>Note:</b>
           <span> Refund value = Users’ locked value when they minted your IDs</span>
         </p>
+      ),
+      previewImg: (
+        <img src='/_brand/img/economic-inputvalue.png' className='w-full object-cover' />
       )
     },
     {
@@ -1879,6 +1887,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
           <b>Note:</b>
           <span> Refund value = Users’ locked value when they minted your IDs</span>
         </p>
+      ),
+      previewImg: (
+        <img src='/_brand/img/economic-burnidx.png' className='w-full object-cover' />
       )
     },
     {
@@ -1892,6 +1903,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
           <b>Note:</b>
           <span> Refund value = Users’ locked value when they minted your IDs</span>
         </p>
+      ),
+      previewImg: (
+        <img src='/_brand/img/economic-totalsupply.png' className='w-full object-cover' />
       )
     }
   ]
@@ -1908,9 +1922,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='text-primary -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='text-primary' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1941,7 +1955,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
-                                'bg-primary text-white': active,
+                                'var-brand-bgcolor text-white': active,
                                 'rounded-l-[22px]': index === 0,
                                 'rounded-r-[22px]': index === economicTabsWithActive.length - 1,
                               })
@@ -1976,7 +1990,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
               {
                 activeEconomicModel && (
                   <div className='mt-5 relative z-normal p-[30px] bg-gray-6 rounded-md'>
-                    <div className='w-full h-[200px] bg-white rounded-xs'></div>
+                    <div className='mb-5 w-full bg-white rounded-xs'>
+                      { activeEconomicModel.previewImg }
+                    </div>
                     { activeEconomicModel.description }
                   </div>
                 )
@@ -2042,7 +2058,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                 className='flex-1 flex-itmc gap-1 cursor-pointer'
                 onClick={() => handleClick()}
               >
-                <div className='text-primary underline-normal font-bold'>
+                <div className='var-brand-textcolor underline-normal font-bold'>
                   <span>{ activeText }</span>
                 </div>
                 {

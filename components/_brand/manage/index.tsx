@@ -22,8 +22,9 @@ interface Props {
   account?: string
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  notLoaded?: boolean
 }
-export default function BrandMannageContent({ account, brandName, brandInfo: inputBrandInfo }: Props) {
+export default function BrandMannageContent({ account, brandName, brandInfo: inputBrandInfo, notLoaded }: Props) {
   const [tab, setTab] = useState(0)
   const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
 
@@ -73,7 +74,8 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
         {
           label: 'Mint Settings',
           value: 2,
-          renderPanel: () => <MintSettings account={account} brandInfo={brandInfo} brandNotLoaded={brandNotLoaded} />,
+          brandColor,
+          renderPanel: () => <MintSettings account={account} brandInfo={brandInfo} brandNotLoaded={brandNotLoaded} brandColor={brandColor} />,
           renderIcon: (active: boolean) => {
             return <MintIcon
               className={
@@ -118,6 +120,12 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
       ]
     }
   ]
+
+  useEffect(() => {
+    console.log('notLoaded', notLoaded)
+    if (!notLoaded) return
+    setTab(2)
+  }, [notLoaded])
 
   return (
     <div style={{ '--var-brand-color': brandColor } as CSSProperties}>
