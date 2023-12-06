@@ -91,7 +91,7 @@ const CommunityMembers: FC<Props> = () => {
       </Tabs>
       <InfiniteList<CommunityMember>
         className='card-grid grid gap-5'
-        items={[{} as CommunityMember, ...members]}
+        items={[{} as CommunityMember, ...((members.length === 20 && !noMore) ? members.slice(0, members.length - 1) : members)]}
         loadMore={loadMore}
         renderItem={(row: CommunityMember, index?: number) => {
           if (index === 0) {
