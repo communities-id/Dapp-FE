@@ -886,9 +886,9 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='var-barnd-textcolor -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='var-barnd-textcolor' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1052,9 +1052,9 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='var-barnd-textcolor -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='var-barnd-textcolor' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1423,9 +1423,9 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='var-barnd-textcolor -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='var-barnd-textcolor' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1581,9 +1581,9 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='var-barnd-textcolor -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='var-barnd-textcolor' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1674,9 +1674,9 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='var-barnd-textcolor -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='var-barnd-textcolor' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1739,6 +1739,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
     value: SequenceMode
     disabled?: boolean
     description?: string | ReactNode
+    previewImg?: ReactNode
   }[] = [
     {
       label: 'Locked = Refund',
@@ -1751,6 +1752,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
           <b>Note:</b>
           <span> Refund value = Users’ locked value when they minted your IDs</span>
         </p>
+      ),
+      previewImg: (
+        <img src='/_brand/img/economic-inputvalue.png' className='w-full object-cover' />
       )
     },
     {
@@ -1764,6 +1768,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
           <b>Note:</b>
           <span> Refund value = Users’ locked value when they minted your IDs</span>
         </p>
+      ),
+      previewImg: (
+        <img src='/_brand/img/economic-burnidx.png' className='w-full object-cover' />
       )
     },
     {
@@ -1777,6 +1784,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
           <b>Note:</b>
           <span> Refund value = Users’ locked value when they minted your IDs</span>
         </p>
+      ),
+      previewImg: (
+        <img src='/_brand/img/economic-totalsupply.png' className='w-full object-cover' />
       )
     }
   ]
@@ -1793,9 +1803,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
         {
           (checked || locked) ? (
-            <CheckedIcon width='20' height='20' className='var-barnd-textcolor -translate-x-[2px]' />
+            <CheckedIcon width='20' height='20' className='var-brand-textcolor -translate-x-[2px]' />
           ) : (
-            <ActiveIcon width='16' height='16' className='var-barnd-textcolor' />
+            <ActiveIcon width='16' height='16' className='var-brand-textcolor' />
           )
         }
       </div>
@@ -1838,7 +1848,9 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
                 {
                   activeEconomicModel && (
                     <Fragment>
-                      <div className='w-full h-[200px] bg-white rounded-xs'></div>
+                      <div className='mb-5 w-full bg-white rounded-xs'>
+                        { activeEconomicModel.previewImg }
+                      </div>
                       { activeEconomicModel.description }
                     </Fragment>
                   )
@@ -1912,7 +1924,7 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
                 className='flex-1 flex-itmc gap-1 cursor-pointer'
                 onClick={() => handleClick()}
               >
-                <div className='var-barnd-textcolor underline-normal font-bold'>
+                <div className='var-brand-textcolor underline-normal font-bold'>
                   <span>{ activeText }</span>
                 </div>
                 {
