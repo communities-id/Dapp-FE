@@ -81,7 +81,7 @@ const CommunityMembers: FC<Props> = () => {
 
 
   return (
-    <div>
+    <div className='mb-12'>
       <Tabs defaultValue={0} style={{ '--var-brand-color': brandColor } as CSSProperties}>
         <TabsList className='pt-[20px] pb-6 sm:pt-0 sm:pb-3'>
           <Tab value={0}>
@@ -128,45 +128,45 @@ const CommunityMembers: FC<Props> = () => {
         empty={isEmpty}
         renderEmpty={
           brandNotLoaded ? (
-              <div
-                className='border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
-                style={{
-                  color: brandColor,
-                }}
-              >
-                <div>
-                  Mint setting has not finished yet, user cannot join this brand now
-                </div>
-                { communityInfoSet.isOwner && (
-                  <BrandColorButton
-                    className="button-md text-white mt-5"
-                    onClick={() => {
-                      showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
-                    }}
-                  >
-                    <MintSettingIcon className="mr-1.5" />
-                    <span>Update mint setting</span>
-                  </BrandColorButton>
-                )
-                }
+            <div
+              className='border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
+              style={{
+                color: brandColor,
+              }}
+            >
+              <div className='sm:w-3/4 text-center'>
+                Mint setting has not finished yet, user cannot join this brand now
               </div>
-            ) : (
-              <BrandColorButtonCard
-                className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
-                style={{
-                  color: brandColor,
-                }}
-                onClick={() => {
-                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
-                }}
-              >
-                <div>
-                  <PlusIconWithColor color={brandColor} />
-                </div>
-                <div className="mt-2.5">Join Community</div>
-              </BrandColorButtonCard>
-            )
-          }
+              { communityInfoSet.isOwner && (
+                <BrandColorButton
+                  className="button-md text-white mt-5"
+                  onClick={() => {
+                    showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
+                  }}
+                >
+                  <MintSettingIcon className="mr-1.5" />
+                  <span>Update mint setting</span>
+                </BrandColorButton>
+              )
+              }
+            </div>
+          ) : (
+            <BrandColorButtonCard
+              className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
+              style={{
+                color: brandColor,
+              }}
+              onClick={() => {
+                showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
+              }}
+            >
+              <div>
+                <PlusIconWithColor color={brandColor} />
+              </div>
+              <div className="mt-2.5">Join Community</div>
+            </BrandColorButtonCard>
+          )
+        }
       />
     </div>
   )

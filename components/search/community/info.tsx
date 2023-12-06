@@ -80,39 +80,6 @@ const CommunityLayout: FC<Props> = () => {
     },
   ]
 
-  // if ((communityInfoSet.isOwner || communityInfoSet.isSigner) && !communityInfoSet.isExpired) {
-  //   communityPopoverMenus.push({
-  //     id: 'profile',
-  //     text: 'Community Settings',
-  //     icon: <SettingIcon width={16} height={16} className='text-[#333]' />,
-  //     global: true
-  //   }, {
-  //     id: 'mint',
-  //     text: 'Mint Settings',
-  //     icon: <MintSettingIcon width={16} height={16} className='text-[#333]' />,
-  //     global: true
-  //   }, {
-  //     id: 'renew',
-  //     text: 'Renew',
-  //     icon: <RenewIcon width={16} height={16} className='text-[#333]' />,
-  //     global: false
-  //   }, {
-  //     id: 'signature',
-  //     text: 'Generate Invited Code',
-  //     icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
-  //     global: false
-  //   })
-  // }
-
-  if (communityInfo.config?.signatureMint && communityInfoSet.isSigner) {
-    communityPopoverMenus.push({
-      id: 'signature',
-      text: 'Generate Invited Code',
-      icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
-      global: false
-    })
-  }
-
   const shareMenus = useMemo(() => {
     if (typeof window === 'undefined') return []
     // const brandLink = `${location.origin}/community/${communityInfo.tokenUri?.name ?? ''}`

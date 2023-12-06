@@ -119,43 +119,6 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
                     handleDisconnect={handleDisconnect}
                     handleSearch={selfHandleSearch}
                     handleSearchDone={toggleNavigationOpen}/>
-                  // return <button className="home-lg:hidden block" onClick={() => {
-                  //   toggleNavigationOpen()
-                  // }}>
-                  //   <span className="block relative cursor-pointer w-5.5 h-5.5">
-                  //     {/* mobile: list icon */}
-                  //     <span className="block absolute w-full h-full">
-                  //       <span
-                  //         className={classnames('block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-[0]', {
-                  //           '!w-full delay-300': !navigationOpen
-                  //         })}
-                  //       ></span>
-                  //       <span
-                  //         className={classnames('block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-150', {
-                  //           '!w-full delay-400': !navigationOpen
-                  //         })}
-                  //       ></span>
-                  //       <span
-                  //         className={classnames('block relative top-0 left-0 bg-black dark:bg-white rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-200', {
-                  //           '!w-full delay-500': !navigationOpen
-                  //         })}
-                  //       ></span>
-                  //     </span>
-                  //     {/* mobile: close icon */}
-                  //     <span className="block absolute w-full h-full rotate-45">
-                  //       <span
-                  //         className={classnames('block bg-black dark:bg-white rounded-sm ease-in-out duration-200 delay-300 absolute left-2.5 top-0 w-0.5 h-full', {
-                  //           '!h-0 delay-[0]': !navigationOpen
-                  //         })}
-                  //       ></span>
-                  //       <span
-                  //         className={classnames('block bg-black dark:bg-white rounded-sm ease-in-out duration-200 delay-400 absolute left-0 top-2.5 w-full h-0.5', {
-                  //           '!h-0 delay-200': !navigationOpen
-                  //         })}
-                  //       ></span>
-                  //     </span>
-                  //   </span>
-                  // </button>
                 }
               }
             </ConnectButton.Custom>
@@ -176,7 +139,7 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
         >
           <div className="flex items-center gap-6">
             <div className={classnames('hidden home-lg:block mr-1.5 absolute home-lg:static top-1 right-17 !visible')}>
-              <label className="block m-0 relative">
+              {/* <label className="block m-0 relative">
                 <input
                   type="checkbox"
                   checked={darkMode}
@@ -186,10 +149,9 @@ const Header: FC<Props> = ({ isStatic, showSearch }) => {
                   }} />
                 <SunSvg className="dark:hidden" width="22" height="22"/>
                 <MoonSvg className="hidden dark:block" width="22" height="22"/>
-              </label>
+              </label> */}
             </div>
 
-            {/* wallet connect */}
             <ConnectButton.Custom>
               {
                 ({

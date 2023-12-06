@@ -131,6 +131,7 @@ function Dapp() {
       }
       const chainId = await getBrandDIDChainId(name)
       if (chainId) {
+        window.open(`/community/${name}`)
         message({
           type: 'error',
           content: chainId === MAIN_CHAIN_ID ? 'This Brand has already been minted' : `This Brand has already been registered on ${CHAINS_ID_TO_NETWORK[chainId]}`
