@@ -65,12 +65,20 @@ const CommunityMembers: FC<Props> = () => {
   }, [])
 
   const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
-  const BrandColorButton = styled('button')({
+  const BrandColorButtonCard = styled('button')({
     color: brandColor,
     '&:hover': {
       backgroundColor: `${brandColor}1A`
     }
   });
+
+  const BrandColorButton = styled('button')({
+    backgroundColor: brandColor,
+    '&:hover': {
+      backgroundColor: `${brandColor}cc`
+    }
+  });
+
 
   return (
     <div>
@@ -88,7 +96,7 @@ const CommunityMembers: FC<Props> = () => {
         renderItem={(row: CommunityMember, index?: number) => {
           if (index === 0) {
             return (
-              <BrandColorButton
+              <BrandColorButtonCard
                 className='group border-2 border-dashed w-full h-full rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
                 style={{
                   color: communityInfo.tokenUri?.brand_color,
@@ -101,7 +109,7 @@ const CommunityMembers: FC<Props> = () => {
                   <PlusIconWithColor color={brandColor} />
                 </div>
                 <div className="mt-2.5">Join Community</div>
-              </BrandColorButton>
+              </BrandColorButtonCard>
             )
           }
           const info = {
@@ -130,20 +138,20 @@ const CommunityMembers: FC<Props> = () => {
                   Mint setting has not finished yet, user cannot join this brand now
                 </div>
                 { communityInfoSet.isOwner && (
-                  <button
-                    className="button-md btn-primary text-white mt-5"
+                  <BrandColorButton
+                    className="button-md text-white mt-5"
                     onClick={() => {
                       showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
                     }}
                   >
                     <MintSettingIcon className="mr-1.5" />
                     <span>Update mint setting</span>
-                  </button>
+                  </BrandColorButton>
                 )
                 }
               </div>
             ) : (
-              <BrandColorButton
+              <BrandColorButtonCard
                 className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
                 style={{
                   color: brandColor,
@@ -156,7 +164,7 @@ const CommunityMembers: FC<Props> = () => {
                   <PlusIconWithColor color={brandColor} />
                 </div>
                 <div className="mt-2.5">Join Community</div>
-              </BrandColorButton>
+              </BrandColorButtonCard>
             )
           }
       />
