@@ -18,12 +18,14 @@ import { CommunityMember } from '@/types'
 import themeColor from '@/_themes/colors'
 
 import MintSettingIcon from '~@/icons/mint-settings.svg'
+import { useRootConfig } from '@/contexts/root'
 
 
 interface Props {
 }
 
 const CommunityMembers: FC<Props> = () => {
+  const { isMobile } = useRootConfig()
   const { showGlobalDialog } = useGlobalDialog()
   const { communityInfo, communityInfoSet } = useDetails()
   const { getMembersOfCommunity } = useApi()
@@ -102,7 +104,7 @@ const CommunityMembers: FC<Props> = () => {
                   color: communityInfo.tokenUri?.brand_color,
                 }}
                 onClick={() => {
-                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
+                  showGlobalDialog(isMobile ? 'mobile-member-mint' : 'member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
                 }}
               >
                 <div>
@@ -141,7 +143,7 @@ const CommunityMembers: FC<Props> = () => {
                   <BrandColorButton
                     className="button-md text-white mt-5"
                     onClick={() => {
-                      showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
+                      showGlobalDialog(isMobile ? 'mobile-manage-drawer' : 'brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
                     }}
                   >
                     <MintSettingIcon className="mr-1.5" />
@@ -157,7 +159,7 @@ const CommunityMembers: FC<Props> = () => {
                   color: brandColor,
                 }}
                 onClick={() => {
-                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
+                  showGlobalDialog(isMobile ? 'mobile-member-mint' : 'member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
                 }}
               >
                 <div>

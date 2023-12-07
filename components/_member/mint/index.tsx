@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { ZERO_ADDRESS, MAIN_CHAIN_ID, BrandDID } from '@communitiesid/id';
@@ -54,6 +54,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
   const member = form.memberName
   const chainId = brandInfo?._chaninId || CHAIN_ID
   const coinSymbol = brandInfo.coinSymbol ?? DEFAULT_TOKEN_SYMBOL[chainId]
+  const brandColor = brandInfo?.tokenUri?.brand_color || '#8840FF'
   
   const mintPriceData = useMemo(() => {
     if (!priceModel) return {
@@ -153,20 +154,30 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
 
   const disabled = !member || !isMemberMintValid || brandInfoLoading
 
-  const actions = [
-    {
-      label: 'Invitation Code',
-      value: form.invitationCode,
-      placeholder: 'Enter Invitation Code',
-      name: 'invitationCode',
-    },
-    {
-      label: 'Mint to',
-      value: form.mintTo,
-      placeholder: mintToPlaceholder ?? '0x...',
-      name: 'mintTo',
-    },
-  ]
+  const actions = useMemo(() => {
+    const list: {
+      label: string
+      value: string
+      placeholder?: string
+      name: string
+    }[] = [
+      {
+        label: 'Mint to',
+        value: form.mintTo,
+        placeholder: mintToPlaceholder ?? '0x...',
+        name: 'mintTo',
+      }
+    ]
+    if (communityMintType.invitationMint) {
+      list.unshift({
+        label: 'Invitation Code',
+        value: form.invitationCode,
+        placeholder: 'Enter Invitation Code',
+        name: 'invitationCode',
+      })
+    }
+    return list
+  }, [form.invitationCode, form.mintTo, mintToPlaceholder, communityMintType])
 
   const estimatedList = [
     {
@@ -272,15 +283,18 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
   }
 
   return (
-    <div className='h-full flex flex-col pt-4'>
+    <div
+      className='h-full flex flex-col pt-4'
+      style={{ '--var-brand-color': brandColor } as CSSProperties}
+    >
       <div className='flex-1 overflow-auto'>
         <div className="py-[70px] dapp-page text-center flex-itmc flex-col">
           <h1 className="title font-Saira">Join Community, set Your <span><span>ID</span></span> here</h1>
           <form
-            className="mt-7.5 bg-white"
+            className="mt-7.5"
             onSubmit={handleSubmit}
           >
-            <div className='w-full max-w-[488px] rounded-full flex justify-between items-center border-xs border-primary border-[6px] overflow-hidden'>
+            <div className='w-full max-w-[488px] rounded-full flex justify-between items-center border-xs bg-white var-brand-bordercolor border-[6px] overflow-hidden'>
               <div className='w-full'>
                 <Input
                   inputclassname="!py-3 !px-8 h-15 outline-none !border-none text-lgx !leading-[34px]"
@@ -290,7 +304,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
                   endAdornment={(
                     <div className='flex-itmc'>
                       <div className='mx-5 h-5 w-[1px] bg-main-black'></div>
-                      <span className='text-primary'>.{ brand }</span>
+                      <span className='var-brand-textcolor'>.{ brand }</span>
                     </div>
                   )}
                   onChange={(e) => handleFormChange('memberName', e.target.value.toLowerCase())}
@@ -333,6 +347,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
               params={priceChartParams}
               markerSymbol={coinSymbol}
               currentLabel={(brandInfo.totalSupply ?? 0) + 1}
+              colors={[brandColor]}
             />
           </div>
         </div>
@@ -340,9 +355,9 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
       <div className='px-15 pt-[30px] pb-10 border-t-[1px] border-solid border-gray-7'>
         <Button
           wrapClassName='w-full'
-          className='w-full'
+          className='w-full var-brand-bgcolor'
           mode='full'
-          theme='primary'
+          theme='variable'
           loading={mintLoading || NetOps.loading}
           disabled={disabled}
           size='medium'

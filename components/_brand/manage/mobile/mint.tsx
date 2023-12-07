@@ -806,6 +806,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
     active: boolean
     triangle?: boolean
     forms: FormProps<MintCommunityMintLabels>[]
+    outsideDescription?: string | ReactNode
   }[] = [
     {
       label: MintModeLabels.SIGNATURE,
@@ -827,23 +828,29 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
               <b>Note:</b>
               <span>&nbsp;Only the brand owner can invite users to join the community.</span>
             </p>
-          ),
-          description2: (
-            <div className='flex flex-col text-sm text-black-tr-40 text-left'>
-              <b>Signer is the one who generate invitation code</b>
-              <p>
-              If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available. Or, just leave the signer blank, we will take care of the signing process for you and code generation will be more flexible.
-              </p>
-            </div>
           )
         },
-      ]
+      ],
+      outsideDescription: (
+        <div className='flex flex-col text-sm text-black-tr-40 text-left'>
+          <b>Signer is the one who generate invitation code</b>
+          <p>
+          If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available. Or, just leave the signer blank, we will take care of the signing process for you and code generation will be more flexible.
+          </p>
+        </div>
+      )
     },
     {
       label: MintModeLabels.PUBLIC,
       name: 'publicMint',
       active: Boolean(form.publicMint),
-      forms: []
+      forms: [],
+      outsideDescription: (
+        <div className='flex text-sm text-black-tr-40 text-left'>
+          <b>Note:</b>
+          <p>&nbsp;Everyone can join your community.</p>
+        </div>
+      )
     },
     {
       label: MintModeLabels.HOLDING, 
@@ -927,9 +934,10 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                 })
               )}>
               {
-                !!activeMintMode?.forms?.length && (
+                (!!activeMintMode?.forms?.length || activeMintMode?.outsideDescription) && (
                   <RenderFormsBox
-                    renderItems={() => (
+                    outsideDescription={activeMintMode.outsideDescription}
+                    renderItems={() => !activeMintMode.forms.length ? null : (
                       activeMintMode.forms.map((item, index) => {
                         return (
                           <RenderFormItem
@@ -938,7 +946,6 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                             value={item.value}
                             placeholder={item.placeholder}
                             description={item.description}
-                            description2={item.description2}
                             onChange={(value) => {
                               if (locked) return
                               handleChange?.({
@@ -954,6 +961,13 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                   </RenderFormsBox>
                 )
               }
+              {/* {
+                activeMintMode?.outsideDescription && (
+                  <div className='mt-[10px] p-5 bg-gray-6 rounded-md'>
+                    {activeMintMode.outsideDescription}
+                  </div>
+                )
+              } */}
             </RenderContentBox>
           )
         }
@@ -1104,7 +1118,6 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
                             value={item.value}
                             placeholder={item.placeholder}
                             description={item.description}
-                            description2={item.description2}
                             onChange={(value) => {
                               if (locked) return
                               handleChange?.({
@@ -2005,34 +2018,46 @@ const RenderTabButton: FC<RenderTabButtonProps> = ({ active, label, disabled, on
 interface RenderFormsBoxProps {
   renderTabs?: () => ReactNode
   renderItems?: () => ReactNode
+  outsideDescription?: string | ReactNode
   children?: ReactNode
 }
-const RenderFormsBox: FC<RenderFormsBoxProps> = ({ renderTabs, renderItems, children }) => {
+const RenderFormsBox: FC<RenderFormsBoxProps> = ({ renderTabs, renderItems, outsideDescription, children }) => {
   return (
     <div className='relative z-normal pt-5'>
       {
         (renderTabs || renderItems || children) && (
-          <div className='mb-5 divider-line'></div>
+          <div className='divider-line'></div>
         )
       }
       {
         renderTabs && (
-          <ul className='flex flex-col gap-[10px]'>
-            { renderTabs?.() }
-          </ul>
+          renderTabs?.() && (
+            <ul className='mt-5 flex flex-col gap-[10px]'>
+              { renderTabs?.() }
+            </ul>
+          )
         )
       }
       {
         renderItems && (
-          <ul className='flex flex-col gap-[10px]'>
-            { renderItems?.() }
-          </ul>
+          renderItems?.() && (
+            <ul className='mt-5 flex flex-col gap-[10px]'>
+              { renderItems?.() }
+            </ul>
+          )
         )
       }
       {
         children && (
           <div className='flex flex-col p-5 bg-gray-6 rounded-md'>
             { children }
+          </div>
+        )
+      }
+      {
+        outsideDescription && (
+          <div className='mt-5 p-5 bg-gray-6 rounded-md'>
+            { outsideDescription }
           </div>
         )
       }
@@ -2045,11 +2070,10 @@ interface RenderFormItemProps {
   value: FormProps['value']
   placeholder?: string
   description?: string | ReactNode
-  description2?: string | ReactNode
   onChange?: (value: FormProps['value']) => void
 }
 
-const RenderFormItem: FC<RenderFormItemProps> = ({ label, value, placeholder, description, description2, onChange }) => {
+const RenderFormItem: FC<RenderFormItemProps> = ({ label, value, placeholder, description, onChange }) => {
   return (
     <Fragment>
       <li className='flex flex-col p-5 bg-gray-6 rounded-md'>
@@ -2067,13 +2091,13 @@ const RenderFormItem: FC<RenderFormItemProps> = ({ label, value, placeholder, de
         </div>
         { description }
       </li>
-      {
+      {/* {
         description2 && (
           <li className='p-5 bg-gray-6 rounded-md'>
             { description2 }
           </li>
         )
-      }
+      } */}
     </Fragment>
   )
 }
