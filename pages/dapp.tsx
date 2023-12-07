@@ -112,13 +112,6 @@ function Dapp() {
         })
         return
       }
-      if (!isAddress(mintTo)) {
-        message({
-          type: 'error',
-          content: 'The address you want to mint to is invalid'
-        })
-        return
-      }
       const chainId = await getBrandDIDChainId(name)
       if (chainId) {
         window.open(`/community/${name}`)
