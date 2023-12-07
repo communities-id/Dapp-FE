@@ -10,6 +10,8 @@ import { TG_BOT_NAME } from '@/shared/constant'
 import Button from "@/components/_common/button"
 import Input from "@/components/_common/input"
 
+import TGBotLogo from '~@/_brand/tgbot-logo.svg'
+
 import { CommunityInfo } from '@/types'
 
 interface Props {
@@ -59,8 +61,8 @@ export default function BrandMannageSocialLink({ brandInfo }: Props) {
               <span> Add CommunitiesID Telegram bot to your group and set it as an administrator.</span>
             </div>
             <div className="mt-[14px] flex items-center gap-[14px]">
-              <div className="w-20 h-20 rounded-lg overflow-hidden">
-                <img src='/_brand/bot.svg'/>
+              <div className="w-20 h-20 bg-black rounded-full overflow-hidden">
+                <TGBotLogo width='80' height='80' />
               </div>
               <Link href={tgBotLink} target='_blank'>
                 <Button

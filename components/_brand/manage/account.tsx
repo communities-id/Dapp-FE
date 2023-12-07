@@ -104,16 +104,24 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
         return 'Please enter a valid url'
       },
       twitter: (value: string) => {
-        if (value.match(/[0-9a-zA-Z-_+]+/i) || !value) {
+        // if (value.match(/[0-9a-zA-Z-_+]+/i) || !value) {
+        //   return
+        // }
+        // return 'Please enter a valid userID'
+        if (value.startsWith('http') || value.startsWith('https') || !value) {
           return
         }
-        return 'Please enter a valid userID'
+        return 'Please enter a valid url'
       },
       telegram: (value: string) => {
-        if (value.match(/[0-9a-zA-Z-_+]+/i) || !value) {
+        // if (value.match(/[0-9a-zA-Z-_+]+/i) || !value) {
+        //   return
+        // }
+        // return 'Please enter a valid userID'
+        if (value.startsWith('http') || value.startsWith('https') || !value) {
           return
         }
-        return 'Please enter a valid userID'
+        return 'Please enter a valid url'
       },
     }
     const results: Record<string, string | undefined> = {}

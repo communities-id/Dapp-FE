@@ -53,7 +53,6 @@ type FormProps<T = MintSettingLabels> = {
   tooltip?: string,
   placeholder: string,
   description?: string | ReactNode,
-  description2?: string | ReactNode,
   unit: ReactNode,
   startAdornment?: ReactNode,
   endAdornment?: ReactNode,
@@ -777,6 +776,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
     active: boolean
     triangle?: boolean
     forms: FormProps<MintCommunityMintLabels>[]
+    outsideDescription?: string | ReactNode
   }[] = [
     {
       label: MintModeLabels.SIGNATURE,
@@ -804,23 +804,29 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
               <b>Note:</b>
               <span>&nbsp;Only the brand owner can invite users to join the community.</span>
             </p>
-          ),
-          description2: (
-            <div className='flex flex-col text-sm text-black-tr-40 text-left'>
-              <b>Signer is the one who generate invitation code</b>
-              <p>
-              If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available.
-              </p>
-            </div>
           )
         },
-      ]
+      ],
+      outsideDescription: (
+        <div className='flex flex-col text-sm text-black-tr-40 text-left'>
+          <b>Signer is the one who generate invitation code</b>
+          <p>
+          If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available.
+          </p>
+        </div>
+      )
     },
     {
       label: MintModeLabels.PUBLIC,
       name: 'publicMint',
       active: Boolean(form.publicMint),
-      forms: []
+      forms: [],
+      outsideDescription: (
+        <div className='flex-center text-sm text-black-tr-40 text-left'>
+          <b>Note:</b>
+          <p>&nbsp;Everyone can join your community.</p>
+        </div>
+      )
     },
     {
       label: MintModeLabels.HOLDING, 
@@ -846,7 +852,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
           description: (
             <p className='text-sm text-black-tr-40 text-center'>
               <b>Note:</b>
-              <span>&nbsp;Only who holds your Token can join your community.</span>
+              <span>&nbsp;Only who holds your Token can join your community.Only ERC-721 contract is supported at this time.</span>
             </p>
           )
         },
@@ -940,53 +946,51 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                     {
                       activeMintMode.forms.map((item, index) => {
                         return (
-                          <Fragment key={index}>
-                            <li className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
-                              {
-                                item.type === 'text' && (
-                                  <Input
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    onChange={(e) => {
-                                      if (locked) return
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: e.target.value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              {
-                                item.type === 'multiple' && (
-                                  <TokenGatedInput
-                                    value={item.value}
-                                    startAdornment={item.startAdornment}
-                                    placeholder={item.placeholder}
-                                    onChange={(_value) => {
-                                      handleChange?.({
-                                        ...form,
-                                        [item.name]: _value
-                                      })
-                                    }}
-                                  />
-                                )
-                              }
-                              { item.description }
-                            </li>
+                          <li key={index} className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
                             {
-                              item.description2 && (
-                                <li className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
-                                  { item.description2 }
-                                </li>
+                              item.type === 'text' && (
+                                <Input
+                                  value={item.value}
+                                  startAdornment={item.startAdornment}
+                                  placeholder={item.placeholder}
+                                  onChange={(e) => {
+                                    if (locked) return
+                                    handleChange?.({
+                                      ...form,
+                                      [item.name]: e.target.value
+                                    })
+                                  }}
+                                />
                               )
                             }
-                          </Fragment>
+                            {
+                              item.type === 'multiple' && (
+                                <TokenGatedInput
+                                  value={item.value}
+                                  startAdornment={item.startAdornment}
+                                  placeholder={item.placeholder}
+                                  onChange={(_value) => {
+                                    handleChange?.({
+                                      ...form,
+                                      [item.name]: _value
+                                    })
+                                  }}
+                                />
+                              )
+                            }
+                            { item.description }
+                          </li>
                         )
                       })
                     }
                   </ul>
+                )
+              }
+              {
+                activeMintMode?.outsideDescription && (
+                  <div className='mt-[10px] flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
+                    { activeMintMode?.outsideDescription }
+                  </div>
                 )
               }
             </div>

@@ -22,7 +22,7 @@ const AvatarCard: FC<Props> = ({ className, size, src, outline }) => {
         src ? (
           <img
             alt='avatar'
-            className='w-full h-full object-cover bg-primary'
+            className='w-full h-full object-cover var-brand-bgcolor'
             src={parseImgSrc(src)}
           />
         ) : null

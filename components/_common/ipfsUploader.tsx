@@ -34,6 +34,7 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
     setLoading(true)
     const { Hash } = await upload(buffer)
     const url = `https://ipfs.io/ipfs/${Hash}`
+    console.log('- uploaded url', url, 'hash', Hash, 'base64', buffer.toString('base64'))
     setUrl(url)
     onComplete?.(url)
     setCropperOpen(false)
@@ -78,6 +79,7 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
           setCropperOpen(false)
         }}
         onCropComplete={(buffer) => {
+          console.log('- buffer', buffer)
           handleUpload(buffer)
         }}
       />

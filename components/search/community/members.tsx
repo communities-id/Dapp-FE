@@ -18,12 +18,14 @@ import { CommunityMember } from '@/types'
 import themeColor from '@/_themes/colors'
 
 import MintSettingIcon from '~@/icons/mint-settings.svg'
+import { useRootConfig } from '@/contexts/root'
 
 
 interface Props {
 }
 
 const CommunityMembers: FC<Props> = () => {
+  const { isMobile } = useRootConfig()
   const { showGlobalDialog } = useGlobalDialog()
   const { communityInfo, communityInfoSet } = useDetails()
   const { getMembersOfCommunity } = useApi()
@@ -102,7 +104,7 @@ const CommunityMembers: FC<Props> = () => {
                   color: communityInfo.tokenUri?.brand_color,
                 }}
                 onClick={() => {
-                  showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
+                  showGlobalDialog(isMobile ? 'mobile-member-mint' : 'member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
                 }}
               >
                 <div>
@@ -128,45 +130,45 @@ const CommunityMembers: FC<Props> = () => {
         empty={isEmpty}
         renderEmpty={
           brandNotLoaded ? (
-            <div
-              className='border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
-              style={{
-                color: brandColor,
-              }}
-            >
-              <div className='sm:w-3/4 text-center'>
-                Mint setting has not finished yet, user cannot join this brand now
+              <div
+                className='border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
+                style={{
+                  color: brandColor,
+                }}
+              >
+                <div>
+                  Mint setting has not finished yet, user cannot join this brand now
+                </div>
+                { communityInfoSet.isOwner && (
+                  <BrandColorButton
+                    className="button-md text-white mt-5"
+                    onClick={() => {
+                      showGlobalDialog(isMobile ? 'mobile-manage-drawer' : 'brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
+                    }}
+                  >
+                    <MintSettingIcon className="mr-1.5" />
+                    <span>Update mint setting</span>
+                  </BrandColorButton>
+                )
+                }
               </div>
-              { communityInfoSet.isOwner && (
-                <BrandColorButton
-                  className="button-md text-white mt-5"
-                  onClick={() => {
-                    showGlobalDialog('brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
-                  }}
-                >
-                  <MintSettingIcon className="mr-1.5" />
-                  <span>Update mint setting</span>
-                </BrandColorButton>
-              )
-              }
-            </div>
-          ) : (
-            <BrandColorButtonCard
-              className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
-              style={{
-                color: brandColor,
-              }}
-              onClick={() => {
-                showGlobalDialog('member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {} })
-              }}
-            >
-              <div>
-                <PlusIconWithColor color={brandColor} />
-              </div>
-              <div className="mt-2.5">Join Community</div>
-            </BrandColorButtonCard>
-          )
-        }
+            ) : (
+              <BrandColorButtonCard
+                className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
+                style={{
+                  color: brandColor,
+                }}
+                onClick={() => {
+                  showGlobalDialog(isMobile ? 'mobile-member-mint' : 'member-mint', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
+                }}
+              >
+                <div>
+                  <PlusIconWithColor color={brandColor} />
+                </div>
+                <div className="mt-2.5">Join Community</div>
+              </BrandColorButtonCard>
+            )
+          }
       />
     </div>
   )
