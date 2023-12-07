@@ -34,7 +34,7 @@ export default function ConnectTransit() {
 
   return (
     <Fragment>
-      <SearchHeader className='absolute top-0 left-0'/>
+      <SearchHeader/>
         {
           mounted && <ConnectButton.Custom>
             {

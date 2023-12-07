@@ -7,18 +7,24 @@ export default async function handler(
   res: NextApiResponse
 ) {
   
-  const { ids } = req.query
+  const { address, page, pageSize = 20 } = req.query
 
-  const idList = (ids as string).split(',').map(v => Number(v))
   const list = await prisma.community.findMany({
+    skip: (Number(page) - 1) * Number(pageSize),
+    take: Number(pageSize),
+  })
+
+  const total = await prisma.community.count({
     where: {
-      tokenId: {
-        in: idList
-      }
+      to: (address as string).toLowerCase()
     },
   })
+
   return res.status(200).json({
     code: 0,
-    data: list
+    data: {
+      list,
+      total
+    }
   })
 }

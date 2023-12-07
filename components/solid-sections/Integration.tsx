@@ -75,8 +75,8 @@ const IntegrationSection: FC<Props> = () => {
     }
   ]
   return (
-    <section id="cid-ecosystem" className='py-20 lg:py-22.5'>
-      <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
+    <section id="cid-ecosystem" className='py-20 home-lg:py-22.5'>
+      <div className="mx-auto max-w-c-1390 px-4 home-md:px-8 home-2xl:px-0">
         {/* <!-- Section Title Start --> */}
         <div
           className="sr-item animate_top text-center mx-auto"
@@ -87,7 +87,7 @@ const IntegrationSection: FC<Props> = () => {
         {/* <!-- Section Title End --> */}
       </div>
 
-      <div className="mx-auto max-w-c-1154 px-4 md:px-8 xl:px-0 relative z-50 mt-15 xl:mt-20">
+      <div className="mx-auto max-w-c-1154 px-4 home-md:px-8 home-xl:px-0 relative z-50 mt-15 home-xl:mt-20">
         <DottedBg/>
         <div className="flex flex-wrap gap-y-10 justify-around">
           {

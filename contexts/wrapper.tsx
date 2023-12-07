@@ -6,8 +6,6 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 import SearchHeaderInfo from '@/components/search/pageInfo'
 import SearchHeader from '@/components/solid/SearchHeader'
-import WalletConnect from '@/components/search/connect'
-import WrongChain from '@/components/search/wrongChain'
 
 import { SearchMode, SearchModeType } from '@/types'
 
@@ -44,14 +42,14 @@ export const WrapperProvider = ({ mode, keywords, children }: { mode: SearchMode
     <WrapperContext.Provider value={{}}>
       <DetailsProvider mode={SearchMode[mode] as SearchModeType} keywords={keywords}>
         <GlobalDialogProvider>
-          <SearchHeader className='absolute top-0 left-0'/>
+          <SearchHeader />
           {
             mounted && (
-              <main className='min-h-screen bg-[#FAFAFA]'>
+              <main className='min-h-screen bg-[#FAFAFA] flex flex-col'>
                 <img src='/search/blur-bg.png' className='absolute top-0 left-0 z-0 w-full h-full bg-cover pointer-events-none'/>
-                <header className='search-container bg-white relative z-1 rounded-[10px]'>
+                <div className='bg-white relative z-10 rounded-[10px]'>
                   <SearchHeaderInfo />
-                </header>
+                </div>
                 {children}
               </main>
             )

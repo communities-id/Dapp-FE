@@ -7,8 +7,8 @@ interface Props {}
 
 const PricingTableSection: FC<Props> = () => {
   return (
-    <section className="pt-15 lg:pt-20 xl:pt-25 pb-20 lg:pb-25 xl:pb-30">
-      <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+    <section className="pt-15 home-lg:pt-20 home-xl:pt-25 pb-20 home-lg:pb-25 home-xl:pb-30">
+      <div className="mx-auto max-w-c-1315 px-4 home-md:px-8 home-xl:px-0">
         {/* <!-- Section Title Start --> */}
         <div
           className="sr-item animate_top text-center mx-auto"
@@ -18,12 +18,12 @@ const PricingTableSection: FC<Props> = () => {
         {/* <!-- Section Title End --> */}
       </div>
 
-      <div className="mx-auto max-w-[1207px] px-4 md:px-8 xl:px-0 relative mt-15 xl:mt-20">
+      <div className="mx-auto max-w-[1207px] px-4 home-md:px-8 home-xl:px-0 relative mt-15 home-xl:mt-20">
         <DottedBg/>
-        <div className="flex flex-wrap lg:flex-nowrap justify-center gap-7.5 xl:gap-12.5">
+        <div className="flex flex-wrap home-lg:flex-nowrap justify-center gap-7.5 home-xl:gap-12.5">
           {/* <!-- Pricing Item --> */}
-          <div className="sr-item animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5">
-            <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">$10 <span className="text-regular text-waterloo dark:text-manatee">/month</span></h3>
+          <div className="sr-item animate_top home-md:w-[45%] home-lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 home-xl:p-12.5">
+            <h3 className="text-black dark:text-white font-bold text-3xl home-xl:text-sectiontitle3 mb-7.5">$10 <span className="text-regular text-waterloo dark:text-manatee">/month</span></h3>
             <h4 className="text-black dark:text-white font-medium text-para2 mb-2.5">Small Pack</h4>
             <p>Lorem ipsum dolor sit amet, consec adipisicing elit.</p>
 
@@ -45,10 +45,10 @@ const PricingTableSection: FC<Props> = () => {
           </div>
 
           {/* <!-- Pricing Item --> */}
-          <div className="sr-item animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5">
+          <div className="sr-item animate_top home-md:w-[45%] home-lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 home-xl:p-12.5">
             <div className="absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-primary dark:bg-primarydark font-medium text-white text-metatitle uppercase py-1.5 px-4.5">popular</div>
 
-            <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">$59 <span className="text-regular text-waterloo dark:text-manatee">/month</span></h3>
+            <h3 className="text-black dark:text-white font-bold text-3xl home-xl:text-sectiontitle3 mb-7.5">$59 <span className="text-regular text-waterloo dark:text-manatee">/month</span></h3>
             <h4 className="text-black dark:text-white font-medium text-para2 mb-2.5">Medium Pack</h4>
             <p>Lorem ipsum dolor sit amet, consec adipisicing elit.</p>
 
@@ -70,8 +70,8 @@ const PricingTableSection: FC<Props> = () => {
           </div>
 
           {/* <!-- Pricing Item --> */}
-          <div className="sr-item animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5">
-            <h3 className="text-black dark:text-white font-bold text-3xl xl:text-sectiontitle3 mb-7.5">$189 <span className="text-regular text-waterloo dark:text-manatee">/month</span></h3>
+          <div className="sr-item animate_top home-md:w-[45%] home-lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 home-xl:p-12.5">
+            <h3 className="text-black dark:text-white font-bold text-3xl home-xl:text-sectiontitle3 mb-7.5">$189 <span className="text-regular text-waterloo dark:text-manatee">/month</span></h3>
             <h4 className="text-black dark:text-white font-medium text-para2 mb-2.5">Large Pack</h4>
             <p>Lorem ipsum dolor sit amet, consec adipisicing elit.</p>
 

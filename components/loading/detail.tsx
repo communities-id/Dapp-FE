@@ -8,7 +8,7 @@ interface Props {
 
 const Loading: FC<Props> = ({ animate = true, className }) => {
   return (
-    <div className={classnames('w-full', {
+    <div className={classnames('px-10', {
       'animate-skeleton-breath': animate
     }, className)}>
       <div className='bg-white pr-[16px] rounded-[8px] flex gap-3 overflow-hidden'>

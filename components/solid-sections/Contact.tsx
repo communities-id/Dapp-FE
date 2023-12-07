@@ -6,41 +6,41 @@ interface Props {}
 
 const ContactSection: FC<Props> = () => {
   return (
-    <section id="support" className="px-4 md:px-8 2xl:px-0">
-      <div className="mx-auto max-w-c-1390 relative pt-10 lg:pt-15 xl:pt-20 px-7.5 lg:px-15 xl:px-20 overflow-hidden">
+    <section id="support" className="px-4 home-md:px-8 home-2xl:px-0">
+      <div className="mx-auto max-w-c-1390 relative pt-10 home-lg:pt-15 home-xl:pt-20 px-7.5 home-lg:px-15 home-xl:px-20 overflow-hidden">
         <div className="absolute -z-1 rounded-lg left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#DEE7FF] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
         <DottedBg/>
 
-        <div className="flex flex-wrap md:flex-nowrap flex-col-reverse md:flex-row gap-8 xl:gap-20 md:justify-between">
-          <div className="sr-item animate_top w-full md:w-3/5 lg:w-3/4 shadow-solid-8 rounded-lg bg-white dark:bg-black dark:border dark:border-strokedark p-7.5 xl:p-15">
-            <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle2 font-semibold mb-15">Send a message</h2>
+        <div className="flex flex-wrap home-md:flex-nowrap flex-col-reverse home-md:flex-row gap-8 home-xl:gap-20 home-md:justify-between">
+          <div className="sr-item animate_top w-full home-md:w-3/5 home-lg:w-3/4 shadow-solid-8 rounded-lg bg-white dark:bg-black dark:border dark:border-strokedark p-7.5 home-xl:p-15">
+            <h2 className="text-black dark:text-white text-3xl home-xl:text-sectiontitle2 font-semibold mb-15">Send a message</h2>
 
             <form action="https://formbold.com/s/unique_form_id" method="POST">
-              <div className="flex flex-col lg:flex-row lg:justify-between gap-7.5 lg:gap-14 mb-7.5">
+              <div className="flex flex-col home-lg:flex-row home-lg:justify-between gap-7.5 home-lg:gap-14 mb-7.5">
                 <input
                   type="text"
                   placeholder="Full name"
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className="w-full home-lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
 
                 <input
                   type="email"
                   placeholder="Email address"
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className="w-full home-lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
               </div>
 
-              <div className="flex flex-col lg:flex-row lg:justify-between gap-7.5 lg:gap-14 mb-12.5">
+              <div className="flex flex-col home-lg:flex-row home-lg:justify-between gap-7.5 home-lg:gap-14 mb-12.5">
                 <input
                   type="text"
                   placeholder="Subject"
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className="w-full home-lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
 
                 <input
                   type="text"
                   placeholder="Phone number"
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className="w-full home-lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
               </div>
 
@@ -52,7 +52,7 @@ const ContactSection: FC<Props> = () => {
                 ></textarea>
               </div>
 
-              <div className="flex flex-wrap xl:justify-between gap-10 xl:gap-15">
+              <div className="flex flex-wrap home-xl:justify-between gap-10 home-xl:gap-15">
                 <div>
                   <label htmlFor="supportCheckbox" className="max-w-[425px] flex cursor-pointer select-none hover:text-primary">
                     <div className="relative">
@@ -82,8 +82,8 @@ const ContactSection: FC<Props> = () => {
             </form>
           </div>
 
-          <div className="sr-item animate_top w-full md:w-2/5 lg:w-[26%] md:p-7.5 xl:pt-15">
-            <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle2 font-semibold mb-12.5">Find us</h2>
+          <div className="sr-item animate_top w-full home-md:w-2/5 home-lg:w-[26%] home-md:p-7.5 home-xl:pt-15">
+            <h2 className="text-black dark:text-white text-3xl home-xl:text-sectiontitle2 font-semibold mb-12.5">Find us</h2>
 
             <div className="mb-7 5">
               <h4 className="font-medium text-black dark:text-white text-metatitle3 mb-4">Our Loaction</h4>

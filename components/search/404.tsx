@@ -3,6 +3,7 @@ import { FC, Fragment } from 'react'
 import Banner from '@/components/search/banner'
 
 import EmptyIcon from '~@/icons/mint/empty.svg'
+import SearchHeader from '../solid/SearchHeader'
 
 interface Props {
 }
@@ -11,6 +12,7 @@ const NotFound: FC<Props> = () => {
   return (
     <Fragment>
       <Banner/>
+      <SearchHeader />
       <div className='search-container mt-5 pt-[16px] pb-[62px] flex flex-col items-center bg-white rounded-[10px]'>
         <EmptyIcon width='200' />
         <h2 className='mt-3 text-black text-404-title'>Not Found!</h2>

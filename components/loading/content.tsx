@@ -9,7 +9,7 @@ interface Props {
 
 const Loading: FC<Props> = ({ personal, animate = true, className }) => {
   return (
-    <div className={classnames('w-full', {
+    <div className={classnames('px-10', {
       'animate-skeleton-breath': animate
     }, className)}>
       {
@@ -24,9 +24,9 @@ const Loading: FC<Props> = ({ personal, animate = true, className }) => {
           </ul>
         ) : null
       }
-      <ul className='grid grid-cols-4 gap-5'>
+      <ul className='card-grid grid gap-5'>
         {
-          Array.from({ length: 4 }).map((_, index) => (
+          Array.from({ length: 20 }).map((_, index) => (
             <li key={index} className='flex flex-col overflow-hidden rounded-[8px] bg-white'>
               <div className='w-full aspect-square bg-sekeleton-dark-gray'></div>
               <div className='p-[14px] bg-white'>

@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, ReactNode, useEffect, useRef, useMemo } from 'react'
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 
 import { track as trackEvt } from '@/shared/track'
 
@@ -35,6 +36,7 @@ interface RootContextConfigProps {
   toggleNavigationOpen: () => void
   scrollTop: boolean
   setScrollTop: (value: boolean) => void
+  isMobile: boolean
   // toggleScrollTop: (value: boolean) => void
 }
 
@@ -44,6 +46,10 @@ interface RootContextProps {
   config: RootContextConfigProps
   message: (info: SnackbarMessage, track?: Record<string, string | number>) => void
   tracker: (t: string, info?: Record<string, string | number>) => void
+  NetOps: {
+    loading: boolean
+    handleSwitchNetwork: (network: number) => Promise<number>
+  }
 }
 
 const Context = createContext<RootContextProps>({
@@ -62,14 +68,23 @@ const Context = createContext<RootContextProps>({
     toggleNavigationOpen: () => {},
     scrollTop: false,
     setScrollTop: () => {},
+    isMobile: false,
     // toggleScrollTop: () => {},
   },
   message: () => {},
   tracker: () => {},
+  NetOps: {
+    loading: false,
+    handleSwitchNetwork: async () => 0,
+  },
 })
 
 export function RootProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
+  const { chain } = useNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
+  const [switchNetworkLoading, setSwitchNetworkLoading] = useState(false)
+
   const refToComponent = useRef(null)
   const [sr, setSr] = useState()
   const [loaded, setLoaded] = useState(false)
@@ -79,6 +94,7 @@ export function RootProvider({ children }: { children: ReactNode }) {
   const [stickyMenu, setStickyMenu] = useState<RootContextConfigProps['stickyMenu']>(false)
   const [navigationOpen, setNavigationOpen] = useState<RootContextConfigProps['navigationOpen']>(false)
   const [scrollTop, setScrollTop] = useState<RootContextConfigProps['scrollTop']>(false)
+  const [isMobile, setIsMobile] = useState<RootContextConfigProps['isMobile']>(false)
 
   const [snackbarInfo, setSnackbarInfo] = useState<Required<SnackbarMessage>>({
     open: false,
@@ -125,6 +141,21 @@ export function RootProvider({ children }: { children: ReactNode }) {
     setStickyMenu(!stickyMenu)
   }
 
+  const handleSwitchNetwork = async (network: number) => {
+    if (Number(chain?.id) !== Number(network)) {
+      try {
+        setSwitchNetworkLoading(true)
+        // setIsSwitchNetwork(true)
+        await switchNetworkAsync?.(network)
+        setSwitchNetworkLoading(false)
+      } catch (e) {
+        setSwitchNetworkLoading(false)
+        throw e
+      }
+    }
+    return Number(network)
+  }
+
   const rootConfig = useMemo(() => {
     return {
       page,
@@ -139,17 +170,19 @@ export function RootProvider({ children }: { children: ReactNode }) {
       toggleNavigationOpen,
       scrollTop,
       setScrollTop,
+      isMobile
     }
-  }, [page, darkMode, stickyMenu, navigationOpen, scrollTop])
+  }, [page, darkMode, stickyMenu, navigationOpen, scrollTop, isMobile])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     _setDarkMode(localStorage.getItem('darkMode') === 'true')
-
+    setIsMobile(window.innerWidth < 768)
   }, [])
   useEffect(() => {
     if (typeof window === 'undefined') return
     // console.log('---------- root init', refToComponent.current, router.pathname)
+    const scrollContainer = document.querySelector('#__next')
 
     async function animate() {
       if (!refToComponent.current) return
@@ -158,7 +191,8 @@ export function RootProvider({ children }: { children: ReactNode }) {
       const sr = ScrollReveal({
         distance: '60px',
         duration: 800,
-        reset: false
+        reset: false,
+        container: scrollContainer
       })
       sr.reveal(`.animate_top`, {
         origin: 'top',
@@ -178,18 +212,30 @@ export function RootProvider({ children }: { children: ReactNode }) {
     }
     animate()
 
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 20) {
-        setStickyMenu(true)
-      } else {
-        setStickyMenu(false)
-      }
-      setScrollTop(window.pageYOffset > 50)
-    })
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', () => {
+        if (scrollContainer.scrollTop > 20) {
+          setStickyMenu(true)
+        } else {
+          setStickyMenu(false)
+        }
+        setScrollTop(scrollContainer.scrollTop > 50)
+      })
+    }
   }, [router.pathname])
 
   return (
-    <Context.Provider value={{ sr: sr!, loaded, config: rootConfig, message: showMessage, tracker: handleTrack }}>
+    <Context.Provider value={{
+      sr: sr!,
+      loaded,
+      config: rootConfig,
+      message: showMessage,
+      tracker: handleTrack,
+      NetOps: {
+        loading: switchNetworkLoading,
+        handleSwitchNetwork,
+      },
+    }}>
       <Snackbar {...snackbarInfo} handleClose={hideMessage}/>
       <div className={classnames({ 'bg-black': darkMode })} ref={refToComponent}>{children}</div>
     </Context.Provider>

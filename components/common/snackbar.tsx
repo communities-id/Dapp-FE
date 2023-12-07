@@ -6,9 +6,11 @@ import { styled } from '@mui/system'
 import { Snackbar } from '@mui/base'
 import { SnackbarCloseReason } from '@mui/base/useSnackbar'
 
-import CloseIcon from '~@/icons/close.svg'
+import SuccessIcon from '~@/icons/toast/success.svg'
+import ErrorIcon from '~@/icons/toast/error.svg'
+import InfoIcon from '~@/icons/toast/info.svg'
 
-export type SnackbarType = 'success' | 'error' | 'warning'
+export type SnackbarType = 'success' | 'error' | 'warning' | 'info'
 
 interface Props {
   type: SnackbarType
@@ -42,6 +44,21 @@ const _Snackbar: FC<Props> = ({ type, title, content, open, handleClose, handleE
     handleExited?.();
   };
 
+  function renderIcon() {
+    if (type === 'info') {
+      return <InfoIcon />
+    }
+    if (type === 'success') {
+      return <SuccessIcon />
+    }
+    if (type === 'error') {
+      return <ErrorIcon />
+    }
+    if (type === 'warning') {
+      return <ErrorIcon />
+    }
+  }
+
   return (
     <Fragment>
       <StyledSnackbar
@@ -64,12 +81,7 @@ const _Snackbar: FC<Props> = ({ type, title, content, open, handleClose, handleE
             <SnackbarContent
               className={
                 classnames(
-                  'relative flex p-[14px] gap-[8px] border-none rounded-[6px] text-[14px] leading-[20px] overflow-hidden',
-                  {
-                    'bg-snackbar-success text-snackbar-success': type === 'success',
-                    'bg-snackbar-error text-snackbar-error': type === 'error',
-                    'bg-snackbar-warning text-snackbar-warning': type === 'warning',
-                  },
+                  'w-full relative flex items-center p-[10px] pr-5 gap-[2px] border border-gray-7 bg-white rounded-[6px] text-[14px] leading-[20px] overflow-hidden snack-toast',
                   className
                 )
               }
@@ -79,11 +91,11 @@ const _Snackbar: FC<Props> = ({ type, title, content, open, handleClose, handleE
               }}
               ref={nodeRef}
             >
+              {renderIcon()}
               <div className="flex-1 flex flex-col min-w-0">
                 {/* <p className="font-medium">{ title }</p> */}
-                <div className="font-normal">{ content }</div>
+                <div className="font-normal max-w-[600px]">{ content }</div>
               </div>
-              <CloseIcon width='18' height='18' className="cursor-pointer shrink-0 leading-none" onClick={handleClose} />
             </SnackbarContent>
           )}
         </Transition>
@@ -98,9 +110,12 @@ const StyledSnackbar = styled(Snackbar)`
   position: fixed;
   display: flex;
   bottom: 16px;
-  right: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 560px;
-  min-width: 300px;
+  @media screen and (max-width: 768px) {
+    width: 84vw;
+  }
   `;
 
 const SnackbarContent = styled('div')(
@@ -110,9 +125,9 @@ const SnackbarContent = styled('div')(
 );
 
 const positioningStyles = {
-  entering: 'translateX(0)',
-  entered: 'translateX(0)',
-  exiting: 'translateX(500px)',
-  exited: 'translateX(500px)',
-  unmounted: 'translateX(500px)',
+  entering: 'translateY(0)',
+  entered: 'translateY(0)',
+  exiting: 'translateY(100px)',
+  exited: 'translateY(100px)',
+  unmounted: 'translateY(100px)',
 };

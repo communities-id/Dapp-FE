@@ -127,15 +127,16 @@ const PersonInfo: FC<Props> = ({}) => {
   }, [isAddressOwner, account])
 
   return (
-    <div className='w-full pb-[20px]'>
-      <Banner banner={personInfo?.tokenUri?.brand_image} />
-      <div className='w-full px-5'>
-        <div className='w-full relative pt-[40px]'>
-          <AvatarCard outline size={100} className='absolute top-[-80px] left-5 rounded-full' src={personInfo.tokenUri?.image}/>
-          <div className="w-full flex flex-col">
+    <div className='w-full pb-10'>
+      <Banner banner={personInfo?.tokenUri?.brand_image} className='pc:!h-[211px] sm:!hidden' />
+      <div className='dapp-container px-10 sm:mt-[70px]'>
+        <div className='w-full relative pt-[80px] sm:pt-[50px]'>
+          <AvatarCard outline size={120} src={personInfo.tokenUri?.image} className='sm:hidden absolute top-[-60px] rounded-full left-1/2 ml-[-60px]' />
+          <AvatarCard outline size={80} src={personInfo?.tokenUri?.image} className='pc:hidden absolute top-[-40px] rounded-full left-1/2 ml-[-40px]' />
+          <div className="w-full flex flex-col items-center">
             <div className='w-full flex items-center justify-between'>
-              <div className='flex-1 flex items-center gap-4'>
-                <h1 className='text-searchtitle text-secondaryBlack'>
+              <div className='flex-1 flex items-center gap-4 flex-col'>
+                <h1 className='text-xl text-main-black'>
                   <PrimaryDID address={address} noLink/>
                 </h1>
                 {

@@ -15,14 +15,14 @@ const AvatarCard: FC<Props> = ({ className, size, src, outline }) => {
     <div
       className={classnames('overflow-hidden', {
         'bg-avatar rounded-[12px]': !src,
-        'outline outline-avatar': outline
+        'border-[4px] border-white': outline
       }, className)}
       style={{ width: size, height: size }}>
       {
         src ? (
           <img
             alt='avatar'
-            className='w-full h-full object-cover'
+            className='w-full h-full object-cover var-brand-bgcolor'
             src={parseImgSrc(src)}
           />
         ) : null

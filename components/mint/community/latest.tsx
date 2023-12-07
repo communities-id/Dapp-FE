@@ -113,7 +113,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
       }
       tracker('success:brand-mint', { community, mintTo: _mintTo, price: price.toString() })
       // to do: update brand
-      await refreshInfo()
+      await refreshInfo(true)
       handleMintSuccess?.({ community, owner: _mintTo, avatar: '' }, 'community')
     } catch (err: any) {
       console.log(err)
@@ -153,7 +153,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
   }
 
   return (
-    <div className="px-[60px] pt-[30px] pb-[40px] flex flex-col items-center bg-white rounded-[10px]">
+    <div className="px-[60px] pt-[30px] pb-[40px] flex flex-col items-center bg-white rounded-[10px] sm:mt-3 sm:px-3">
       {/* <h1 className='text-mintTitle text-dark'>Almost there!</h1> */}
       <div className='flex items-center justify-center'>
         <PendingIcon width='66' height='66' />

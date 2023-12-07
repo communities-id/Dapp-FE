@@ -24,9 +24,9 @@ module.exports = {
     'alert-error'
   ],
   theme: {
-    fontFamily: {
-      outfit: ['Outfit', 'sans-serif'],
-    },
+    fontFamily: require('./_themes/size').fontFamily,
+    container: require('./_themes/size').container,
+    screens: require('./_themes/size').screens,
     colors: {
       current: 'currentColor',
       transparent: 'transparent',
@@ -42,7 +42,7 @@ module.exports = {
       black: '#181C30',
       blackho: '#2C3149',
       blacksection: '#1C2136',
-      primary: '#995AFF',
+      // primary: '#995AFF',
       primarydark: '#995AFF',
       primaryho: '#AA6AFF',
       primarydarkho: '#AA6AFF',
@@ -110,7 +110,8 @@ module.exports = {
       'advance-more-active': '#8840FF',
       'loading-icon': '#EAECF0',
       'mint-tip': '#FFB13D',
-      'mint-tip-btn': '#fff'
+      'mint-tip-btn': '#fff',
+      ...require('./_themes/colors')
     },
     extend: {
       fontSize: {
@@ -175,6 +176,7 @@ module.exports = {
         'mint-tip-btn': ['14px', { lineHeight: '26px', fontWeight: '400' }],
         'mint-setting-tab': ['16px', { lineHeight: '20px', fontWeight: '500' }],
         'integrate-tit': ['20px', { lineHeight: '26px', fontWeight: '600' }],
+        ...require('./_themes/size').fontSize
       },
       spacing: {
         4.5: '1.125rem',
@@ -233,7 +235,8 @@ module.exports = {
         'c-840': '840px',
       },
       padding: {
-        'p-20': '20px'
+        'p-20': '20px',
+        ...require('./_themes/size').padding
       },
       zIndex: {
         'snackbar': '5001',
@@ -246,6 +249,10 @@ module.exports = {
         99999: '99999',
         999: '999',
         1: '1',
+        ...require('./_themes/style').zIndex
+      },
+      lineHeight: {
+        ...require('./_themes/style').lineHeight
       },
       opacity: {
         65: '.65',
@@ -272,7 +279,8 @@ module.exports = {
         none: 'none',
         'tooltip': '0px 4px 40px rgba(0, 0, 0, 0.1)',
         'member-i': '0px 4px 30px 0px rgba(0, 0, 0, 0.10)',
-        'setting-avatar': '0px 0px 15px 0px rgba(0, 0, 0, 0.30)'
+        'setting-avatar': '0px 0px 15px 0px rgba(0, 0, 0, 0.30)',
+        ...require('./_themes/style').boxShadow
       },
       outlineColor: {
         'search-form': '#fff',
@@ -280,7 +288,7 @@ module.exports = {
       },
       outlineWidth: {
         'search-form': '1px',
-        'avatar': '2px'
+        'avatar': '4px'
       },
       borderColor: {
         'home-search': '#DCDCDC',
@@ -296,8 +304,10 @@ module.exports = {
         'search-form': '1px',
         'network-btn': '1px',
         'network-btn-active': '1px',
-        'mint-tip-btn': "1px"
+        'mint-tip-btn': "1px",
+        ...require('./_themes/size').borderWidth
       },
+      borderRadius: require('./_themes/size').borderRadius,
       keyframes: {
         line: {
           '0%, 100%': { transform: 'translateY(100%)' },
@@ -329,6 +339,7 @@ module.exports = {
         'action-text-gradient': "linear-gradient(88.93deg, #000 18.91%, #8840FF 79.91%);",
         'action-text-gradient-dark': "linear-gradient(88.93deg, #fff 18.91%, #8840FF 79.91%);",
         'collapse-mask': "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 80%);",
+        ...require('./_themes/style').backgroundImage
       },
       backgroundSize: {
         'default-search-banner': 'auto 100%',
@@ -347,13 +358,14 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/typography'),
-    require('daisyui')
+    require('daisyui'),
+    require('tailwindcss-safe-area')
   ],
   daisyui: {
     themes: [
       {
         mytheme: {
-          "primary": "#995AFF",
+          "primary": require('./_themes/colors').primary,
           // "secondary": "#F000B8",
           "accent": "#37CDBE",
           "neutral": "#3D4451",

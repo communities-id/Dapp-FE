@@ -13,12 +13,13 @@ interface Props {
   labels?: number[]
   values?: number[]
   height?: number
+  colors?: string[]
   markerSymbol?: string
   currentLabel?: number
   hiddenMarkers?: boolean
 }
 
-const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200, labels = [0, 1000, 2000, 3000, 4000, 5000, 6000], values, markerSymbol = 'Coin', currentLabel = 1, hiddenMarkers }) => {
+const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200, colors = ['#883FFF'], labels = [0, 1000, 2000, 3000, 4000, 5000, 6000], values, markerSymbol = 'Token', currentLabel = 1, hiddenMarkers }) => {
 
   const datasetsValues = values || labels.map(x => {
     // price is the final price of multiple days
@@ -28,7 +29,7 @@ const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200,
   const currentPrice = formatLocaleDecimalsNumber(formatToDecimal(calcCurrentMintPrice(currentLabel, { ...params }).price, 0, 6))
 
   const markers: Markers = [{
-    label: `Current Price ≈ ${formatDecimalsPrice(currentPrice, 6)}`,
+    label: `Current Price ≈ ${formatDecimalsPrice(currentPrice, 6)} ${markerSymbol}`,
     value: Number(currentPrice),
     options: {
       labelPos: 'left',
@@ -40,6 +41,7 @@ const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200,
       key={name}
       height={height}
       labels={labels}
+      colors={colors}
       datasets={[
         {
           name: 'per year',

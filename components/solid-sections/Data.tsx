@@ -67,13 +67,13 @@ const DataSection: FC<Props> = () => {
   return (
     <section className="bg-alabaster dark:bg-black border border-x-0 border-y-stroke dark:border-y-strokedark">
       {/* max-w-c-1390 */}
-      <div className="mx-auto max-w-c-1016 px-4 md:px-8 2xl:px-0 py-6 md:py-0 h-auto md:h-[125px] flex item-center">
-      {/* lg:gap-12.5 */}
-        <div className="grid grid-cols-3 md:grid-cols-7 gap-7.5 lg:gap-16 xl:gap-16 justify-center items-center">
+      <div className="mx-auto max-w-c-1016 px-4 home-md:px-8 home-2xl:px-0 py-6 home-md:py-0 h-auto home-md:h-[125px] flex item-center">
+      {/* home-lg:gap-12.5 */}
+        <div className="grid grid-cols-3 home-md:grid-cols-7 gap-7.5 home-lg:gap-16 home-xl:gap-16 justify-center items-center">
           {
             datas.map((data, index) => {
               return (
-                <div key={index} className="sr-item animate_top block">
+                <div key={index} className={`sr-item animate_top block ${index === 0 ? 'sm:hidden' : ''}`}>
                   {
                     data ? (
                       data.type === 'svg' ? (

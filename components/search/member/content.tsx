@@ -1,11 +1,9 @@
 import { FC, useMemo, useState, Fragment } from 'react'
-import Link from 'next/link'
 
 import { useSwitchNetwork } from 'wagmi'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
-import { formatAddress, formatContractError, formatDate, parseImgSrc } from '@/shared/helper'
-import { CHAINS_ID_TO_NETWORK, CHAIN_ID, MAIN_CHAIN_ID } from '@/shared/constant'
+import { formatDate } from '@/shared/helper'
 import useApi from '@/shared/useApi'
 import { getOpenseaLink } from '@/utils/tools'
 import { getNormalTwitterShareLink } from '@/utils/share'
@@ -16,11 +14,7 @@ import Popover, { PopoverMenuItem } from '@/components/common/popover'
 import CommunityMint from '@/components/mint/community'
 import MemberMint from '@/components/mint/member'
 import PrimaryDID from '@/components/common/primaryDID'
-import ExpandableDescription from '@/components/common/expandableDescription'
-import MemberSetAsPrimaryDialog from '@/components/dialog/member/asPrimary'
 import MemberProfileSettingDialog from '@/components/dialog/member/profileSetting'
-import MemberRenewDialog from '@/components/dialog/member/renew'
-import MemberBurnDialog from '@/components/dialog/member/burn'
 import HoverIcon from '@/components/common/hoverIcon'
 import DividerLine from '@/components/common/dividerLine'
 
@@ -29,23 +23,25 @@ import WebsiteIcon from '~@/icons/social/website.svg'
 import TwitterIcon from '~@/icons/social/twitter.svg'
 import TelegramIcon from '~@/icons/social/telegram.svg'
 import DiscordIcon from '~@/icons/social/discord.svg'
-import ArrowRightIcon from '~@/icons/arrow-right.svg'
 import MoreIcon from '~@/icons/more.svg'
 import SetIcon from '~@/icons/settings/set.svg'
-import SettingIcon from '~@/icons/settings/setting.svg'
 import RefreshIcon from '~@/icons/settings/refresh.svg'
 import RenewIcon from '~@/icons/settings/renew.svg'
 import BurnIcon from '~@/icons/settings/burn.svg'
-import LoadingIcon from '~@/icons/loading.svg'
 import ShareIcon from '~@/icons/share.svg'
+import { useGlobalDialog } from '@/contexts/globalDialog'
+import MemberPrimary from '@/components/_dialog/member/primary'
+import MemberRenew from '@/components/_dialog/member/renew'
+import MemberBurn from '@/components/_dialog/member/burn'
 
 interface Props {
 }
 
 const PersonContent: FC<Props> = () => {
-  const { message } = useRoot()
+  const { message, config } = useRoot()
   const { keywords, communityInfo, memberInfo, loadingSet, communityInfoSet, memberInfoSet, shouldSwitchNetwork, isMainNetwork, refreshInfo } = useDetails()
   const { switchNetworkAsync } = useSwitchNetwork()
+  const { showGlobalDialog } = useGlobalDialog()
 
   const [dialogOpenSet, setDialogOpenSet] = useState<Record<'asPrimary' | 'profile' | 'renew' | 'burn', boolean>>({
     asPrimary: false,
@@ -59,6 +55,7 @@ const PersonContent: FC<Props> = () => {
     return [
       !loadingSet.member && memberInfoSet.isOwner && !memberInfoSet.isPrimary ? {
         id: 'asPrimary',
+        mobileId: 'mobile-member-primary',
         text: 'Set as Primary',
         icon: <SetIcon width={16} height={16} className='text-[#333]'/>
       } : null,
@@ -68,17 +65,19 @@ const PersonContent: FC<Props> = () => {
       //   icon: <SettingIcon width={16} height={16} className='text-[#333]'/>
       // },
       {
-        id: 'refresh metadata',
+        id: 'refresh',
         text: 'Refresh',
         icon: <RefreshIcon width={16} height={16} className='text-[#333]'/>
       },
       {
         id: 'renew',
+        mobileId: 'mobile-member-renew',
         text: 'Renew',
         icon: <RenewIcon width={16} height={16} className='text-[#333]'/>
       },
       {
         id: 'burn',
+        mobileId: 'mobile-member-burn',
         text: 'Burn',
         icon: <BurnIcon width={16} height={16} className='text-[#333]'/>
       },
@@ -143,6 +142,10 @@ const PersonContent: FC<Props> = () => {
 
   const handleSelectMenu = async (menu: PopoverMenuItem) => {
     if (menu.id === 'refresh') {
+      message({
+        type: 'success',
+        content: 'We\'ve queued this item for an update! Page will reload automaticaly after refresh completed'
+      }, { t: 'member-refresh-metadata' })
       await updateMember(`${memberInfo.node?.node}.${communityInfo.node?.node}`, true)
       location.reload()
       return
@@ -150,7 +153,11 @@ const PersonContent: FC<Props> = () => {
     if (shouldSwitchNetwork && menu.id !== 'asPrimary') {
       await switchNetworkAsync?.(communityInfo?._chaninId)
     }
-    setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
+    if (config.isMobile) {
+      showGlobalDialog(menu.mobileId as string, { memberName: keywords })
+    } else {
+      setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
+    }
   }
   
   const handleSelectShareMenu = async (menu: PopoverMenuItem) => {
@@ -160,15 +167,14 @@ const PersonContent: FC<Props> = () => {
     <div className='mt-[20px] flex flex-col gap-4'>
       {
         memberInfoSet.isMinted && (
-          <div className="flex justify-between rounded-[10px] bg-white">
-            <div className="flex flex-1 gap-3 pr-4">
+          <div className="flex justify-between rounded-[10px] bg-white sm:mb-10">
+            <div className="flex flex-1 gap-3 pr-4 sm:flex-col sm:items-center">
               <AvatarCard size={124} src={memberInfo?.tokenUri?.image} />
-              <div className='flex flex-1 gap-3 py-[14px] pl-[6px]'>
+              <div className='flex flex-1 gap-3 py-[14px] pl-[6px] sm:flex-col'>
                 <div className='flex-1 flex flex-col'>
                   <div className='flex flex-col justify-center'>
                     <h3 className='flex items-center gap-2 text-member-d-tit text-secondaryBlack'>
                       { keywords }
-                  
                     </h3>
                     <p className='text-member-d-subtit'>#{Number(memberInfo?.node?.tokenId)}</p>
                   </div>
@@ -188,11 +194,12 @@ const PersonContent: FC<Props> = () => {
                     </div>
                   </div>
                 </div>
-                <div className='flex flex-col justify-between'>
+                <div className='flex flex-col justify-between sm:flex-row-reverse'>
                   <div className='flex items-start justify-end gap-3'>
                     {
                       memberInfoSet.isOwner && (
                         <Popover
+                          className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                           id={Number(memberInfo.node?.tokenId)}
                           menus={memberPopoverMenus}
                           // disabled={shouldSwitchNetwork}
@@ -219,6 +226,7 @@ const PersonContent: FC<Props> = () => {
                     </ul>
                     <DividerLine mode='horizontal' wrapClassName='!mx-3' />
                     <Popover
+                      className='w-[40px] h-[40px] rounded-[10px] hover:bg-iconHoverBg'
                       id={Number(memberInfo.node?.tokenId) + 'share'}
                       menus={memberSharePopoverMenus}
                       // disabled={shouldSwitchNetwork}
@@ -242,17 +250,17 @@ const PersonContent: FC<Props> = () => {
           ) : null
         )
       }
-      <MemberSetAsPrimaryDialog
+      <MemberPrimary
         open={dialogOpenSet['asPrimary']}
         memberName={keywords}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, asPrimary: false }))} />
       <MemberProfileSettingDialog
         open={dialogOpenSet['profile']}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, profile: false }))} />
-      <MemberRenewDialog
+      <MemberRenew
         open={dialogOpenSet['renew']}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, renew: false }))} />
-      <MemberBurnDialog
+      <MemberBurn
         open={dialogOpenSet['burn']}
         handleClose={() => setDialogOpenSet(prev => ({ ...prev, burn: false }))} />
     </div>

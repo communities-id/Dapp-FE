@@ -15,7 +15,7 @@ const _Tab: FC<Props> = ({ value, children, className }) => {
   return (
     <Tab
       value={value}
-      className={classnames('relative ml-[-20px] px-[20px] py-[10px] text-searchTab', className)}>
+      className={classnames('relative py-[10px] mr-12.5 sm:mr-10 text-searchTab', className)}>
         { children }
     </Tab>
   )
@@ -28,16 +28,16 @@ export default styled(_Tab)`
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 30px;
+    width: 100%;
     height: 3px;
-    background-color: #8840FF;
+    background-color: var(--var-brand-color);
     transform: translateX(-50%);
     pointer-events: none;
     visibility: hidden;
   }
   &.${tabClasses.selected} {
     --tw-text-opacity: 1;
-    color: rgb(136 63 255 / var(--tw-text-opacity));
+    color: #363e49;
     &::after {
       visibility: visible;
     }

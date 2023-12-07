@@ -58,7 +58,7 @@ const Identities: FC<Props> = () => {
   return (
     <div className=''>
       <InfiniteList<PersonIdentity>
-        className='grid grid-cols-4 gap-5'
+        className='card-grid grid gap-5'
         items={identities}
         loadMore={loadMore}
         renderItem={(row) => {

@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react'
+import { FC, useMemo, ReactNode } from 'react'
 import classnames from 'classnames'
 
 import { parseImgSrc } from '@/shared/helper'
@@ -7,9 +7,10 @@ interface Props {
   banner?: string
   brandColor?: string
   className?: string
+  children?: ReactNode
 }
 
-const Banner: FC<Props> = ({ banner, brandColor, className }) => {
+const Banner: FC<Props> = ({ banner, brandColor, className, children }) => {
 
   const brandImage = useMemo(() => {
     const bgImg = parseImgSrc(banner)
@@ -20,13 +21,15 @@ const Banner: FC<Props> = ({ banner, brandColor, className }) => {
   
   return (
     <div className={
-      classnames('h-[210px]', {
+      classnames('h-[260px] sm:h-[140px]', {
         '!bg-cover !bg-center': !!banner,
         'bg-default-search-banner' : !banner
       }, className)
     } style={{
       backgroundImage: brandImage
-    }}></div>
+    }}>
+      { children }
+    </div>
   )
 }
 

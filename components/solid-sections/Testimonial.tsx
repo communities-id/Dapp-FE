@@ -7,7 +7,7 @@ interface Props {}
 const TestimonialSection: FC<Props> = () => {
   return (
     <section>
-      <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+      <div className="mx-auto max-w-c-1315 px-4 home-md:px-8 home-xl:px-0">
         {/* <!-- Section Title Start --> */}
         <div
           className="sr-item animate_top text-center mx-auto"
@@ -17,7 +17,7 @@ const TestimonialSection: FC<Props> = () => {
         {/* <!-- Section Title End --> */}
       </div>
 
-      <div className="sr-item animate_top mx-auto max-w-c-1235 px-4 md:px-8 xl:px-0 mt-15 xl:mt-20">
+      <div className="sr-item animate_top mx-auto max-w-c-1235 px-4 home-md:px-8 home-xl:px-0 mt-15 home-xl:mt-20">
         {/* <!-- Slider main container --> */}
         <div className="swiper testimonial-01 pb-22.5">
           {/* <!-- Additional required wrapper --> */}

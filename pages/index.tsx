@@ -20,7 +20,7 @@ const Home: FC<Props> = () => {
   return (
     <Fragment>
       <Header isStatic showSearch={false}/>
-      <main>
+      <main className='!mt-0'>
         {/* <!-- ===== Hero Start ===== --> */}
         <HeroSection />
         {/* <!-- ===== Hero End ===== --> */}

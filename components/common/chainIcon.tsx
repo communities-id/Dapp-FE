@@ -17,29 +17,29 @@ interface Props {
 const ChainIcon: FC<Props> = ({ size = 24, wrapperSize = 0, colorMode, chainId, className }) => {
   const EthereumIcon = (
     <div
-      className={classnames('flex items-center justify-center text-white', { 'bg-[#6F7BBA]': colorMode }, className)}
+      className={classnames('flex items-center justify-center text-white rounded-full', { 'bg-[#6F7BBA]': colorMode }, className)}
       style={{ width: wrapperSize, height: wrapperSize, padding: wrapperSize ? `${(wrapperSize - size) / 2 - 1}px` : 0 }}
     >
       <EthereumSvg width={size + 2} height={size + 2} />
     </div>
   )
   const BaseIcon = (
-    <img alt='base chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/base.svg' />
+    <img className={className} alt='base chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/base.svg' />
   )
   const PolygonIcon = (
-    <img alt='polygon chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/polygon.svg' />
+    <img className={className} alt='polygon chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/polygon.svg' />
   )
   const OPIcon = (
-    <img alt='op chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/op.svg' />
+    <img className={className} alt='op chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/op.svg' />
   )
   const BSCIcon = (
-    <img alt='op chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/bsc.svg' />
+    <img className={className} alt='op chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/bsc.svg' />
   )
   const ScrollIcon = (
-    <img alt='scroll chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/scroll.svg' />
+    <img className={className} alt='scroll chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/scroll.svg' />
   )
   const AstarIcon = (
-    <img alt='astar chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/astar.svg' />
+    <img className={className} alt='astar chain logo' width={wrapperSize} height={wrapperSize} src='/icons/chain/astar.svg' />
   )
   const chainIcons: Record<TotalSupportedChainIDs, any> = useMemo(() => {
     return {

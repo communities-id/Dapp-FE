@@ -22,19 +22,18 @@ const PageContent: FC<Props> = ({ className }) => {
   const contentLoading = useMemo(() => {
     return (loadingSet.community || loadingSet.member) && !isUnknown
   }, [loadingSet.community, loadingSet.member, isUnknown])
-
   return (
-    <div className={classnames('pb-[120px]', className)}>
+    <div className={className}>
       {
         (contentLoading && mode !== 'address') ? (
           mode === 'member' ? (
-            <DetailLoading className='search-container mt-[20px]' />
+            <DetailLoading className='dapp-container mt-[20px]' />
           ) : (
-            <Loading className='search-container mt-[20px]' />
+            <Loading className='dapp-container mt-[20px]' />
           )
         ) : (
           isUnknown ? <NotFound /> : (
-            <div className='search-container mt-[10px]'>
+            <div className='dapp-container mt-[10px] px-10 sm:px-4 sm:mt-0 mb-10'>
               <div className='w-full'>
                 {mode === 'address' && (<PersonContent />)}
                 {mode === 'community' && (<CommunityContent />)}
@@ -44,7 +43,7 @@ const PageContent: FC<Props> = ({ className }) => {
           )
         )
       }
-      <SearchFooter className='search-container' />
+      <SearchFooter />
     </div>
   )
 }

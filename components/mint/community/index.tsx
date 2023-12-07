@@ -11,6 +11,7 @@ import { formatPrice, isAddress } from '@/shared/helper'
 import { useWallet } from '@/hooks/wallet'
 import { useSignUtils } from '@/hooks/sign'
 import { sleep } from '@/utils/tools'
+import { useDIDContent } from '@/hooks/content'
 
 import CommunityMintStatus from '@/components/mint/community/status'
 import CommunityMintStart from '@/components/mint/community/register'
@@ -19,6 +20,8 @@ import Steps from '@/components/common/steps'
 import AdvancedMintSetting from '@/components/common/advanceMintSetting'
 import InvitedCodeForm from '@/components/common/invitedCode'
 import DividerLine from '@/components/common/dividerLine'
+
+import { CommunityInfo, SearchMode } from '@/types'
 
 interface Props {
 }
@@ -54,6 +57,10 @@ const CommunityMint: FC<Props> = () => {
     omninodeMintTo: '',
     signature: ''
   })
+
+  const duplicateFrom = decodeURIComponent(searchParam.get('duplicateFrom')?.trim() || '')
+
+  const { brandInfo: duplFromBrandInfo, brandInfoLoading: duplFromBrandInfoLoading } = useDIDContent({ brandName: duplicateFrom })
 
   const steps = [
     {
@@ -204,6 +211,12 @@ const CommunityMint: FC<Props> = () => {
   }, [community, mintNetwork, communityInfo, account])
 
   useEffect(() => {
+    if (!!Object.values(duplFromBrandInfo).length) {
+      setMintNetwork(duplFromBrandInfo.chainId ?? mintNetwork)
+    }
+  }, [duplFromBrandInfo])
+
+  useEffect(() => {
     const [s1 = '', s2 = ''] = (crossChainMintSetting.signature.trim()).split('_')
     setAdvanceMintSetting({
       mintTo: crossChainMintSetting.mintTo.trim() || '',
@@ -248,13 +261,13 @@ const CommunityMint: FC<Props> = () => {
         step === 0 && (
           <CommunityMintStatus
             loading={firstLoading}
-            disabled={!isMintHandleValid}
+            disabled={!isMintHandleValid || duplFromBrandInfoLoading}
             mintNetwork={mintNetwork}
             handleNext={handleFirst}
             handleNetworkChange={(network) => {
               setMintNetwork(network)
             }}
-            step={<Steps className='mt-[30px] px-[60px]' step={0} steps={steps}/>}
+            step={<Steps className='mt-[30px] px-[60px] sm:px-3' step={0} steps={steps}/>}
             extra={
               <InvitedCodeForm
                 value={crossChainMintSetting.signature}
@@ -312,7 +325,7 @@ const CommunityMint: FC<Props> = () => {
             mintNetwork={mintNetwork}
             handleDeployed={handleOmninodeDeployed}
             disabled={!isMintHandleValid}
-            step={<Steps className='mt-[30px] px-[60px]' step={1} steps={steps}/>}
+            step={<Steps className='mt-[30px] px-[60px] sm:px-3' step={1} steps={steps}/>}
             extra={
               <InvitedCodeForm
                 value={crossChainMintSetting.signature}
@@ -358,7 +371,7 @@ const CommunityMint: FC<Props> = () => {
             price={price}
             gasFee={gasFee}
             mintNetwork={mintNetwork}
-            step={<Steps className='mt-[30px] px-[60px]' step={2} steps={steps}/>}
+            step={<Steps className='mt-[30px] px-[60px] sm:px-3' step={2} steps={steps}/>}
             extra={
               <InvitedCodeForm
                 value={crossChainMintSetting.signature}
