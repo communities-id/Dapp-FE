@@ -9,7 +9,8 @@ import { banUserWithNoPermission } from '@/shared/telegram'
 import { getSDKOptions } from '@/utils/provider'
 
 const domain = process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? 'https://testnet.communities.id' : 'https://communities.id'
-const DELTA_BLOCK = (chainId: number) => 9999;
+const quicknodeChains = [56, 97, 534351, 534352]
+const DELTA_BLOCK = (chainId: number) => (quicknodeChains.includes(chainId)) ? 9999 : 99999;
 const communitiesidSDK = new CommunitiesID(getSDKOptions(process.env.RPC_KEYS))
 const totalBlocks: any = {}
 const progress: any = {
@@ -63,12 +64,16 @@ async function syncCommunityEventsInOneChain(chainId: number) {
   const startBlock = progress.community[chainId]
   const totalBlock = totalBlocks[chainId]
   const endBlock = Math.min(startBlock + DELTA_BLOCK(chainId), totalBlock)
+  if (endBlock - startBlock < 10) {
+    logInfo(`Reach the end of chain ${chainId}`)
+    return
+  }
   const allEvents = await getCommunitiesEvent(
     chainId,
     startBlock,
     endBlock
   );
-  logInfo(`Syncing community events on chain ${chainId}, range: [${startBlock}, ${endBlock}], ${allEvents.length} events found`)
+  logInfo(`Syncing community events on chain ${chainId}, range: [${startBlock}, ${endBlock}], total: ${totalBlock}, ${allEvents.length} events found`)
   if (allEvents.length === 0) {
     if (endBlock < totalBlock) {
       await prisma.cache.update({
@@ -120,51 +125,65 @@ async function syncCommunityEventsInOneChain(chainId: number) {
       continue
     }
 
-    await prisma.community.upsert({
+    const community = await prisma.community.findUnique({
       where: {
         tokenId_chainId: {
           tokenId,
           chainId,
-        }
-      },
-      create: {
-        name: communityInfo?.node?.node,
-        registry: communityInfo?.node?.registry.toLowerCase(),
-        registryInterface: communityInfo.node.registryInterface.toLowerCase(),
-        chainId,
-        from: from.toLowerCase(),
-        to: to.toLowerCase(),
-        tokenId,
-        blockNumber: event.blockNumber,
-        blockTimestamp: timeStamp,
-        transactionHash: event.transactionHash,
-        price: price.toString(),
-        coinId: null,
-        pool: communityInfo.pool?.toString(),
-        totalSupply: communityInfo.totalSupply,
-        communityInfo: JSON.stringify(communityInfo),
-        latestBlock: event.blockNumber - 1
-      },
-      update: {
-        name: communityInfo?.node?.node,
-        registry: communityInfo?.node?.registry.toLowerCase(),
-        registryInterface: communityInfo.node.registryInterface.toLowerCase(),
-        chainId,
-        from: from.toLowerCase(),
-        to: to.toLowerCase(),
-        blockNumber: event.blockNumber,
-        blockTimestamp: timeStamp,
-        transactionHash: event.transactionHash,
-        price: price.toString(),
-        coinId: null,
-        pool: communityInfo.pool?.toString(),
-        totalSupply: communityInfo.totalSupply,
-        communityInfo: JSON.stringify(communityInfo),
-        latestBlock: event.blockNumber - 1
-      },
-    });
-    progress.member[`${chainId}-${tokenId}`] = event.blockNumber - 1
-    logInfo(`Synced community on chain ${chainId}, tokenId: ${tokenId}, name: ${communityInfo?.node?.node}`);
+        },
+        to: to.toLowerCase()
+      }
+    })
+
+    if (!community) {
+      await prisma.community.upsert({
+        where: {
+          tokenId_chainId: {
+            tokenId,
+            chainId,
+          }
+        },
+        create: {
+          name: communityInfo?.node?.node,
+          registry: communityInfo?.node?.registry.toLowerCase(),
+          registryInterface: communityInfo.node.registryInterface.toLowerCase(),
+          chainId,
+          from: from.toLowerCase(),
+          to: to.toLowerCase(),
+          tokenId,
+          blockNumber: event.blockNumber,
+          blockTimestamp: timeStamp,
+          transactionHash: event.transactionHash,
+          price: price.toString(),
+          coinId: null,
+          pool: communityInfo.pool?.toString(),
+          totalSupply: communityInfo.totalSupply,
+          communityInfo: JSON.stringify(communityInfo),
+          latestBlock: event.blockNumber - 1
+        },
+        update: {
+          name: communityInfo?.node?.node,
+          registry: communityInfo?.node?.registry.toLowerCase(),
+          registryInterface: communityInfo.node.registryInterface.toLowerCase(),
+          chainId,
+          from: from.toLowerCase(),
+          to: to.toLowerCase(),
+          blockNumber: event.blockNumber,
+          blockTimestamp: timeStamp,
+          transactionHash: event.transactionHash,
+          price: price.toString(),
+          coinId: null,
+          pool: communityInfo.pool?.toString(),
+          totalSupply: communityInfo.totalSupply,
+          communityInfo: JSON.stringify(communityInfo),
+          latestBlock: event.blockNumber - 1
+        },
+      });
+      progress.member[`${chainId}-${tokenId}`] = event.blockNumber - 1
+      logInfo(`Synced community on chain ${chainId}, tokenId: ${tokenId}, name: ${communityInfo?.node?.node}`);
+    } else {
+      logInfo(`Found exist community on chain ${chainId}, tokenId: ${tokenId}, name: ${communityInfo?.node?.node}`)
+    }
   }
   progress.community[chainId] = allEvents[allEvents.length - 1].blockNumber + 1
   logInfo(`Update community progress in DB: chainId ${chainId}, block number ${allEvents[allEvents.length - 1].blockNumber + 1}`)
@@ -199,13 +218,17 @@ async function syncMemberEventsInOneCommunity(chainId: number, tokenId: number) 
   const startBlock = progress.member[`${chainId}-${tokenId}`]
   const totalBlock = totalBlocks[chainId]
   const endBlock = Math.min(startBlock + DELTA_BLOCK(chainId), totalBlock)
+  if (endBlock - startBlock < 10) {
+    logInfo(`Reach the end of chain ${chainId} for community ${community.name}`)
+    return
+  }
   const allEvents = await getMemberEvent(
     registry,
     chainId,
     startBlock,
     endBlock
   );
-  logInfo(`Syncing member events with in community ${community.name}, range: [${startBlock}, ${endBlock}], ${allEvents.length} events found`)
+  logInfo(`Syncing member events with in community ${community.name}, range: [${startBlock}, ${endBlock}], total: ${totalBlock}, ${allEvents.length} events found`)
   if (allEvents.length === 0) {
     if (endBlock < totalBlock) {
       await prisma.community.update({
@@ -248,43 +271,57 @@ async function syncMemberEventsInOneCommunity(chainId: number, tokenId: number) 
       logInfo(`Delete member on in community "${community.name}": tokenId: ${tokenId}`);
       continue
     } else {
-      await prisma.member.upsert({
+      const member = await prisma.member.findUnique({
         where: {
           registry_tokenId_chainId: {
             registry,
             tokenId,
             chainId,
-          }
-        },
-        create: {
-          name: `${memberInfo?.node.node}.${community.name}`,
-          chainId,
-          from: from.toLowerCase(),
-          to: to.toLowerCase(),
-          registry,
-          registryInterface,
-          tokenId,
-          blockNumber: event.blockNumber,
-          blockTimestamp: timeStamp,
-          transactionHash: event.transactionHash,
-          price: price.toString(),
-          memberInfo: JSON.stringify(memberInfo)
-        },
-        update: {
-          name: `${memberInfo?.node.node}.${community.name}`,
-          chainId,
-          from: from.toLowerCase(),
-          to: to.toLowerCase(),
-          registry,
-          registryInterface,
-          blockNumber: event.blockNumber,
-          blockTimestamp: timeStamp,
-          transactionHash: event.transactionHash,
-          price: price.toString(),
-          memberInfo: JSON.stringify(memberInfo)
-        },
-      });
-      logInfo(`Synced member ${memberInfo?.node.node}.${community.name}`);
+          },
+          to: to.toLowerCase()
+        }
+      })
+      if (!member) {
+        await prisma.member.upsert({
+          where: {
+            registry_tokenId_chainId: {
+              registry,
+              tokenId,
+              chainId,
+            }
+          },
+          create: {
+            name: `${memberInfo?.node.node}.${community.name}`,
+            chainId,
+            from: from.toLowerCase(),
+            to: to.toLowerCase(),
+            registry,
+            registryInterface,
+            tokenId,
+            blockNumber: event.blockNumber,
+            blockTimestamp: timeStamp,
+            transactionHash: event.transactionHash,
+            price: price.toString(),
+            memberInfo: JSON.stringify(memberInfo)
+          },
+          update: {
+            name: `${memberInfo?.node.node}.${community.name}`,
+            chainId,
+            from: from.toLowerCase(),
+            to: to.toLowerCase(),
+            registry,
+            registryInterface,
+            blockNumber: event.blockNumber,
+            blockTimestamp: timeStamp,
+            transactionHash: event.transactionHash,
+            price: price.toString(),
+            memberInfo: JSON.stringify(memberInfo)
+          },
+        });
+        logInfo(`Synced member ${memberInfo?.node.node}.${community.name}`);
+      } else {
+        logInfo(`Found exist member: ${memberInfo?.node.node}.${community.name}`)
+      }
     }
     if (from !== ZERO_ADDRESS) {
       await banUserWithNoPermission(community, from)
@@ -307,6 +344,10 @@ async function syncPrimaryRecordEvnets() {
   const startBlock = progress.primaryRecord
   const totalBlock = totalBlocks[chainId]
   const endBlock = Math.min(startBlock + DELTA_BLOCK(chainId), totalBlock)
+  if (endBlock - startBlock < 10) {
+    logInfo(`Reach the end of chain ${chainId} for primary record events`)
+    return
+  }
   const allEvents = await getPrimaryRecordEvent(
     startBlock,
     endBlock
