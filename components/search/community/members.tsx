@@ -87,7 +87,7 @@ const CommunityMembers: FC<Props> = () => {
       <Tabs defaultValue={0} style={{ '--var-brand-color': brandColor } as CSSProperties}>
         <TabsList className='pt-[20px] pb-6 sm:pt-0 sm:pb-3'>
           <Tab value={0}>
-            User DID
+            User DID ({communityInfo.totalSupply})
           </Tab>
         </TabsList>
       </Tabs>
