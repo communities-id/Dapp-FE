@@ -98,16 +98,6 @@ function Dapp() {
     }
     setLoading(true)
     try {
-      const { account, chain, openChainModal, openConnectModal, mounted }= options
-      const connected = mounted && account && chain
-      if (!connected) {
-        openConnectModal()
-        return
-      }
-      if (chain?.unsupported) {
-        openChainModal()
-        return
-      }
       if (!name) {
         message({
           type: 'error',
