@@ -37,6 +37,7 @@ function InfiniteList<T>(props: InfiniteListProps<T>) {
 
   return (
     <InfiniteScroll
+      scrollableTarget='__next'
       style={{ overflow: 'visible' }}
       dataLength={items.length}
       next={loadMore}

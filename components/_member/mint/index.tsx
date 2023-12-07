@@ -294,7 +294,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
             className="mt-7.5"
             onSubmit={handleSubmit}
           >
-            <div className='w-full max-w-[488px] rounded-full flex justify-between items-center border-xs bg-white var-brand-bordercolor border-[6px] overflow-hidden'>
+            <div className='w-full bg-white max-w-[488px] rounded-full flex justify-between items-center border-xs border-primary border-[6px] overflow-hidden'>
               <div className='w-full'>
                 <Input
                   inputclassname="!py-3 !px-8 h-15 outline-none !border-none text-lgx !leading-[34px]"

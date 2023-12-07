@@ -887,7 +887,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
   const activeMintMode = mintModes.find(item => item.active)
 
   const title = '1、How would you like your community to mint their IDs？'
-  // const description = 'Warning: You can only choose one token to accept.'
+  // const description = 'Warning: This setting will be immutable if there is User DID in your community.'
   return (
     <div className={classNames('flex gap-5', { 'hidden': !active }, className)}>
       <div className='py-1 box-content min-w-4 min-h-4 max-w-5 max-h-5 bg-white'>
@@ -1059,7 +1059,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
   const activeTokenMode = tokenModes.find(item => item.active)
 
   const title = '2、Which token will you accept?'
-  const description = 'Warning: You can only choose one token to accept.'
+  const description = 'Warning: This setting will be immutable if there is User DID in your community.'
 
   return (
     <div className={classNames('flex gap-5', { 'hidden': !active }, className)}>
@@ -1144,7 +1144,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
 
 const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, defaultForms, coinSymbol, className, handleChoose, handleChange }) => {
   const title = '3、What’s the mint price per year you expect from an ID?'
-  const description = 'Warning: You can only choose one token to accept.'
+  const description = 'Warning: This setting will be immutable if there is User DID in your community.'
   const priceModelDisabled = false
 
   const priceModes: {
@@ -1580,7 +1580,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
 
 const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
   const title = '4、How much royalty fee do you plan to charge in percentage？'
-  const description = 'Warning: You can only choose one token to accept.'
+  const description = 'Warning: This setting will be immutable if there is User DID in your community.'
 
   const contentDescription = (
     <p className='mt-5 text-sm text-black-tr-40 text-left'>
@@ -1644,7 +1644,7 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
 
 const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
   const title = '5、Are you allowed your members to get refund (Burn IDs) at anytime？'
-  const description = 'Warning: You can only choose one token to accept.'
+  const description = 'Warning: This setting will be immutable if there is User DID in your community.'
   const contentDescription = (
     <p className='text-sm text-black-tr-40 text-left'>
       <b>Note:</b>
@@ -1740,8 +1740,8 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
 }
 
 const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
-  const title = '6、Which economic model will you accept？'
-  const description = 'Warning: You can only choose one token to accept.'
+  const title = '6、Which refund model will you accept？'
+  const description = 'Warning: This setting will be immutable if there is User DID in your community.'
 
   const economicModelDisabled = false
 
@@ -1960,8 +1960,8 @@ const ManageMintTitle: FC<ManageMintTitleProps> = ({ title, description, active,
       </div>
       {
         (description && checked) && (
-          <div className='mt-1 flex-itmc gap-[2px] text-xs-b text-red-1'>
-            <TipsIcon width="12" height="12" />
+          <div className='mt-1 flex items-start gap-[2px] text-xs-b text-red-1'>
+            <TipsIcon width="12" height="12" className="flex-shrink-0 relative top-[2px]" />
             <span>{ description }</span>
           </div>
         )

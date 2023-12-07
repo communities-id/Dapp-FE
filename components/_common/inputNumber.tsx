@@ -44,7 +44,7 @@ const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, mobile, 
         { children }
       </div>
       <BaseButton
-        className={classNames('flex-center bg-white rounded-l-xs', {
+        className={classNames('flex-center bg-white rounded-r-xs', {
           'px-5': mobile
         })}
         size='medium'

@@ -83,7 +83,7 @@ const CommunityMembers: FC<Props> = () => {
 
 
   return (
-    <div>
+    <div className='mb-12'>
       <Tabs defaultValue={0} style={{ '--var-brand-color': brandColor } as CSSProperties}>
         <TabsList className='pt-[20px] pb-6 sm:pt-0 sm:pb-3'>
           <Tab value={0}>
@@ -93,7 +93,7 @@ const CommunityMembers: FC<Props> = () => {
       </Tabs>
       <InfiniteList<CommunityMember>
         className='card-grid grid gap-5'
-        items={[{} as CommunityMember, ...members]}
+        items={[{} as CommunityMember, ...((members.length === 20 && !noMore) ? members.slice(0, members.length - 1) : members)]}
         loadMore={loadMore}
         renderItem={(row: CommunityMember, index?: number) => {
           if (index === 0) {

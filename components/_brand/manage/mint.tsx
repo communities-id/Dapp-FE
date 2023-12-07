@@ -1850,7 +1850,7 @@ const BrandBurnAnyTime: FC<BrandMintTabProps<CommunityMemberConfig>> = ({ active
 }
 
 const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, checked, locked, form, className, handleChoose, handleChange }) => {
-  const title = '6、Which economic model will you accept?'
+  const title = '6、Which refund model will you accept?'
   const description = 'Warning: This setting will be immutable if there is an ID in your community.'
 
   const economicModelDisabled = false

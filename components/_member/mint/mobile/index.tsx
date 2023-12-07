@@ -281,10 +281,10 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) =
         <div className="pt-10 pb-[54px] px-4 dapp-page text-center flex-itmc flex-col">
           <h1 className="title font-Saira">Join Community, set Your <span><span>ID</span></span> here</h1>
           <form
-            className="w-full mt-7.5 bg-white"
+            className="w-full mt-7.5 "
             onSubmit={handleSubmit}
           >
-            <div className='w-full max-w-[488px] rounded-full flex justify-between items-center border-xs var-brand-bordercolor border-[6px] overflow-hidden'>
+            <div className='w-full bg-white max-w-[488px] rounded-full flex justify-between items-center border-xs var-brand-bordercolor border-[6px] overflow-hidden'>
               <div className='w-full'>
                 <Input
                   inputclassname="!py-3 !px-8 h-15 outline-none !border-none text-lgx !leading-[34px]"

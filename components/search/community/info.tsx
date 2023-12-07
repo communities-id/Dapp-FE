@@ -80,39 +80,6 @@ const CommunityLayout: FC<Props> = () => {
     },
   ]
 
-  // if ((communityInfoSet.isOwner || communityInfoSet.isSigner) && !communityInfoSet.isExpired) {
-  //   communityPopoverMenus.push({
-  //     id: 'profile',
-  //     text: 'Community Settings',
-  //     icon: <SettingIcon width={16} height={16} className='text-[#333]' />,
-  //     global: true
-  //   }, {
-  //     id: 'mint',
-  //     text: 'Mint Settings',
-  //     icon: <MintSettingIcon width={16} height={16} className='text-[#333]' />,
-  //     global: true
-  //   }, {
-  //     id: 'renew',
-  //     text: 'Renew',
-  //     icon: <RenewIcon width={16} height={16} className='text-[#333]' />,
-  //     global: false
-  //   }, {
-  //     id: 'signature',
-  //     text: 'Generate Invited Code',
-  //     icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
-  //     global: false
-  //   })
-  // }
-
-  if (communityInfo.config?.signatureMint && communityInfoSet.isSigner) {
-    communityPopoverMenus.push({
-      id: 'signature',
-      text: 'Generate Invited Code',
-      icon: <SignatureIcon width={16} height={16} className='text-[#333]' />,
-      global: false
-    })
-  }
-
   const shareMenus = useMemo(() => {
     if (typeof window === 'undefined') return []
     // const brandLink = `${location.origin}/community/${communityInfo.tokenUri?.name ?? ''}`
@@ -420,7 +387,7 @@ const CommunityLayout: FC<Props> = () => {
                       <div className="flex justify-between items-center">
                         <div className='col'>
                           <p className='config-name'>Current Mint Price</p>
-                          <p className='config-value'>{Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free"}</p>
+                          <p className='config-value'>{brandNotLoaded ? '-' : (Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free")}</p>
                         </div>
                         { pendingMintSet ? (
                           <button
@@ -452,7 +419,7 @@ const CommunityLayout: FC<Props> = () => {
                           <TipIcon width='14' height='14' className='var-brand-textcolor'/>
                         </ToolTip>
                       </div>
-                      <p className='config-value'>{ 100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%</p>
+                      <p className='config-value'>{ brandNotLoaded ? '-' : `${100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%`}</p>
                     </td>
                     <td>
                       <div className='config-name'>
@@ -466,22 +433,22 @@ const CommunityLayout: FC<Props> = () => {
                           <TipIcon width='14' height='14' className='var-brand-textcolor'/>
                         </ToolTip>
                       </div>
-                      <p className='config-value'>{tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`}</p>
+                      <p className='config-value'>{brandNotLoaded ? '-' : (tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`)}</p>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <p className='config-name'>Refund Model</p>
                       <div className='flex items-center gap-1 config-value'>
-                        <span>{SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
-                        { communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={<p>Burn any time</p>}>
+                        <span>{brandNotLoaded ? '-' : SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
+                        { !brandNotLoaded && communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={<p>Burn any time</p>}>
                           <BurnIcon width='16' height='16' className='text-red-1'/>
                         </ToolTip> }
                       </div>
                     </td>
                     <td>
                       <p className='config-name'>Mint Price Formula</p>
-                      <p className='config-value'>Y = { mintPriceNumericFormula }</p>
+                      <p className='config-value'>{brandNotLoaded ? '-' : `Y = ${mintPriceNumericFormula}`}</p>
                     </td>
                   </tr>
                 </tbody>
