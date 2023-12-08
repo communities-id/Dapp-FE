@@ -344,11 +344,9 @@ const CommunityLayout: FC<Props> = () => {
                 {
                   socialLinks.map(({ type, link, icon }, idx) => {
                     return (
-                      <>
-                        <HoverIcon className="w-10 h-10" key={idx} link={link}>
-                          {icon}
-                        </HoverIcon>
-                      </>
+                      <HoverIcon className="w-10 h-10" key={idx} link={link}>
+                        {icon}
+                      </HoverIcon>
                     )
                   })
                 }

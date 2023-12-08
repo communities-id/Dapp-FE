@@ -32,7 +32,7 @@ export const useIpfs = () => {
 
     const formData = new FormData()
     const filename = utils.keccak256(utils.toUtf8Bytes(String(utils.randomBytes(12)) + `-${file.name}-${Date.now()}`)).slice(2)
-    formData.append('file', new Blob([buffer]), filename)
+    formData.append('file', file, filename)
 
     const response: { Hash: string; Name: string; Size: string } = await fetch(`${ipfs.gateway}/api/v0/add`, {
       method: 'POST',
@@ -42,11 +42,12 @@ export const useIpfs = () => {
       },
       body: formData
     }).then(d => d.json())
-
+    
     return response
   }
 
   return {
-    upload
+    upload,
+    uploadByFile
   }
 }

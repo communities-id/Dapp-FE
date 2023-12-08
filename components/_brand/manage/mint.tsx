@@ -584,6 +584,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               }
               <BrandMintMode
                 className='relative z-normal'
+                locked={pending}
                 form={mintForm}
                 defaultForms={defaultForms}
                 active={step >= 1}
@@ -607,11 +608,11 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               }
               <BrandMintToken
                 className='relative z-normal'
+                locked={editLocked.price || pending}
                 form={mintForm}
                 defaultForms={defaultForms}
                 active={step >= 2}
                 checked={tab === 2}
-                locked={editLocked.price}
                 handleChoose={(open) => handleChooseTab(open, 2)}
                 handleChange={async (payload) => {
                   setMintForm({
@@ -629,11 +630,11 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               }
               <BrandMintPrice
                 className='relative z-normal'
+                locked={editLocked.price || pending}
                 form={priceForm}
                 defaultForms={defaultForms}
                 active={step >= 3}
                 checked={tab === 3}
-                locked={editLocked.price}
                 coinSymbol={coinSymbol}
                 brandColor={brandColor}
                 handleChoose={(open) => handleChooseTab(open, 3)}
@@ -653,11 +654,11 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               }
               <BrandMintPercentage
                 className='relative z-normal'
+                locked={editLocked.price || pending}
                 form={priceForm}
                 defaultForms={defaultForms}
                 active={step >= 4}
                 checked={tab === 4}
-                locked={editLocked.price}
                 handleChoose={(open) => handleChooseTab(open, 4)}
                 handleChange={async (payload) => {
                   setPriceForm({
@@ -675,11 +676,11 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               }
               <BrandBurnAnyTime
                 className='relative z-normal'
+                locked={editLocked.price || pending}
                 form={memberConfigForm}
                 defaultForms={defaultForms}
                 active={step >= 5}
                 checked={tab === 5}
-                locked={editLocked.price}
                 handleChoose={(open) => handleChooseTab(open, 5)}
                 handleChange={async (payload) => {
                   setMemberConfigForm({
@@ -692,11 +693,11 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
             <li>
               <BrandEconomicModel
                 className='relative z-normal'
+                locked={editLocked.price || pending}
                 form={mintForm}
                 defaultForms={defaultForms}
                 active={step >= 6}
                 checked={tab === 6}
-                locked={editLocked.price}
                 handleChoose={(open) => handleChooseTab(open, 6)}
                 handleChange={async (payload) => {
                   setMintForm({
@@ -903,6 +904,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                           <BaseButton
                             size='normal'
                             wrapClassName='w-full'
+                            disabled={locked}
                             className={
                               classNames('w-full flex-center gap-[6px]', {
                                 'bg-white text-gray-1 border border-solid border-gray-7': !active,
@@ -912,6 +914,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                               })
                             }
                             onClick={() => {
+                              if (locked) return
                               handleChange?.({
                                 ...form,
                                 signatureMint: false,
@@ -951,6 +954,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                               item.type === 'text' && (
                                 <Input
                                   value={item.value}
+                                  disabled={locked}
                                   startAdornment={item.startAdornment}
                                   placeholder={item.placeholder}
                                   onChange={(e) => {
@@ -966,10 +970,12 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                             {
                               item.type === 'multiple' && (
                                 <TokenGatedInput
+                                  locked={locked}
                                   value={item.value}
                                   startAdornment={item.startAdornment}
                                   placeholder={item.placeholder}
                                   onChange={(_value) => {
+                                    if (locked) return
                                     handleChange?.({
                                       ...form,
                                       [item.name]: _value
@@ -1028,8 +1034,6 @@ const TokenGatedInput: FC<TokenGatedInputProps> = ({ value, placeholder, startAd
 
 const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, checked, locked, chainId, form, className, handleChoose, handleChange }) => {
 
-  const priceModelDisabled = false
-
   const tokenModes: {
     label: string
     name: MintCommunityMintLabels
@@ -1043,7 +1047,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
       label: DEFAULT_TOKEN_SYMBOL[chainId ?? CHAIN_ID],
       name: 'coin',
       active: form.coin === ZERO_ADDRESS,
-      disabled: priceModelDisabled,
+      disabled: locked,
       value: ZERO_ADDRESS,
       forms: []
     },
@@ -1051,7 +1055,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
       label: 'Other',
       name: 'coin',
       active: form.coin !== ZERO_ADDRESS,
-      disabled: priceModelDisabled,
+      disabled: locked,
       // 1. if defaultForms.coin === ZERO_ADDRESS ? '': defaultForms.coin || ''
       value: '',
       forms: [
@@ -1062,7 +1066,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
           // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
           placeholder: '0x0...',
           unit: 'address',
-          disabled: priceModelDisabled,
+          disabled: locked,
           value: form.coin,
           child: true,
           startAdornment: (
@@ -1217,7 +1221,6 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
 const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked, locked, form, defaultForms, coinSymbol, brandColor, className, handleChoose, handleChange }) => {
   const title = '3、What’s the mint price per year you expect from an ID?'
   const description = 'Warning: This setting will be immutable if there is an ID in your community.'
-  const priceModelDisabled = false
 
   const priceModes: {
     label: string
@@ -1232,7 +1235,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
       label: PriceModeLabels
       name: PriceCommunityMintLabels
       active: boolean
-      disabled: boolean
+      disabled?: boolean
       value: PriceMode
       type?: 'normal' | 'formula'
       defaultValues: Record<string, number>
@@ -1246,7 +1249,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
       active: form.mode === PriceMode.CONSTANT,
       value: PriceMode.CONSTANT,
       values: [PriceMode.CONSTANT],
-      disabled: priceModelDisabled,
+      disabled: locked,
       triangle: true,
       showTab: false,
       tabs: [
@@ -1254,7 +1257,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
           label: PriceModeLabels.CONSTANT,
           name: 'mode',
           active: Number(form.mode) === PriceMode.CONSTANT,
-          disabled: priceModelDisabled,
+          disabled: locked,
           value: PriceMode.CONSTANT,
           type: 'formula',
           defaultValues: {},
@@ -1267,7 +1270,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'a',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.a,
               format: decimalsRule,
               primary: true,
@@ -1283,7 +1286,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
       active: [PriceMode.LINEAR, PriceMode.EXPONENTIAL, PriceMode.SQUARE].includes(form.mode),
       value: form.mode !== PriceMode.CONSTANT ? form.mode : PriceMode.LINEAR,
       values: [PriceMode.LINEAR, PriceMode.EXPONENTIAL, PriceMode.SQUARE],
-      disabled: priceModelDisabled,
+      disabled: locked,
       triangle: true,
       showTab: true,
       tabs: [
@@ -1291,7 +1294,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
           label: PriceModeLabels.LINEAR,
           name: 'mode',
           active: Number(form.mode) === PriceMode.LINEAR,
-          disabled: priceModelDisabled,
+          disabled: locked,
           value: PriceMode.LINEAR,
           type: 'formula',
           defaultValues: {
@@ -1306,7 +1309,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'a',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.a,
               format: decimalsRule,
               primary: true,
@@ -1319,7 +1322,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'b',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.b,
               format: decimalsRule,
               child: true
@@ -1330,7 +1333,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
           label: PriceModeLabels.EXPONENTIAL,
           name: 'mode',
           active: Number(form.mode) === PriceMode.EXPONENTIAL,
-          disabled: priceModelDisabled,
+          disabled: locked,
           value: PriceMode.EXPONENTIAL,
           type: 'formula',
           defaultValues: {
@@ -1347,7 +1350,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'a',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.a,
               format: decimalsRule,
               primary: true,
@@ -1360,7 +1363,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'b',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.b,
               format: decimalsRule,
               child: true
@@ -1372,7 +1375,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'c',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.c,
               format: constantsRule,
               child: true
@@ -1384,7 +1387,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'd',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.d,
               format: constantsRule,
               child: true
@@ -1395,7 +1398,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
           label: PriceModeLabels.SQUARE,
           name: 'mode',
           active: Number(form.mode) === PriceMode.SQUARE,
-          disabled: priceModelDisabled,
+          disabled: locked,
           value: PriceMode.SQUARE,
           type: 'formula',
           defaultValues: {
@@ -1411,7 +1414,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'a',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.a,
               format: decimalsRule,
               primary: true,
@@ -1424,7 +1427,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'b',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.b,
               format: decimalsRule,
               child: true
@@ -1436,7 +1439,7 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
               // tooltip: 'Contract for ERC20 tokens required for staking when users mint member domains. <br/><br/>If no ERC20 contract is specified, the native token of the network will be used by default.',
               placeholder: '0',
               unit: 'c',
-              disabled: priceModelDisabled,
+              disabled: locked,
               value: form.c,
               format: constantsRule,
               child: true
@@ -1617,9 +1620,11 @@ const BrandMintPrice: FC<BrandMintTabProps<CommunityPrice>> = ({ active, checked
                                     {
                                       unitItem && (
                                         <Input
-                                          className='!px-3 !py-1 !inline-block min-w-[35px] max-w-[100px] w-auto border-s1 bg-white'
+                                          inputclassname='!px-3 !py-1 !inline-block min-w-[35px] max-w-[100px] w-auto border-s1'
                                           value={unitItem.value}
+                                          disabled={locked}
                                           onChange={(e) => {
+                                            if (locked) return
                                             const _value = e.target.value
                                             if (_value && unitItem.format) {
                                               unitItem.format.test(e.target.value) && handleChange?.({

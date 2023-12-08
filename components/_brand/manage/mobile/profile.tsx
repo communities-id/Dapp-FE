@@ -9,7 +9,7 @@ import { useDIDContent } from '@/hooks/content'
 import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
 
 import { CommunityProfileLabels } from '@/components/settings/community/profile'
-import IpfsUploader from '@/components/_common/ipfsUploader'
+import AwsUploader from '@/components/_common/awsUploader'
 import TextArea from '@/components/_common/textarea'
 import ColorPicker from '@/components/_common/colorPicker'
 
@@ -239,7 +239,7 @@ const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, on
   const minHeight = 260
   return (
     <div className='w-10 h-10 -outline-offset-1 outline outline-4 outline-white rounded-lg overflow-hidden'>
-      <IpfsUploader defaultUrl={url} relationshipId={relationshipId} aspect={1} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
+      <AwsUploader defaultUrl={url} relationshipId={relationshipId} aspect={1} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
         {
           !url && (
             <div className='relative full-size flex-center bg-gray-6'>
@@ -247,7 +247,7 @@ const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, on
             </div>
           )
         }
-      </IpfsUploader>
+      </AwsUploader>
     </div>
   )
 }
@@ -263,7 +263,7 @@ const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, on
   const aspect = 4 / 1
   return (
     <div className='w-[70px] h-10'>
-      <IpfsUploader defaultUrl={url} relationshipId={relationshipId} aspect={aspect} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
+      <AwsUploader defaultUrl={url} relationshipId={relationshipId} aspect={aspect} minWidth={minWidth} minHeight={minHeight} onComplete={onChange}>
         {
           !url && (
             <div className='relative full-size flex-center bg-gray-6'>
@@ -271,7 +271,7 @@ const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, on
             </div>
           )
         }
-      </IpfsUploader>
+      </AwsUploader>
     </div>
   )
 }
