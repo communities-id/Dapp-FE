@@ -11,7 +11,7 @@ import useApi from '@/shared/useApi'
 import SettingNotice from "@/components/_common/settingNotice"
 import ColorPicker from '@/components/_common/colorPicker'
 import Button from '@/components/_common/button'
-import IpfsUploader from '@/components/_common/ipfsUploader'
+import AwsUploader from '@/components/_common/awsUploader'
 import TextArea from '@/components/_common/textarea'
 import PrimaryDID from '@/components/common/primaryDID'
 import { CommunityProfileLabels } from '@/components/settings/community/profile'
@@ -263,7 +263,7 @@ const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, on
   const minHeight = 260
   return (
     <div className='w-20 h-20 -outline-offset-1 outline outline-4 outline-white rounded-lg overflow-hidden'>
-      <IpfsUploader
+      <AwsUploader
         defaultUrl={url}
         relationshipId={relationshipId}
         aspect={1}
@@ -286,7 +286,7 @@ const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, on
             </div>
           )
         }
-      </IpfsUploader>
+      </AwsUploader>
     </div>
   )
 }
@@ -303,7 +303,7 @@ const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, on
   const aspect = 4 / 1
   return (
     <div className='full-size'>
-      <IpfsUploader
+      <AwsUploader
         defaultUrl={url}
         relationshipId={relationshipId}
         aspect={aspect}
@@ -315,7 +315,7 @@ const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, on
         <div className='z-normal group-hover:opacity-100 full-size flex-center opacity-fade bg-uploader-mask'>
           <p className='text-xs !font-bold text-white'>upload banner</p>
         </div>
-      </IpfsUploader>
+      </AwsUploader>
     </div>
   )
 }

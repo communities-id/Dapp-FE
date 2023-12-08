@@ -96,15 +96,11 @@ export const getCroppedImg = async (
 
   // As a blob
   return new Promise((resolve, reject) => {
-    document.body.appendChild(croppedCanvas)
-    console.log('- base 64', croppedCtx.getImageData(0, 0, croppedCanvas.width, croppedCanvas.height).data.buffer)
-    resolve(croppedCtx.getImageData(0, 0, croppedCanvas.width, croppedCanvas.height).data.buffer as Buffer)
-    // console.log('- buffer', croppedCtx.getImageData(0, 0, croppedCanvas.width, croppedCanvas.height).data.buffer)
-    // croppedCanvas.toBlob((file) => {
-    //   if (!file) resolve(null)
-    //   file?.arrayBuffer().then((buffer) => {
-    //     resolve(buffer as Buffer)
-    //   })
-    // }, 'image/jpeg')
+    croppedCanvas.toBlob((file) => {
+      if (!file) resolve(null)
+      file?.arrayBuffer().then((buffer) => {
+        resolve(buffer as Buffer)
+      })
+    }, 'image/jpeg')
   })
 }

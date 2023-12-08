@@ -1,12 +1,13 @@
 import { FC, Fragment, useEffect, useState } from 'react'
+import classNames from 'classnames'
 
-import { useIpfs } from '@/hooks/ipfs'
+import { useRoot } from '@/contexts/root'
 import { readFileSize } from '@/utils/media'
+import { useUpload } from '@/hooks/upload'
 
 import ImageCropperDialog from '@/components/dialog/imgCropper'
 
 import LoadingIcon from '~@/icons/loading.svg'
-import classNames from 'classnames'
 
 interface Props {
   relationshipId?: string
@@ -19,22 +20,27 @@ interface Props {
   children?: React.ReactNode
 }
 
-const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth = 500, minHeight = 500, onComplete, onError, children }) => {
-  const { upload } = useIpfs()
+const AwsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth = 500, minHeight = 500, onComplete, onError, children }) => {
+  const { message } = useRoot()
+  const { uploadByFile } = useUpload()
 
   const [loading, setLoading] = useState(false)
   const [url, setUrl] = useState('')
   const [cropperOpen, setCropperOpen] = useState(false)
   const [cropUrl, setCropUrl] = useState('')
-  const maxW = minWidth * 5
-  const maxH = minWidth * 5
+  const maxW = minWidth * 10
+  const maxH = minWidth * 10
   const randomId = Math.random().toString(36).substring(7)
 
   const handleUpload = async (buffer: Buffer) => {
     setLoading(true)
-    const { Hash } = await upload(buffer)
-    const url = `https://ipfs.io/ipfs/${Hash}`
-    console.log('- uploaded url', url, 'hash', Hash, 'base64', buffer.toString('base64'))
+    const { errMsg, url } = await uploadByFile(new Blob([buffer]))
+    // const unit8arr = 
+    if (errMsg) {
+      message({ type: 'error', content: errMsg }, { t: 'aws-uploader', k: 'url' })
+      return
+    }
+    console.log('- uploaded url', url, 'errMsg', errMsg)
     setUrl(url)
     onComplete?.(url)
     setCropperOpen(false)
@@ -42,10 +48,10 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true)
     const file = e.target.files?.[0]
-    console.log('-- handleFileChange -- file', file)
     if (!file) return
+    
+    setLoading(true)
     const { width, height } = await readFileSize(file)
     if (width < minWidth || height < minHeight) {
       onError?.(`The minimum image size should be at least: ${minWidth} * ${minHeight}`)
@@ -79,7 +85,6 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
           setCropperOpen(false)
         }}
         onCropComplete={(buffer) => {
-          console.log('- buffer', buffer)
           handleUpload(buffer)
         }}
       />
@@ -89,7 +94,7 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
             'relative w-full h-full flex items-center justify-center leading-none cursor-pointer',
           )
         }>
-          <div className='absolute-full z-1 pointer-events-none select-none'>
+          <div className='absolute-full flex-center z-1 pointer-events-none select-none'>
             {
               loading ? (
                 <LoadingIcon width='32' height='32' />
@@ -108,4 +113,4 @@ const IpfsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth 
   )
 }
 
-export default IpfsUploader
+export default AwsUploader
