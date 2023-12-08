@@ -30,7 +30,7 @@ export default async function handler(
 
   const key = `uploads/${randomId}.${mimeTypeArr[mimeTypeArr.length - 1]}`
   const param = {
-    Bucket: "asia-cid-uploads",
+    Bucket: "sgp-ccp-material",
     Key: key,
     // Expires: 60
   }
@@ -39,7 +39,7 @@ export default async function handler(
     expiresIn: 3600,
   });
 
-  const url = `https://asia-cid-uploads.s3.ap-southeast-1.amazonaws.com/${key}`
+  const url = `https://sgp-ccp-material.s3.ap-southeast-1.amazonaws.com/${key}`
 
   return res.status(200).json({
     code: 0,
