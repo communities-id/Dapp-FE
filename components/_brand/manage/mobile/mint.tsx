@@ -836,7 +836,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
         <div className='flex flex-col text-sm text-black-tr-40 text-left'>
           <b>Signer is the one who generate invitation code</b>
           <p>
-          If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available. Or, just leave the signer blank, we will take care of the signing process for you and code generation will be more flexible.
+          If you choose to use your own address to sign the code, the general code will be disabled and only one-time code is available.
           </p>
         </div>
       )
