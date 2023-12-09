@@ -11,6 +11,7 @@ module.exports = {
   'black-tr-40': '#363e4966', // 0.4
   'tr-black-4': '#363e4933', // 0.2
   'black-tr-10': '#363e491a', // 0.1
+  'white-tr-20': '#ffffff33', // 0.2
   'white-tr-50': '#ffffff80', // 0.5
   'white-tr-70': '#ffffffaf', // 0.7
   'gray-1': '#757575',

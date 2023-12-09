@@ -15,7 +15,7 @@ const PersonContent: FC<Props> = () => {
   return (
     <div className="">
       <Tabs defaultValue={0} style={{ '--var-brand-color': themeColor.primary } as CSSProperties}>
-        <TabsList className='py-[10px]'>
+        <TabsList className='pt-[10px] pb-[25px]'>
           <Tab value={0}>
             User DID
           </Tab>

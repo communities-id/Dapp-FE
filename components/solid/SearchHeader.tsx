@@ -23,7 +23,6 @@ import SearchSuggestion from "../dialog/searchSuggestion"
 import styled from "@emotion/styled"
 import { useRouter } from 'next/router'
 
-
 interface Props {
   className?: string
 }
@@ -177,7 +176,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
   )
 
   const searchHeaderMobile = (
-    <header className="pc:hidden pt-safe h-12.5 bg-white flex justify-between px-4 items-center border-b border-gray-7 relative z-100">
+    <header className="pc:hidden pt-safe h-15 bg-white flex justify-between px-4 items-center border-b border-gray-7 sticky top-0 left-0 right-0 z-30">
       <Link href="/" className='inline-block w-[165px]'>
         <LogoWithColor className="dark:hidden w-full" color={communityInfo.tokenUri?.brand_color ?? ''} />
         <DarkLogo className="hidden dark:block w-full"/>

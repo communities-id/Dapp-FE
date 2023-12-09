@@ -44,14 +44,14 @@ export default function Dapp() {
     <DetailsProvider mode="community" keywords="">
       <div className="ecosystem-page">
         <SearchHeader className="!bg-white" />
-        <div className="dapp-container main pt-17 mb-12.5 sm:w-[84vw] mx-auto px-10 sm:px-3">
-          <h1 className='text-xxl font-Saira font-normal text-main-black'>An Ecosystem to Decentralized Future</h1>
+        <div className="dapp-container main pt-3 mb-12.5 sm:w-[84vw] mx-auto px-10 sm:px-3">
+          <h1 className='text-xxl font-Saira font-normal text-main-black font-semibold'>An Ecosystem to Decentralized Future</h1>
           <p className='font-Saira text-md max-w-[800px] mt-1.5 whitespace-pre-wrap break-all'>Utilize User DID as entry tickets for participation in dApps and exclusive communities.</p>
           <div className='flex gap-4.5 mt-5'>
             <a  className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' href="https://communities-id.typeform.com/to/S41zv4ZY" target='_blank'>List My Dapp</a>
           </div>
         </div>
-        <div className="border-t border-gray-7 sticky top-[136px] sm:top-0 bg-white z-20">
+        <div className="border-t border-gray-7 sticky top-[136px] sm:top-15 bg-white z-20">
           <div className="dapp-container">
             <div className="h-20 border-b border-gray-7 flex items-center mx-10 sm:mx-3">
               <div className="ml-auto">
@@ -93,8 +93,8 @@ export default function Dapp() {
                     <div className="absolute top-0 left-0 right-0 bottom-0 z-10 bg-primary pt-5 sm:pt-2 flex flex-col justify-between translate-y-full group-hover:translate-y-0 transition-all duration-300">
                       <p className='text-white text-sm whitespace-pre-wrap break-all px-5 line-clamp-5'>{v.desc}</p>
                       <div className='border-t border-white h-[66px] sm:h-10 px-5 flex items-center justify-around'>
-                        {v.twitter && <a href={v.twitter} target='_blank'><TwitterIcon width={20} height={20} className='text-white' /></a> }
-                        {v.website && <a href={v.website} target='_blank'><WebsiteIcon width={20} height={20} className='text-white' /></a> }
+                        {v.twitter && <a href={v.twitter} target='_blank' className="hover:bg-white-tr-20 rounded-[10px] px-2.5 py-2.5"><TwitterIcon width={20} height={20} className='text-white' /></a> }
+                        {v.website && <a href={v.website} target='_blank' className="hover:bg-white-tr-20 rounded-[10px] px-2.5 py-2.5"><WebsiteIcon width={20} height={20} className='text-white' /></a> }
                       </div>
                     </div>
                   </div>

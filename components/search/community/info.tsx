@@ -251,6 +251,8 @@ const CommunityLayout: FC<Props> = () => {
   const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const BrandColorButton = styled('button')({
     backgroundColor: `transparent`,
+    borderColor: brandColor,
+    color: brandColor,
     '&:hover': {
       backgroundColor: `${brandColor}33`
     }
@@ -320,7 +322,7 @@ const CommunityLayout: FC<Props> = () => {
                 </div>
               </div>
               <div className="actions mt-6 sm:mt-3 flex items-center gap-[10px]">
-                <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex sm:hidden">
+                <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex sm:hidden mr-2.5">
                   { communityInfoSet.isOwner && <>
                     <button className="min-w-[98px] px-5 h-full rounded-l-full" onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <div className='divide flex items-center'>
@@ -335,7 +337,7 @@ const CommunityLayout: FC<Props> = () => {
                   </button>
                 </BrandColorButtonGroup>
                 { communityInfoSet.isOwner && <BrandColorButton
-                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b"
+                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b mr-2.5"
                   onClick={() => {
                     openGlobalDialog('brand-manage-setting')
                   }}>
@@ -457,7 +459,7 @@ const CommunityLayout: FC<Props> = () => {
       </div>
       <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
         { communityInfoSet.isOwner && <BrandColorButton
-          className="button-md text-main-black border-2 border-main-black flex gap-3 text-sm-b"
+          className="button-md border-2 flex gap-3 text-sm-b"
           onClick={() => openGlobalDialog('mobile-manage-drawer')}>
           Manage
         </BrandColorButton> }

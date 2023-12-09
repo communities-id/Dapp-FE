@@ -11,11 +11,12 @@ const PlusIconWithColor: FC<PlusIconWithColorProps> = (props) => {
   const { className, color } = props
   const finalColor = color || '#883fff'
   return (
-    <svg width="60" height="60" className={className} viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M30.075 12.5L30.0293 47.5" stroke={finalColor} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12.4995 30H47.4995" stroke={finalColor} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="16" height="16" className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.02001 3.33301L8.00781 12.6663" stroke={finalColor} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3.33398 8H12.6673" stroke={finalColor} stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   )
+
 }
 
 export default PlusIconWithColor

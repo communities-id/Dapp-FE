@@ -113,7 +113,7 @@ export function formatAddress(address: string) {
     return '-'
   }
   const _addr = address.toLowerCase()
-  return `${_addr?.slice(0, 6)}...${_addr?.slice(-4)}`
+  return `${_addr?.slice(0, 3)}...${_addr?.slice(-3)}`
 }
 
 export function formatTransaction(transactionHash: string) {

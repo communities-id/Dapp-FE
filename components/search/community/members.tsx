@@ -12,7 +12,7 @@ import Tab from '@/components/common/tab'
 import InfiniteList from '@/components/common/infiniteList'
 import ListCard from '@/components/search/card'
 import Loading from '@/components/loading/list'
-import PlusIconWithColor from '@/components/common/PlusWithColor'
+import PlusIconWithColor from '@/components/common/PlusWithColor2'
 
 import { CommunityMember } from '@/types'
 import themeColor from '@/_themes/colors'
@@ -131,12 +131,12 @@ const CommunityMembers: FC<Props> = () => {
         renderEmpty={
           brandNotLoaded ? (
               <div
-                className='border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
+                className='border-2 border-dashed w-full h-[306px] sm:h-45 rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
                 style={{
                   color: brandColor,
                 }}
               >
-                <div>
+                <div className='sm:w-[228px] text-center'>
                   Mint setting has not finished yet, user cannot join this brand now
                 </div>
                 { communityInfoSet.isOwner && (
@@ -154,7 +154,7 @@ const CommunityMembers: FC<Props> = () => {
               </div>
             ) : (
               <BrandColorButtonCard
-                className='group border-2 border-dashed w-full h-[306px] rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
+                className='group border-2 border-dashed w-full h-[306px] sm:h-45 rounded-[20px] flex flex-col items-center justify-center text-primary relative  bg-white'
                 style={{
                   color: brandColor,
                 }}

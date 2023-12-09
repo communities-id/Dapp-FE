@@ -44,7 +44,7 @@ function Dapp() {
       return {
         label: networkName,
         value: CHAIN_ID_MAP[networkName],
-        icon: <ChainIcon colorMode size={14} wrapperSize={22} chainId={CHAIN_ID_MAP[networkName]} className='rounded-full' />,
+        icon: <ChainIcon colorMode size={20} wrapperSize={20} chainId={CHAIN_ID_MAP[networkName]} className='rounded-full' />,
         tooltip: CHAINS_MINT_TOOLTIPS[CHAIN_ID_MAP[networkName]],
         group: CHAIN_ID === CHAIN_ID_MAP[networkName] ? 'Mainnet' : 'EVMs'
       }
@@ -210,7 +210,7 @@ function Dapp() {
             <DividerLine mode="horizontal" />
             <input
               type="text"
-              className="outline-none w-full"
+              className="outline-none w-full placeholder-gray-5"
               placeholder={process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? "Not need for testnet" : "Input your invited code"}
               value={invitationCode}
               onChange={e => setInvitationCode(e.target.value)}
@@ -222,7 +222,7 @@ function Dapp() {
           <DividerLine mode="horizontal" />
           <input
             type="text"
-            className="outline-none w-full"
+            className="outline-none w-full placeholder-gray-5"
             placeholder="0x..."
             value={mintTo}
             onChange={e => setMintTo(e.target.value)}
@@ -251,7 +251,7 @@ function Dapp() {
           <p className='px-4 text-sm text-black-tr-50 leading-[18px] mb-2.5'>Invited Code</p>
           <input
             type="text"
-            className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none"
+            className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none placeholder-gray-5"
             placeholder={process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? "Not need for testnet" : "Input your invited code"}
             value={invitationCode}
             onChange={e => setInvitationCode(e.target.value)}
@@ -261,7 +261,7 @@ function Dapp() {
           <p className='px-4 text-sm text-black-tr-50 leading-[18px] mb-2.5'>Mint To</p>
           <input
             type="text"
-            className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none"
+            className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none placeholder-gray-5"
             placeholder="0x..."
             value={mintTo}
             onChange={e => setMintTo(e.target.value)}
@@ -283,7 +283,7 @@ function Dapp() {
           <ConnectButton.Custom>
             {props => (
               <form
-                className="mt-20 sm:mt-7.5 border-[6px] border-primary border-w-3 w-[600px] sm:w-[84vw] rounded-full sm:rounded-[44px] flex justify-between items-center bg-white px-3 py-3 gap-4 sm:flex-col"
+                className="mt-20 sm:mt-7.5 border-[6px] sm:border-[10px] border-primary border-w-3 w-[600px] sm:w-[84vw] rounded-full sm:rounded-[44px] flex justify-between items-center bg-white px-3 py-3 sm:px-4 sm:py-4 gap-4 sm:flex-col"
                 onSubmit={(e) => handleSubmit(e, props)}
               >
                 <div className='flex items-center w-full gap-2.5'>
@@ -291,12 +291,12 @@ function Dapp() {
                   <input
                     type="text"
                     placeholder='Search for a name'
-                    className="text-xl outline-none w-full text-main-black"
+                    className="text-xl outline-none w-full text-main-black placeholder-gray-5"
                     value={name}
                     onChange={e => setName(e.target.value)}
                   />
                 </div>
-                <button className={`button-xl bg-primary text-white text-lg w-auto flex-shrink-0 sm:w-full hover:bg-primary-tr-80 ${loading ? 'bg-primary-tr-80' : ''}`}>
+                <button className={`button-xl bg-primary text-white text-lg w-auto min-w-[200px] !text-[20px] font-bold flex-shrink-0 sm:w-full hover:bg-primary-tr-80 ${loading ? 'bg-primary-tr-80' : ''}`}>
                   <StarIcon width="20" height="20" />
                   <span className='ml-2.5'>{loading ?  'Checking...' : 'Create brand'}</span>
                 </button>

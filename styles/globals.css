@@ -266,7 +266,7 @@
     }
   }
   td {
-    padding: 10px 20px;
+    padding: 16px 20px;
     border: 1px solid #fff;
     .config-name {
       @apply text-gray-1 text-sm flex items-center gap-1 sm:text-xs;
@@ -282,7 +282,7 @@
   background: url(/dapp-bg.svg) repeat;
   background-color: #fbfbfb;
   .main {
-    height: calc(100vh - 136px);
+    min-height: calc(100vh - 136px);
     @media screen and (max-width: 768px) {
       height: auto;
       min-height: calc(100vh - 50px);
@@ -324,13 +324,15 @@
 
 .dapp-network-select-menu {
   .MuiMenu-paper {
-    box-shadow: none;
+    box-shadow: 0px 4px 40px 0px rgba(0, 0, 0, 0.10);
     border: 1px solid #e7e7e7;
     border-radius: 12px;
     padding: 0 10px;
   }
   .MuiMenuItem-root {
     padding-left: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
   }
 }
 
