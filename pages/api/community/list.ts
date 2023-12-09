@@ -11,7 +11,7 @@ export default async function handler(
 
   const list = await prisma.community.findMany({
     orderBy: {
-      totalSupply: 'desc',
+      blockTimestamp: 'desc',
     },
     skip: (Number(page) - 1) * Number(pageSize),
     take: Number(pageSize),

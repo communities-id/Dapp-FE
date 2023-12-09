@@ -10,6 +10,9 @@ export default async function handler(
   const { page, pageSize = 50 } = req.query
 
   const list = await prisma.member.findMany({
+    orderBy: {
+      blockTimestamp: 'desc'
+    },
     skip: (Number(page) - 1) * Number(pageSize),
     take: Number(pageSize),
   })
