@@ -161,7 +161,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
           <div className="w-full overflow-hidden">
             <div className="bg-gray-6 h-14 rounded-lg flex justify-start items-center pl-6 gap-4 cursor-pointer w-full" role="button" onClick={() => setSearchSuggestionOpen(true)}>
               <SearchSvg className="w-6 h-6 text-gray-4" />
-              <span className={`w-full overflow-hidden overflow-ellipsis pr-3 ${!searchValue ? 'text-gray-4' : ''}`}>{searchValue || 'Search for brand name, user name or wallet adderss'}</span>
+              <span className={`w-full whitespace-nowrap overflow-hidden overflow-ellipsis pr-3 ${!searchValue ? 'text-gray-4' : ''}`}>{searchValue || 'Search for brand name, user name or wallet adderss'}</span>
             </div>
           </div>
         </div>
