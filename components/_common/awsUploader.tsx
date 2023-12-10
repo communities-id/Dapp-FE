@@ -28,8 +28,8 @@ const AwsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth =
   const [url, setUrl] = useState('')
   const [cropperOpen, setCropperOpen] = useState(false)
   const [cropUrl, setCropUrl] = useState('')
-  const maxW = minWidth * 10
-  const maxH = minWidth * 10
+  const maxW = Math.max(minWidth, minHeight) * 10
+  const maxH = Math.max(minWidth, minHeight) * 10
   const randomId = Math.random().toString(36).substring(7)
 
   const handleUpload = async (buffer: Buffer) => {
@@ -49,6 +49,7 @@ const AwsUploader: FC<Props> = ({ relationshipId, aspect, defaultUrl, minWidth =
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    e.target.value = ''
     if (!file) return
     
     setLoading(true)

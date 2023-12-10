@@ -190,8 +190,8 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     return {
       initialized: brandInitialized,
       isValid: !!communityInfo?.node,
-      isOwner: communityInfo?.owner === account,
-      isSigner: communityInfo.config?.signer === account,
+      isOwner: !!account && communityInfo?.owner === account,
+      isSigner: !!account && communityInfo.config?.signer === account,
       unMint,
       isMinted: !unMint, // include expired
       isRenewal,
