@@ -469,6 +469,10 @@ export default function useApi() {
     const receipt = await mintTx.wait();
     console.log('---- mint brand tx', mintTx)
     console.log('---- mint brand receipt', receipt)
+    const chainIdAfterMint = await getBrandDIDChainId(name)
+    if (!chainIdAfterMint) {
+      throw new Error('Mint failed, please check your wallet status.')
+    }
     return receipt
   }
 

@@ -44,11 +44,11 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
       const res = getSearchSuggestions(searchValue)
       if (res.length === 0) return
       const list = await Promise.all(res.map(async (v) => {
-        const { priceModel, totalSupply, durationUnit, coin, chainID } = v
+        const { priceModel, totalSupply, durationUnit, coin, chainId } = v
         const mintPrice = calcMintPrice(formatInfo({
           priceModel, totalSupply, config: { durationUnit }
         }) as BrandDID)
-        const coinSymbol = await getTokenSymbol(coin || ZERO_ADDRESS, chainID)
+        const coinSymbol = await getTokenSymbol(coin || ZERO_ADDRESS, chainId)
         return {
           ...v,
           mintPrice,

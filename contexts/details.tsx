@@ -28,7 +28,7 @@ interface DetailsContextProps {
   communityCache: {
     name: string,
     imge: string,
-    chainID: SupportedChainIds,
+    chainId: SupportedChainIds,
     totalSupply: number,
     durationUnit: number,
     priceModel: BrandDID["priceModel"],
