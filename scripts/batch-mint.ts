@@ -1,12 +1,11 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import CommunitiesID from '@communitiesid/id';
-import axios from 'axios';
 import { ethers } from 'ethers';
 import fs from 'fs'
 import { getSDKOptions } from '@/utils/provider';
 
-const COMMUNITIY_NAME = 'jtest1'
+const COMMUNITIY_NAME = 'joy'
 const FILE_NAME = 'data.csv'
 
 const sdkOptions = getSDKOptions(process.env.RPC_KEYS)
@@ -27,13 +26,14 @@ async function main() {
   const lines = content.split('\n').slice(1)
   for (let i = 0; i < lines.length; i++) {
     const row = lines[i]
-    const [name, address] = row.split(',')
+    let [address, name] = row.split(',')
+    name = name.replaceAll('\r', '')
     if (!name || !address) {
       continue
     }
-    console.log(`[${new Date().toISOString()}] Minting user DID ${name}.${COMMUNITIY_NAME}`)
-    await communitiesidSDK.operator.mintUserDID(`${name}.${COMMUNITIY_NAME}`, address, { brandDID })
-    console.log(`[${new Date().toISOString()}] Mint user DID ${name}.${COMMUNITIY_NAME} successed`)
+    console.log(`[${new Date().toISOString()}] Minting user DID ${name} to ${address}...`)
+    // await communitiesidSDK.operator.mintUserDID(`${name}`, address, { brandDID })
+    console.log(`[${new Date().toISOString()}] Mint user DID ${name} to ${address} successed`)
   }
 }
 
