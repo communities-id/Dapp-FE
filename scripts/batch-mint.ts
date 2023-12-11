@@ -24,6 +24,10 @@ async function main() {
   }
   const content = fs.readFileSync(`${__dirname}/${FILE_NAME}`, 'utf-8')
   const lines = content.split('\n').slice(1)
+  const provider = communitiesidSDK.providers.Polygon
+  if (!provider) {
+    return
+  }
   for (let i = 0; i < lines.length; i++) {
     const row = lines[i]
     let [address, name] = row.split(',')
@@ -32,8 +36,18 @@ async function main() {
       continue
     }
     console.log(`[${new Date().toISOString()}] Minting user DID ${name} to ${address}...`)
-    // await communitiesidSDK.operator.mintUserDID(`${name}`, address, { brandDID })
-    console.log(`[${new Date().toISOString()}] Mint user DID ${name} to ${address} successed`)
+    try {
+      const feeData = await provider.getFeeData()
+      await communitiesidSDK.operator.mintUserDID(`${name.toLowerCase()}`, address, {
+        brandDID,
+        txConfig: {
+          gasPrice: feeData.gasPrice
+        }
+      })
+      console.log(`[${new Date().toISOString()}] Mint user DID ${name} to ${address} successed`)
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 
