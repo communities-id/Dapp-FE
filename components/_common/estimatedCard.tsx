@@ -39,7 +39,7 @@ const EstimatedCard: FC<Props> = ({ list, theme }) => {
           'text-primary': theme === 'primary',
           'text-main-black': theme === 'black',
           'var-brand-textcolor': theme === 'variable',
-        })}>{ formatPrice(total) } ETH</b>
+        })}>{ formatPrice(total) } { list[0].symbol }</b>
       </div>
     </div>
   )
