@@ -48,13 +48,14 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
 
   const { brandInfo, brandInfoLoading } = useDIDContent({ brandName, brandInfo: inputBrandInfo })
 
-  const { node, owner, totalSupply, config, tokenUri, priceModel } = brandInfo
+  const { node, totalSupply, config, tokenUri, priceModel } = brandInfo
 
   const brand = brandName || (node?.node || '')
   const member = form.memberName
   const chainId = brandInfo?._chaninId || CHAIN_ID
   const coinSymbol = brandInfo.coinSymbol ?? DEFAULT_TOKEN_SYMBOL[chainId]
   const brandColor = brandInfo?.tokenUri?.brand_color || '#8840FF'
+  const owner = brandInfo.config?.signer
   
   const mintPriceData = useMemo(() => {
     if (!priceModel) return {
