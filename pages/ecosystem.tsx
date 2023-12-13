@@ -45,10 +45,10 @@ export default function Dapp() {
       <div className="ecosystem-page">
         <SearchHeader className="!bg-white" />
         <div className="dapp-container main pt-3 mb-12.5 sm:w-[84vw] mx-auto px-10 sm:px-3">
-          <h1 className='text-xxl font-Saira font-normal text-main-black font-semibold'>An Ecosystem to Decentralized Future</h1>
+          <h1 className='text-xxl font-Saira text-main-black font-semibold'>An Ecosystem to Decentralized Future</h1>
           <p className='font-Saira text-md max-w-[800px] mt-1.5 whitespace-pre-wrap break-all'>Utilize User DID as entry tickets for participation in dApps and exclusive communities.</p>
           <div className='flex gap-4.5 mt-5'>
-            <a  className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' href="https://communities-id.typeform.com/to/S41zv4ZY" target='_blank'>List My Dapp</a>
+            <a  className='button-lg bg-primary hover:bg-primary-tr-80 text-white min-w-[180px] sm:min-w-[90px]' href="https://form.typeform.com/to/S41zv4ZY" target='_blank'>List My Dapp</a>
           </div>
         </div>
         <div className="border-t border-gray-7 sticky top-[136px] sm:top-15 bg-white z-20">
