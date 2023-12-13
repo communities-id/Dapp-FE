@@ -148,6 +148,17 @@ export function formatContractError(err: any) {
   return unknownErrorMap[err.toString().toLowerCase()] || err.toString()
 }
 
+export function toastError(message: any, prefix: string, e: any, track?: Record<string, string | number>) {
+  const error = formatContractError(e)
+  if (error.toLowerCase().includes('user rejected')) {
+    return
+  }
+  message({
+    type: 'error',
+    content: prefix + formatContractError(e),
+  }, track)
+}
+
 export function stringToUint8Array(str: string) {
   const buf = new ArrayBuffer(str.length);
   const bufView = new Uint8Array(buf);

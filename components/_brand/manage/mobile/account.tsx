@@ -6,7 +6,7 @@ import { useDIDContent } from '@/hooks/content'
 import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
 import { updateCommunity } from '@/shared/apis'
 import { DEFAULT_AVATAR } from '@/shared/constant'
-import { formatContractError } from '@/shared/helper'
+import { toastError } from '@/shared/helper'
 import useApi from '@/shared/useApi'
 
 import { CommunityProfileLabels } from '@/components/settings/community/profile'
@@ -177,10 +177,7 @@ export default function MobileBrandMannageAccountSettingContent({ account, brand
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
+      toastError(message, 'Failed to update setting: ', e, { t: 'brand-profile-setting', k: brandInfo.node.node })
     } finally {
       setLoading(false)
     }

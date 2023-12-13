@@ -8,9 +8,8 @@ import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useRoot } from '@/contexts/root'
 import { useWallet } from '@/hooks/wallet'
 import useApi from '@/shared/useApi'
-import { updateCommunity } from '@/shared/apis'
-import { formatContractError } from '@/shared/helper'
-import { CHAIN_ID_MAP, CHAINS_ID_TO_NETWORK, CHAINS_NETWORK_TO_ID, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
+import { toastError } from '@/shared/helper'
+import { MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 
 import ConnectButton from '@/components/common/connectButton'
 
@@ -117,10 +116,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
       handleMintSuccess?.({ community, owner: _mintTo, avatar: '' }, 'community')
     } catch (err: any) {
       console.log(err)
-      message({
-        type: 'error',
-        content: 'Failed to mint: ' + formatContractError(err),
-      }, { t: 'brand-mint', k: community, i: 1 })
+      toastError(message, 'Failed to mint: ', err, { t: 'brand-mint', k: community, i: 1 })
     } finally {
       setMintLoading(false)
     }
@@ -143,10 +139,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, price,
       handleReleased?.()
     } catch (err: any) {
       console.log(err)
-      message({
-        type: 'error',
-        content: 'Failed to release: ' + formatContractError(err),
-      }, { t: 'brand-release', k: community, i: 1  })
+      toastError(message, 'Failed to release: ', err, { t: 'brand-release', k: community, i: 1 })
     } finally {
       setMintLoading(false)
     }

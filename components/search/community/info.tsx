@@ -122,7 +122,7 @@ const CommunityLayout: FC<Props> = () => {
       {
         type: 'chain',
         icon: <ChainIcon colorMode size={14} wrapperSize={24} chainId={Number(communityInfo._chaninId)} />,
-        link: `${SCAN_MAP[communityInfo.chainId]}/address/${registry}`
+        link: `${SCAN_MAP[communityInfo.chainId]}/token/${registry}`
       },
       Number(totalSupply) ? {
         type: 'opensea',

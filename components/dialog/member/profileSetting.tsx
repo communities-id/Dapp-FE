@@ -6,7 +6,7 @@ import useApi from '@/shared/useApi'
 
 import Dialog from '@/components/common/dialog'
 import MemberProfileSetting, { MemberProfileLabels } from '@/components/settings/member/profile'
-import { formatContractError } from '@/shared/helper'
+import { toastError } from '@/shared/helper'
 import { updateMember as updateMemberInDB } from '@/shared/apis'
 
 interface Props {
@@ -58,10 +58,7 @@ const MemberSettingDialog: FC<Props> = ({ open, handleClose }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update: ' + formatContractError(e),
-      }, { t: 'member-profile-update', k: memberInfo.node.node  })
+      toastError(message, 'Failed to update: ', e, { t: 'member-profile-update', k: memberInfo.node.node, i: 1 })
     } finally {
       setLoading(false)
     }

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useWallet } from '@/hooks/wallet'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
-import { formatContractError, isAddress } from '@/shared/helper'
+import { isAddress, toastError } from '@/shared/helper'
 import { ZERO_ADDRESS } from '@/shared/constant'
 import { getTokenSymbol } from '@/shared/contract'
 import useApi from '@/shared/useApi'
@@ -447,119 +447,11 @@ const CommunityMintSettingDialog: FC<Props> = ({ open, handleClose }) => {
       }
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-mint-setting', k: communityInfo.node.node })
+      toastError(message, 'Failed to update setting: ', e, { t: 'brand-mint-setting', k: communityInfo.node.node, i: 1 })
     } finally {
       setSettingLoading(false)
     }
   }
-
-  // const handleUpdateMintConfig = async () => {
-  //   if (!communityInfo?.node) return
-
-  //   const validateResult = await validateMintForm()
-  //   if (Object.keys(validateResult).length > 0) {
-  //     setValidation(validateResult)
-  //     return
-  //   }
-
-  //   try {
-  //     setSettingLoadingSet(prev => ({ ...prev, mint: true }))
-  //     if (needUpdateConfig()) {
-  //       await updateCommnuityConfig(communityInfo.node.registryInterface, {
-  //         signatureMint: mintForm.signatureMint,
-  //         publicMint: mintForm.publicMint,
-  //         holdingMint: mintForm.holdingMint,
-  //         proofOfHolding: ((mintForm.proofOfHolding?.toString()) || '').split('\n').filter(v => isAddress(v)),
-  //         signer: mintForm.signer,
-  //         coin: mintForm.coin || ZERO_ADDRESS,
-  //       })
-
-  //       message({ type: 'success', content: 'Update successfully!' })
-  //       // location.reload()
-  //     } else {
-  //       message({ type: 'warning', content: 'Nothing to update.' })
-  //     }
-  //     setSettingLoadingSet(prev => ({ ...prev, mint: false }))
-  //   } catch (e) {
-  //     console.error(e)
-  //     message({
-  //       type: 'error',
-  //       content: 'Failed to update setting: ' + formatContractError(e),
-  //     })
-  //   } finally {
-  //     setSettingLoadingSet(prev => ({ ...prev, mint: false }))
-  //   }
-  // }
-
-  // const handleUpdatePriceConfig = async () => {
-  //   if (!communityInfo?.node) return
-
-  //   const validateResult = await validatePriceForm()
-  //   if (Object.keys(validateResult).length > 0) {
-  //     setValidation(validateResult)
-  //     return
-  //   }
-
-  //   try {
-  //     setSettingLoadingSet(prev => ({ ...prev, price: true }))
-  //     if (needUpdatePriceConfig()) {
-  //       await updateCommnuityPriceConfig(communityInfo.node.registry, {
-  //         mode: 1,
-  //         commissionRate: Number(priceForm.commissionRate),
-  //         a: priceForm.price
-  //       })
-
-  //       message({ type: 'success', content: 'Update successfully!' })
-  //       // location.reload()
-  //     } else {
-  //       message({ type: 'warning', content: 'Nothing to update.' })
-  //     }
-  //     setSettingLoadingSet(prev => ({ ...prev, price: false }))
-  //   } catch (e) {
-  //     console.error(e)
-  //     message({
-  //       type: 'error',
-  //       content: 'Failed to update setting: ' + formatContractError(e),
-  //     })
-  //   } finally {
-  //     setSettingLoadingSet(prev => ({ ...prev, price: false }))
-  //   }
-  // }
-
-  // const handleUpdateBaseUriConfig = async () => {
-  //   if (!communityInfo?.node) return
-
-  //   setValidation({})
-  //   const validateResult = await validateBaseUriForm()
-  //   if (Object.keys(validateResult).length > 0) {
-  //     setValidation(validateResult)
-  //     return
-  //   }
-
-  //   try {
-  //     setSettingLoadingSet(prev => ({ ...prev, baseUri: true }))
-  //     if (needUpdateBaseImageURI()) {
-  //       await updateCommnuityImageBaseURI(communityInfo.node.registry, baseUriForm.imageBaseURI as string)
-  //       message({ type: 'success', content: 'Update successfully!' })
-  //       // location.reload()
-  //     } else {
-  //       message({ type: 'warning', content: 'Nothing to update.' })
-  //     }
-
-  //     setSettingLoadingSet(prev => ({ ...prev, baseUri: false }))
-  //   } catch (e) {
-  //     console.error(e)
-  //     message({
-  //       type: 'error',
-  //       content: 'Failed to update setting: ' + formatContractError(e),
-  //     })
-  //   } finally {
-  //     setSettingLoadingSet(prev => ({ ...prev, baseUri: false }))
-  //   }
-  // }
 
   useEffect(() => {
     async function getCoinSymbol() {

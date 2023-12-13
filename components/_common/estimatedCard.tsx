@@ -26,21 +26,16 @@ const EstimatedCard: FC<Props> = ({ list, theme }) => {
             return (
               <li key={index} className='flex-itmc justify-between'>
                 <span>{ item.name }</span>
-                <span>{ formatPrice(item.amount) } { item.symbol }</span>
+                <b className={classNames({
+                  'text-primary': theme === 'primary',
+                  'text-main-black': theme === 'black',
+                  'var-brand-textcolor': theme === 'variable',
+                })}>{ formatPrice(total) } { list[0].symbol }</b>
               </li>
             )
           })
         }
       </ul>
-      <div className='my-4 w-full h-[1px] bg-gray-7'></div>
-      <div className='flex-itmc justify-between'>
-        <span>Estimated Total</span>
-        <b className={classNames({
-          'text-primary': theme === 'primary',
-          'text-main-black': theme === 'black',
-          'var-brand-textcolor': theme === 'variable',
-        })}>{ formatPrice(total) } { list[0].symbol }</b>
-      </div>
     </div>
   )
 }

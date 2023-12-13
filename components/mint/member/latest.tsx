@@ -6,7 +6,7 @@ import { useNetwork, useSwitchNetwork } from 'wagmi'
 import { BrandDID } from '@communitiesid/id'
 import { DEFAULT_TOKEN_SYMBOL, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 import useApi, { getMintMemberPrice } from '@/shared/useApi'
-import { formatContractError, formatPrice, isDotMember } from '@/shared/helper'
+import { formatPrice, isDotMember, toastError } from '@/shared/helper'
 import { updateCommunity } from '@/shared/apis'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
@@ -244,10 +244,7 @@ const MemberMintLatest: FC<MemberMintLatestProps> = ({ member, slot }) => {
       handleMintSuccess?.({ community, member, owner: _mintTo, avatar: communityInfo.tokenUri?.image }, 'member')
     } catch (e) {
       console.log('member min error', e)
-      message({
-        type: 'error',
-        content: 'Failed to mint: ' + formatContractError(e),
-      }, { t: 'member-mint', i: 1 })
+      toastError(message, 'Failed to mint: ', e, { t: 'member-mint', i: 1 })
     } finally {
       setMintLoading(false)
     }

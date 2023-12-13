@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import useApi, { getrenewMemberPrice } from '@/shared/useApi'
-import { formatContractError, formatDate, formatPrice } from '@/shared/helper'
+import { formatPrice, toastError } from '@/shared/helper'
 
 import InfoLabel from '@/components/common/infoLabel'
 import { ZERO_ADDRESS } from '@/shared/constant'
@@ -41,10 +41,7 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
       setProtocolFee(price.protocolFee)
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to get renew price: ' + formatContractError(e),
-      }, { t: 'member-renew', k: memberInfo.node.node, i: 1 })
+      toastError(message, 'Failed to get renew price: ', e, { t: 'member-renew', k: memberInfo.node.node, i: 1 })
     } finally {
       setLoading(false)
     }
@@ -66,10 +63,7 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to renew: ' + formatContractError(e),
-      }, { t: 'member-renew', k: DIDName, i: 1  })
+      toastError(message, 'Failed to renew: ', e, { t: 'member-renew', k: DIDName, i: 1 })
     } finally {
       setLoading(false)
     }

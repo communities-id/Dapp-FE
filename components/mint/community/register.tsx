@@ -7,7 +7,7 @@ import { useDetails } from '@/contexts/details'
 import { useRoot } from '@/contexts/root'
 import useIntervalAsync from '@/hooks/polling'
 import { CHAIN_ID, MAIN_CHAIN, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
-import { formatContractError } from '@/shared/helper'
+import { toastError } from '@/shared/helper'
 
 import ConnectButton from '@/components/common/connectButton'
 
@@ -69,10 +69,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, omninodeAd
       await handleCreateOmniNode(mintNetwork)
       await refreshInfo()
     } catch (err) {
-      message({
-        type: 'error',
-        content: 'Failed to release: ' + formatContractError(err),
-      }, { t: 'brand-pre-mint', i: 1 })
+      toastError(message, 'Failed to register: ', err, { t: 'brand-pre-mint', i: 1 })
       setDeploying(false)
     }
   }

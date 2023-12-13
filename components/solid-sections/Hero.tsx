@@ -53,12 +53,6 @@ const HeroSection: FC<Props> = () => {
     track('launch', {})
     router.push(`/dapp`)
   }
-
-  const handleEcosystem = async (e: FormEvent) => {
-    e.preventDefault()
-    track('launch', {})
-    router.push(`/ecosystem`)
-  }
   
   return (
     <section className="pt-35 home-md:pt-40 home-xl:pt-46 pb-20 home-xl:pb-25 overflow-hidden">
@@ -79,7 +73,6 @@ const HeroSection: FC<Props> = () => {
             <p>We aim to build stronger consensus within communities and provide use cases for community native tokens.</p>
             <div className="mt-10 min-h-[94px] flex gap-3">
               <Button onClick={handleLaunch} theme='primary' className='px-12 ease-in-out duration-300'>Launch</Button>
-              <Button onClick={handleEcosystem} theme='primary' className='px-12 ease-in-out duration-300 border border-primary bg-white !text-primary hover:!bg-primary-tr-10'>Ecosystem</Button>
             </div>
           </div>
           <div className="sr-item animate_right home-md:w-1/2 hidden home-lg:block">

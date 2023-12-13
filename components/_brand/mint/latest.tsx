@@ -1,11 +1,11 @@
-import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import { FC, ReactNode, useState } from 'react'
 
 import { BigNumber } from 'ethers'
 import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useRoot } from '@/contexts/root'
 import useApi from '@/shared/useApi'
-import { formatContractError } from '@/shared/helper'
-import { CHAIN_ID_MAP, CHAINS_ID_TO_NETWORK, CHAINS_NETWORK_TO_ID, MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
+import { toastError } from '@/shared/helper'
+import { MAIN_CHAIN_ID, ZERO_ADDRESS } from '@/shared/constant'
 
 import ConnectButton from '@/components/common/connectButton'
 
@@ -72,10 +72,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, brandN
       handleMintSuccess?.({ mobile: false, drawer: true, community: brandName, owner: _mintTo, avatar: '' }, 'community')
     } catch (err: any) {
       console.log(err)
-      message({
-        type: 'error',
-        content: 'Failed to mint: ' + formatContractError(err),
-      }, { t: 'brand-mint', k: brandName, i: 1 })
+      toastError(message, 'Failed to mint: ', err, { t: 'brand-mint', k: brandName, i: 1 })
     } finally {
       setMintLoading(false)
     }
@@ -99,10 +96,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, brandN
       handleReleased?.()
     } catch (err: any) {
       console.log(err)
-      message({
-        type: 'error',
-        content: 'Failed to release: ' + formatContractError(err),
-      }, { t: 'brand-release', k: brandName, i: 1  })
+      toastError(message, 'Failed to release: ', err, { t: 'brand-release', k: brandName, i: 1 })
     } finally {
       setMintLoading(false)
     }

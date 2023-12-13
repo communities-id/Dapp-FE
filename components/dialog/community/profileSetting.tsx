@@ -8,7 +8,7 @@ import { updateCommunity } from '@/shared/apis'
 
 import Dialog from '@/components/common/dialog'
 import CommunityProfileSetting, { CommunityProfileLabels } from '@/components/settings/community/profile'
-import { formatContractError, isColor } from '@/shared/helper'
+import { isColor, toastError } from '@/shared/helper'
 import { DEFAULT_AVATAR } from '@/shared/constant'
 
 import TipIcon from '~@/icons/tip.svg'
@@ -136,10 +136,7 @@ const CommunityProfileSettingDialog: FC<Props> = ({ open, handleClose }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: communityInfo.node.node  })
+      toastError(message, 'Failed to update setting: ', e, { t: 'brand-profile-setting', k: communityInfo.node.node, i: 1  })
     } finally {
       setLoading(false)
     }

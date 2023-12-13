@@ -3,12 +3,10 @@ import classNames from 'classnames';
 
 import { ZERO_ADDRESS, MAIN_CHAIN_ID, BrandDID } from '@communitiesid/id';
 import { BigNumber } from 'ethers';
-import { useSwitchNetwork } from 'wagmi';
 
 import { useRoot } from '@/contexts/root';
-import { useDetails } from '@/contexts/details';
 import { CHAIN_ID, DEFAULT_TOKEN_SYMBOL } from '@/shared/constant';
-import { formatContractError, isDotMember } from '@/shared/helper';
+import { isDotMember, toastError } from '@/shared/helper';
 import { parseToDurationPrice, calcCurrentMintPrice } from '@/utils/formula';
 import useApi, { getMintMemberPrice, searchCommunity } from '@/shared/useApi';
 import { useGlobalDialog } from '@/contexts/globalDialog';
@@ -256,10 +254,7 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) =
       handleMintSuccess?.({ community: brand, member, owner: _mintTo, avatar: brandInfo.tokenUri?.image }, 'member')
     } catch (e) {
       console.log('member min error', e)
-      message({
-        type: 'error',
-        content: 'Failed to mint: ' + formatContractError(e),
-      }, { t: 'member-mint', i: 1 })
+      toastError(message, 'Failed to mint: ', e, { t: 'member-mint', i: 1 })
     } finally {
       setMintLoading(false)
     }

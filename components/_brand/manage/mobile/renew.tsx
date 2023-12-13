@@ -1,15 +1,13 @@
-import { CSSProperties, FC, useEffect, useState } from 'react'
-import classNames from 'classnames'
+import { FC, useEffect, useState } from 'react'
 
 import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
 import { useDIDContent } from '@/hooks/content'
-import { formatContractError, formatDate, formatPrice } from '@/shared/helper'
+import { formatDate, formatPrice, toastError } from '@/shared/helper'
 
 import InputNumber from '@/components/_common/inputNumber'
 import Button from '@/components/_common/button'
 
 import { CommunityInfo, State } from '@/types'
-import { useDetails } from '@/contexts/details'
 import { useRoot } from '@/contexts/root'
 import { updateCommunity } from '@/shared/apis'
 import useApi, { getRenewCommunityPrice } from '@/shared/useApi'
@@ -71,10 +69,7 @@ const Expired: FC<ExpiredProps> = ({ brandName, brandInfo }) => {
       setRenewPrice(price || 0)
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to get renew price: ' + formatContractError(e),
-      }, { t: 'brand-renew', k: brandName, i: 1 })
+      toastError(message, 'Failed to get renew price: ', e, { t: 'brand-renew', k: brandName, i: 1 })
     } finally {
       setLoading(false)
     }
@@ -94,10 +89,7 @@ const Expired: FC<ExpiredProps> = ({ brandName, brandInfo }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to renew: ' + formatContractError(e),
-      }, { t: 'brand-renew', k: brandName, i: 2  })
+      toastError(message, 'Failed to renew: ', e, { t: 'brand-renew', k: brandName, i: 1  })
     } finally {
       setLoading(false)
     }

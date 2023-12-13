@@ -5,7 +5,7 @@ import { useDetails } from '@/contexts/details'
 import { useRoot } from '@/contexts/root'
 import { updateCommunity } from '@/shared/apis'
 import { DEFAULT_AVATAR } from '@/shared/constant'
-import { formatContractError, isColor } from '@/shared/helper'
+import { isColor, toastError } from '@/shared/helper'
 import useApi from '@/shared/useApi'
 
 import SettingNotice from "@/components/_common/settingNotice"
@@ -131,10 +131,7 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
+      toastError(message, 'Failed to update setting: ', e, { t: 'brand-profile-setting', k: brandInfo.node.node  })
     } finally {
       setLoading(false)
     }

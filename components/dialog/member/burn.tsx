@@ -5,7 +5,7 @@ import { useDetails } from '@/contexts/details'
 import useApi, { getBurnMemberPrice } from '@/shared/useApi'
 
 import Dialog from '@/components/common/dialog'
-import { formatContractError, formatPrice } from '@/shared/helper'
+import { formatPrice, toastError } from '@/shared/helper'
 import InfoLabel from '@/components/common/infoLabel'
 import { BigNumber } from 'ethers'
 import { BrandDID } from '@communitiesid/id'
@@ -51,10 +51,7 @@ const MemberBurnDialog: FC<Props> = ({ open, handleClose }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to burn: ' + formatContractError(e),
-      }, { t: 'member-burn', k: DIDName, i: 1 })
+      toastError(message, 'Failed to burn: ', e, { t: 'member-burn', k: DIDName, i: 1 })
     } finally {
       setLoading(false)
     }

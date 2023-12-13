@@ -4,7 +4,7 @@ import { useSwitchNetwork } from 'wagmi'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import useApi from '@/shared/useApi'
-import { formatContractError } from '@/shared/helper'
+import { toastError } from '@/shared/helper'
 import { CHAIN_ID } from '@/shared/constant'
 
 import Dialog from '@/components/common/dialog'
@@ -35,10 +35,7 @@ const MemberAsPrimaryDialog: FC<Props> = ({ open, memberName, handleClose }) => 
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to set as primary: ' + formatContractError(e),
-      }, { t: 'member-set-primary', keyword: memberName, i: 1 })
+      toastError(message, 'Failed to set as primary: ', e, { t: 'member-set-primary', keyword: memberName, i: 1 })
     } finally {
       setLoading(false)
     }

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { DetailsProvider, useDetails } from '@/contexts/details'
 import { useWallet } from '@/hooks/wallet';
 import { isAddress, isValidLabel } from '@/shared/helper';
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 import { useRoot, useRootConfig } from '@/contexts/root';
 import { useConfiguration } from '@/contexts/configuration';
 import { useSignUtils } from '@/hooks/sign';
@@ -28,9 +29,8 @@ import RoundedLogo from '~@/logo-round.svg'
 function Dapp() {
   const { message, NetOps } = useRoot()
   const { isMobile } = useRootConfig()
-  const { communityCache } = useDetails()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const { showGlobalDialog } = useGlobalDialog()
-  const router = useRouter()
   const { getBrandDIDChainId } = useApi()
   const { address } = useWallet()
   const { masterAddress } = useConfiguration()
@@ -97,6 +97,8 @@ function Dapp() {
       return
     }
     setLoading(true)
+    const { account, chain, openChainModal, openConnectModal, mounted }= options
+    const connected = mounted && account && chain
     try {
       if (!name) {
         message({
@@ -115,11 +117,14 @@ function Dapp() {
       const chainId = await getBrandDIDChainId(name)
       if (chainId) {
         window.open(`/community/${name}`)
-        message({
-          type: 'error',
-          content: chainId === MAIN_CHAIN_ID ? 'This Brand has already been minted' : `This Brand has already been registered on ${CHAINS_ID_TO_NETWORK[chainId]}`
-        })
         return
+      }
+      if (!connected) {
+        openConnectModal()
+        return
+      }
+      if (Number(chain?.id) !== MAIN_CHAIN_ID) {
+        await switchNetworkAsync?.(MAIN_CHAIN_ID)
       }
       let finalInviteCode = invitationCode
       if (process.env.NEXT_PUBLIC_IS_TESTNET === 'true') {

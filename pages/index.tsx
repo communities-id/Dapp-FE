@@ -9,8 +9,9 @@ import FeatureTabsSection from '@/components/solid-sections/FeatureTabs'
 import CtaSection from '@/components/solid-sections/Cta'
 import FAQSection from '@/components/solid-sections/FAQ'
 import Lines from "@/components/solid/Lines"
-import Header from '@/components/solid/Header'
+import SearchHeader from '@/components/solid/SearchHeader'
 import Footer from '@/components/solid/Footer'
+import { DetailsProvider } from '@/contexts/details'
 
 interface Props {
 
@@ -19,8 +20,8 @@ interface Props {
 const Home: FC<Props> = () => {
   return (
     <Fragment>
-      <Header isStatic showSearch={false}/>
-      <main className='!mt-0'>
+      <SearchHeader />
+      <main className='mt-[-136px] sm:!mt-safe-offset-[-50px]'>
         {/* <!-- ===== Hero Start ===== --> */}
         <HeroSection />
         {/* <!-- ===== Hero End ===== --> */}
@@ -83,4 +84,11 @@ const Home: FC<Props> = () => {
   )
 }
 
-export default Home
+
+export default function WrappedHome() {
+  return (
+    <DetailsProvider mode="community" keywords="">
+      <Home />
+    </DetailsProvider>
+  )
+}

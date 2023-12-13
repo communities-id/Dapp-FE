@@ -1,15 +1,14 @@
 import { FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
-import { MAIN_CHAIN_ID, ZERO_ADDRESS } from '@communitiesid/id'
-import { CHAIN_ID, DEFAULT_AVATAR, DEFAULT_TOKEN_SYMBOL } from '@/shared/constant'
-import { useDetails } from '@/contexts/details'
+import { ZERO_ADDRESS } from '@communitiesid/id'
+import { CHAIN_ID, DEFAULT_TOKEN_SYMBOL } from '@/shared/constant'
 
 import { toBN } from '@/utils/format'
 import { parseToDurationPrice, parseToUnitPrice, priceModeFormulaMap } from '@/utils/formula'
 import { constantsRule, decimalsRule } from '@/utils/price'
 import { updateCommunity } from '@/shared/apis'
-import { formatContractError, isAddress } from '@/shared/helper'
+import { isAddress, toastError } from '@/shared/helper'
 import { useRoot } from '@/contexts/root'
 import useApi from '@/shared/useApi'
 import { getTokenSymbol } from '@/shared/contract'
@@ -480,10 +479,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
       }
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-mint-setting', k: brandInfo.node.node })
+      toastError(message, 'Failed to update setting: ', e, { t: 'brand-mint-setting', k: brandInfo.node.node })
     } finally {
       setLoading(false)
     }

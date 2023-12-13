@@ -3,7 +3,7 @@ import { FC, useMemo, useState } from 'react'
 import { useRoot } from '@/contexts/root'
 import { updateCommunity } from '@/shared/apis'
 import { DEFAULT_AVATAR } from '@/shared/constant'
-import { isColor, formatContractError } from '@/shared/helper'
+import { isColor, toastError } from '@/shared/helper'
 import useApi from '@/shared/useApi'
 import { useDIDContent } from '@/hooks/content'
 import MobileBrandManageLayout from '@/layouts/brand/mobileManage'
@@ -128,10 +128,7 @@ export default function MobileBrandMannageProfileSettingContent({ account, brand
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
+      toastError(message, 'Failed to update setting: ', e, { t: 'brand-profile-setting', k: brandInfo.node.node })
     } finally {
       setLoading(false)
     }

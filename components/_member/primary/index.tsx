@@ -5,7 +5,7 @@ import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import useApi from '@/shared/useApi'
 import Button from '@/components/_common/button'
-import { formatContractError } from '@/shared/helper'
+import { toastError } from '@/shared/helper'
 import { CHAIN_ID } from '@/shared/constant'
 
 interface Props {
@@ -32,10 +32,7 @@ const MemberAsPrimaryContent: FC<Props> = ({ memberName }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to set as primary: ' + formatContractError(e),
-      }, { t: 'member-set-primary', keyword: memberName, i: 1 })
+      toastError(message, 'Failed to set as primary: ', e, { t: 'member-set-primary', keyword: memberName, i: 1 })
     } finally {
       setLoading(false)
     }

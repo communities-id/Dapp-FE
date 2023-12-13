@@ -43,6 +43,12 @@ const SearchHeader: FC<Props> = ({ className }) => {
       backgroundColor: `${brandColor}cc`
     }
   }
+  const linkBrandStyle = {
+    '&:hover': {
+      color: brandColor
+    }
+  }
+  const BrandColorLink = styled(Link)(linkBrandStyle)
 
   useEffect(() => {
     if (!keywords) return
@@ -166,7 +172,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
           </div>
         </div>
         <div className="flex gap-5 lg:gap-20 items-center flex-shrink-0">
-          <Link href="/ecosystem" className="text-main-black text-md-b font-bold">Ecosystem</Link>
+          <BrandColorLink href="/ecosystem" className="text-main-black text-md-b font-bold">Ecosystem</BrandColorLink>
           <ConnectButton.Custom>
             {props => renderAccountButton(props)}
           </ConnectButton.Custom>

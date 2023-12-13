@@ -5,7 +5,7 @@ import { BigNumber } from 'ethers'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import useApi, { getRenewCommunityPrice } from '@/shared/useApi'
-import { formatContractError, formatPrice, formatDate } from '@/shared/helper'
+import { formatPrice, toastError } from '@/shared/helper'
 
 import Dialog from '@/components/common/dialog'
 import InfoLabel from '@/components/common/infoLabel'
@@ -32,10 +32,7 @@ const CommunityRenewDialog: FC<Props> = ({ open, handleClose }) => {
       setRenewPrice(price || 0)
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to get renew price: ' + formatContractError(e),
-      }, { t: 'brand-renew', k: community, i: 1 })
+      toastError(message, 'Failed to get renew price: ', e, { t: 'brand-renew', k: community, i: 1 })
     } finally {
       setLoading(false)
     }
@@ -54,10 +51,7 @@ const CommunityRenewDialog: FC<Props> = ({ open, handleClose }) => {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to renew: ' + formatContractError(e),
-      }, { t: 'brand-renew', k: community, i: 2  })
+      toastError(message, 'Failed to renew: ', e, { t: 'brand-renew', k: community, i: 1  })
     } finally {
       setLoading(false)
     }

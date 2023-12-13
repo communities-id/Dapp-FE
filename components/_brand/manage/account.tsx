@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react"
 import classNames from 'classnames'
 
-import { useDetails } from "@/contexts/details"
 import { useRoot } from "@/contexts/root"
 import { updateCommunity } from "@/shared/apis"
 import { DEFAULT_AVATAR } from "@/shared/constant"
-import { isColor, formatContractError } from "@/shared/helper"
+import { toastError } from "@/shared/helper"
 import useApi from "@/shared/useApi"
 
 import SettingNotice from "@/components/_common/settingNotice"
@@ -176,10 +175,7 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
       location.reload()
     } catch (e) {
       console.error(e)
-      message({
-        type: 'error',
-        content: 'Failed to update setting: ' + formatContractError(e),
-      }, { t: 'brand-profile-setting', k: brandInfo.node.node  })
+      toastError(e, 'Failed to update setting: ', e, { t: 'brand-profile-setting', k: brandInfo.node.node  })
     } finally {
       setLoading(false)
     }
