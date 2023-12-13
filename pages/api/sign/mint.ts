@@ -10,19 +10,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, address, owner, chainId, secret, isUrl } = req.query as Record<string, string>
+  const { name, owner, chainId, secret, isUrl } = req.query as Record<string, string>
   
   if (process.env.NEXT_PUBLIC_IS_TESTNET !== 'true' && secret !== process.env.SIGNATURE_SECRET) {
     return res.status(200).json({
       code: 0,
+      message: 'Invalid secret'
     })
   }
-
-  // const commitment = {
-  //   node: name,
-  //   owner: address || ZERO_ADDRESS,
-  //   deadline: 999999999999,
-  // }
 
   const _chainId = Number(chainId)
 
@@ -30,7 +25,7 @@ export default async function handler(
 
   const signer = new Wallet(process.env.PRIVATE_KEY as string)
 
-  const { domain, types, commitment } = getCommunitySignPayload(name, address, CONTRACT_MAP[_chainId].CommunityRegistryInterface, {
+  const { domain, types, commitment } = getCommunitySignPayload(name, owner, CONTRACT_MAP[_chainId].CommunityRegistryInterface, {
     chainId: _chainId
   })
   const mintSignature = await signer._signTypedData(
@@ -39,12 +34,6 @@ export default async function handler(
     commitment
   );
 
-  // const omninodeCommitment = {
-  //   chainId: _chainId,
-  //   nodehash: keccak256(name as string),
-  //   owner: owner || ZERO_ADDRESS,
-  //   deadline: 999999999999,
-  // }
 
   const { domain: omniDomain, types: omniTypes, commitment: omniCommitment } = getCommunityOmninodeSignPayload(name, owner, {
     chainId: _chainId
@@ -62,7 +51,6 @@ export default async function handler(
     signature,
     chainId,
     owner,
-    address,
   }
 
   const url = `https://www.communities.id/community/.${name}?${qs.stringify(params)}`
