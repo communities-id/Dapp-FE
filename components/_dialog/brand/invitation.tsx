@@ -17,6 +17,7 @@ const BrandManageDialog: FC<Props> = ({ brandName, brandInfo, open, handleClose 
   return (
     <Dialog
       className='h-[506px]'
+      theme='small'
       contentClassName='h-full !overflow-hidden'
       open={open}
       center

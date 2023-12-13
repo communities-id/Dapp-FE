@@ -54,7 +54,7 @@ export default function BrandMannageSocialLink({ brandInfo }: Props) {
     <div className="modal-content-container modal-content">
       <h1 className='text-main-black text-xl'>Link Telegram Group</h1>
       <div className='w-full mt-[30px] p-[30px] bg-gray-6 rounded-md'>
-        <div className="flex flex-col gap-[30px]">
+        <div className="flex flex-col gap-[30px] text-main-black">
           <div>
             <div>
               <b>Step 1:</b>
@@ -89,6 +89,7 @@ export default function BrandMannageSocialLink({ brandInfo }: Props) {
               <Button
                 className="w-30 !rounded-xs var-brand-bgcolor"
                 size="medium"
+                disabled={loading || !groupId}
                 loading={loading}
                 onClick={bindTGGroup}
               >Link</Button>
