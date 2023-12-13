@@ -20,13 +20,14 @@ const BrandNotLoaded: FC<Props> = ({ brandName, brandInfo, open, handleConfirm, 
   return (
     <Dialog
       className=''
+      theme='small'
       open={open}
       center
       handleClose={handleClose}
     >
       <div style={{ '--var-brand-color': brandColor } as CSSProperties} className='p-10 flex-itmc flex-col'>
         <img alt='' src='/_brand/unloaded.svg' className='w-[160px] h-[100px]'/>
-        <h2 className='mt-[30px] text-lgx'>
+        <h2 className='mt-[30px] text-lgx text-main-black'>
           <span>Brand</span>
           <span className='mx-1 var-brand-textcolor'>.{brandName}</span>
           <span>was not ready</span>

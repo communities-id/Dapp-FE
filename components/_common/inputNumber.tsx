@@ -12,10 +12,11 @@ interface Props {
   disabled?: boolean
   mobile?: boolean
   onChange?: (value: number) => void
+  className?: string
   children?: React.ReactNode
 }
 
-const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, mobile, onChange, children }) => {
+const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, mobile, onChange, className, children }) => {
   const isMinimum = value <= range[0]
   const isMaximum = value >= range[1]
 
@@ -30,10 +31,10 @@ const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, mobile, 
   }
 
   return (
-    <div className='w-full h-11 flex-center gap-1'>
+    <div className={classNames('w-full h-11 flex-center gap-1', className)}>
       <BaseButton
-        className={classNames('flex-center bg-white rounded-l-xs', {
-          'px-5': mobile
+        className={classNames('flex-center bg-white rounded-l-xs px-5', {
+          // 'px-5': mobile
         })}
         size='medium'
         disabled={isMinimum || disabled}
@@ -44,8 +45,8 @@ const InputNumber: FC<Props> = ({ value = 0, range = [0, 10], disabled, mobile, 
         { children }
       </div>
       <BaseButton
-        className={classNames('flex-center bg-white rounded-r-xs', {
-          'px-5': mobile
+        className={classNames('flex-center bg-white rounded-r-xs px-5', {
+          // 'px-5': mobile
         })}
         size='medium'
         disabled={isMaximum || disabled}

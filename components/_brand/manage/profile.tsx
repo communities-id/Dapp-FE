@@ -170,14 +170,14 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
             <div className='w-full'>
               <ProfileTitle title='Avatar:' />
               <div>
-                <Button htmlFor='avatar-uploader' size='normal' className='var-brand-bgcolor'>Change</Button>
+                <Button htmlFor='avatar-uploader' size='normal' className='w-30 var-brand-bgcolor'>Change</Button>
               </div>
               <div className='w-full h-[1px] bg-gray-3 mt-5'></div>
             </div>
             <div className='w-full'>
               <ProfileTitle title='Banner:' />
               <div>
-                <Button htmlFor='banner-uploader' size='normal' className='var-brand-bgcolor'>Change</Button>
+                <Button htmlFor='banner-uploader' size='normal' className='w-30 var-brand-bgcolor'>Change</Button>
               </div>
               <div className='w-full h-[1px] bg-gray-3 mt-5'></div>
             </div>

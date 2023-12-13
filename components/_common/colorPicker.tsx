@@ -56,7 +56,7 @@ const ColorPicker: FC<Props> = ({ value, mobile, onChange }) => {
               'flex items-center justify-center rounded-full overflow-hidden',
               {
                 '!opacity-100': showPicker && !mobile,
-                'w-6 h-6 border-[1px] border-solid border-main-black bg-gray-6': !mobile,
+                'w-6 h-6 border-[1px] border-solid border-gray-3 bg-gray-6': !mobile,
                 'hover:opacity-100 active:opacity-100': !mobile,
                 'full-size var-brand-bgcolor': mobile
               }

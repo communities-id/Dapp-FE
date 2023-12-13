@@ -129,7 +129,12 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
 
   return (
     <div style={{ '--var-brand-color': brandColor } as CSSProperties}>
-      <Tabs value={tab} tabs={tabs} tabPanelClassName='modal-content-box' onChange={(v) => setTab(v)} />
+      <Tabs
+        value={tab}
+        tabs={tabs}
+        tabPanelClassName='modal-content-box'
+        onChange={(v) => setTab(v)}
+      />
     </div>
   )
 }

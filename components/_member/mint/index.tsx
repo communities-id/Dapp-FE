@@ -20,6 +20,7 @@ import Button from '@/components/_common/button';
 import Modal from '@/components/_common/modal';
 import Input from '@/components/_common/input';
 import EstimatedCard from '@/components/_common/estimatedCard';
+import DividerLine from '@/components/common/dividerLine'
 
 import { PriceMode } from '@/types/contract';
 import { CommunityInfo } from '@/types';
@@ -280,21 +281,21 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
     >
       <div className='flex-1 overflow-auto'>
         <div className="py-[70px] dapp-page text-center flex-itmc flex-col">
-          <h1 className="title font-Saira">Join Community, set Your <span><span>ID</span></span> here</h1>
+          <h1 className="font-Saira text-main-black text-[30px] leading-[47px] font-extrabold">Join Community, set Your <span className='shadowed-text'><span>ID</span></span> here</h1>
           <form
-            className="mt-7.5"
+            className="mt-7.5 w-full flex-center"
             onSubmit={handleSubmit}
           >
-            <div className='w-full bg-white max-w-[488px] rounded-full flex justify-between items-center border-xs border-primary border-[6px] overflow-hidden'>
+            <div className='w-full bg-white max-w-[488px] rounded-full flex justify-between items-center border-xs var-brand-bordercolor border-[6px] overflow-hidden'>
               <div className='w-full'>
                 <Input
-                  inputclassname="!py-3 !px-8 h-15 outline-none !border-none text-lgx !leading-[34px]"
+                  inputclassname="!py-3 !px-8 h-15 outline-none !border-none !text-lgx !leading-[34px]"
                   type="text"
                   placeholder='Search for a name'
                   value={form.memberName}
                   endAdornment={(
                     <div className='flex-itmc'>
-                      <div className='mx-5 h-5 w-[1px] bg-main-black'></div>
+                      <div className='mx-5 h-5 w-[1px] bg-gray-5'></div>
                       <span className='var-brand-textcolor'>.{ brand }</span>
                     </div>
                   )}
@@ -304,6 +305,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
             </div>
           </form>
         </div>
+        <DividerLine wrapClassName='!m-0' />
         <div className='px-15 py-10'>
           <ul className="pb-5 w-full flex flex-col gap-5">
             {

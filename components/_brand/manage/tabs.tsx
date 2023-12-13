@@ -43,7 +43,10 @@ export default function UnstyledTabsVertical(props: Props) {
                   list.map(({ label, value: v, renderIcon }) => {
                     return (
                       <Tab
-                        className={classNames('flex items-center w-[80px] md:w-[274px]', tabClassName)}
+                        className={classNames('flex items-center w-[80px] md:w-[274px]', {
+                          'var-brand-textcolor': v === value,
+                          'text-main-black': v !== value
+                        }, tabClassName)}
                         value={v}
                         key={v}
                         disableRipple

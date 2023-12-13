@@ -7,6 +7,7 @@ import { Box, styled } from '@mui/system';
 import CloseIcon from '~@/_brand/close.svg'
 
 interface Props {
+  theme?: 'small' | 'normal'
   open: boolean
   center?: boolean
   hiddenCloseIcon?: boolean
@@ -19,7 +20,7 @@ interface Props {
   children: ReactNode
 }
 
-const Dialog: FC<Props> = ({ open, center, hiddenCloseIcon, handleClose, wrapClassName, containerClassName, backdropClassName, contentClassName, className, children }) => {
+const Dialog: FC<Props> = ({ theme = 'normal', open, center, hiddenCloseIcon, handleClose, wrapClassName, containerClassName, backdropClassName, contentClassName, className, children }) => {
 
   return (
     <Modal
@@ -33,17 +34,29 @@ const Dialog: FC<Props> = ({ open, center, hiddenCloseIcon, handleClose, wrapCla
       <Box
         className={
           classnames(
-            'md:max-h-[80vh] rounded-[30px] bg-white outline-none',
+            'md:max-h-[80vh] bg-white outline-none',
+            {
+              'rounded-[10px]': theme === 'small',
+              'rounded-[30px]': theme === 'normal'
+            },
             className
           )
         }>
         {
           !hiddenCloseIcon && (
             <div
-              className='absolute top-[30px] right-[30px] z-icon w-8 h-8 flex items-center justify-center rounded-full cursor-pointer border-[1px] border-solid border-gray-1'
+              className={
+                classnames(
+                  'absolute z-icon flex-center cursor-pointer',
+                  {
+                    'top-[30px] right-[30px] w-8 h-8 rounded-full border-[1px] border-solid border-gray-1': theme === 'normal',
+                    'top-[14px] right-[14px] w-5 h-5 cursor-pointer': theme === 'small'
+                  }
+                )
+              }
               onClick={handleClose}
             >
-              <CloseIcon width='16' height='16' className='text-gray-1' />
+              <CloseIcon width='20' height='20' className='text-gray-1' />
             </div>
           )
         }

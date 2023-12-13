@@ -714,7 +714,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
       {
         !settled.mint && (
           <div className='modal-bottom'>
-            <div className='w-full h-[1px] bg-gray-6'></div>
+            <div className='w-full h-[1px] bg-gray-3'></div>
             <div className='mt-5 flex justify-end'>
               {
                 step < 6 && (
@@ -817,6 +817,7 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
       label: MintModeLabels.PUBLIC,
       name: 'publicMint',
       active: Boolean(form.publicMint),
+      triangle: true,
       forms: [],
       outsideDescription: (
         <div className='flex-center text-sm text-black-tr-40 text-left'>
@@ -939,62 +940,66 @@ const BrandMintMode: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, che
                   })
                 }
               </ul>
-              {
-                !!activeMintMode?.forms?.length && (
-                  <ul className='relative z-normal mt-[22px] flex flex-col gap-[10px]'>
-                    {
-                      activeMintMode.forms.map((item, index) => {
-                        return (
-                          <li key={index} className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
-                            {
-                              item.type === 'text' && (
-                                <Input
-                                  value={item.value}
-                                  disabled={locked}
-                                  startAdornment={item.startAdornment}
-                                  placeholder={item.placeholder}
-                                  onChange={(e) => {
-                                    if (locked) return
-                                    handleChange?.({
-                                      ...form,
-                                      [item.name]: e.target.value
-                                    })
-                                  }}
-                                />
-                              )
-                            }
-                            {
-                              item.type === 'multiple' && (
-                                <TokenGatedInput
-                                  locked={locked}
-                                  value={item.value}
-                                  startAdornment={item.startAdornment}
-                                  placeholder={item.placeholder}
-                                  onChange={(_value) => {
-                                    if (locked) return
-                                    handleChange?.({
-                                      ...form,
-                                      [item.name]: _value
-                                    })
-                                  }}
-                                />
-                              )
-                            }
-                            { item.description }
-                          </li>
-                        )
-                      })
-                    }
-                  </ul>
-                )
-              }
-              {
-                activeMintMode?.outsideDescription && (
-                  <div className='mt-[10px] flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
-                    { activeMintMode?.outsideDescription }
-                  </div>
-                )
-              }
+              <div className={classNames({
+                'mt-[22px]': !!activeMintMode?.forms?.length || activeMintMode?.outsideDescription
+              })}>
+                {
+                  !!activeMintMode?.forms?.length && (
+                    <ul className='relative z-normal flex flex-col gap-[10px]'>
+                      {
+                        activeMintMode.forms.map((item, index) => {
+                          return (
+                            <li key={index} className='flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
+                              {
+                                item.type === 'text' && (
+                                  <Input
+                                    value={item.value}
+                                    disabled={locked}
+                                    startAdornment={item.startAdornment}
+                                    placeholder={item.placeholder}
+                                    onChange={(e) => {
+                                      if (locked) return
+                                      handleChange?.({
+                                        ...form,
+                                        [item.name]: e.target.value
+                                      })
+                                    }}
+                                  />
+                                )
+                              }
+                              {
+                                item.type === 'multiple' && (
+                                  <TokenGatedInput
+                                    locked={locked}
+                                    value={item.value}
+                                    startAdornment={item.startAdornment}
+                                    placeholder={item.placeholder}
+                                    onChange={(_value) => {
+                                      if (locked) return
+                                      handleChange?.({
+                                        ...form,
+                                        [item.name]: _value
+                                      })
+                                    }}
+                                  />
+                                )
+                              }
+                              { item.description }
+                            </li>
+                          )
+                        })
+                      }
+                    </ul>
+                  )
+                }
+                {
+                  activeMintMode?.outsideDescription && (
+                    <div className='mt-[10px] flex flex-col gap-5 p-[30px] bg-gray-6 rounded-md'>
+                      { activeMintMode?.outsideDescription }
+                    </div>
+                  )
+                }
+              </div>
             </div>
           )
         }
@@ -1054,6 +1059,7 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
       disabled: locked,
       // 1. if defaultForms.coin === ZERO_ADDRESS ? '': defaultForms.coin || ''
       value: '',
+      triangle: true,
       forms: [
         {
           type: 'text',
@@ -1148,6 +1154,14 @@ const BrandMintToken: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active, ch
                             }
                             <span>{ label }</span>
                           </BaseButton>
+                          {
+                            (triangle && active) && (
+                              <TriangleIcon
+                                width='27'
+                                height='27'
+                                className='abs-hc text-gray-6 bottom-[-35px]' />
+                            )
+                          }
                         </Fragment>
                       </li>
                     )
@@ -1715,6 +1729,7 @@ const BrandMintPercentage: FC<BrandMintTabProps<CommunityPrice>> = ({ active, ch
           checked && (
             <div className='relative mt-5 p-[30px] bg-gray-6 rounded-md'>
               <InputNumber
+                className='text-main-black'
                 value={form.commissionRate}
                 range={[0, 100]}
                 disabled={locked}
