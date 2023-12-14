@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation"
 import themeColor from '@/_themes/colors'
 
 import SearchSvg from '~@/icons/search.svg'
+import SearchMobileSvg from '~@/icons/search-mobile.svg'
 import DarkLogo from '~@/logo/inline-dark.svg'
 import WalletSvg from '~@/icons/wallet/wallet.svg'
 import ConnectionSvg from '~@/icons/connection.svg'
@@ -71,7 +72,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
       if (isMobile) {
         return (
           <button onClick={openConnectModal}>
-            <WalletSvg className="w-6 h-6"/>
+            <WalletSvg className="w-6 h-6 text-black-1"/>
           </button>
         )
       }
@@ -86,7 +87,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
       if (isMobile) {
         return (
           <button onClick={openChainModal}>
-            <ConnectionSvg className="w-6 h-6"/>
+            <ConnectionSvg className="w-6 h-6 text-black-1"/>
           </button>
         )
       }
@@ -106,7 +107,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
           <div className='leading-[0px]'>
             { isMobile ? (
                 <label tabIndex={0}>
-                  <UserSvg className="w-6 h-6" />
+                  <UserSvg className="w-6 h-6 text-black-1" />
                 </label>
               ) : (
                 <BrandLabel role="button" tabIndex={0} className={className} onClick={(e) => {
@@ -189,7 +190,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
       </Link>
       <div className="flex gap-4">
         <button onClick={() => setSearchSuggestionOpen(true)}>
-          <SearchSvg className="w-6 h-6 text-black-1" />
+          <SearchMobileSvg className="w-6 h-6 text-black-1" />
         </button>
         <ConnectButton.Custom>
           {props => renderAccountButton(props, true)}
