@@ -342,7 +342,7 @@ const CommunityLayout: FC<Props> = () => {
                     </button>
                   </BrandColorButtonGroup> : 
                   <BrandColorBgButton
-                    className="button-md border-2 flex gap-3 text-sm-b text-white min-w-[120px]"
+                    className="sm:hidden button-md border-2 flex gap-3 text-sm-b text-white min-w-[120px]"
                     onClick={() => openGlobalDialog('member-mint')}
                   >
                     <PlusIconWithColor color='#fff' className='w-4 h-4'/>
