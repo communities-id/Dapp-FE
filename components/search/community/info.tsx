@@ -258,6 +258,14 @@ const CommunityLayout: FC<Props> = () => {
     }
   });
 
+  const BrandColorBgButton = styled('button')({
+    backgroundColor: brandColor,
+    borderColor: brandColor,
+    '&:hover': {
+      backgroundColor: `${brandColor}cc`
+    }
+  });
+
   const BrandColorButtonGroup = styled('div')({
     '.divide':{
       height: '100%',
@@ -322,22 +330,27 @@ const CommunityLayout: FC<Props> = () => {
                 </div>
               </div>
               <div className="actions mt-6 sm:mt-3 flex items-center gap-[10px]">
-                <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex sm:hidden mr-2.5">
-                  { communityInfoSet.isOwner && <>
+                {communityInfoSet.isSigner ? <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex sm:hidden mr-2.5">
                     <button className="min-w-[98px] px-5 h-full rounded-l-full" onClick={() => toggleDialogHandler('invite', true)}>Invite</button>
                     <div className='divide flex items-center'>
                       <DividerLine mode='horizontal' className='bg-white mx-0' wrapClassName='!h-4 !mx-0' />
                     </div>
-                  </> }
-                  <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
-                    openGlobalDialog('member-mint')
-                  }}>
-                    {!communityInfoSet.isOwner && <PlusIconWithColor color='#fff' className='w-4 h-4'/>}
+                    <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
+                      openGlobalDialog('member-mint')
+                    }}>
+                      Join
+                    </button>
+                  </BrandColorButtonGroup> : 
+                  <BrandColorBgButton
+                    className="button-md border-2 flex gap-3 text-sm-b text-white min-w-[120px]"
+                    onClick={() => openGlobalDialog('member-mint')}
+                  >
+                    <PlusIconWithColor color='#fff' className='w-4 h-4'/>
                     <span>Join</span>
-                  </button>
-                </BrandColorButtonGroup>
+                  </BrandColorBgButton>
+                }
                 { communityInfoSet.isOwner && <BrandColorButton
-                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b mr-2.5"
+                  className="button-md text-main-black border-2 border-main-black flex gap-3 sm:hidden text-sm-b mr-2.5 min-w-[120px]"
                   onClick={() => {
                     openGlobalDialog('brand-manage-setting')
                   }}>
@@ -457,28 +470,34 @@ const CommunityLayout: FC<Props> = () => {
           </div>
         </div>
       </div>
-      <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
+      <div className="pc:hidden fixed bottom-0 pb-safe-offset-4 px-2.5 py-4 bg-white left-0 right-0 z-10 flex gap-2.5 justify-center border-t border-gray-7">
         { communityInfoSet.isOwner && <BrandColorButton
-          className="button-md border-2 flex gap-3 text-sm-b"
+          className="button-md border-2 flex gap-3 text-sm-b w-full"
           onClick={() => openGlobalDialog('mobile-manage-drawer')}>
           Manage
         </BrandColorButton> }
-        <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex">
-          { communityInfoSet.isSigner && <>
+        {communityInfoSet.isSigner ?
+          <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex w-full">
             <button
               className="min-w-[98px] px-5 h-full rounded-l-full"
               onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>
             <div className='divide flex items-center'>
               <DividerLine mode='horizontal' className='bg-white mx-0' wrapClassName='!h-4 !mx-0' />
             </div>
-          </> }
-          <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
-            openGlobalDialog('mobile-member-mint')
-          }}>
-            {!communityInfoSet.isOwner && <PlusIconWithColor color='#fff' className='w-4 h-4'/>}
+            <button className={`px-5 h-full flex items-center justify-center gap-1.5 ${communityInfoSet.isOwner ? 'rounded-r-full min-w-[98px]' : 'rounded-full min-w-[120px]'}`} onClick={() => {
+              openGlobalDialog('mobile-member-mint')
+            }}>
+              Join
+            </button>
+          </BrandColorButtonGroup> : 
+          <BrandColorBgButton
+            className="button-md border-2 flex gap-3 text-sm-b text-white w-full"
+            onClick={() => openGlobalDialog('mobile-member-mint')}
+          >
+            <PlusIconWithColor color='#fff' className='w-4 h-4'/>
             <span>Join</span>
-          </button>
-        </BrandColorButtonGroup>
+          </BrandColorBgButton>
+        }
       </div>
       <CommunityRenewDialog
         open={Boolean(dialogOpenSet['renew'])}
