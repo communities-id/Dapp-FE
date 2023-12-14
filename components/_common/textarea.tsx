@@ -28,7 +28,7 @@ const TextArea: FC<Props> = ({ value, placeholder, loading, disabled, maxLength,
       />
       {
         maxLength && (
-          <div className='absolute right-5 bottom-5 w-full z-normal flex justify-end'>
+          <div className='absolute right-5 bottom-0 w-full z-normal flex justify-end'>
             <b>{ value.length }</b>
             <span>&nbsp;/&nbsp;</span>
             <span>{ maxLength }</span>

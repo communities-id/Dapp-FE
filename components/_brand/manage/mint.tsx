@@ -120,23 +120,6 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
     }
   }, [brandInfo])
 
-  // is community profile settled
-  // const profileSettled = useMemo(() => {
-  //   return (!tokenUri?.image || (tokenUri?.image === DEFAULT_AVATAR)) && !tokenUri?.brand_image && !tokenUri?.brand_color && communityInfoSet.isOwner
-  // }, [tokenUri, communityInfoSet.isOwner])
-
-  // // is community mint setting outside
-  // const pendingMintSet = useMemo(() => {
-  //   return !config?.publicMint && !config?.signatureMint && !config?.holdingMint && communityInfoSet.isOwner
-  // }, [config, communityInfoSet.isOwner])
-
-  // const pendingSet = useMemo(() => {
-  //   return Number(totalSupply) === 0
-  //   && Number(priceModel?.a) === 0
-  //   && Number(priceModel?.commissionRate) === 1000
-  //   && config?.coin === ZERO_ADDRESS
-  //   && pendingMintSet
-  // }, [totalSupply, priceModel, config, pendingMintSet])
 
   const [memberConfigForm, setMemberConfigForm] = useState<CommunityMemberConfig>({
     reserveDuration: defaultForms.reserveDuration,
@@ -565,7 +548,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
     <div className="modal-content-container relative h-full flex flex-col">
       <div className='flex-1 modal-content overflow-auto'>
         <h1 className='text-main-black text-xl'>Mint Settings</h1>
-        <div className='relative flex min-h-full gap-10 mt-[30px]'>
+        <div className='relative flex gap-10 mt-[30px]'>
           {
             step < 6 && (
               <div className='absolute left-[7px] w-0 h-full border border-dashed border-black-tr-10'></div>

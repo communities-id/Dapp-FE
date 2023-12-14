@@ -27,7 +27,8 @@ import ArrorBottomIcon from '~@/icons/arrow-bottom.svg';
 import RoundedLogo from '~@/logo-round.svg'
 
 function Dapp() {
-  const { message, NetOps } = useRoot()
+  const { message } = useRoot()
+  const { query } = useRouter()
   const { isMobile } = useRootConfig()
   const { switchNetworkAsync } = useSwitchNetwork()
   const { showGlobalDialog } = useGlobalDialog()
@@ -51,10 +52,24 @@ function Dapp() {
     })
   }, [])
   const [selectedNetwork, setSelectedNetwork] = useState(networks[0])
-
   const [invitationCode, setInvitationCode] = useState('')
   const [mintTo, setMintTo] = useState('')
   const [name, setName] = useState('')
+
+  useEffect(() => {
+    if (query.name) {
+      setName(query.name as string)
+    }
+    if (query.network) {
+      setSelectedNetwork(networks.find(v => v.value === Number(query.network)) || networks[0])
+    }
+    if (query.mintTo) {
+      setMintTo(query.mintTo as string)
+    }
+    if (query.inviteCode) {
+      setInvitationCode(query.inviteCode as string)
+    }
+  }, [query])
 
   async function fetchInviteCode() {
     if (!name || !mintTo) {
@@ -174,7 +189,9 @@ function Dapp() {
   }
 
   useEffect(() => {
-    setMintTo(address || '')
+    if (!mintTo) {
+      setMintTo(address || '')
+    }
   }, [address])
 
   function renderMintFormPC() {

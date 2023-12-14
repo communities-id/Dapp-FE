@@ -125,6 +125,7 @@ const Tab = styled(BaseTab)`
 const TabPanel = styled(BaseTabPanel)`
   height: 100%;
   background-color: #fff;
+  overflow: hidden;
 `;
 
 const Tabs = styled(BaseTabs)`

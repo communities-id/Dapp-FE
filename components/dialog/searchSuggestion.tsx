@@ -11,6 +11,7 @@ import { getTokenSymbol } from '@/shared/contract';
 import CloseIcon from '~@/icons/close.svg'
 import { useDetails } from '@/contexts/details';
 import { formatInfo } from '@/utils/format';
+import Link from 'next/link';
 
 interface Props {
   open: boolean
@@ -116,12 +117,11 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
               (suggestion[searchValue] || []).map((v: any)=> {
                 const { name, image, chainId, totalSupply, mintPrice, coinSymbol } = v
                 return (
-                  <div 
+                  <Link href={`/community/${name}`} 
                     className="suggestion-item flex items-center gap-4 px-5 py-2.5 hover:bg-gray-3"
-                    key={name} role='button'
+                    key={name}
                     onClick={() => {
                       handleClose()
-                      handleSearch(name)
                     }}
                   >
                     <img src={parseImgSrc(image)} alt={name} className="w-12.5 h-12.5 rounded-[10px] border-gray-3 bg-gray-6" />
@@ -134,7 +134,7 @@ const SearchSuggestion: FC<Props> = ({ open, handleClose }) => {
                         Size: {totalSupply || 0} | Price: {Number(mintPrice) ? `${mintPrice} ${coinSymbol} / Year` : "Free"}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 )
               })
             }

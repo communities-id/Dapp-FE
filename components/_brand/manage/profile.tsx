@@ -163,7 +163,7 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
 
   return (
     <div className="modal-content-container relative h-full flex flex-col">
-      <div className='flex-1 modal-content pb-10 overflow-auto'>
+      <div className='flex-1 modal-content overflow-auto'>
         <h1 className='text-main-black text-xl'>Profile Settings</h1>
         <div className='flex gap-10 mt-[30px]'>
           <div className='flex-1 flex flex-col gap-5'>

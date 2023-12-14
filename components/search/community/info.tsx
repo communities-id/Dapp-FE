@@ -464,7 +464,7 @@ const CommunityLayout: FC<Props> = () => {
           Manage
         </BrandColorButton> }
         <BrandColorButtonGroup className="btn-group button-md px-0 w-auto text-white text-sm-b flex">
-          { communityInfoSet.isOwner && <>
+          { communityInfoSet.isSigner && <>
             <button
               className="min-w-[98px] px-5 h-full rounded-l-full"
               onClick={() => openGlobalDialog('mobile-brand-invitation')}>Invite</button>

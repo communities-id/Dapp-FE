@@ -48,12 +48,13 @@ export default async function handler(
   const signature = isMainnetChain ? mintSignature : `${mintSignature}_${omninodeSignature}`
 
   const params = {
-    signature,
-    chainId,
-    owner,
+    name,
+    inviteCode: signature,
+    network: chainId,
+    mintTo: owner,
   }
 
-  const url = `https://www.communities.id/community/.${name}?${qs.stringify(params)}`
+  const url = `https://www.communities.id/dapp?${qs.stringify(params)}`
 
   return res.status(200).json({
     code: 0,
