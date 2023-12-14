@@ -173,6 +173,7 @@ const SearchHeader: FC<Props> = ({ className }) => {
           </div>
         </div>
         <div className="flex gap-5 lg:gap-20 items-center flex-shrink-0">
+          <BrandColorLink href="https://docs.communities.id/" target="_blank" className="text-main-black text-md-b font-bold">Docs</BrandColorLink>
           <BrandColorLink href="/ecosystem" className="text-main-black text-md-b font-bold">Ecosystem</BrandColorLink>
           <ConnectButton.Custom>
             {props => renderAccountButton(props)}
