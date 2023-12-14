@@ -690,8 +690,12 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
         </div>
       </div>
       {
-        !brandNotLoaded && (changed.memberConfig || changed.mintConfig || changed.priceConfig) && (
-          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
+        !brandNotLoaded && (
+          <SettingNotice
+          disabled={!(changed.memberConfig || changed.mintConfig || changed.priceConfig)}
+          loading={pending}
+          onReset={handleReset}
+          onSaveOnChain={handleSaveOnChain} />
         )
       }
       {

@@ -5,11 +5,12 @@ import BaseButton from '@/components/_common/baseButton'
 
 interface Props {
   loading?: boolean
+  disabled?: boolean
   onReset?: () => void
   onSaveOnChain?: () => void
 }
 
-const SettingNotice: FC<Props> = ({ loading, onReset, onSaveOnChain }) => {
+const SettingNotice: FC<Props> = ({ loading, disabled, onReset, onSaveOnChain }) => {
   return (
     <div className='modal-notice'>
       <div className='modal-notice-content bg-white gap-5'>
@@ -18,7 +19,7 @@ const SettingNotice: FC<Props> = ({ loading, onReset, onSaveOnChain }) => {
           <BaseButton
             className='w-auto text-xs text-main-black'
             size='short'
-            disabled={loading}
+            disabled={loading || disabled}
             onClick={onReset}
           >
             <span>Reset</span>
@@ -28,6 +29,7 @@ const SettingNotice: FC<Props> = ({ loading, onReset, onSaveOnChain }) => {
             size='short'
             theme='primary'
             loading={loading}
+            disabled={disabled}
             onClick={onSaveOnChain}
           >
             <span>Save On-Chain</span>

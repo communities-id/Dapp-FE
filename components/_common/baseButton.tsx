@@ -40,7 +40,14 @@ const BaseButton: FC<Props> = ({ htmlFor, size = 'auto', disabled, loading, onCl
             </div>
           ) : children
         }
-        <div className='group-hover:visible invisible absolute top-0 left-0 w-full h-full z-1 select-none pointer-events-none bg-white-tr-20'></div>
+        <div className={
+          classnames(
+            'invisible absolute top-0 left-0 w-full h-full z-1 select-none pointer-events-none bg-white-tr-20',
+            {
+              'group-hover:visible': !disabled
+            }
+          )
+        }></div>
       </button>
     </label>
   )

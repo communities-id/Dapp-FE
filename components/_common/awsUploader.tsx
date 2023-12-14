@@ -5,7 +5,7 @@ import { useRoot } from '@/contexts/root'
 import { readFileSize } from '@/utils/media'
 import { useUpload } from '@/hooks/upload'
 
-import ImageCropperDialog from '@/components/dialog/imgCropper'
+import ImageCropperDialog from '@/components/_dialog/tools/imgCropper'
 
 import LoadingIcon from '~@/icons/loading.svg'
 

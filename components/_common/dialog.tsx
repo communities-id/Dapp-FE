@@ -10,6 +10,7 @@ interface Props {
   theme?: 'small' | 'normal'
   open: boolean
   center?: boolean
+  transparent?: boolean
   hiddenCloseIcon?: boolean
   wrapClassName?: string
   containerClassName?: string
@@ -20,7 +21,7 @@ interface Props {
   children: ReactNode
 }
 
-const Dialog: FC<Props> = ({ theme = 'normal', open, center, hiddenCloseIcon, handleClose, wrapClassName, containerClassName, backdropClassName, contentClassName, className, children }) => {
+const Dialog: FC<Props> = ({ theme = 'normal', open, center, transparent, hiddenCloseIcon, handleClose, wrapClassName, containerClassName, backdropClassName, contentClassName, className, children }) => {
 
   return (
     <Modal
@@ -34,8 +35,9 @@ const Dialog: FC<Props> = ({ theme = 'normal', open, center, hiddenCloseIcon, ha
       <Box
         className={
           classnames(
-            'md:max-h-[80vh] bg-white outline-none',
+            'md:max-h-[80vh] outline-none',
             {
+              'bg-white': !transparent,
               'rounded-[10px]': theme === 'small',
               'rounded-[30px]': theme === 'normal'
             },

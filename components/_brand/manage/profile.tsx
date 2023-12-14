@@ -234,11 +234,12 @@ const BrandMannageProfileSettings: FC<Props> = ({ brandInfo, onBrandColorChange 
           />
         </div>
       </div>
-      {
-        changed.profileConfig && (
-          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
-        )
-      }
+      <SettingNotice
+        disabled={!changed.profileConfig}
+        loading={pending}
+        onReset={handleReset}
+        onSaveOnChain={handleSaveOnChain}
+      />
     </div>
   )
 }

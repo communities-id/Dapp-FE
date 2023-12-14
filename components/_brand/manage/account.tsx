@@ -245,11 +245,12 @@ export default function BrandMannageAccountManagement({ brandInfo }: Props) {
           </div> */}
         </div>
       </div>
-      {
-        changed.accountConfig && (
-          <SettingNotice loading={pending} onReset={handleReset} onSaveOnChain={handleSaveOnChain} />
-        )
-      }
+      <SettingNotice
+        disabled={!changed.accountConfig}
+        loading={pending}
+        onReset={handleReset}
+        onSaveOnChain={handleSaveOnChain}
+      />
     </div>
   )
 }

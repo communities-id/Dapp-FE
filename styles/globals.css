@@ -90,10 +90,10 @@
     @apply !h-[80vh] !max-h-[700px] overflow-y-scroll;
   }
   .modal-content-container {
-    @apply pb-15 overflow-hidden;
+    @apply overflow-hidden;
   }
   .modal-content {
-    @apply pt-15 pl-10 pr-20;
+    @apply pt-15 pb-[92px] pl-10 pr-20;
   }
   .modal-bottom {
     @apply pl-10 pr-20;
