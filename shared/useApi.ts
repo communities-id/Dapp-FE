@@ -7,7 +7,7 @@ import CommunitiesID, { SupportedChains, BrandDID, UserDID, ChainIDs, TestnetCha
 import { useWallet } from '@/hooks/wallet'
 import { ZERO_ADDRESS, MAIN_CHAIN_ID, CHAIN_ID, CONTRACT_MAP, maxApproveValue, SDK_OPTIONS, CHAINS_ID_TO_NETWORK } from '@/shared/constant';
 import { fetchAddressCommunities, fetchAddressMembers, fetchCommunityInfo, fetchERC20Coin, fetchMemberInfo, fetchMembersOfCommunity, fetchPrimaryDID, triggerRelayerCron, updateCommunity, updateMember } from '@/shared/apis'
-import { encodeString, keccak256, parseTokenURI } from '@/shared/helper'
+import { encodeString, formatContractError, keccak256, parseTokenURI } from '@/shared/helper'
 import { getTokenSymbol, getReadableContract, getWritableContract } from '@/shared/contract'
 import { useTokenPrice } from '@/contexts/tokenPrice'
 import { formatInfo } from '@/utils/format'
@@ -754,6 +754,42 @@ export default function useApi() {
     return receipt
   }
 
+    //@ts-ignore
+  async function debugEnableInviteAndHoldingMint(name: string) {
+    const community = await searchCommunity(name)
+    if (!community || !community.node) {
+      console.log(`brand ${name} not found`)
+      return
+    }
+    const { node, chainId } = community
+    if (chainId !== chain?.id) {
+      await switchNetworkAsync?.(chainId)
+      return
+    }
+    const signer = await getSigner()
+    const MemberRegistry = getCommunityWriteableContract(node.registry, 'MemberRegistry', chainId, signer)
+    const MemberRegistryInterface = getCommunityWriteableContract(node.registryInterface, 'MemberRegistryInterface', chainId, signer)
+
+    if (!MemberRegistry || !MemberRegistryInterface) return
+    
+    try {
+      const originalConfig = await MemberRegistryInterface.getConfig()
+      console.log(originalConfig)
+      const tx = await MemberRegistryInterface.setConfig({
+        ...originalConfig,
+        signatureMint: true,
+        holdingMint: true,
+      })
+      const receipt = await tx.wait();
+      await updateCommunity(name, true)
+      console.log('update success')
+      return receipt
+    } catch(e) {
+      console.log(formatContractError(e))
+    }
+  }
+  
+
   return {
     getBrandDIDChainId,
     createOmniNode,
@@ -781,6 +817,7 @@ export default function useApi() {
     setMemberPrimary,
     getPrimaryMember,
     erc20PriceToUSD,
-    getRootConfig
+    getRootConfig,
+    debugEnableInviteAndHoldingMint
   }
 }

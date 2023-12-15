@@ -67,7 +67,7 @@ const CommunityLayout: FC<Props> = () => {
   const { switchNetworkAsync } = useSwitchNetwork()
   const { brandNotLoaded } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
 
-  const { erc20PriceToUSD } = useApi()
+  const { erc20PriceToUSD, debugEnableInviteAndHoldingMint } = useApi()
 
   const [dialogOpenSet, setDialogOpenSet] = useState<Record<string, boolean>>({})
   const [tvl, setTvl] = useState(0)
@@ -222,6 +222,11 @@ const CommunityLayout: FC<Props> = () => {
   const openGlobalDialog = (name: string) => {
     showGlobalDialog(name, { brandName: communityInfo.node?.node, brandInfo: communityInfo, options: {}, mobile: isMobile })
   }
+
+  useEffect(() => {
+    //@ts-ignore
+    window.debugEnableInviteAndHoldingMint = debugEnableInviteAndHoldingMint
+  }, [])
 
   // to do: set in details
   useEffect(() => {

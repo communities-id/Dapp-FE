@@ -30,7 +30,6 @@ export const getWritableContract = (address: string, ABIKey: keyof typeof ABIs, 
     }
     const provider = createProvider(chainId)
     const abi = ABIs[ABIKey]
-    console.log('address', address, '-ABIKey', ABIKey, '- abi', abi)
     const contract = new ethers.Contract(address, abi, provider)
 
     contracts.set(key, contract.connect(signer))
