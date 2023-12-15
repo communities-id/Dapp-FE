@@ -16,8 +16,8 @@ dependencies:
     specifier: ^3.468.0
     version: 3.468.0
   '@communitiesid/id':
-    specifier: ^0.7.6
-    version: 0.7.6(@siddomains/sid-contracts@0.1.31)
+    specifier: ^0.7.7
+    version: 0.7.7(@siddomains/sid-contracts@0.1.31)
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.0.33)(react@18.2.0)
@@ -2301,8 +2301,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@communitiesid/id@0.7.6(@siddomains/sid-contracts@0.1.31):
-    resolution: {integrity: sha512-94B+Qt8N2XmAbP6eZ6IuvBVq0cprI9lQ9wpSul/gZd9dnnfjChC+HVDAQxAXcAv72XvYD8bJHu04eIzcc1TyMQ==}
+  /@communitiesid/id@0.7.7(@siddomains/sid-contracts@0.1.31):
+    resolution: {integrity: sha512-CQ9urQM3lH8IO7PHsL7GpTKkHF7WKhBOzD/lY9WJVGHPdSlcLn2riqF1r9+C/JLTOf89uv1Sv4smQ04907w8Tw==}
     dependencies:
       '@siddomains/sidjs': 0.1.29(@siddomains/sid-contracts@0.1.31)(ethers@5.7.2)
       axios: 1.6.2
