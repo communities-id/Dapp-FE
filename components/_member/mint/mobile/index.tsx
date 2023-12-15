@@ -16,10 +16,9 @@ import { useDIDContent } from '@/hooks/content';
 import { updateCommunity } from '@/shared/apis';
 
 import PriceModeChart from '@/components/common/priceModeChart'
-import Button from '@/components/_common/button';
-import Modal from '@/components/_common/modal';
 import Input from '@/components/_common/input';
 import EstimatedCard from '@/components/_common/estimatedCard';
+import ConnectButton from '@/components/_common/connectButton';
 
 import { PriceMode } from '@/types/contract';
 import { CommunityInfo } from '@/types';
@@ -337,7 +336,7 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) =
         </div>
       </div>
       <div className='px-4 pt-4 border-t-[1px] border-solid border-gray-7'>
-        <Button
+        <ConnectButton
           wrapClassName='w-full'
           className=''
           mode='full'
@@ -346,7 +345,7 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) =
           disabled={disabled}
           size='medium'
           onClick={handleSubmit}
-        >Mint Now</Button>
+        >Mint Now</ConnectButton>
       </div>
     </div>
   )

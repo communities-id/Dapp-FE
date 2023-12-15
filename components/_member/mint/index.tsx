@@ -16,11 +16,10 @@ import { useDIDContent } from '@/hooks/content';
 import { updateCommunity } from '@/shared/apis';
 
 import PriceModeChart from '@/components/common/priceModeChart'
-import Button from '@/components/_common/button';
-import Modal from '@/components/_common/modal';
 import Input from '@/components/_common/input';
 import EstimatedCard from '@/components/_common/estimatedCard';
 import DividerLine from '@/components/common/dividerLine'
+import ConnectButton from '@/components/_common/connectButton'
 
 import { PriceMode } from '@/types/contract';
 import { CommunityInfo } from '@/types';
@@ -347,7 +346,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
         </div>
       </div>
       <div className='px-15 pt-[30px] pb-10 border-t-[1px] border-solid border-gray-7'>
-        <Button
+        <ConnectButton
           wrapClassName='w-full'
           className='w-full var-brand-bgcolor'
           mode='full'
@@ -356,7 +355,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
           disabled={disabled}
           size='medium'
           onClick={handleSubmit}
-        >Mint Now</Button>
+        >Mint Now</ConnectButton>
       </div>
     </div>
   )
