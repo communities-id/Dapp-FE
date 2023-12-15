@@ -774,15 +774,16 @@ export default function useApi() {
     
     try {
       const originalConfig = await MemberRegistryInterface.getConfig()
-      console.log(originalConfig)
       const tx = await MemberRegistryInterface.setConfig({
         ...originalConfig,
+        publicMint: false,
         signatureMint: true,
         holdingMint: true,
       })
       const receipt = await tx.wait();
       await updateCommunity(name, true)
       console.log('update success')
+      window.location.reload()
       return receipt
     } catch(e) {
       console.log(formatContractError(e))

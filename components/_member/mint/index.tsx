@@ -133,6 +133,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
   const isMemberMintValid = useMemo(() => {
     // pass: public mint or holding mint and no signature
     // to do: verify holding mint
+    if (communityMintType.publicMint || communityMintType.holdingMint) return true
     console.log('------ isMemberMintValid ------', member)
     if (!isDotMember(member) && !communityMintType.invitationMint) return true
     console.log('-- verify isMemberMintValid --', communityMintType)
