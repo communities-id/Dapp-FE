@@ -14,13 +14,20 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
   const [brandInfoLoading, setBrandInfoLoading] = useState(false)
 
   const handleVerifyBrandSet = (info: Partial<CommunityInfo>) => {
+    const { tokenUri, config } = info
+    const profileInitially = !tokenUri?.image || !tokenUri?.brand_image || !tokenUri?.brand_color
+    const accountInitially = !(tokenUri?.external_url && tokenUri?.attr.discord && tokenUri?.attr.twitter && tokenUri?.attr.twitter)
+    const mintSettingsInitially = !config?.publicMint && !config?.signatureMint && !config?.holdingMint
     return {
-      notLoaded: !info.config?.publicMint && !info.config?.signatureMint && !info.config?.holdingMint
+      profileInitially,
+      accountInitially,
+      mintSettingsInitially,
+      notLoaded: mintSettingsInitially
     }
   }
 
-  const brandNotLoaded = useMemo(() => {
-    return handleVerifyBrandSet(brandInfo).notLoaded
+  const brandSetStatus = useMemo(() => {
+    return handleVerifyBrandSet(brandInfo)
   }, [brandInfo])
 
   useEffect(() => {
@@ -36,7 +43,7 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
   return {
     brandInfo,
     brandInfoLoading,
-    brandNotLoaded,
+    brandSetStatus,
     handleVerifyBrandSet
   }
 }

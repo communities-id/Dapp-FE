@@ -29,7 +29,7 @@ const CommunityMembers: FC<Props> = () => {
   const { showGlobalDialog } = useGlobalDialog()
   const { communityInfo, communityInfoSet } = useDetails()
   const { getMembersOfCommunity } = useApi()
-  const { brandNotLoaded } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
+  const { brandSetStatus } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
 
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState<CommunityMember[]>([])
@@ -129,7 +129,7 @@ const CommunityMembers: FC<Props> = () => {
         hasMore={!noMore}
         empty={isEmpty}
         renderEmpty={
-          brandNotLoaded ? (
+          brandSetStatus.mintSettingsInitially ? (
               <div
                 className='border-2 border-dashed w-full h-[306px] sm:h-45 rounded-[20px] flex flex-col items-center justify-center text-primary relative bg-white'
                 style={{
@@ -143,7 +143,7 @@ const CommunityMembers: FC<Props> = () => {
                   <BrandColorButton
                     className="button-md text-white mt-5"
                     onClick={() => {
-                      showGlobalDialog(isMobile ? 'mobile-manage-drawer' : 'brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile })
+                      showGlobalDialog(isMobile ? 'mobile-manage-drawer' : 'brand-manage-setting', { brandName: communityInfo.node?.node, brandInfo: communityInfo, mobile: isMobile, options: { notLoaded: true } })
                     }}
                   >
                     <MintSettingIcon className="mr-1.5" />

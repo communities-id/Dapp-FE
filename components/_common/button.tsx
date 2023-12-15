@@ -24,7 +24,7 @@ const Button: FC<Props> = ({ htmlFor, size = 'normal', mode = 'auto', theme = 'p
       wrapClassName={wrapClassName}
       className={
         classnames(
-          'py-[5px] px-[20px]',
+          'py-[5px] px-5',
           {
             'rounded-xs': size === 'small',
             'rounded-[17px]': size === 'short',

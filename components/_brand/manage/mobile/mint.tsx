@@ -79,7 +79,7 @@ interface Props {
 }
 
 export default function BrandMannageContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
-  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { brandInfo, brandInfoLoading, brandSetStatus } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
   const { message, NetOps } = useRoot()
   const { updateVariableCommunityMintConfig, updateCommunityMintConfig } = useApi()
 
@@ -496,9 +496,9 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
     })
     setMintForm({
       publicMint: defaultForms.publicMint,
-      signatureMint: brandNotLoaded ? true : defaultForms.signatureMint,
+      signatureMint: brandSetStatus.mintSettingsInitially ? true : defaultForms.signatureMint,
       holdingMint: defaultForms.holdingMint,
-      signer: brandNotLoaded ? String(account) : defaultForms.signer,
+      signer: brandSetStatus.mintSettingsInitially ? String(account) : defaultForms.signer,
       proofOfHolding: defaultForms.proofOfHolding,
       coin: defaultForms.coin,
       sequenceMode: defaultForms.sequenceMode,

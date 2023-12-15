@@ -21,7 +21,7 @@ interface Props {
   onClose?: () => void
 }
 export default function MobileBrandMannageAccountSettingContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
-  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { brandInfo, brandInfoLoading } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
   const { message, NetOps } = useRoot()
   const { updateCommunityBrandConfig } = useApi()
   

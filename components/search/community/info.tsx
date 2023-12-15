@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { useSwitchNetwork } from 'wagmi'
-import { DEFAULT_AVATAR, MAIN_CHAIN_ID, SCAN_MAP, ZERO_ADDRESS } from '@/shared/constant'
+import { DEFAULT_AVATAR, MAIN_CHAIN_ID, SCAN_MAP, ZERO_ADDRESS, SequenceModeMap } from '@/shared/constant'
 import { useRoot, useRootConfig } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
@@ -65,7 +65,7 @@ const CommunityLayout: FC<Props> = () => {
   const { keywords, community, communityInfo, communityInfoSet } = useDetails()
   const { showGlobalDialog } = useGlobalDialog()
   const { switchNetworkAsync } = useSwitchNetwork()
-  const { brandNotLoaded } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
+  const { brandSetStatus } = useDIDContent({ brandName: communityInfo.node?.node, brandInfo: communityInfo })
 
   const { erc20PriceToUSD, debugEnableInviteAndHoldingMint } = useApi()
 
@@ -180,8 +180,8 @@ const CommunityLayout: FC<Props> = () => {
 
   // mint setting outside
   const pendingMintSet = useMemo(() => {
-    return brandNotLoaded && communityInfoSet.isOwner
-  }, [brandNotLoaded, communityInfoSet.isOwner])
+    return brandSetStatus.notLoaded && communityInfoSet.isOwner
+  }, [brandSetStatus.notLoaded, communityInfoSet.isOwner])
 
   const pendingSet = useMemo(() => {
     return Number(totalSupply) === 0
@@ -405,7 +405,7 @@ const CommunityLayout: FC<Props> = () => {
                       <div className="flex justify-between items-center">
                         <div className='col'>
                           <p className='config-name'>Current Mint Price</p>
-                          <p className='config-value'>{brandNotLoaded ? '-' : (Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free")}</p>
+                          <p className='config-value'>{brandSetStatus.notLoaded ? '-' : (Number(mintPrice) ? `${mintPrice} ${communityInfo?.coinSymbol} / Year` : "Free")}</p>
                         </div>
                         { pendingMintSet ? (
                           <button
@@ -437,7 +437,7 @@ const CommunityLayout: FC<Props> = () => {
                           <TipIcon width='14' height='14' className='var-brand-textcolor'/>
                         </ToolTip>
                       </div>
-                      <p className='config-value'>{ brandNotLoaded ? '-' : `${100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%`}</p>
+                      <p className='config-value'>{ brandSetStatus.notLoaded ? '-' : `${100 - Number(Number(communityInfo?.priceModel?.commissionRate ?? 0) / 100)}%`}</p>
                     </td>
                     <td>
                       <div className='config-name'>
@@ -451,22 +451,22 @@ const CommunityLayout: FC<Props> = () => {
                           <TipIcon width='14' height='14' className='var-brand-textcolor'/>
                         </ToolTip>
                       </div>
-                      <p className='config-value'>{brandNotLoaded ? '-' : (tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`)}</p>
+                      <p className='config-value'>{brandSetStatus.notLoaded ? '-' : (tvl > 0 ? `${tvl.toFixed(2)} USDT` : `${formatPrice(communityInfo?.pool)} ${communityInfo?.coinSymbol}`)}</p>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <p className='config-name'>Refund Model</p>
                       <div className='flex items-center gap-1 config-value'>
-                        <span>{brandNotLoaded ? '-' : SequenceMode[communityInfo.config?.sequenceMode as SequenceMode]}</span>
-                        { !brandNotLoaded && communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={<p>Burn any time</p>}>
+                        <span>{brandSetStatus.notLoaded ? '-' : SequenceModeMap[communityInfo.config?.sequenceMode as SequenceMode]}</span>
+                        { !brandSetStatus.notLoaded && communityInfo.config?.burnAnytime && <ToolTip mode='sm' content={<p>Burn any time</p>}>
                           <BurnIcon width='16' height='16' className='text-red-1'/>
                         </ToolTip> }
                       </div>
                     </td>
                     <td>
                       <p className='config-name'>Mint Price Formula</p>
-                      <p className='config-value'>{brandNotLoaded ? '-' : `Y = ${mintPriceNumericFormula}`}</p>
+                      <p className='config-value'>{brandSetStatus.notLoaded ? '-' : `Y = ${mintPriceNumericFormula}`}</p>
                     </td>
                   </tr>
                 </tbody>

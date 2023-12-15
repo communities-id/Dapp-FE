@@ -2,7 +2,7 @@ import { FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
 import { ZERO_ADDRESS } from '@communitiesid/id'
-import { CHAIN_ID, DEFAULT_TOKEN_SYMBOL } from '@/shared/constant'
+import { CHAIN_ID, DEFAULT_TOKEN_SYMBOL, SequenceModeMap } from '@/shared/constant'
 
 import { toBN } from '@/utils/format'
 import { parseToDurationPrice, parseToUnitPrice, priceModeFormulaMap } from '@/utils/formula'
@@ -587,6 +587,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
               }
               <BrandMintToken
                 className='relative z-normal'
+                chainId={brandInfo.chainId}
                 locked={editLocked.price || pending}
                 form={mintForm}
                 defaultForms={defaultForms}
@@ -700,7 +701,7 @@ export default function BrandMannageMintSettings({ account, brandInfo, brandNotL
       }
       {
         !settled.mint && (
-          <div className='modal-bottom'>
+          <div className='modal-bottom pb-15'>
             <div className='w-full h-[1px] bg-gray-3'></div>
             <div className='mt-5 flex justify-end'>
               {
@@ -1868,7 +1869,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
     previewImg?: ReactNode
   }[] = [
     {
-      label: 'Locked = Refund',
+      label: SequenceModeMap[SequenceMode.INPUT_VALUE],
       name: 'sequenceMode',
       active: form.sequenceMode === SequenceMode.INPUT_VALUE,
       disabled: economicModelDisabled,
@@ -1884,7 +1885,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
       )
     },
     {
-      label: 'Laugh Last, Laugh Best',
+      label: SequenceModeMap[SequenceMode.BURN_INDEX],
       name: 'sequenceMode',
       active: form.sequenceMode === SequenceMode.BURN_INDEX,
       disabled: economicModelDisabled,
@@ -1900,7 +1901,7 @@ const BrandEconomicModel: FC<BrandMintTabProps<CommunityMintConfig>> = ({ active
       )
     },
     {
-      label: 'Bonding Curve',
+      label: SequenceModeMap[SequenceMode.TOTAL_SUPPLY],
       name: 'sequenceMode',
       active: form.sequenceMode === SequenceMode.TOTAL_SUPPLY,
       disabled: economicModelDisabled,

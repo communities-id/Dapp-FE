@@ -26,7 +26,7 @@ interface Props {
 }
 export default function BrandMannageContent({ account, brandName, brandInfo: inputBrandInfo, notLoaded }: Props) {
   const [tab, setTab] = useState(0)
-  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { brandInfo, brandInfoLoading, brandSetStatus } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
 
   const [pendingBrandColor, setPendingBrandColor] = useState('')
 
@@ -39,6 +39,7 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
         {
           label: 'Profile Settings',
           value: 0,
+          dot: brandSetStatus.profileInitially,
           renderPanel: () => <ProfileSettings brandInfo={brandInfo} onBrandColorChange={setPendingBrandColor} />,
           renderIcon: (active: boolean) => {
             return <ProfileIcon
@@ -54,6 +55,7 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
         {
           label: 'Official Link Settings',
           value: 1,
+          dot: brandSetStatus.accountInitially,
           renderPanel: () => <AccountManagement brandInfo={brandInfo} />,
           renderIcon: (active: boolean) => {
             return <AccountIcon
@@ -75,7 +77,8 @@ export default function BrandMannageContent({ account, brandName, brandInfo: inp
           label: 'Mint Settings',
           value: 2,
           brandColor,
-          renderPanel: () => <MintSettings account={account} brandInfo={brandInfo} brandNotLoaded={brandNotLoaded} brandColor={brandColor} />,
+          dot: brandSetStatus.mintSettingsInitially,
+          renderPanel: () => <MintSettings account={account} brandInfo={brandInfo} brandNotLoaded={brandSetStatus.mintSettingsInitially} brandColor={brandColor} />,
           renderIcon: (active: boolean) => {
             return <MintIcon
               className={

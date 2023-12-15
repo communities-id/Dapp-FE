@@ -102,7 +102,6 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
       ...prev,
       [name]: true,
     }))
-    console.log('- showGlobalDialog -', name, payload)
   }
 
   const closeGlobalDialog = (name: string | number) => {

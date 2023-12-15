@@ -11,6 +11,7 @@ interface Props {
     list: {
       label: string
       value: number
+      dot?: boolean
       renderPanel: (active: boolean, value: number) => React.ReactNode
       renderIcon: (active: boolean, value: number) => React.ReactNode
     }[]
@@ -40,7 +41,7 @@ export default function UnstyledTabsVertical(props: Props) {
             return (
               <div key={idx}>
                 {
-                  list.map(({ label, value: v, renderIcon }) => {
+                  list.map(({ label, value: v, renderIcon, dot }) => {
                     return (
                       <Tab
                         className={classNames('flex items-center w-[80px] md:w-[274px]', {
@@ -53,7 +54,10 @@ export default function UnstyledTabsVertical(props: Props) {
                         disableFocusRipple
                       >
                         { renderIcon(v === value, value) }
-                        <span className='hidden md:inline-block min-w-0 flex-1 text-left'>{ label }</span>
+                        <span className='hidden md:inline-block min-w-0 text-left'>{ label }</span>
+                        {
+                          dot && (<span className='inline-block w-1 h-1 rounded-full bg-red-1'></span>)
+                        }
                       </Tab>
                     )
                   })

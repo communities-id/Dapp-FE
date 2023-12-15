@@ -20,7 +20,7 @@ interface Props {
   onClose?: () => void
 }
 export default function MobileBrandMannageRenewContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
-  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { brandInfo } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
 
   const _brandName = brandName ?? brandInfo?.node?.node ?? ''
   const isRenewal = brandInfo?.state === State.RESERVED

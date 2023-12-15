@@ -23,7 +23,7 @@ interface Props {
   onClose?: () => void
 }
 export default function MobileBrandMannageSocialLinkContent({ account, brandName, brandInfo: inputBrandInfo, onClose }: Props) {
-  const { brandInfo, brandInfoLoading, brandNotLoaded } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
+  const { brandInfo, brandInfoLoading } = useDIDContent({ brandName, brandInfo: inputBrandInfo  })
 
   const { getSigner } = useWallet()
   const { message } = useRoot()

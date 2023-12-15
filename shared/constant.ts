@@ -64,7 +64,7 @@ export const MintModeMap: Record<MintMode, string> = {
 
 export const SequenceModeMap: Record<SequenceMode, string> = {
   [SequenceMode.INPUT_VALUE]: 'Locked = Refund',
-  [SequenceMode.BURN_INDEX]: 'Laugh Last, Laugh...',
+  [SequenceMode.BURN_INDEX]: 'Laugh Last, Laugh Best',
   [SequenceMode.TOTAL_SUPPLY]: 'Bonding Curve',
 }
 

@@ -291,7 +291,8 @@
     left: -3px;
     right: -3px;
     height: 16px;
-    background-color: #c49fff;
+    background-color: var(--var-brand-color);
+    /* opacity: 0.6; */
     z-index: 1;
     @apply h-3 sm:bottom-1.5;
   }
