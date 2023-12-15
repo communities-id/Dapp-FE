@@ -96,14 +96,20 @@ function Dapp() {
     }
     
     const { CommunityRegistryInterface } = CONTRACT_MAP[selectedNetwork.value]
-    const mintSignatureValidator = verifyCommunityTypedMessage(invitationCode, masterAddress, name, mintTo, CommunityRegistryInterface, { chainId: selectedNetwork.value })
-    const omninodeSignatureValidator = verifyCommunityOmninodeTypedMessage(invitationCode, masterAddress, name, mintTo, { chainId: selectedNetwork.value })
-    const isMintValidate = mintSignatureValidator.powerful || mintSignatureValidator.designated
-    if (isTargetMainnetWork) {
-      return isMintValidate
+    const [s1 = '', s2 = ''] = (invitationCode.trim()).split('_')
+    try {
+      const mintSignatureValidator = verifyCommunityTypedMessage(s1, masterAddress, name, mintTo, CommunityRegistryInterface, { chainId: selectedNetwork.value })
+      const omninodeSignatureValidator = verifyCommunityOmninodeTypedMessage(s2, masterAddress, name, mintTo, { chainId: selectedNetwork.value })
+      const isMintValidate = mintSignatureValidator.powerful || mintSignatureValidator.designated
+      if (isTargetMainnetWork) {
+        return isMintValidate
+      }
+      const isOmninodeMintValid = omninodeSignatureValidator.powerful || omninodeSignatureValidator.designated
+      return isMintValidate && isOmninodeMintValid
+    } catch (e) {
+      return false
     }
-    const isOmninodeMintValid = omninodeSignatureValidator.powerful || omninodeSignatureValidator.designated
-    return isMintValidate && isOmninodeMintValid
+    
   }
   
   const handleSubmit = async (e: FormEvent, options: any) => {
@@ -183,7 +189,7 @@ function Dapp() {
           mintNetwork: selectedNetwork.value
         }
       })
-    } catch (e) { } finally {
+    } catch (err) { } finally {
       setLoading(false)
     }
   }
