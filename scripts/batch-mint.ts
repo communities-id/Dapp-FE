@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import CommunitiesID from '@communitiesid/id';
-import axios from 'axios';
 import { ethers } from 'ethers';
 import fs from 'fs'
 import { getSDKOptions } from '@/utils/provider';
