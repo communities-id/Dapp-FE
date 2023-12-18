@@ -20,7 +20,8 @@ function MintMember() {
     nameForm: '!mt-20 sm:px-0',
     infoContainer: 'bg-white w-full flex flex-col items-center pb-40 !px-0',
     infoCard: 'pc:w-[800px] sm:w-5/6',
-    submit: '!bg-white fixed bottom-0 left-0 right-0 sm:px-[8vw]'
+    submit: '!bg-white fixed bottom-0 left-0 right-0 text-center !px-0',
+    submitButton: 'pc:w-[800px] sm:w-5/6'
   }
 
 

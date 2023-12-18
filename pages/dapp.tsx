@@ -263,30 +263,32 @@ function Dapp() {
   function renderMintFormMobile() {
     return (
       <div className="forms mt-8 sm:w-[84vw] pc:hidden flex flex-col gap-3 text-left">
-        <div>
-          <p className='px-4 text-sm text-black-tr-50 leading-[18px] mb-2.5'>Select Network:</p>
-          <button className="w-full h-14 bg-white border border-gray-7 rounded-md flex justify-between items-center px-6 overflow-hidden" onClick={openSelectNetworkMenu}>
-            <div className="flex gap-2 overflow-hidden">
-              <div className='flex items-center text-ellipsis overflow-hidden flex-shrink-0 flex-1'>
-                {selectedNetwork.icon}
-                <span className='ml-1.5 text-ellipsis whitespace-nowrap overflow-hidden'>{selectedNetwork.label}</span>
+        <div className="flex justify-between gap-5">
+          <div className='flex-1'>
+            <p className='text-sm-b text-black-tr-50 leading-[18px] mb-2.5'>Select Network:</p>
+            <button className="w-full h-14 bg-white border border-gray-7 rounded-md flex justify-between items-center px-6 overflow-hidden" onClick={openSelectNetworkMenu}>
+              <div className="flex gap-2 overflow-hidden">
+                <div className='flex items-center text-ellipsis overflow-hidden flex-shrink-0 flex-1'>
+                  {selectedNetwork.icon}
+                  <span className='ml-1.5 text-ellipsis whitespace-nowrap overflow-hidden'>{selectedNetwork.label}</span>
+                </div>
               </div>
-            </div>
-            <ArrorBottomIcon width="16" height="16" className={`${networkMenuOpen ? 'rotate-180' : ''} transition-all flex-shrink-0`} />
-          </button>
+              <ArrorBottomIcon width="16" height="16" className={`${networkMenuOpen ? 'rotate-180' : ''} transition-all flex-shrink-0`} />
+            </button>
+          </div>
+          <div className='flex-1'>
+            <p className='text-sm-b text-black-tr-50 leading-[18px] mb-2.5'>Invited Code</p>
+            <input
+              type="text"
+              className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none placeholder-gray-5"
+              placeholder={process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? "Not need for testnet" : "Input your invited code"}
+              value={invitationCode}
+              onChange={e => setInvitationCode(e.target.value)}
+            />
+          </div>
         </div>
         <div>
-          <p className='px-4 text-sm text-black-tr-50 leading-[18px] mb-2.5'>Invited Code</p>
-          <input
-            type="text"
-            className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none placeholder-gray-5"
-            placeholder={process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? "Not need for testnet" : "Input your invited code"}
-            value={invitationCode}
-            onChange={e => setInvitationCode(e.target.value)}
-          />
-        </div>
-        <div>
-          <p className='px-4 text-sm text-black-tr-50 leading-[18px] mb-2.5'>Mint To</p>
+          <p className='text-sm-b text-black-tr-50 leading-[18px] mb-2.5'>Mint To</p>
           <input
             type="text"
             className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none placeholder-gray-5"

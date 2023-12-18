@@ -291,7 +291,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo, classes }
       </div>
       <div className={`px-15 pt-[30px] pb-10 border-t-[1px] border-solid border-gray-7 ${classes.submit}`}>
         <ConnectButton
-          wrapClassName='w-full'
+          wrapClassName={`w-full ${classes.submitButton}`}
           className='w-full var-brand-bgcolor'
           mode='full'
           theme='variable'
