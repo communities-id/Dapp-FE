@@ -1,4 +1,4 @@
-import { FC, use, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import { ZERO_ADDRESS } from '@communitiesid/id'
@@ -6,13 +6,13 @@ import { useRoot } from '@/contexts/root'
 import { useSignUtils } from '@/hooks/sign'
 import { useWallet } from '@/hooks/wallet'
 import { execSearch } from '@/shared/helper'
+import { qs } from '@/utils/tools'
 
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Button from '@/components/_common/button'
 import Input from '@/components/_common/input'
 
 import TipsIcon from '~@/_brand/tips.svg'
-
 
 interface Props {
   brand: string
@@ -27,14 +27,28 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
   const { getSigner } = useWallet()
   const { getMemberSignPayload } = useSignUtils()
 
-  const [copied, setCopied] = useState(false)
-  const [result, setResult] = useState('')
+  const [copied, setCopied] = useState<Record<'link' | 'code', boolean>>({
+    link: false,
+    code: false,
+  })
+  const [invitationCode, setInvitationCode] = useState('')
   const [validation, setValidation] = useState<Record<string, string | undefined>>({})
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState<Record<'memberName' | 'mintTo', string>>({
     memberName: '',
     mintTo: '',
   })
+
+  const memberMintLink = useMemo(() => {
+    if (typeof window === 'undefined') return ''
+    const params = {
+      from: 'mint',
+      name: form.memberName,
+      mintTo: form.mintTo,
+      code: invitationCode,
+    }
+    return `${location.origin}/community/${brand}?${qs(params)}`
+  }, [invitationCode, form.memberName, form.mintTo])
 
   const boxRef = useRef<HTMLDivElement>(null)
 
@@ -87,7 +101,10 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
       setValidation(validateResult)
       return
     }
-    setCopied(false)
+    setCopied({
+      link: false,
+      code: false,
+    })
     await NetOps.handleSwitchNetwork(chainId)
     if (!brand) return
     try {
@@ -106,7 +123,7 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
         types,
         commitment
       );
-      setResult(result)
+      setInvitationCode(result)
       setLoading(false)
     } catch (e: any) {
       console.log(e)
@@ -134,10 +151,10 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
   }
 
   useEffect(() => {
-    if (result) {
+    if (invitationCode) {
       scrollToResultView(300)
     }
-  }, [result])
+  }, [invitationCode])
 
   return (
     <div ref={boxRef} className='mt-[10px] px-[30px] pb-[30px] flex flex-col gap-5'>
@@ -182,19 +199,33 @@ const TargetedInvitationCode: FC<Props> = ({ brand, registry, registryInterface,
             onClick={() => {
               handleSign()
             }}
-          >Generate Invitiation Code</Button>
+          >Generate Invitiation</Button>
         </li>
       </ul>
       {
-        result && (
+        invitationCode && (
           <div className='py-[10px] flex-center flex-col text-md-b !leading-5 border-t-[2px] border-dashed border-gray-7'>
-            <p className='mt-[10px] text-black-tr-50'>Targeted Invitation code</p>
-            <p className='mt-[10px] text-main-black break-all'>{ result }</p>
-            <div className='mt-5 w-full flex-justc'>
-              <CopyToClipboard text={result} onCopy={() => {
-                setCopied(true)
+            <p className='mt-[10px] text-black-tr-50'>Targeted Invitation</p>
+            {/* <p className='mt-[10px] text-main-black break-all'>{ invitationCode }</p> */}
+            <div className='mt-[10px] text-green-1 break-all'>
+              <a href={memberMintLink} target='_blank'>{ memberMintLink }</a>
+            </div>
+            <div className='mt-5 w-full flex-justc gap-2'>
+              <CopyToClipboard text={memberMintLink} onCopy={() => {
+                setCopied({
+                  link: true,
+                  code: false,
+                })
               }}>
-                <Button className='!h-[28px]' theme='black' size='small'>{ copied ? 'Copied' : 'Copy' }</Button>
+                <Button className='!h-[28px]' theme='black' size='small'>{ copied.link ? 'Copied' : 'Copy Link' }</Button>
+              </CopyToClipboard>
+              <CopyToClipboard text={invitationCode} onCopy={() => {
+                setCopied({
+                  link: false,
+                  code: true,
+                })
+              }}>
+                <Button className='!h-[28px]' theme='black' size='small'>{ copied.code ? 'Copied' : 'Copy Code' }</Button>
               </CopyToClipboard>
             </div>
           </div>

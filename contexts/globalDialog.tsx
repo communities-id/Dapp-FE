@@ -57,6 +57,7 @@ interface GlobalDialogPayload {
     mintNetwork?: number
     invitationCode?: string
     mintTo?: string
+    mintName?: string
     notLoaded?: boolean
   }
 }
@@ -182,6 +183,9 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         open={Boolean(dialogOpenSet['mobile-member-mint'])}
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
+        invitationCode={dialogPayload.options?.invitationCode}
+        memberName={dialogPayload.options?.mintName}
+        mintTo={dialogPayload.options?.mintTo}
         handleClose={() => closeGlobalDialog('mobile-member-mint')}
       />
       <MobileMemberBurn
@@ -242,6 +246,8 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
         invitationCode={dialogPayload.options?.invitationCode}
+        memberName={dialogPayload.options?.mintName}
+        mintTo={dialogPayload.options?.mintTo}
         handleClose={() => closeGlobalDialog('member-mint')}
       />
       <BrandManageDialog

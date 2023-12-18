@@ -11,11 +11,13 @@ interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
   invitationCode?: string
+  memberName?: string
+  mintTo?: string
   open: boolean
   handleClose?: () => void
 }
 
-const MemberMint: FC<Props> = ({ brandName, brandInfo, invitationCode, open, handleClose }) => {
+const MemberMint: FC<Props> = ({ brandName, brandInfo, invitationCode, memberName, mintTo, open, handleClose }) => {
 
   return (
     <Modal
@@ -35,7 +37,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo, invitationCode, open, han
           >
             <CloseIcon width='16' height='16' className='text-gray-1' />
           </div>
-          <MemberMintContent brandName={brandName} brandInfo={brandInfo} invitationCode={invitationCode} classes={{}} />
+          <MemberMintContent brandName={brandName} brandInfo={brandInfo} invitationCode={invitationCode} memberName={memberName} classes={{}} />
         </div>
     </Modal>
   )

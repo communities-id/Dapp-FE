@@ -85,3 +85,10 @@ export const verifyContractVersion = (info: Partial<CommunityInfo>): ContractVer
 export const isLink = (link: string) => {
   return link.match(/http(s)?:\/\//)
 }
+
+export const qs = (obj: Record<string, string>) => {
+  for (const key in obj) {
+    if (!obj[key]) delete obj[key]
+  }
+  return new URLSearchParams(obj).toString()
+}

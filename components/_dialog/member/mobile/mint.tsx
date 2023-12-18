@@ -1,8 +1,5 @@
 import { FC, Fragment } from 'react'
 
-import { useWallet } from '@/hooks/wallet'
-
-import Dialog from '@/components/_common/dialog'
 import Modal from '@/components/_common/modal'
 import MobileMemberMintContent from '@/components/_member/mint/mobile'
 import Banner from '@/components/search/banner'
@@ -15,12 +12,14 @@ import { CommunityInfo } from '@/types'
 interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  invitationCode?: string
+  memberName?: string
+  mintTo?: string
   open: boolean
   handleClose?: () => void
 }
 
-const MobileMemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
-  const { address: account } = useWallet()
+const MobileMemberMint: FC<Props> = ({ brandName, brandInfo, invitationCode, memberName, mintTo, open, handleClose }) => {
 
   return (
     <Modal
@@ -48,7 +47,7 @@ const MobileMemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }
         <div className='absolute top-[14px] right-[10px] z-icon' onClick={handleClose}>
           <CloseIcon width='20' height='20' className='text-gray-1' />
         </div>
-        <MobileMemberMintContent brandName={brandName} brandInfo={brandInfo} />
+        <MobileMemberMintContent brandName={brandName} brandInfo={brandInfo} invitationCode={invitationCode} memberName={memberName} mintTo={mintTo} />
       </div>
     </Modal>
   )

@@ -28,10 +28,12 @@ interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
   invitationCode?: string
+  memberName?: string
+  mintTo?: string
   classes: Record<string, string>
 }
 
-const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo, invitationCode = '', classes }) => {
+const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo, invitationCode = '', memberName = '', mintTo = '', classes }) => {
   const { message, tracker, NetOps } = useRoot()
   const { handleMintSuccess } = useGlobalDialog()
   const { mintMember, approveErc20, burnMember } = useApi()
@@ -40,9 +42,9 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo, invitatio
 
   const [mintLoading, setMintLoading] = useState(false)
   const [form, setForm] = useState<Record<'memberName' | 'invitationCode' | 'mintTo', string>>({
-    memberName: '',
+    memberName,
     invitationCode,
-    mintTo: '',
+    mintTo,
   })
 
   const { brandInfo, brandInfoLoading } = useDIDContent({ brandName, brandInfo: inputBrandInfo })

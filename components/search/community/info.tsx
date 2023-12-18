@@ -64,6 +64,8 @@ type FromMode = 'mint'
 const CommunityLayout: FC<Props> = () => {
   const fromMode = useSearchParams().get('from') as FromMode
   const invitationCode = useSearchParams().get('code') as string
+  const mintName = useSearchParams().get('name') as string
+  const mintTo = useSearchParams().get('mintTo') as string
 
   const { message } = useRoot()
   const { isMobile } = useRootConfig()
@@ -266,12 +268,14 @@ const CommunityLayout: FC<Props> = () => {
         brandName: communityInfo.node?.node,
         brandInfo: communityInfo,
         options: {
-          invitationCode
+          invitationCode,
+          mintName,
+          mintTo
         },
         mobile: isMobile
       })
     }
-  }, [communityInfo, fromMode, invitationCode, isMobile])
+  }, [communityInfo, fromMode, invitationCode, mintName, mintTo, isMobile])
 
   const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const BrandColorButton = styled('button')({
