@@ -1,6 +1,6 @@
-import { FC, ReactNode, useEffect, useMemo, useState, Fragment, use, CSSProperties } from 'react'
+import { FC, ReactNode, useEffect, useMemo, useState, CSSProperties } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import { useSwitchNetwork } from 'wagmi'
 import { DEFAULT_AVATAR, MAIN_CHAIN_ID, SCAN_MAP, ZERO_ADDRESS, SequenceModeMap } from '@/shared/constant'
@@ -59,7 +59,12 @@ interface Props {
   children?: ReactNode
 }
 
+type FromMode = 'mint'
+
 const CommunityLayout: FC<Props> = () => {
+  const fromMode = useSearchParams().get('from') as FromMode
+  const invitationCode = useSearchParams().get('code') as string
+
   const { message } = useRoot()
   const { isMobile } = useRootConfig()
   const { keywords, community, communityInfo, communityInfoSet } = useDetails()
@@ -194,7 +199,7 @@ const CommunityLayout: FC<Props> = () => {
   const pathname = usePathname()
 
   const backLink = pathname === `/community/${community}` ? undefined : `/community/${community}`
-  const memberMintLink = pathname === `/community/${community}/mint` ? undefined : `/community/${community}/mint`
+  // const memberMintLink = pathname === `/community/${community}/mint` ? undefined : `/community/${community}/mint`
 
   const toggleDialogHandler = (key: string | number, value?: boolean) => {
     setDialogOpenSet(prev => ({ ...prev, [key]: value ?? !prev[key] }))
@@ -252,6 +257,21 @@ const CommunityLayout: FC<Props> = () => {
   if (communityInfoSet.unMint) return (
     <Banner />
   )
+
+  useEffect(() => {
+    if (!fromMode) return
+    if (!communityInfo || !communityInfo.node) return
+    if (fromMode === 'mint') {
+      showGlobalDialog(isMobile ? 'mobile-member-mint' : 'member-mint', {
+        brandName: communityInfo.node?.node,
+        brandInfo: communityInfo,
+        options: {
+          invitationCode
+        },
+        mobile: isMobile
+      })
+    }
+  }, [communityInfo, fromMode, invitationCode, isMobile])
 
   const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const BrandColorButton = styled('button')({

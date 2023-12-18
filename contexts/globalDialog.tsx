@@ -37,6 +37,7 @@ type MobileGlobalDialogNames = 'mobile-brand-mint'
   | 'mobile-member-burn'
   | 'mobile-member-renew'
   | 'mobile-member-primary'
+  | 'mobile-brand-mint-success'
 
 type GlobalDialogNames = MobileGlobalDialogNames
  | 'brand-mint'
@@ -44,9 +45,7 @@ type GlobalDialogNames = MobileGlobalDialogNames
  | 'brand-manage-setting'
  | 'brand-not-loaded'
  | 'member-mint'
- | 'mobile-member-mint'
  | 'brand-mint-success'
- | 'mobile-brand-mint-success'
  | string
 
 interface GlobalDialogPayload {
@@ -242,6 +241,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         open={Boolean(dialogOpenSet['member-mint'])}
         brandName={dialogPayload.brandName}
         brandInfo={dialogPayload.brandInfo}
+        invitationCode={dialogPayload.options?.invitationCode}
         handleClose={() => closeGlobalDialog('member-mint')}
       />
       <BrandManageDialog

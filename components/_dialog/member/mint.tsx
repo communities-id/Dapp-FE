@@ -10,11 +10,12 @@ import CloseIcon from '~@/_brand/close.svg'
 interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  invitationCode?: string
   open: boolean
   handleClose?: () => void
 }
 
-const MemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
+const MemberMint: FC<Props> = ({ brandName, brandInfo, invitationCode, open, handleClose }) => {
 
   return (
     <Modal
@@ -34,7 +35,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
           >
             <CloseIcon width='16' height='16' className='text-gray-1' />
           </div>
-          <MemberMintContent brandName={brandName} brandInfo={brandInfo} classes={{}} />
+          <MemberMintContent brandName={brandName} brandInfo={brandInfo} invitationCode={invitationCode} classes={{}} />
         </div>
     </Modal>
   )
