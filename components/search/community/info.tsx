@@ -256,10 +256,6 @@ const CommunityLayout: FC<Props> = () => {
     openGlobalDialog('brand-not-loaded')
   }, [pendingMintSet, communityInfoSet.isOwner, communityInfoSet.initialized])
 
-  if (communityInfoSet.unMint) return (
-    <Banner />
-  )
-
   useEffect(() => {
     if (!fromMode) return
     if (!communityInfo || !communityInfo.node) return
@@ -276,6 +272,10 @@ const CommunityLayout: FC<Props> = () => {
       })
     }
   }, [communityInfo, fromMode, invitationCode, mintName, mintTo, isMobile])
+
+  if (communityInfoSet.unMint) return (
+    <Banner />
+  )
 
   const brandColor = communityInfo.tokenUri?.brand_color || themeColor.primary
   const BrandColorButton = styled('button')({
