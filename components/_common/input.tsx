@@ -27,7 +27,7 @@ const CustomInput = forwardRef(function CustomInput(
         )
       }
       slots={{ input: StyledInputElement, textarea: StyledTextareaElement }}
-      slotProps={{ input: { className: 'disabled:bg-disabled disabled:cursor-not-allowed' }, ...props.slotProps }}
+      slotProps={{ input: { className: 'disabled:bg-disabled disabled:cursor-not-allowed placeholder-gray-5' }, ...props.slotProps }}
       {...props}
       ref={ref}
       onFocusCapture={() => {

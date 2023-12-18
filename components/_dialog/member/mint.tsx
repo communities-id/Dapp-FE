@@ -34,7 +34,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo, open, handleClose }) => {
           >
             <CloseIcon width='16' height='16' className='text-gray-1' />
           </div>
-          <MemberMintContent brandName={brandName} brandInfo={brandInfo} />
+          <MemberMintContent brandName={brandName} brandInfo={brandInfo} classes={{}} />
         </div>
     </Modal>
   )

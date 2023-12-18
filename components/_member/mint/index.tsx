@@ -1,5 +1,4 @@
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
 
 import { ZERO_ADDRESS, MAIN_CHAIN_ID, BrandDID } from '@communitiesid/id';
 import { BigNumber } from 'ethers';
@@ -21,22 +20,23 @@ import EstimatedCard from '@/components/_common/estimatedCard';
 import DividerLine from '@/components/common/dividerLine'
 import ConnectButton from '@/components/_common/connectButton'
 
+import RoundedLogo from '~@/logo-round.svg'
 import { PriceMode } from '@/types/contract';
 import { CommunityInfo } from '@/types';
 
 interface Props {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
+  classes: Record<string, string>
 }
 
-const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
+const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo, classes }) => {
   const { message, tracker, NetOps } = useRoot()
   const { handleMintSuccess } = useGlobalDialog()
   const { mintMember, approveErc20, burnMember } = useApi()
   const { verifyMemberTypedMessage } = useSignUtils()
   const { address: account } = useWallet()
 
-  const [protocolFee, setProtocoFee] = useState<BigNumber>(BigNumber.from(0))
   const [mintLoading, setMintLoading] = useState(false)
   const [form, setForm] = useState<Record<'memberName' | 'invitationCode' | 'mintTo', string>>({
     memberName: '',
@@ -81,10 +81,6 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
 
   const mintPrice = mintPriceData.priceWei
   console.log('- mintPrice', mintPrice)
-
-  const isFreeMint = useMemo(() => {
-    return mintPriceData.nonezeroPriceWei.eq(0)
-  }, [mintPriceData])
   
   const priceChartParams = useMemo(() => {
     if (!priceModel || !config) return {
@@ -108,11 +104,6 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
       ...formulaParams
     }
   }, [priceModel, config])
-
-  const shouldApproveCoin = useMemo(() => {
-    if (!config) return false
-    return config.coin !== ZERO_ADDRESS
-  }, [config])
 
   const communityMintType = useMemo(() => {
     return {
@@ -140,44 +131,7 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
     return powerful || designated
   }, [communityMintType.invitationMint, signatureMintValidator, form.invitationCode, member])
 
-  // signature mint mode and the owner is self account
-  const isSignatureSelf = useMemo(() => {
-    if (!account || signatureMintValidator.powerful) return false
-    return signatureMintValidator.designated && (!form.mintTo || (form.mintTo.toLowerCase() === account.toLowerCase()))
-  }, [signatureMintValidator, account, form.mintTo])
-
-  const mintToPlaceholder = useMemo(() => {
-    // powerful mode and isSignatureSelf mode use account as default mintTo (designated mode use member as default mintTo)
-    if (signatureMintValidator.powerful || isSignatureSelf) return account
-    return undefined
-  }, [signatureMintValidator.powerful, isSignatureSelf, account])
-
   const disabled = !member || !isMemberMintValid || brandInfoLoading
-
-  const actions = useMemo(() => {
-    const list: {
-      label: string
-      value: string
-      placeholder?: string
-      name: string
-    }[] = [
-      {
-        label: 'Mint to',
-        value: form.mintTo,
-        placeholder: mintToPlaceholder ?? '0x...',
-        name: 'mintTo',
-      }
-    ]
-    if (communityMintType.invitationMint) {
-      list.unshift({
-        label: 'Invitation Code',
-        value: form.invitationCode,
-        placeholder: 'Enter Invitation Code',
-        name: 'invitationCode',
-      })
-    }
-    return list
-  }, [form.invitationCode, form.mintTo, mintToPlaceholder, communityMintType])
 
   const estimatedList = [
     {
@@ -186,20 +140,6 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
       symbol: coinSymbol,
     },
   ]
-
-  // const shouldBurn = useMemo(() => {
-  //   if (!memberInfo.state) {
-  //     return false
-  //   }
-  //   return memberInfo.state === State.EXPIRED
-  // }, [memberInfo.state])
-
-  // const confirmExitWhenLoading = (e: any) => {
-  //   if (mintLoading) {
-  //     e.preventDefault()
-  //     return e.returnValue = ''
-  //   }
-  // }
 
   async function getPrice() {
     if (!node?.registry || !chainId) {
@@ -212,8 +152,6 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
     try {
       const DIDName = `${member}.${brand}`
       const { price, protocolFee: fee } = await getMintMemberPrice(DIDName, brandInfo as BrandDID)
-      // setPrice(price || 0)
-      setProtocoFee(fee)
       return {
         price,
         fee
@@ -235,8 +173,8 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
       const DIDName = `${member}.${brand}`
       const { price: _price, fee } = await getPrice()
       const price = mintPrice.gte(_price) ? mintPrice : _price
-      // const chainId = communityInfo.chainId as number
-      if (shouldApproveCoin && config) {
+      const shouldApproveCoin = config && config.coin !== ZERO_ADDRESS
+      if (shouldApproveCoin) {
         await approveErc20?.(config.coin, node.registryInterface, { price, chainId: network })
       }
       // to do: burn?
@@ -274,78 +212,84 @@ const MemberMint: FC<Props> = ({ brandName, brandInfo: inputBrandInfo }) => {
     })
   }
 
+  useEffect(() => {
+    if (!form.mintTo) {
+      handleFormChange('mintTo', account || '')
+    }
+  }, [account])
+
   return (
     <div
-      className='h-full flex flex-col pt-4'
+      className={`h-full flex flex-col pt-4 ${classes.container}`}
       style={{ '--var-brand-color': brandColor } as CSSProperties}
     >
-      <div className='flex-1 overflow-auto'>
-        <div className="py-[70px] dapp-page text-center flex-itmc flex-col">
-          <h1 className="font-Saira text-main-black text-[30px] leading-[47px] font-extrabold">Join Community, set Your <span className='shadowed-text'><span>ID</span></span> here</h1>
-          <form
-            className="mt-7.5 w-full flex-center"
-            onSubmit={handleSubmit}
-          >
-            <div className='w-full bg-white max-w-[488px] rounded-full flex justify-between items-center border-xs var-brand-bordercolor border-[6px] overflow-hidden'>
-              <div className='w-full'>
-                <Input
-                  inputclassname="!py-3 !px-8 h-15 outline-none !border-none !text-lgx !leading-[34px]"
+      <div className={`flex-1 overflow-auto flex flex-col ${classes.content}`}>
+        <div className={`py-[66px] dapp-page text-center flex-itmc flex-col ${classes.formsContainer}`}>
+          <h1 className={`font-Saira text-main-black text-[30px] leading-[47px] font-extrabold ${classes.title}`}>Join Community, set Your <span className='shadowed-text'><span>ID</span></span> here</h1>
+          <div className={`forms mt-8 w-full px-15 ${classes.forms}`}>
+            <div className="flex justify-between gap-5 sm:flex-col">
+              { communityMintType.invitationMint &&  <div className="w-full h-12.5 bg-white border border-gray-7 rounded-md px-6 flex items-center gap-2">
+                <span className="flex-shrink-0 min-w-[120px] text-main-black opacity-50">Invited Code:</span>
+                <DividerLine mode="horizontal" />
+                <input
                   type="text"
-                  placeholder='Search for a name'
-                  value={form.memberName}
-                  endAdornment={(
-                    <div className='flex-itmc'>
-                      <div className='mx-5 h-5 w-[1px] bg-gray-5'></div>
-                      <span className='var-brand-textcolor'>.{ brand }</span>
-                    </div>
-                  )}
-                  onChange={(e) => handleFormChange('memberName', e.target.value.toLowerCase())}
+                  className="outline-none w-full placeholder-gray-5"
+                  placeholder="0x..."
+                  value={form.invitationCode}
+                  onChange={e => handleFormChange('invitationCode', e.target.value)}
+                />
+              </div> }
+              <div className="w-full h-12.5 bg-white border border-gray-7 rounded-md px-6 flex items-center gap-2">
+                <span className="flex-shrink-0 min-w-[120px] text-main-black opacity-50">Mint to:</span>
+                <DividerLine mode="horizontal" />
+                <input
+                  type="text"
+                  className="outline-none w-full placeholder-gray-5"
+                  placeholder='0x...'
+                  value={form.mintTo}
+                  onChange={e => handleFormChange('mintTo', e.target.value)}
                 />
               </div>
             </div>
-          </form>
+            <form className={`mt-7.5 w-full flex-center px-[46px] ${classes.nameForm}`} onSubmit={handleSubmit}>
+              <div className='w-full bg-white rounded-full flex justify-between items-center border-xs var-brand-bordercolor border-[6px] overflow-hidden'>
+                <div className='w-full flex px-3 py-3'>
+                  <RoundedLogo width="58" height="58" className="flex-shrink-0" />
+                  <Input
+                    inputclassname="!py-3 !px-3 h-15 outline-none !border-none !text-lgx"
+                    type="text"
+                    placeholder='Search for a name'
+                    value={form.memberName}
+                    endAdornment={(
+                      <div className='flex-itmc ml-3'>
+                        <span className='var-brand-textcolor'>.{ brand }</span>
+                      </div>
+                    )}
+                    onChange={(e) => handleFormChange('memberName', e.target.value.toLowerCase())}
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
         <DividerLine wrapClassName='!m-0' />
-        <div className='px-15 py-10'>
-          <ul className="pb-5 w-full flex flex-col gap-5">
-            {
-              actions.map((item, index) => {
-                return (
-                  <li
-                    key={index}
-                    className={
-                      classNames(
-                        'w-full gap-[10px] flex flex-col',
-                      )
-                    }
-                  >
-                    <p className="text-sm-b text-main-black">{ item.label }</p>
-                    <div className='flex-1'>
-                      <Input
-                        inputclassname='w-full'
-                        value={item.value}
-                        placeholder={item.placeholder}
-                        onChange={(e) => handleFormChange(item.name, e.target.value)}
-                      />
-                    </div>
-                  </li>
-                )
-              })
-            }
-          </ul>
-          <EstimatedCard list={estimatedList}/>
-          <div className='mt-[10px] w-full bg-white rounded-xs'>
-            <PriceModeChart
-              height={200}
-              params={priceChartParams}
-              markerSymbol={coinSymbol}
-              currentLabel={(brandInfo.totalSupply ?? 0) + 1}
-              colors={[brandColor]}
-            />
+        <div className={`px-15 py-10 ${classes.infoContainer}`}>
+          <EstimatedCard list={estimatedList} className={classes.infoCard} />
+          <div className={`mt-[10px] w-full bg-gray-6 rounded-xs px-7.5 py-5 ${classes.infoCard}`}>
+            <div className="text-gray-1 text-md">Price Model:</div>
+            <div className="mt-[10px] bg-white rounded-md">
+              <PriceModeChart
+                height={200}
+                params={priceChartParams}
+                markerSymbol={coinSymbol}
+                currentLabel={(brandInfo.totalSupply ?? 0) + 1}
+                colors={[brandColor]}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className='px-15 pt-[30px] pb-10 border-t-[1px] border-solid border-gray-7'>
+      <div className={`px-15 pt-[30px] pb-10 border-t-[1px] border-solid border-gray-7 ${classes.submit}`}>
         <ConnectButton
           wrapClassName='w-full'
           className='w-full var-brand-bgcolor'
