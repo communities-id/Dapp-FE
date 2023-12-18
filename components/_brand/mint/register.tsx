@@ -35,6 +35,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandChain
   const { createOmniNode } = useApi()
 
   const [deploying, setDeploying] = useState(false)
+  const [loadingStatus, setLoadingStatus] = useState(' ')
 
   const registerLoading = loading || deploying
   console.log('- register loading', loading, 'deploying', deploying)
@@ -51,10 +52,13 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandChain
     try {
       setDeploying(true)
       await NetOps.handleSwitchNetwork(MAIN_CHAIN_ID)
+      setLoadingStatus('Sending transaction...')
       await handleCreateOmniNode(mintNetwork)
+      setLoadingStatus('Relaying, this step may takes about 1 minute...')
       await handleRefreshBrandChainId?.()
       // await refreshInfo()
     } catch (err) {
+      setLoadingStatus(' ')
       toastError(message, 'Failed to release: ', err, { t: 'brand-pre-mint', i: 1 })
       setDeploying(false)
     }
@@ -146,6 +150,7 @@ const CommunityRegister: FC<CommunityRegisterProps> = ({ mintNetwork, brandChain
               onClick={handleDeploy}>Pre-Mint</ConnectButton>
           </div>
         </div>
+        <p className='text-center mt-2'>{loadingStatus}</p>
       </div>
       <DividerLine wrapClassName='mt-[30px] mb-4' />
       <div className='flex-1 w-full px-15 pb-10 overflow-auto'>

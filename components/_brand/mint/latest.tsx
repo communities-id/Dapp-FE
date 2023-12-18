@@ -35,12 +35,14 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, brandN
   // const [isSwitchNetwork, setIsSwitchNetwork] = useState(false)
   const [mintLoading, setMintLoading] = useState(false)
   // const [releaseState, setReleaseState] = useState(false)
+  const [loadingStatus, setLoadingStatus] = useState(' ')
 
   const pending = mintLoading || NetOps.loading
   console.log('- NetOps.loading', NetOps.loading)
 
   const handleMint = async () => {
     if (pending || !account) return
+    setLoadingStatus(' ')
     try {
       const chainId = mintNetwork
       await NetOps.handleSwitchNetwork(chainId)
@@ -51,6 +53,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, brandN
       
       const _mintTo = mintTo || account
       // signature mint
+      setLoadingStatus('Sending transaction...')
       if (signature) {
         await mintCommunity(brandName, {
           price,
@@ -140,6 +143,7 @@ const CommunityMintLatest: FC<CommunityMintLatestProps> = ({ mintNetwork, brandN
               Mint
             </ConnectButton>
           </div>
+          <p className='text-center mt-2'>{loadingStatus}</p>
         </div>
       </div>
       <DividerLine wrapClassName='mt-[30px] mb-4' />
