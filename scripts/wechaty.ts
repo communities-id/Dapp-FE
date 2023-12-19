@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import { WechatyBuilder, Contact, Message, ScanStatus, log } from 'wechaty'
+//@ts-ignore
+import { PuppetPadlocal } from "wechaty-puppet-padlocal";
 import qrTerm from 'qrcode-terminal'
 import { WechatyInterface } from 'wechaty/impls'
 
@@ -21,6 +23,12 @@ async function onScan(qrcode: string, status: ScanStatus) {
 
 async function onLogin(user: Contact, bot: WechatyInterface) {
   console.log(`User ${user} logged in`)
+
+  const room = await bot.Room.find({ id: '@@1695ef0ff6500e52c1446187012fd5f5db7ea964fc66496964634eb05e6229d2' })
+  const contact = await bot.Contact.find({ id: '@9db877f038601b85b860cca782eaa00fe4f6521b5d8cd62328eedcdf43f721a6' })
+  if (contact) {
+    await room?.remove(contact)
+  }
 }
 
 async function onMessage(message: Message) {
@@ -64,10 +72,13 @@ async function onMessage(message: Message) {
 }
 
 async function main() {
+  const puppet = new PuppetPadlocal({
+    token: "puppet_padlocal_4707f652268a47a2b731ef3cdb39edf4"
+  })
   // Initializing the bot
   const bot = WechatyBuilder.build({
     name: 'starter-bot',
-    puppet: 'wechaty-puppet-wechat4u',
+    puppet
   })
 
   // Starting the bot
