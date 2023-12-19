@@ -24,7 +24,13 @@ async function onScan(qrcode: string, status: ScanStatus) {
 async function onLogin(user: Contact, bot: WechatyInterface) {
   console.log(`User ${user} logged in`)
 
-  // const room = await bot.Room.find({ id: '' })
+  const room = await bot.Room.find({ id: '38699275437@chatroom' })
+  if (room) {
+    await room.sync()
+    const members = await room.memberAll()
+    console.log(members)
+  }
+  
   // const contact = await bot.Contact.find({ id: '' })
   // if (contact) {
   //   await room?.remove(contact)
