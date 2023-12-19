@@ -161,7 +161,8 @@ export const handleOtherJoinGrouop = async (msg: TGMsg) => {
     await removeUserFromGroup(Number(community.tgGroupID), msg.new_chat_participant.id)
     return
   }
-  await sendMessage(msg.chatId, `Welcome @${escape(msg.new_chat_participant.username)}, the owner of [${escape(member.name)}](${domain}/member/${escape(member.name)}), join this group`, {
+  const name = escape(msg.new_chat_participant.username || msg.new_chat_participant.first_name)
+  await sendMessage(msg.chatId, `Welcome @${name}, the owner of [${escape(member.name)}](${domain}/member/${escape(member.name)}), join this group`, {
     parse_mode: 'MarkdownV2'
   })
 }
