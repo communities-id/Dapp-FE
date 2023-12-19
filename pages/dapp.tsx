@@ -25,6 +25,7 @@ import DividerLine from '@/components/common/dividerLine';
 import StarIcon from '~@/icons/star.svg'
 import ArrorBottomIcon from '~@/icons/arrow-bottom.svg';
 import RoundedLogo from '~@/logo-round.svg'
+import InviteCodeIcon from '~@/icons/invitecode.svg'
 
 function Dapp() {
   const { message } = useRoot()
@@ -243,6 +244,9 @@ function Dapp() {
               value={invitationCode}
               onChange={e => setInvitationCode(e.target.value)}
             />
+            <a href="https://form.typeform.com/to/S41zv4ZY" target='_blank' className="flex-shrink-0">
+              <InviteCodeIcon width="30" height="30" />
+            </a>
           </div>
         </div>
         <div className="mt-5 h-12.5 bg-white border border-gray-7 rounded-md px-6 flex items-center gap-2">
@@ -278,13 +282,18 @@ function Dapp() {
           </div>
           <div className='flex-1'>
             <p className='text-sm-b text-black-tr-50 leading-[18px] mb-2.5'>Invited Code</p>
-            <input
-              type="text"
-              className="h-14 bg-white border border-gray-7 rounded-md px-6 w-full outline-none placeholder-gray-5"
-              placeholder={process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? "Not need for testnet" : "Input your invited code"}
-              value={invitationCode}
-              onChange={e => setInvitationCode(e.target.value)}
-            />
+            <div className='flex h-14 bg-white border border-gray-7 rounded-md pl-6 pr-3 items-center gap-3'>
+              <input
+                type="text"
+                className="w-full outline-none placeholder-gray-5"
+                placeholder={process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? "Not need for testnet" : "Input your invited code"}
+                value={invitationCode}
+                onChange={e => setInvitationCode(e.target.value)}
+              />
+              <a href="https://form.typeform.com/to/S41zv4ZY" target='_blank' className="flex-shrink-0">
+                <InviteCodeIcon width="30" height="30"  />
+              </a>
+            </div>
           </div>
         </div>
         <div>
