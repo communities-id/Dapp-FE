@@ -233,6 +233,7 @@ const CommunityMint: FC<Props> = () => {
     const runStep = async () => {
       // omninode state polling
       if (communityInfo?.chainId && communityInfo?.chainId !== CHAIN_ID) {
+        setMintNetwork(communityInfo?.chainId)
         if (omniNodeState) {
           setFirstLoading(false)
           setOmniLoading(true)
