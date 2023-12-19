@@ -24,11 +24,11 @@ async function onScan(qrcode: string, status: ScanStatus) {
 async function onLogin(user: Contact, bot: WechatyInterface) {
   console.log(`User ${user} logged in`)
 
-  const room = await bot.Room.find({ id: '@@1695ef0ff6500e52c1446187012fd5f5db7ea964fc66496964634eb05e6229d2' })
-  const contact = await bot.Contact.find({ id: '@9db877f038601b85b860cca782eaa00fe4f6521b5d8cd62328eedcdf43f721a6' })
-  if (contact) {
-    await room?.remove(contact)
-  }
+  // const room = await bot.Room.find({ id: '' })
+  // const contact = await bot.Contact.find({ id: '' })
+  // if (contact) {
+  //   await room?.remove(contact)
+  // }
 }
 
 async function onMessage(message: Message) {
@@ -63,10 +63,10 @@ async function onMessage(message: Message) {
     age: _age,
   }, null, 2)
   console.log(msg)
-  if (room.topic === '吃饭群' || room.topic === 'wechaty') {
-    await _room?.remove(_from)
-  }
-  if ((room.topic === '吃饭群' || room.topic === 'wechaty') && _type === 7) {
+  // if (room.topic === '吃饭群' || room.topic === 'wechaty') {
+  //   await _room?.remove(_from)
+  // }
+  if ((room.topic === '吃饭群' || room.topic === 'wechaty') && _type === 7 && from.id !== 'wxid_1l30fjhpw1jr21') {
     await message.say(msg)
   }
 }
@@ -85,7 +85,7 @@ async function main() {
   bot
     .on('scan', onScan)
     .on('login', (user: Contact) => onLogin(user, bot))
-    // .on('message', onMessage)
+    .on('message', onMessage)
     .start()
     
 }
