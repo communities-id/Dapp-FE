@@ -9,7 +9,7 @@ interface TGMsg {
   chatId: number
   chatTitle: string
   fromId: number
-  type: 'private' | 'group'
+  type: 'private' | 'group' | 'supergroup'
   text: string
   new_chat_participant?: any
 }
@@ -50,6 +50,10 @@ const isCommand = (text: string, cmd: string) => {
   return text === cmd || text === `${cmd}@${TG_BOT_NAME}`
 }
 
+const isGroupMsg = (msg: TGMsg) => {
+  return msg.type === 'group' || msg.type === 'supergroup'
+}
+
 export const handleMessage = async (msg: TGMsg) => {
   if (msg.new_chat_participant) {
     if (msg.new_chat_participant.id === TG_BOT_ID) {
@@ -83,7 +87,7 @@ export const handleMessage = async (msg: TGMsg) => {
   }
 
   if (isCommand(command, '/getme')) {
-    if (msg.type === 'group') {
+    if (isGroupMsg(msg)) {
       await sendMessage(msg.chatId, `So many people here! Please DM me to use this command.`)
       return
     }
@@ -91,7 +95,7 @@ export const handleMessage = async (msg: TGMsg) => {
   }
 
   if (isCommand(command, '/getgroup')) {
-    if (msg.type !== 'group') {
+    if (!isGroupMsg(msg)) {
       await sendMessage(msg.chatId, `GroupID … Hmmm … Please use this command in a group.`)
     } else {
       const chatId = msg.chatId.toString().replaceAll('-', '\\-')
