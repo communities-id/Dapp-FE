@@ -154,7 +154,7 @@ const PersonContent: FC<Props> = () => {
       await switchNetworkAsync?.(communityInfo?._chaninId)
     }
     if (config.isMobile) {
-      showGlobalDialog(menu.mobileId as string, { memberName: keywords })
+      showGlobalDialog(menu.mobileId as string, { memberName: keywords, memberInfo, brandInfo: communityInfo })
     } else {
       setDialogOpenSet(prev => ({ ...prev, [menu.id]: true }))
     }

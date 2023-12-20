@@ -1,33 +1,37 @@
 import { FC, use, useEffect, useState } from 'react'
 
-import { useRoot } from '@/contexts/root'
-import { useDetails } from '@/contexts/details'
-import useApi, { getBurnMemberPrice } from '@/shared/useApi'
-
-import { formatPrice, toastError } from '@/shared/helper'
-import InfoLabel from '@/components/common/infoLabel'
 import { BigNumber } from 'ethers'
+import { useRoot } from '@/contexts/root'
+import useApi, { getBurnMemberPrice } from '@/shared/useApi'
+import { formatPrice, toastError } from '@/shared/helper'
 import { BrandDID } from '@communitiesid/id'
 import { updateCommunity } from '@/shared/apis'
-import Button from '@/components/_common/button'
+import { useMemberContent } from '@/hooks/content'
 
+import Button from '@/components/_common/button'
+import InfoLabel from '@/components/common/infoLabel'
+
+import { CommunityInfo, MemberInfo } from '@/types'
 interface Props {
   open: boolean
+  name?: string
+  memberInfo?: Partial<MemberInfo>
+  brandInfo?: Partial<CommunityInfo>
 }
 
-const MemberBurnContent: FC<Props> = ({ open }) => {
+const MemberBurnContent: FC<Props> = ({ open, name, memberInfo: inputMemberInfo, brandInfo }) => {
   const { message } = useRoot()
-  const { memberInfo, communityInfo, memberInfoSet, community, keywords, refreshInfo } = useDetails()
   const { burnMember } = useApi()
+  const { memberSetStatus, memberInfo } = useMemberContent({ memberName: name ?? '', memberInfo: inputMemberInfo, brandInfo })
   
   const [burnIncome, setBurnIncome] = useState(BigNumber.from(0))
   const [loading, setLoading] = useState(true)
 
   const handleGetMemberBurnIncome = async () => {
-    if (!communityInfo.chainId || !communityInfo.node || !memberInfo.node) return
+    if (!brandInfo?.chainId || !brandInfo?.node || !memberInfo?.node) return
     try {
       setLoading(true)
-      const income = await getBurnMemberPrice(communityInfo as BrandDID, memberInfo.node.node)
+      const income = await getBurnMemberPrice(brandInfo as BrandDID, memberInfo.node.node)
       setBurnIncome(income)
     } catch (e) {
       console.error(e)
@@ -37,15 +41,15 @@ const MemberBurnContent: FC<Props> = ({ open }) => {
   }
   
   const handleBurn = async () => {
-    if (!communityInfo.node || !memberInfo.node) return
-    const DIDName = `${memberInfo.node.node}.${communityInfo.tokenUri?.name}`
+    if (!brandInfo?.node || !memberInfo?.node) return
+    const DIDName = `${memberInfo.node.node}.${brandInfo?.tokenUri?.name}`
     try {
       setLoading(true)
-      await burnMember(communityInfo as BrandDID, DIDName)
+      await burnMember(brandInfo as BrandDID, DIDName)
       // handleClose?.()
       // refreshInfo()
       message({ type: 'success', content: 'Burn successfully!' }, { t: 'member-burn', k: DIDName })
-      await updateCommunity(communityInfo.node.node, true)
+      await updateCommunity(brandInfo?.node.node, true)
       location.reload()
     } catch (e) {
       console.error(e)
@@ -60,7 +64,7 @@ const MemberBurnContent: FC<Props> = ({ open }) => {
     handleGetMemberBurnIncome()
   }, [open])
 
-  if (!memberInfoSet.isRenewal && !communityInfo.config?.burnAnytime) {
+  if (!memberSetStatus.isRenewal && !brandInfo?.config?.burnAnytime) {
     return (
       <div className='pt-[30px] px-[40px] h-full flex flex-col'>
         <h1 className='text-xl text-main-black text-center'>Burn User DID</h1>
@@ -72,7 +76,7 @@ const MemberBurnContent: FC<Props> = ({ open }) => {
   const list = [
     {
       label: 'member',
-      content: keywords
+      content: name
     },
     {
       label: 'action',
@@ -80,7 +84,7 @@ const MemberBurnContent: FC<Props> = ({ open }) => {
     },
     {
       label: 'estimate income',
-      content: `${formatPrice(burnIncome)}${communityInfo.coinSymbol}`
+      content: `${formatPrice(burnIncome)}${brandInfo?.coinSymbol}`
     }
   ]
   
@@ -100,7 +104,7 @@ const MemberBurnContent: FC<Props> = ({ open }) => {
           })
         }
       </ul>
-      <p className='mt-5'>Are you sure you want to burn { `<${keywords}>` } to receive a refund? This action is irreversible, and the associated DID will be permanently removed.</p>
+      <p className='mt-5'>Are you sure you want to burn { `<${name}>` } to receive a refund? This action is irreversible, and the associated DID will be permanently removed.</p>
       <Button
         className='my-5'
         mode='full'

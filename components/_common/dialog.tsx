@@ -62,7 +62,10 @@ const Dialog: FC<Props> = ({ theme = 'normal', open, center, transparent, hidden
             </div>
           )
         }
-        <div className={classnames('w-full overflow-auto rounded-[30px]', contentClassName)}>
+        <div className={classnames('w-full overflow-auto', {
+              'rounded-[10px]': theme === 'small',
+              'rounded-[30px]': theme === 'normal'
+            }, contentClassName)}>
           {children}
         </div>
       </Box>

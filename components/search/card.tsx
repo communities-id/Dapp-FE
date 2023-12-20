@@ -24,10 +24,10 @@ interface Props {
   chainId?: number
   noOpensea?: boolean
   className?: string
-  handleClick?: (name: string) => void
+  onClick?: (name: string) => void
 }
 
-const MemberCard: FC<Props> = ({ info, link, chainId = CHAIN_ID, noOpensea, className, handleClick }) => {
+const MemberCard: FC<Props> = ({ info, link, chainId = CHAIN_ID, noOpensea, className, onClick }) => {
   const router = useRouter()
   const openseaLink = getOpenseaLink(info.registry, chainId, info.tokenId)
   
@@ -38,8 +38,8 @@ const MemberCard: FC<Props> = ({ info, link, chainId = CHAIN_ID, noOpensea, clas
         className
       )}
       onClick={() => {
-        router.push(link || `/member/${info.name}`)
-        handleClick?.(info.name)
+        // router.push(link || `/member/${info.name}`)
+        onClick?.(info.name)
       }}>
       <AvatarCard className='w-full aspect-square' src={info.avatar} />
       <div className='absolute top-0 left-0 w-full px-[14px] py-[8px] pointer-events-none select-none transition-all duration-300 opacity-0 group-hover:opacity-100'>

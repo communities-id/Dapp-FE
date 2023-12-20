@@ -9,6 +9,7 @@ module.exports = {
   },
   zIndex: {
     snackbar: 99999,
+    popover: 9999,
     dialog: 9999,
     header: 999,
     picker: 199,

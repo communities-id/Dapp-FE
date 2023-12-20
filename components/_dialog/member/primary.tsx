@@ -2,14 +2,20 @@ import { FC } from 'react'
 
 import Dialog from '@/components/_common/dialog'
 import MemberAsPrimaryContent from '@/components/_member/primary'
+import { CommunityInfo, MemberInfo } from '@/types'
+import { useDIDContent } from '@/hooks/content'
  
 interface Props {
   memberName: string
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
+  memberInfo?: Partial<MemberInfo>
   open: boolean
   handleClose?: () => void
 }
 
-const MemberPrimary: FC<Props> = ({ memberName, open, handleClose }) => {
+const MemberPrimary: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, memberName, memberInfo, handleClose }) => {
+  const { brandInfo } = useDIDContent({ brandName, brandInfo: inputBrandInfo })
   
   return (
     <Dialog
@@ -19,7 +25,7 @@ const MemberPrimary: FC<Props> = ({ memberName, open, handleClose }) => {
       center
       handleClose={handleClose}
     >
-      <MemberAsPrimaryContent memberName={memberName} />
+      <MemberAsPrimaryContent memberName={memberName} memberInfo={memberInfo} brandInfo={brandInfo} />
     </Dialog>
   )
 }

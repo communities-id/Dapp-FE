@@ -2,12 +2,12 @@ import { FC, useState } from 'react'
 
 import { useDetails } from '@/contexts/details'
 import { CHAIN_ID } from '@/shared/constant'
+import { useDIDContent } from '@/hooks/content'
 
 import Tabs from '@/components/_common/tabs'
 import TargetedInvitation from '@/components/_brand/invitation/targeted'
 
 import { CommunityInfo } from '@/types'
-import { useDIDContent } from '@/hooks/content'
 
 interface Props {
   brandName?: string

@@ -14,7 +14,7 @@ import ListCard from '@/components/search/card'
 import Loading from '@/components/loading/list'
 import PlusIconWithColor from '@/components/common/PlusWithColor2'
 
-import { CommunityMember } from '@/types'
+import { CommunityMember, MemberInfo } from '@/types'
 import themeColor from '@/_themes/colors'
 
 import MintSettingIcon from '~@/icons/mint-settings.svg'
@@ -121,7 +121,14 @@ const CommunityMembers: FC<Props> = () => {
             tokenId: row.tokenId,
           }
           return (
-            <ListCard info={info} chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]} />
+            <ListCard
+              info={info}
+              chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]}
+              onClick={(name) => {
+                console.log('- communityInfo', communityInfo)
+                showGlobalDialog('member-detail', { brandName: communityInfo.node?.node, brandInfo: communityInfo, memberName: name, memberInfo: row.memberInfo as Partial<MemberInfo>, mobile: isMobile })
+              }}
+            />
           )
         }}
         firstLoading={fetchInfo.page === 1 && loading}

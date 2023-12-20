@@ -11,28 +11,33 @@ import { ZERO_ADDRESS } from '@/shared/constant'
 import { BrandDID, UserDID } from '@communitiesid/id'
 import { updateMember } from '@/shared/apis'
 import Button from '@/components/_common/button'
+import { MemberInfo, CommunityInfo } from '@/types'
+import { useMemberContent } from '@/hooks/content'
 
 interface Props {
   open: boolean
+  name?: string
+  memberInfo?: Partial<MemberInfo>
+  brandInfo?: Partial<CommunityInfo>
   handleClose?: () => void
 }
 
-const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
+const MemberRenewContent: FC<Props> = ({ open, name, memberInfo: inputMemberInfo, brandInfo }) => {
   const { message } = useRoot()
-  const { communityInfo, memberInfo, memberInfoSet, keywords, refreshInfo } = useDetails()
+  const { memberSetStatus, memberInfo } = useMemberContent({ memberName: name ?? '', memberInfo: inputMemberInfo, brandInfo })
   const { approveErc20, renewMember } = useApi()
   
   const shouldApproveCoin = useMemo(() => {
-    if (!communityInfo.config) return false
-    return communityInfo.config.coin !== ZERO_ADDRESS
-  }, [communityInfo.config])
+    if (!brandInfo?.config) return false
+    return brandInfo?.config.coin !== ZERO_ADDRESS
+  }, [brandInfo?.config])
   
   const [renewPrice, setRenewPrice] = useState<BigNumber>(BigNumber.from(0))
   const [protocolFee, setProtocolFee] = useState<BigNumber>(BigNumber.from(0))
   const [loading, setLoading] = useState(true)
 
   const handleGetMemberRenewPrice = async () => {
-    if (!memberInfo?.node || !communityInfo?.node || !communityInfo.chainId) return
+    if (!memberInfo?.node || !brandInfo?.node || !brandInfo.chainId) return
 
     try {
       setLoading(true)
@@ -48,17 +53,17 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
   }
   
   const handleRenew = async () => {
-    if (!memberInfo?.node || !communityInfo?.node) return
-    const DIDName = `${memberInfo.node.node}.${communityInfo.tokenUri?.name}`
+    if (!memberInfo?.node || !brandInfo?.node) return
+    const DIDName = `${memberInfo.node.node}.${brandInfo.tokenUri?.name}`
     try {
       setLoading(true)
-      const chainId = communityInfo.chainId as number
-      if (shouldApproveCoin && communityInfo.config) {
-        await approveErc20?.(communityInfo.config.coin, communityInfo.node.registryInterface, { price: renewPrice, chainId })
+      const chainId = brandInfo.chainId as number
+      if (shouldApproveCoin && brandInfo.config) {
+        await approveErc20?.(brandInfo.config.coin, brandInfo.node.registryInterface, { price: renewPrice, chainId })
       }
       const finalPrice = shouldApproveCoin ? protocolFee : renewPrice.add(protocolFee)
-      await renewMember(communityInfo as BrandDID, memberInfo as UserDID, DIDName, { price: finalPrice, chainId })
-      await updateMember(`${memberInfo.node.node}.${communityInfo.node.node}`, true)
+      await renewMember(brandInfo as BrandDID, memberInfo as UserDID, DIDName, { price: finalPrice, chainId })
+      await updateMember(`${memberInfo.node.node}.${brandInfo.node.node}`, true)
       message({ type: 'success', content: 'Renew successfully!' }, { t: 'member-renew', k: DIDName })
       location.reload()
     } catch (e) {
@@ -74,7 +79,7 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
     handleGetMemberRenewPrice()
   }, [open])
 
-  if (!memberInfoSet.isRenewal) {
+  if (!memberSetStatus.isRenewal) {
     return (
       <div className='pt-[30px] px-[40px] h-full flex flex-col'>
         <h1 className='text-xl text-main-black text-center'>Renew User DID</h1>
@@ -86,7 +91,7 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
   const list = [
     {
       label: 'member',
-      content: keywords
+      content: name
     },
     {
       label: 'action',
@@ -98,11 +103,11 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
     },
     {
       label: 'Price',
-      content: `${formatPrice(renewPrice)}${communityInfo.coinSymbol}`
+      content: `${formatPrice(renewPrice)}${brandInfo?.coinSymbol}`
     },
     {
       label: 'Protocol Fee',
-      content: `${formatPrice(protocolFee)}${communityInfo.communityCoinSymbol}`
+      content: `${formatPrice(protocolFee)}${brandInfo?.communityCoinSymbol}`
     }
   ]
   
@@ -122,7 +127,7 @@ const MemberRenewContent: FC<Props> = ({ open, handleClose }) => {
           })
         }
       </ul>
-      <p className='mt-5'>Are you sure you want to renew { `<${keywords}>` }? Confirming this action will extend the validity of this DID.</p>
+      <p className='mt-5'>Are you sure you want to renew { `<${name}>` }? Confirming this action will extend the validity of this DID.</p>
       <Button
         className='my-5'
         mode='full'
