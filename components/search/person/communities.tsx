@@ -73,11 +73,12 @@ const Communities: FC<Props> = () => {
           }
           const link = `/community/${info.name}`
           return (
-            <ListCard
-              link={link}
-              info={info}
-              noOpensea={!row.communityInfo.totalSupply}
-              chainId={row.chainId} />
+            <Link href={link}>
+              <ListCard
+                info={info}
+                noOpensea={!row.communityInfo.totalSupply}
+                chainId={row.chainId} />
+              </Link>
           )
         }}
         firstLoading={fetchInfo.page === 1 && loading}

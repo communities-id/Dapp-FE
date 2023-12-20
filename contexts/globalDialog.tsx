@@ -30,6 +30,7 @@ import MobileMemberRenew from '@/components/_dialog/member/mobile/renew'
 import MobileMemberPrimary from '@/components/_dialog/member/mobile/primary'
 
 import { CommunityInfo, MemberInfo, SearchModeType } from '@/types'
+import { execSearch } from '@/shared/helper'
 
 type MobileGlobalDialogNames = 'mobile-brand-mint'
   | 'mobile-manage-drawer'
@@ -129,7 +130,9 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
     if (!pathname) return
     if (dialogOpenSet['member-detail'] || dialogOpenSet['mobile-member-detail']) {
       if (dialogPayload.options?.simpleMode) return
-      router.replace(`${pathname}?member=${dialogPayload.memberName}`)
+      if (!dialogPayload.memberName) return
+      const { member } = execSearch(dialogPayload.memberName)
+      router.replace(`${pathname}?member=${member}`)
     }
   }, [dialogOpenSet['member-detail'], dialogOpenSet['mobile-member-detail'], pathname])
 
@@ -280,7 +283,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
             return
           }
           if (mode === 'member') {
-            router.push(`/community/${community}?member=${member}.${community}`)
+            router.push(`/community/${community}?member=${member}`)
             closeGlobalDialog('mobile-brand-mint-success')
             return
           }
@@ -388,7 +391,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
             return
           }
           if (mode === 'member') {
-            router.push(`/community/${community}?member=${member}.${community}`)
+            router.push(`/community/${community}?member=${member}`)
             setMintSuccessInfo(prev => ({ ...prev, open: false }))
             return
           }

@@ -20,15 +20,13 @@ interface Props {
     registry: string
     tokenId?: number
   }
-  link?: string
   chainId?: number
   noOpensea?: boolean
   className?: string
   onClick?: (name: string) => void
 }
 
-const MemberCard: FC<Props> = ({ info, link, chainId = CHAIN_ID, noOpensea, className, onClick }) => {
-  const router = useRouter()
+const MemberCard: FC<Props> = ({ info, chainId = CHAIN_ID, noOpensea, className, onClick }) => {
   const openseaLink = getOpenseaLink(info.registry, chainId, info.tokenId)
   
   return (
