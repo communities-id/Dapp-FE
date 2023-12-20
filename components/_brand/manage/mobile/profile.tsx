@@ -240,7 +240,7 @@ const ProfileAvatarUploader: FC<ProfileAvatarProps> = ({ relationshipId, url, on
         {
           !url && (
             <div className='relative full-size flex-center bg-gray-6'>
-              <PencilIcon width='20' height='20' className='text-tr-black-4' />
+              <PencilIcon width='20' height='20' className='text-black-tr-20' />
             </div>
           )
         }
@@ -264,7 +264,7 @@ const ProfileBannerUploader: FC<ProfileBannerProps> = ({ relationshipId, url, on
         {
           !url && (
             <div className='relative full-size flex-center bg-gray-6'>
-              <PencilIcon width='20' height='20' className='text-tr-black-4' />
+              <PencilIcon width='20' height='20' className='text-black-tr-20' />
             </div>
           )
         }

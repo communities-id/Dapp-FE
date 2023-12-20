@@ -125,8 +125,7 @@ const CommunityMembers: FC<Props> = () => {
               info={info}
               chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]}
               onClick={(name) => {
-                console.log('- communityInfo', communityInfo)
-                showGlobalDialog('member-detail', { brandName: communityInfo.node?.node, brandInfo: communityInfo, memberName: name, memberInfo: row.memberInfo as Partial<MemberInfo>, mobile: isMobile })
+                showGlobalDialog(isMobile ? 'mobile-member-detail' : 'member-detail', { brandName: communityInfo.node?.node, brandInfo: communityInfo, memberName: name, memberInfo: row.memberInfo as Partial<MemberInfo>, mobile: isMobile })
               }}
             />
           )

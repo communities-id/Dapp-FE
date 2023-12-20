@@ -23,7 +23,7 @@ import MobileBrandManageRenewSettingDialog from '@/components/_dialog/brand/mobi
 import MobileBrandManageTGSettingDialog from '@/components/_dialog/brand/mobile/manage/manageTGSetting'
 import MobileBrandInvitationDialog from '@/components/_dialog/brand/mobile/invitation'
 import MobileMemberMintDialog from '@/components/_dialog/member/mobile/mint'
-
+import MobileMemberDetailDialog from '@/components/_dialog/member/mobile/detail'
 import MobileMemberBurn from '@/components/_dialog/member/mobile/burn'
 import MobileMemberRenew from '@/components/_dialog/member/mobile/renew'
 import MobileMemberPrimary from '@/components/_dialog/member/mobile/primary'
@@ -197,6 +197,14 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         memberName={dialogPayload.options?.mintName}
         mintTo={dialogPayload.options?.mintTo}
         handleClose={() => closeGlobalDialog('mobile-member-mint')}
+      />
+      <MobileMemberDetailDialog
+        open={Boolean(dialogOpenSet['mobile-member-detail'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
+        handleClose={() => closeGlobalDialog('mobile-member-detail')}
       />
       <MobileMemberBurn
         open={Boolean(dialogOpenSet['mobile-member-burn'])}

@@ -12,7 +12,7 @@ interface Props {
 }
 export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) => {
 
-  const [brandInfo, setBrandInfo] = useState<Partial<CommunityInfo>>({})
+  const [brandInfo, setBrandInfo] = useState<Partial<CommunityInfo>>(inputBrandInfo ?? {})
   const [brandInfoLoading, setBrandInfoLoading] = useState(false)
 
   const handleVerifyBrandSet = (info: Partial<CommunityInfo>) => {
@@ -33,10 +33,7 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
   }, [brandInfo])
 
   useEffect(() => {
-    if (inputBrandInfo) {
-      setBrandInfo(inputBrandInfo)
-      return
-    }
+    if (inputBrandInfo) return
     if (!brandName) return
     setBrandInfoLoading(true)
     searchCommunity(brandName).then((res) => {
@@ -46,7 +43,7 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
   }, [brandName, inputBrandInfo])
 
   return {
-    brandInfo,
+    brandInfo: Object.keys(brandInfo).length ? brandInfo : inputBrandInfo ?? {},
     brandInfoLoading,
     brandSetStatus,
     handleVerifyBrandSet
@@ -60,7 +57,7 @@ interface MemberProps {
 }
 export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, brandInfo }: MemberProps) => {
 
-  const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>({})
+  const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>(inputMemberInfo ?? {})
   const [memberInfoLoading, setMemberInfoLoading] = useState(false)
 
   const { type, community, member } = execSearch(memberName)
@@ -79,10 +76,7 @@ export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, bran
   }, [memberInfo])
 
   useEffect(() => {
-    if (inputMemberInfo) {
-      setMemberInfo(inputMemberInfo)
-      return
-    }
+    if (inputMemberInfo) return
     if (type !== 'member') return
     setMemberInfoLoading(true)
     searchMember(brandInfo as BrandDID, community, member).then((res) => {
@@ -95,7 +89,7 @@ export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, bran
     type,
     community,
     member,
-    memberInfo,
+    memberInfo: Object.keys(memberInfo).length ? memberInfo : inputMemberInfo ?? {},
     memberInfoLoading,
     memberSetStatus,
     handleVerifyMemberSet

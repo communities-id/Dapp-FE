@@ -11,7 +11,7 @@ interface Props {
   open: boolean
   center?: boolean
   transparent?: boolean
-  hiddenCloseIcon?: boolean
+  closeIcon?: ReactNode
   wrapClassName?: string
   containerClassName?: string
   backdropClassName?: string
@@ -21,7 +21,7 @@ interface Props {
   children: ReactNode
 }
 
-const Dialog: FC<Props> = ({ theme = 'normal', open, center, transparent, hiddenCloseIcon, handleClose, wrapClassName, containerClassName, backdropClassName, contentClassName, className, children }) => {
+const Dialog: FC<Props> = ({ theme = 'normal', open, center, transparent, closeIcon, handleClose, wrapClassName, containerClassName, backdropClassName, contentClassName, className, children }) => {
 
   return (
     <Modal
@@ -44,24 +44,24 @@ const Dialog: FC<Props> = ({ theme = 'normal', open, center, transparent, hidden
             className
           )
         }>
-        {
-          !hiddenCloseIcon && (
-            <div
-              className={
-                classnames(
-                  'absolute z-icon flex-center cursor-pointer',
-                  {
-                    'top-[30px] right-[30px] w-8 h-8 rounded-full border-[1px] border-solid border-gray-1': theme === 'normal',
-                    'top-[14px] right-[14px] w-5 h-5 cursor-pointer': theme === 'small'
-                  }
-                )
-              }
-              onClick={handleClose}
-            >
-              <CloseIcon width='20' height='20' className='text-gray-1' />
-            </div>
-          )
-        }
+          {
+            closeIcon ?? (
+              <div
+                className={
+                  classnames(
+                    'absolute z-icon flex-center cursor-pointer',
+                    {
+                      'top-[30px] right-[30px] w-8 h-8 rounded-full border-[1px] border-solid border-gray-1': theme === 'normal',
+                      'top-[14px] right-[14px] w-5 h-5 cursor-pointer': theme === 'small'
+                    }
+                  )
+                }
+                onClick={handleClose}
+              >
+                <CloseIcon width='20' height='20' className='text-gray-1' />
+              </div>
+            )
+          }
         <div className={classnames('w-full overflow-auto', {
               'rounded-[10px]': theme === 'small',
               'rounded-[30px]': theme === 'normal'
