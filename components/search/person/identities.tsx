@@ -2,19 +2,24 @@ import { FC, useEffect, useMemo, useState, useCallback } from 'react'
 
 import { useDetails } from '@/contexts/details'
 import { searchAddressMember } from '@/shared/useApi';
+import { useGlobalDialog } from '@/contexts/globalDialog'
+import { useDIDContent } from '@/hooks/content'
+import { useRootConfig } from '@/contexts/root'
 
 import InfiniteList from '@/components/common/infiniteList'
 import ListCard from '@/components/search/card'
 import Empty from '@/components/search/empty'
 import Loading from '@/components/loading/list';
 
-import { PersonIdentity } from '@/types';
+import { MemberInfo, PersonIdentity } from '@/types';
 import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP } from '@/shared/constant';
 
 interface Props {
 }
 
 const Identities: FC<Props> = () => {
+  const { isMobile } = useRootConfig()
+  const { showGlobalDialog } = useGlobalDialog()
   const { address } = useDetails()
   
   const [loading, setLoading] = useState(true)
@@ -69,7 +74,23 @@ const Identities: FC<Props> = () => {
             tokenId: row.tokenId,
           }
           return (
-            <ListCard info={info} chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]} />
+            <ListCard
+              info={info}
+              chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]}
+              onClick={(name) => {
+                showGlobalDialog(
+                  isMobile ? 'mobile-member-detail' : 'member-detail',
+                  {
+                    memberName: name,
+                    memberInfo: row.memberInfo as Partial<MemberInfo>,
+                    mobile: isMobile,
+                    options: {
+                      simpleMode: true
+                    }
+                  }
+                )
+              }}
+            />
           )
         }}
         firstLoading={fetchInfo.page === 1 && loading}

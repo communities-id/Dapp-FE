@@ -6,6 +6,7 @@ import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useDIDContent } from '@/hooks/content'
+import { useRootConfig } from '@/contexts/root'
 
 import { Tabs, TabsList } from '@mui/base'
 import Tab from '@/components/common/tab'
@@ -18,7 +19,6 @@ import { CommunityMember, MemberInfo } from '@/types'
 import themeColor from '@/_themes/colors'
 
 import MintSettingIcon from '~@/icons/mint-settings.svg'
-import { useRootConfig } from '@/contexts/root'
 
 
 interface Props {

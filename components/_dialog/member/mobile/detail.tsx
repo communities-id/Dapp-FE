@@ -9,6 +9,7 @@ import MemberDetailContent from '@/components/_member/detail';
 import { CommunityInfo, MemberInfo } from '@/types';
 
 import CloseIcon from '~@/_brand/close.svg'
+import { execSearch } from '@/shared/helper';
 
 interface Props {
   brandName?: string
@@ -19,9 +20,10 @@ interface Props {
   handleClose?: () => void
 }
 
-const MobileMemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, memberName, memberInfo, handleClose }) => {
-  const { brandInfo } = useDIDContent({ brandName, brandInfo: inputBrandInfo })
-  
+const MobileMemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, memberName = '', memberInfo, handleClose }) => {
+  const { community } = execSearch(memberName)
+  const { brandInfo } = useDIDContent({ brandName: brandName || community, brandInfo: inputBrandInfo })
+
   return (
     <Dialog
       className='w-[320px] min-h-[320px] flex-center'

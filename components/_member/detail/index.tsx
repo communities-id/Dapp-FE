@@ -77,7 +77,7 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
 
   const memberSharePopoverMenus: PopoverMenuItem[] = useMemo(() => {
     if (typeof window === 'undefined') return []
-    const memberLink = `${window.location.origin}/member/${memberInfo?.tokenUri?.name}`
+    const memberLink = `${window.location.origin}/community/${community}?member=${name}`
     return [
       {
         id: 'twitter',

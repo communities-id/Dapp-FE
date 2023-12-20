@@ -4,6 +4,8 @@ import { DetailsProvider } from '@/contexts/details'
 import { GlobalDialogProvider } from '@/contexts/globalDialog'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 
+import { execSearch } from '@/shared/helper'
+
 import SearchHeaderInfo from '@/components/search/pageInfo'
 import SearchHeader from '@/components/solid/SearchHeader'
 
@@ -25,9 +27,13 @@ export const WrapperProvider = ({ mode, keywords, children }: { mode: SearchMode
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    console.log('--------- wrapper mode', mode, 'keywords', keywords)
     if (mode === SearchMode.unknown) {
       router.push(`/search/${keywords}`)
+      return
+    }
+    if (mode === SearchMode.member && keywords) {
+      const { community, member } = execSearch(keywords)
+      router.replace(`/community/${community}?member=${member}`)
       return
     }
   }, [mode, keywords])

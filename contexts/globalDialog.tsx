@@ -70,6 +70,7 @@ interface GlobalDialogPayload {
     mintTo?: string
     mintName?: string
     notLoaded?: boolean
+    simpleMode?: boolean
   }
 }
 
@@ -127,6 +128,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!pathname) return
     if (dialogOpenSet['member-detail'] || dialogOpenSet['mobile-member-detail']) {
+      if (dialogPayload.options?.simpleMode) return
       router.replace(`${pathname}?member=${dialogPayload.memberName}`)
     }
   }, [dialogOpenSet['member-detail'], dialogOpenSet['mobile-member-detail'], pathname])
@@ -278,7 +280,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
             return
           }
           if (mode === 'member') {
-            router.push(`/member/${member}.${community}`)
+            router.push(`/community/${community}?member=${member}.${community}`)
             closeGlobalDialog('mobile-brand-mint-success')
             return
           }
@@ -386,7 +388,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
             return
           }
           if (mode === 'member') {
-            router.push(`/member/${member}.${community}`)
+            router.push(`/community/${community}?member=${member}.${community}`)
             setMintSuccessInfo(prev => ({ ...prev, open: false }))
             return
           }
