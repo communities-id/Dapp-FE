@@ -24,7 +24,7 @@ const MobileMemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandI
   
   return (
     <Dialog
-      className='w-[320px]'
+      className='w-[320px] min-h-[320px] flex-center'
       theme='small'
       contentClassName='h-full !overflow-hidden'
       open={open}
@@ -43,7 +43,7 @@ const MobileMemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandI
       }
       handleClose={handleClose}
     >
-      <MemberDetailContent isMobile name={memberName} memberInfo={memberInfo} brandInfo={brandInfo} />
+      <MemberDetailContent isMobile name={memberName} memberInfo={memberInfo} brandInfo={brandInfo} handleClose={handleClose} />
     </Dialog>
   )
 }

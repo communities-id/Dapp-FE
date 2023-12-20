@@ -27,7 +27,7 @@ const EstimatedCard: FC<Props> = ({ list, theme, className }) => {
             return (
               <li key={index} className='flex-itmc justify-between'>
                 <span>{ item.name }</span>
-                <b className={classNames({
+                <b className={classNames('whitespace-nowrap', {
                   'text-primary': theme === 'primary',
                   'text-main-black': theme === 'black',
                   'var-brand-textcolor': theme === 'variable',

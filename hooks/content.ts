@@ -59,6 +59,7 @@ export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, bran
 
   const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>(inputMemberInfo ?? {})
   const [memberInfoLoading, setMemberInfoLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const { type, community, member } = execSearch(memberName)
 
@@ -76,10 +77,14 @@ export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, bran
   }, [memberInfo])
 
   useEffect(() => {
-    if (inputMemberInfo) return
+    if (inputMemberInfo) {
+      setMounted(true)
+      return
+    }
     if (type !== 'member') return
     setMemberInfoLoading(true)
     searchMember(brandInfo as BrandDID, community, member).then((res) => {
+      setMounted(true)
       setMemberInfo(res)
       setMemberInfoLoading(false)
     })
@@ -92,6 +97,7 @@ export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, bran
     memberInfo: Object.keys(memberInfo).length ? memberInfo : inputMemberInfo ?? {},
     memberInfoLoading,
     memberSetStatus,
-    handleVerifyMemberSet
+    handleVerifyMemberSet,
+    mounted
   }
 }

@@ -1,4 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react'
+import classNames from 'classnames'
+import { useRouter, usePathname } from 'next/navigation'
 
 import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useRoot } from '@/contexts/root'
@@ -10,6 +12,7 @@ import { useMemberContent } from '@/hooks/content'
 import AvatarCard from '@/components/_common/avatar'
 import Popover, { PopoverMenuItem } from '@/components/common/popover'
 import BaseButton from '@/components/_common/baseButton'
+import PrimaryDID from '@/components/common/primaryDID'
 
 import { CommunityInfo, MemberInfo } from '@/types'
 
@@ -22,20 +25,23 @@ import SetIcon from '~@/icons/settings/set.svg'
 import RenewIcon from '~@/icons/settings/renew.svg'
 import BurnIcon from '~@/icons/settings/burn.svg'
 import ShareIcon from '~@/icons/share.svg'
-import PrimaryDID from '@/components/common/primaryDID'
-import classNames from 'classnames'
+import LoadingIcon from '~@/icons/loading.svg'
 
 interface Props {
   isMobile?: boolean
   name?: string
   memberInfo?: Partial<MemberInfo>
   brandInfo?: Partial<CommunityInfo>
+  handleClose?: () => void
 }
 
-const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, brandInfo }) => {
+const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, brandInfo, handleClose }) => {
+  const router = useRouter()
+  const pathname = usePathname()
+
   const { showGlobalDialog } = useGlobalDialog()
 
-  const { type, community, member, memberInfo, memberInfoLoading } = useMemberContent({ memberName: name ?? '', memberInfo: inputMemberInfo, brandInfo })
+  const { type, community, member, memberInfo, memberInfoLoading, memberSetStatus, mounted: memberMounted } = useMemberContent({ memberName: name ?? '', memberInfo: inputMemberInfo, brandInfo })
 
   const actions = useMemo(() => {
     return [
@@ -128,7 +134,19 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
   const handleSelectShareMenu = async (menu: PopoverMenuItem) => {
   }
 
-  return (
+  useEffect(() => {
+    if (memberMounted && !memberInfoLoading && !memberSetStatus.isMinted) {
+      handleClose?.()
+      pathname && router.push(`${pathname}?from=mint&name=${member}`)
+    }
+  }, [memberInfoLoading, memberSetStatus.isMinted, memberMounted])
+
+  return memberInfoLoading ? (
+    <div className='w-full h-full flex-center flex-col gap-8 bg-white'>
+      <h2 className='text-[24px] leading-[34px] font-semibold text-main-black'>{ name }</h2>
+      <LoadingIcon width='32' height='32' />
+    </div>
+  ) : (
     <div className={
         classNames(
           'flex w-full',
@@ -140,7 +158,7 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
       }
     >
       <div>
-        <AvatarCard size={isMobile ? 320 : 312} src={memberInfo?.tokenUri?.image} />
+        <AvatarCard size={isMobile ? 320 : 312} src={memberInfo?.tokenUri?.image} className='!rounded-none' />
       </div>
       <div className='flex-1 flex flex-col'>
         <div className={

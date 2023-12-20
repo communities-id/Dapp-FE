@@ -28,7 +28,7 @@ const MemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, m
       center
       handleClose={handleClose}
     >
-      <MemberDetailContent name={memberName} memberInfo={memberInfo} brandInfo={brandInfo} />
+      <MemberDetailContent name={memberName} memberInfo={memberInfo} brandInfo={brandInfo} handleClose={handleClose} />
     </Dialog>
   )
 }

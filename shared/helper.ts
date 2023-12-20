@@ -34,6 +34,7 @@ export function isValidLabel(name: string) {
 }
 
 export const isDotMember = (keywords: string) => {
+  if (!keywords) return false
   return keywords.split('.').filter(_ => isValidLabel(_)).length === 3
 }
 
