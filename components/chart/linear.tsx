@@ -25,7 +25,7 @@ interface Props {
   marginRight?: number;
   marginBottom?: number;
   marginLeft?: number;
-  spline?: number;
+  // spline?: number;
   markers?: Markers
 }
 
@@ -37,7 +37,7 @@ const LinearChart: FC<Props> = ({
   markerSymbol = 'ETH',
   height = 250,
   colors,
-  spline = 1,
+  // spline = 1,
   markers = undefined
 }) => {
   const chartEl = useRef<HTMLDivElement>(null)
@@ -50,6 +50,8 @@ const LinearChart: FC<Props> = ({
   const yRegions: Region[] = [{
     label: 'Mint Price / x', start: 0, end: endVal
   }]
+
+  console.log('--------- linear yRegions', yRegions, 'yMarkers', yMarkers, 'datasets', datasets, 'labels', labels, 'maxVal', maxVal, 'endVal', endVal)
 
   useEffect(() => {
     if (!chartEl.current) return
@@ -70,9 +72,9 @@ const LinearChart: FC<Props> = ({
         formatTooltipX: (d) => `UserID: ${d}`,
         formatTooltipY: (d) => `&#8776 ${formatToDecimal(d, 0, 8)} ${markerSymbol}`
       },
-      lineOptions: {
-        spline
-      },
+      // lineOptions: {
+      //   spline: 1 // Error: <path> attribute d: Expected number, "…0 C 377.998,130 NaN,NaN 424.29,1…
+      // },
       axisOptions: {
         xAxisMode: "tick",
       },
