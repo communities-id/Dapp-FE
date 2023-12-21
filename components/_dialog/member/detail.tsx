@@ -19,7 +19,7 @@ interface Props {
 
 const MemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, memberName = '', memberInfo, handleClose }) => {
   const { community } = execSearch(memberName)
-  const { brandInfo } = useDIDContent({ brandName: brandName || community, brandInfo: inputBrandInfo })
+  const { brandInfo, brandInfoLoading } = useDIDContent({ brandName: brandName || community, brandInfo: inputBrandInfo })
 
   return (
     <Dialog
@@ -31,6 +31,7 @@ const MemberDetail: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, m
       handleClose={handleClose}
     >
       <MemberDetailContent
+        loading={brandInfoLoading}
         name={memberName}
         memberInfo={memberInfo}
         brandInfo={brandInfo}

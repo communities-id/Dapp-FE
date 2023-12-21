@@ -4,6 +4,7 @@ import { useRouter, usePathname } from 'next/navigation'
 
 import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useRoot } from '@/contexts/root'
+import { useDetails } from '@/contexts/details'
 import { getNormalTwitterShareLink } from '@/utils/share'
 import { getOpenseaLink } from '@/utils/tools'
 import { formatDate } from '@/shared/helper'
@@ -32,16 +33,20 @@ interface Props {
   name?: string
   memberInfo?: Partial<MemberInfo>
   brandInfo?: Partial<CommunityInfo>
+  loading?: boolean
   handleClose?: () => void
 }
 
-const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, brandInfo, handleClose }) => {
+const MemberDetail: FC<Props> = ({ isMobile, loading: inputLoading, name, memberInfo: inputMemberInfo, brandInfo, handleClose }) => {
   const router = useRouter()
   const pathname = usePathname()
 
   const { showGlobalDialog } = useGlobalDialog()
+  const { ownerPrimaryDID, refreshOwnerInfo } = useDetails()
 
   const { type, community, member, memberInfo, memberInfoLoading, memberSetStatus, mounted: memberMounted } = useMemberContent({ memberName: name ?? '', memberInfo: inputMemberInfo, brandInfo })
+
+  const loading = memberInfoLoading || inputLoading
 
   const actions = useMemo(() => {
     return [
@@ -65,7 +70,7 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
   }, [])
 
   const primaryAction = useMemo(() => {
-    return !memberInfo?.isPrimary ? {
+    return (!memberInfo?.isPrimary && ownerPrimaryDID !== name) ? {
       id: 'member-primary',
       mobileId: 'mobile-member-primary',
       text: 'Set as Primary',
@@ -73,7 +78,7 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
       inverse: true,
       latest: true,
     } : null
-  }, [memberInfo?.isPrimary])
+  }, [memberInfo?.isPrimary, ownerPrimaryDID, name])
 
   const memberSharePopoverMenus: PopoverMenuItem[] = useMemo(() => {
     if (typeof window === 'undefined') return []
@@ -135,13 +140,13 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
   }
 
   useEffect(() => {
-    if (memberMounted && !memberInfoLoading && !memberSetStatus.isMinted) {
+    if (memberMounted && !loading && !memberSetStatus.isMinted) {
       handleClose?.()
       pathname && router.push(`${pathname}?from=mint&name=${member}`)
     }
-  }, [memberInfoLoading, memberSetStatus.isMinted, memberMounted])
+  }, [loading, memberSetStatus.isMinted, memberMounted])
 
-  return memberInfoLoading ? (
+  return loading ? (
     <div className='w-full h-full flex-center flex-col gap-8 bg-white'>
       <h2 className='text-[24px] leading-[34px] font-semibold text-main-black'>{ name }</h2>
       <LoadingIcon width='32' height='32' />
@@ -196,9 +201,13 @@ const MemberDetail: FC<Props> = ({ isMobile, name, memberInfo: inputMemberInfo, 
                 )
               })
             }
-            <li>
-              <div className='mx-[10px] w-px h-4 bg-main-black'></div>
-            </li>
+            {
+              socialLinks.length > 0 && (
+                <li>
+                  <div className='mx-[10px] w-px h-4 bg-main-black'></div>
+                </li>
+              )
+            }
             <li>
             <Popover
               className={classNames({

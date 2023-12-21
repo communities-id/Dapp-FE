@@ -16,7 +16,7 @@ interface Props {
 
 const MemberAsPrimaryContent: FC<Props> = ({ memberName, memberInfo: inputMemberInfo, brandInfo }) => {
   const { message, NetOps } = useRoot()
-  const { isMainNetwork } = useDetails()
+  const { isMainNetwork, refreshOwnerInfo } = useDetails()
   const { setMemberPrimary } = useApi()
   
   const [loading, setLoading] = useState(false)
