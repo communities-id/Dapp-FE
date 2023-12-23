@@ -5,14 +5,21 @@ import { useWallet } from '@/hooks/wallet'
 import Modal from '@/components/_common/modal'
 import CloseIcon from '~@/_brand/close.svg'
 import MemberBurnContent from '@/components/_member/burn'
+import { CommunityInfo, MemberInfo } from '@/types'
+import { useDIDContent } from '@/hooks/content'
 
 interface Props {
   open: boolean
+  brandName?: string
+  brandInfo?: Partial<CommunityInfo>
+  memberName?: string
+  memberInfo?: Partial<MemberInfo>
   handleClose?: () => void
 }
 
-const MobileMemberBurn: FC<Props> = ({ open, handleClose }) => {
-
+const MobileMemberBurn: FC<Props> = ({ open, brandName, brandInfo: inputBrandInfo, memberName, memberInfo, handleClose }) => {
+  const { brandInfo } = useDIDContent({ brandName, brandInfo: inputBrandInfo })
+  
   return (
     <Modal
       open={open}
@@ -30,7 +37,7 @@ const MobileMemberBurn: FC<Props> = ({ open, handleClose }) => {
         <div className='absolute top-[14px] right-[10px] z-icon' onClick={handleClose}>
           <CloseIcon width='20' height='20' className='text-gray-1' />
         </div>
-          <MemberBurnContent open={open} />
+          <MemberBurnContent open={open} name={memberName} memberInfo={memberInfo} brandInfo={brandInfo} />
       </div>
     </Modal>
   )

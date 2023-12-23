@@ -1,22 +1,23 @@
 import { FC, useState } from 'react'
 
-import { useSwitchNetwork } from 'wagmi'
 import { useRoot } from '@/contexts/root'
 import { useDetails } from '@/contexts/details'
 import useApi from '@/shared/useApi'
 import Button from '@/components/_common/button'
 import { toastError } from '@/shared/helper'
 import { CHAIN_ID } from '@/shared/constant'
+import { CommunityInfo, MemberInfo } from '@/types'
 
 interface Props {
   memberName: string
+  brandInfo?: Partial<CommunityInfo>
+  memberInfo?: Partial<MemberInfo>
 }
 
-const MemberAsPrimaryContent: FC<Props> = ({ memberName }) => {
-  const { message } = useRoot()
-  const { isMainNetwork } = useDetails()
+const MemberAsPrimaryContent: FC<Props> = ({ memberName, memberInfo: inputMemberInfo, brandInfo }) => {
+  const { message, NetOps } = useRoot()
+  const { isMainNetwork, refreshOwnerInfo } = useDetails()
   const { setMemberPrimary } = useApi()
-  const { switchNetworkAsync } = useSwitchNetwork()
   
   const [loading, setLoading] = useState(false)
   
@@ -25,7 +26,7 @@ const MemberAsPrimaryContent: FC<Props> = ({ memberName }) => {
     try {
       setLoading(true)
       if (!isMainNetwork) {
-        await switchNetworkAsync?.(CHAIN_ID)
+        await NetOps.handleSwitchNetwork(CHAIN_ID)
       }
       await setMemberPrimary(memberName)
       message({ type: 'success', content: 'Set to primary success!' }, { t: 'member-set-primary', keyword: memberName  })

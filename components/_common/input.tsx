@@ -16,7 +16,7 @@ const CustomInput = forwardRef(function CustomInput(
       className={
         classnames(
           'w-full px-4 py-3 flex items-center',
-          'text-md-b text-main-black placeholder:text-tr-black-4',
+          'text-md-b text-main-black placeholder:text-black-tr-20',
           'rounded-[6px] border-[1px] border-solid border-gray-3',
           {
             'cursor-not-allowed !bg-disabled !border-transparent': props.disabled,

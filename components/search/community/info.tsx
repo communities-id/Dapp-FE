@@ -66,6 +66,7 @@ const CommunityLayout: FC<Props> = () => {
   const invitationCode = useSearchParams().get('code') as string
   const mintName = useSearchParams().get('name') as string
   const mintTo = useSearchParams().get('mintTo') as string
+  const member = useSearchParams().get('member') as string
 
   const { message } = useRoot()
   const { isMobile } = useRootConfig()
@@ -257,11 +258,23 @@ const CommunityLayout: FC<Props> = () => {
   }, [pendingMintSet, communityInfoSet.isOwner, communityInfoSet.initialized])
 
   useEffect(() => {
-    if (!fromMode) return
     if (!communityInfo || !communityInfo.node) return
+    const brandName = communityInfo.node?.node
+    if (member) {
+      // closed: other brand member eg(xx.wagmi in cid brand)
+      if (member.includes('.') && !member.includes(brandName)) return
+      const fullMemberName = member.includes(`.${brandName}`) ? member : `${member}.${brandName}`
+      showGlobalDialog(isMobile ? 'mobile-member-detail' : 'member-detail', {
+        brandName: communityInfo.node?.node,
+        brandInfo: communityInfo,
+        memberName: fullMemberName,
+        mobile: isMobile
+      })
+      return
+    }
     if (fromMode === 'mint') {
       showGlobalDialog(isMobile ? 'mobile-member-mint' : 'member-mint', {
-        brandName: communityInfo.node?.node,
+        brandName,
         brandInfo: communityInfo,
         options: {
           invitationCode,
@@ -271,7 +284,7 @@ const CommunityLayout: FC<Props> = () => {
         mobile: isMobile
       })
     }
-  }, [communityInfo, fromMode, invitationCode, mintName, mintTo, isMobile])
+  }, [member, communityInfo, fromMode, invitationCode, mintName, mintTo, isMobile])
 
   if (communityInfoSet.unMint) return (
     <Banner />

@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo } from "react"
 
-import { searchCommunity } from "@/shared/useApi"
+import { execSearch } from '@/shared/helper'
+import { searchCommunity, searchMember } from "@/shared/useApi"
 
-import { CommunityInfo, SearchMode } from '@/types'
+import { CommunityInfo, MemberInfo, SearchMode, State } from '@/types'
+import { BrandDID } from "@communitiesid/id"
 
 interface Props {
   brandName?: string
@@ -22,7 +24,7 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
       profileInitially,
       accountInitially,
       mintSettingsInitially,
-      notLoaded: mintSettingsInitially
+      notLoaded: config && mintSettingsInitially
     }
   }
 
@@ -39,11 +41,63 @@ export const useDIDContent = ({ brandName, brandInfo: inputBrandInfo }: Props) =
       setBrandInfoLoading(false)
     })
   }, [brandName, inputBrandInfo])
-  
+
   return {
-    brandInfo,
+    brandInfo: Object.keys(brandInfo).length ? brandInfo : inputBrandInfo ?? {},
     brandInfoLoading,
     brandSetStatus,
     handleVerifyBrandSet
+  }
+}
+
+interface MemberProps {
+  memberName: string
+  memberInfo?: Partial<MemberInfo>
+  brandInfo?: Partial<CommunityInfo>
+}
+export const useMemberContent = ({ memberName, memberInfo: inputMemberInfo, brandInfo }: MemberProps) => {
+
+  const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>(inputMemberInfo ?? {})
+  const [memberInfoLoading, setMemberInfoLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  const { type, community, member } = execSearch(memberName)
+
+  const handleVerifyMemberSet = (info: Partial<MemberInfo>) => {
+    const unMint = !info?.node || info?.state === State.FREE || info?.state === State.EXPIRED
+    return {
+      isMinted: !unMint,
+      isRenewal: info?.state === State.RESERVED || info?.state === State.EXPIRED,
+      isExpired: info?.state === State.EXPIRED,
+    }
+  }
+
+  const memberSetStatus = useMemo(() => {
+    return handleVerifyMemberSet(memberInfo)
+  }, [memberInfo])
+
+  useEffect(() => {
+    if (inputMemberInfo) {
+      setMounted(true)
+      return
+    }
+    if (type !== 'member') return
+    setMemberInfoLoading(true)
+    searchMember(brandInfo as BrandDID, community, member).then((res) => {
+      setMounted(true)
+      setMemberInfo(res)
+      setMemberInfoLoading(false)
+    })
+  }, [type, member, inputMemberInfo])
+  
+  return {
+    type,
+    community,
+    member,
+    memberInfo: Object.keys(memberInfo).length ? memberInfo : inputMemberInfo ?? {},
+    memberInfoLoading,
+    memberSetStatus,
+    handleVerifyMemberSet,
+    mounted
   }
 }

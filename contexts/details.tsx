@@ -25,6 +25,7 @@ interface DetailsContextProps {
   memberInfo: Partial<MemberInfo>
   ownerMemberInfo: Partial<MemberInfo>
   isUnknown: boolean
+  ownerPrimaryDID: string
   communityCache: {
     name: string,
     imge: string,
@@ -64,6 +65,7 @@ interface DetailsContextProps {
   mainMulChainID: number
   mintMulChainID: number
   refreshInfo: (initialize?: boolean) => Promise<void>
+  refreshOwnerInfo?: () => Promise<void>
 }
 
 const DetailsContext = createContext<DetailsContextProps>({
@@ -77,6 +79,7 @@ const DetailsContext = createContext<DetailsContextProps>({
   memberInfo: {},
   ownerMemberInfo: {},
   isUnknown: false,
+  ownerPrimaryDID: '',
   communityCache: [],
   loadingSet: {
     community: true,
@@ -111,7 +114,8 @@ const DetailsContext = createContext<DetailsContextProps>({
   isMainNetwork: false,
   mainMulChainID: 0,
   mintMulChainID: 0,
-  refreshInfo: async () => {}
+  refreshInfo: async () => {},
+  refreshOwnerInfo: async () => {}
 })
 
 export const useDetails = () => useContext(DetailsContext)
@@ -127,6 +131,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     did: false
   })
   // const [addressDID, setAddressDID] = useState<string | undefined>('')
+  const [ownerPrimaryDID, setOwnerPrimaryDID] = useState('')
   const [brandInitialized, setBrandInitialized] = useState(false)
   const [communityInfo, setCommunityInfo] = useState<Partial<CommunityInfo>>({})
   const [memberInfo, setMemberInfo] = useState<Partial<MemberInfo>>({})
@@ -238,6 +243,11 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     }
   }, [account, communityInfo, memberInfo, loadingSet.member, chain?.id, mainMulChainID])
 
+  const loadPrimaryDID = async (address: string) => {
+    const did = await getPrimaryMember(address)
+    return did
+  }
+
   // load community info by keywords
   const loadCommunityInfo = async (community: string, shouldLoading = true) => {
     shouldLoading && setLoadingSet((prev) => ({ ...prev, community: true }))
@@ -258,18 +268,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     return data
   }
 
-  const loadAddressInfo = async (address: string) => {
-    const did = await getPrimaryMember(address)
-    if (!did) return
-    const { type, community, member } = execSearch(did)
-    if (type === 'unknown') return
-    const DIDCommunityInfo = await searchCommunity(community)
-    const DIDMemberInfo = await searchMember(DIDCommunityInfo, community, member)
-    return DIDMemberInfo
-  }
-
-
-  const clearInfo = () => {
+  const clearDIDInfo = () => {
     // setAddressDID('')
     setCommunityInfo({})
     setMemberInfo({})
@@ -295,6 +294,25 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
     })
   }
 
+  const loadAddressInfo = async (did: string) => {
+    if (!did) return
+    const { type, community, member } = execSearch(did)
+    if (type === 'unknown') return
+    const DIDCommunityInfo = await searchCommunity(community)
+    const DIDMemberInfo = await searchMember(DIDCommunityInfo, community, member)
+    return DIDMemberInfo
+  }
+  
+  const refreshOwnerInfo = async () => {
+    loadPrimaryDID(account as string).then((did) => {
+      if (!did) return
+      setOwnerPrimaryDID(did)
+      loadAddressInfo(did).then((info) => {
+        info && setOwnerMemberInfo(info as Partial<MemberInfo>)
+      })
+    })
+  }
+
   // event: get did from keywords
   useEffect(() => {
     // console.log('===  did init', type, keywords)
@@ -311,7 +329,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
   useEffect(() => {
     // console.log('===  community init', 'community', community, 'member', member, 'keywords', keywords, loadingSet.did)
     if (!community && loadingSet.did) {
-      clearInfo()
+      clearDIDInfo()
       return
     }
     if (!community) {
@@ -319,7 +337,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
       // setLoadingSet((prev) => ({ ...prev, member: false }))
       return
     }
-    clearInfo()
+    clearDIDInfo()
     const currentRequestId = requestId.current
     requestId.current = currentRequestId + 1
     console.log('--- init loadCommunityInfo', community, 'memner', member, 'keywords', keywords, loadingSet.did)
@@ -347,9 +365,8 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
 
   useEffect(() => {
     if (!account) return
-    loadAddressInfo(account).then(memberInfo => {
-      memberInfo && setOwnerMemberInfo(memberInfo)
-    })
+    // refresh owner primary did and member info
+    refreshOwnerInfo()
   }, [account])
 
   useEffect(() => {
@@ -381,6 +398,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
       keywords,
       member,
       address: type === 'address' ? keywords : '',
+      ownerPrimaryDID,
       communityCache,
       community,
       communityInfo,
@@ -395,6 +413,7 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
       mainMulChainID,
       mintMulChainID,
       refreshInfo,
+      refreshOwnerInfo
     }}>
       {children}
     </DetailsContext.Provider>

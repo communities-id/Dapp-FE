@@ -9,7 +9,7 @@ module.exports = {
   'tr-black-2': '#363e4999', // 0.6
   'black-tr-50': '#363E4980', // 0.5
   'black-tr-40': '#363e4966', // 0.4
-  'tr-black-4': '#363e4933', // 0.2
+  'black-tr-20': '#363e4933', // 0.2
   'black-tr-10': '#363e491a', // 0.1
   'white-tr-20': '#ffffff33', // 0.2
   'white-tr-50': '#ffffff80', // 0.5

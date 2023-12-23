@@ -1,10 +1,8 @@
-import {
-  connectorsForWallets,
-} from "@rainbow-me/rainbowkit";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { metaMaskWallet, walletConnectWallet, injectedWallet, okxWallet, tokenPocketWallet } from "@rainbow-me/rainbowkit/wallets";
 import { JoyIdWallet } from '@joyid/rainbowkit'
 
-import { Chain, configureChains, createConfig } from "wagmi";
+import { Chain, WindowProvider, configureChains, createConfig } from "wagmi";
 import { mainnet, polygon, optimism, bsc, base } from 'wagmi/chains'
 import { polygonMumbai, goerli, baseGoerli, optimismGoerli, bscTestnet, scrollSepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
@@ -14,6 +12,18 @@ import { ChainIDs, TestnetChainIDs } from "@communitiesid/id"
 
 import { TotalSupportedChainIDs } from '@/types/chain'
 
+import type { Connector } from 'wagmi/connectors';
+import { gateIOWallet } from './wallets/gate'
+
+export async function getWalletConnectUri(
+  connector: Connector,
+  version: '1' | '2',
+): Promise<string> {
+  const provider = await connector.getProvider();
+  return version === '2'
+    ? new Promise<string>((resolve) => provider.once('display_uri', resolve))
+    : provider.connector.uri;
+}
 interface ChainConfigOptions {
   currency: {
     name: string
@@ -146,10 +156,11 @@ export const connectors = connectorsForWallets([
     groupName: 'Recommended',
     wallets: [
       injectedWallet({ chains, shimDisconnect: true }),
-      metaMaskWallet({ chains, shimDisconnect: true, projectId: 'Communities.ID' }),
-      // coinbaseWallet({ appName: 'Communities.ID', chains }),
+      metaMaskWallet({ chains, shimDisconnect: true, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' }),
+      // coinbaseWallet({ appName: '1cd28d38251a0d1a92b1c0f014d618eb', chains }),
       JoyIdWallet({ chains, options: JoyIDOptions }),
-      tokenPocketWallet({ chains, shimDisconnect: true, projectId: 'Communities.ID' }),
+      tokenPocketWallet({ chains, shimDisconnect: true, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' }),
+      gateIOWallet({ chains, projectId: '1cd28d38251a0d1a92b1c0f014d618eb' })
     ]
   },
   {

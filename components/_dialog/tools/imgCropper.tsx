@@ -27,7 +27,7 @@ const ImgCropperDialog: FC<Props> = ({ open, url, loading, aspect, onCropComplet
       open={open}
       center
       transparent
-      hiddenCloseIcon
+      closeIcon={null}
       >
         <div>
           <ImageCropper

@@ -6,6 +6,7 @@ import { CHAINS_ID_TO_NETWORK, CHAIN_ID_MAP } from '@/shared/constant'
 import { useDetails } from '@/contexts/details'
 import { useGlobalDialog } from '@/contexts/globalDialog'
 import { useDIDContent } from '@/hooks/content'
+import { useRootConfig } from '@/contexts/root'
 
 import { Tabs, TabsList } from '@mui/base'
 import Tab from '@/components/common/tab'
@@ -14,11 +15,10 @@ import ListCard from '@/components/search/card'
 import Loading from '@/components/loading/list'
 import PlusIconWithColor from '@/components/common/PlusWithColor2'
 
-import { CommunityMember } from '@/types'
+import { CommunityMember, MemberInfo } from '@/types'
 import themeColor from '@/_themes/colors'
 
 import MintSettingIcon from '~@/icons/mint-settings.svg'
-import { useRootConfig } from '@/contexts/root'
 
 
 interface Props {
@@ -121,7 +121,13 @@ const CommunityMembers: FC<Props> = () => {
             tokenId: row.tokenId,
           }
           return (
-            <ListCard info={info} chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]} />
+            <ListCard
+              info={info}
+              chainId={CHAIN_ID_MAP[CHAINS_ID_TO_NETWORK[row.chainId]]}
+              onClick={(name) => {
+                showGlobalDialog(isMobile ? 'mobile-member-detail' : 'member-detail', { brandName: communityInfo.node?.node, brandInfo: communityInfo, memberName: name, memberInfo: row.memberInfo as Partial<MemberInfo>, mobile: isMobile })
+              }}
+            />
           )
         }}
         firstLoading={fetchInfo.page === 1 && loading}

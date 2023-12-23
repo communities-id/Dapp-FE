@@ -1,14 +1,19 @@
 import { useState, useContext, createContext, ReactNode, useEffect, useRef, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+
+import { qs } from '@/utils/tools'
 
 import MintSuccessDialog from '@/components/_dialog/tools/mintSuccess'
 import MobileMintSuccessDialog from '@/components/_dialog/tools/mobile/mintSuccess'
-
 import BrandMintDrawer from '@/components/_dialog/brand/mint'
 import CommunityProfileSettingDialog from '@/components/dialog/community/profileSetting'
 import MemberMintDialog from '@/components/_dialog/member/mint'
 import BrandManageDialog from '@/components/_dialog/brand/manage'
 import BrandNotLoadedDialog from '@/components/_dialog/brand/notLoaded'
+import MemberDetailDialog from '@/components/_dialog/member/detail'
+import MemberBurn from '@/components/_dialog/member/burn'
+import MemberRenew from '@/components/_dialog/member/renew'
+import MemberPrimary from '@/components/_dialog/member/primary'
 
 import MobileBrandMintDrawer from '@/components/_dialog/brand/mobile/mint'
 import MobileBrandManageDrawer from '@/components/_dialog/brand/mobile/manage/manageMenus'
@@ -19,11 +24,13 @@ import MobileBrandManageRenewSettingDialog from '@/components/_dialog/brand/mobi
 import MobileBrandManageTGSettingDialog from '@/components/_dialog/brand/mobile/manage/manageTGSetting'
 import MobileBrandInvitationDialog from '@/components/_dialog/brand/mobile/invitation'
 import MobileMemberMintDialog from '@/components/_dialog/member/mobile/mint'
-
-import { CommunityInfo, SearchModeType } from '@/types'
+import MobileMemberDetailDialog from '@/components/_dialog/member/mobile/detail'
 import MobileMemberBurn from '@/components/_dialog/member/mobile/burn'
 import MobileMemberRenew from '@/components/_dialog/member/mobile/renew'
 import MobileMemberPrimary from '@/components/_dialog/member/mobile/primary'
+
+import { CommunityInfo, MemberInfo, SearchModeType } from '@/types'
+import { execSearch } from '@/shared/helper'
 
 type MobileGlobalDialogNames = 'mobile-brand-mint'
   | 'mobile-manage-drawer'
@@ -46,6 +53,10 @@ type GlobalDialogNames = MobileGlobalDialogNames
  | 'brand-not-loaded'
  | 'member-mint'
  | 'brand-mint-success'
+ | 'member-detail'
+ | 'member-burn'
+ | 'member-renew'
+ | 'member-primary'
  | string
 
 interface GlobalDialogPayload {
@@ -53,12 +64,14 @@ interface GlobalDialogPayload {
   brandName?: string
   brandInfo?: Partial<CommunityInfo>
   memberName?: string
+  memberInfo?: Partial<MemberInfo>
   options?: {
     mintNetwork?: number
     invitationCode?: string
     mintTo?: string
     mintName?: string
     notLoaded?: boolean
+    simpleMode?: boolean
   }
 }
 
@@ -82,6 +95,7 @@ export const useGlobalDialog = () => {
 
 export function GlobalDialogProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
+  const pathname = usePathname()
   
   const [dialogOpenSet, setDialogOpenSet] = useState<Partial<Record<GlobalDialogNames, boolean>>>({})
   const [dialogPayload, setDialogPayload] = useState<GlobalDialogPayload>({ options: {} })
@@ -97,6 +111,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
   })
 
   const showGlobalDialog = (name: GlobalDialogNames, payload?: GlobalDialogPayload) => {
+    if (dialogOpenSet[name]) return
     payload && setDialogPayload(payload)
     setDialogOpenSet((prev) => ({
       ...prev,
@@ -110,6 +125,29 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
       [name]: false,
     }))
   }
+
+  useEffect(() => {
+    if (!pathname) return
+    if (dialogOpenSet['member-detail'] || dialogOpenSet['mobile-member-detail']) {
+      if (dialogPayload.options?.simpleMode) return
+      if (!dialogPayload.memberName) return
+      const { member } = execSearch(dialogPayload.memberName)
+      router.replace(`${pathname}?member=${member}`)
+    }
+  }, [dialogOpenSet['member-detail'], dialogOpenSet['mobile-member-detail'], pathname])
+
+  useEffect(() => {
+    if (!pathname) return
+    if (dialogOpenSet['member-mint'] || dialogOpenSet['mobile-member-mint']) {
+      const params = {
+        from: 'mint',
+        name: dialogPayload.memberName,
+        mintTo: dialogPayload.options?.mintTo,
+        code: dialogPayload.options?.invitationCode,
+      }
+      router.replace(`${pathname}?${qs(params)}`)
+    }
+  }, [dialogOpenSet['member-mint'], dialogOpenSet['mobile-member-mint'], pathname])
 
   return (
     <GlobalDialogContext.Provider value={{
@@ -186,19 +224,44 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         invitationCode={dialogPayload.options?.invitationCode}
         memberName={dialogPayload.options?.mintName}
         mintTo={dialogPayload.options?.mintTo}
-        handleClose={() => closeGlobalDialog('mobile-member-mint')}
+        handleClose={() => {
+          pathname && router.replace(pathname)
+          closeGlobalDialog('mobile-member-mint')
+        }}
+      />
+      <MobileMemberDetailDialog
+        open={Boolean(dialogOpenSet['mobile-member-detail'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
+        handleClose={() => {
+          pathname && router.replace(pathname)
+          closeGlobalDialog('mobile-member-detail')
+        }}
       />
       <MobileMemberBurn
         open={Boolean(dialogOpenSet['mobile-member-burn'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
         handleClose={() => closeGlobalDialog('mobile-member-burn')}
       />
       <MobileMemberRenew
         open={Boolean(dialogOpenSet['mobile-member-renew'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
         handleClose={() => closeGlobalDialog('mobile-member-renew')}
       />
       <MobileMemberPrimary
-        memberName={dialogPayload.memberName || ''}
         open={Boolean(dialogOpenSet['mobile-member-primary'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName ?? ''}
+        memberInfo={dialogPayload.memberInfo}
         handleClose={() => closeGlobalDialog('mobile-member-primary')}
       />
       <MobileMintSuccessDialog
@@ -220,7 +283,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
             return
           }
           if (mode === 'member') {
-            router.push(`/member/${member}.${community}`)
+            router.push(`/community/${community}?member=${member}`)
             closeGlobalDialog('mobile-brand-mint-success')
             return
           }
@@ -248,7 +311,10 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         invitationCode={dialogPayload.options?.invitationCode}
         memberName={dialogPayload.options?.mintName}
         mintTo={dialogPayload.options?.mintTo}
-        handleClose={() => closeGlobalDialog('member-mint')}
+        handleClose={() => {
+          pathname && router.replace(pathname)
+          closeGlobalDialog('member-mint')
+        }}
       />
       <BrandManageDialog
         open={Boolean(dialogOpenSet['brand-manage-setting'])}
@@ -256,6 +322,41 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
         brandInfo={dialogPayload.brandInfo}
         notLoaded={dialogPayload.options?.notLoaded}
         handleClose={() => closeGlobalDialog('brand-manage-setting')}
+      />
+      <MemberDetailDialog
+        open={Boolean(dialogOpenSet['member-detail'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
+        handleClose={() => {
+          pathname && router.replace(pathname)
+          closeGlobalDialog('member-detail')
+        }}
+      />
+      <MemberBurn
+        open={Boolean(dialogOpenSet['member-burn'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
+        handleClose={() => closeGlobalDialog('member-burn')}
+      />
+      <MemberRenew
+        open={Boolean(dialogOpenSet['member-renew'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName}
+        memberInfo={dialogPayload.memberInfo}
+        handleClose={() => closeGlobalDialog('member-renew')}
+      />
+      <MemberPrimary
+        open={Boolean(dialogOpenSet['member-primary'])}
+        brandName={dialogPayload.brandName}
+        brandInfo={dialogPayload.brandInfo}
+        memberName={dialogPayload.memberName ?? ''}
+        memberInfo={dialogPayload.memberInfo}
+        handleClose={() => closeGlobalDialog('member-primary')}
       />
       <BrandNotLoadedDialog
         brandName={dialogPayload.brandName}
@@ -290,7 +391,7 @@ export function GlobalDialogProvider({ children }: { children: ReactNode }) {
             return
           }
           if (mode === 'member') {
-            router.push(`/member/${member}.${community}`)
+            router.push(`/community/${community}?member=${member}`)
             setMintSuccessInfo(prev => ({ ...prev, open: false }))
             return
           }

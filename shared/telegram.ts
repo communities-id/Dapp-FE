@@ -3,6 +3,7 @@ import { recoverPersonalSignature } from '@metamask/eth-sig-util'
 import { prisma } from '@/shared/prisma';
 import { TG_BOT_ID, TG_BOT_NAME, ZERO_ADDRESS } from './constant';
 import { Community } from '@prisma/client';
+import { execSearch } from './helper';
 // import { checkInCommunity } from './alchemy';
 
 interface TGMsg {
@@ -162,7 +163,8 @@ export const handleOtherJoinGrouop = async (msg: TGMsg) => {
     return
   }
   const name = escape(msg.new_chat_participant.username || msg.new_chat_participant.first_name)
-  await sendMessage(msg.chatId, `Welcome @${name}, the owner of [${escape(member.name)}](${domain}/member/${escape(member.name)}), join this group`, {
+  const { member: memberName,community: brandName } = execSearch(member.name)
+  await sendMessage(msg.chatId, `Welcome @${name}, the owner of [${escape(member.name)}](${domain}/community/${escape(brandName)}?member=${escape(memberName)}), join this group`, {
     parse_mode: 'MarkdownV2'
   })
 }

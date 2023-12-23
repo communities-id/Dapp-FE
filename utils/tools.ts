@@ -86,9 +86,9 @@ export const isLink = (link: string) => {
   return link.match(/http(s)?:\/\//)
 }
 
-export const qs = (obj: Record<string, string>) => {
+export const qs = (obj: Partial<Record<string, string>>) => {
   for (const key in obj) {
     if (!obj[key]) delete obj[key]
   }
-  return new URLSearchParams(obj).toString()
+  return new URLSearchParams(obj as Record<string, string>).toString()
 }
