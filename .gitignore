@@ -36,6 +36,8 @@ next-env.d.ts
 
 temp.txt
 .env
+.env.local1
+.env.prod1
 
 .hypothesis
 csvs
