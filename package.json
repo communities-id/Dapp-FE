@@ -44,6 +44,7 @@
     "@types/react-dom": "18.0.11",
     "@types/react-transition-group": "^4.4.6",
     "@vercel/analytics": "^1.1.1",
+    "@wagmi/core": "^1.4.12",
     "Unstable_NumberInput": "link:@mui/base/Unstable_NumberInput",
     "alchemy-sdk": "^2.8.3",
     "autoprefixer": "10.4.14",

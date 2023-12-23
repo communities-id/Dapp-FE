@@ -26,8 +26,6 @@ const PriceModeChart: FC<Props> = ({ name = 'price-chart', params, height = 200,
     return Number(formatLocaleDecimalsNumber(formatToDecimal(calcCurrentMintPrice(x, { ...params }).price, 0, 6)))
   })
 
-  console.log('- datasetsValues', datasetsValues)
-
   const currentPrice = formatLocaleDecimalsNumber(formatToDecimal(calcCurrentMintPrice(currentLabel, { ...params }).price, 0, 6))
 
   const markers: Markers = [{

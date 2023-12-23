@@ -51,8 +51,6 @@ const LinearChart: FC<Props> = ({
     label: 'Mint Price / x', start: 0, end: endVal
   }]
 
-  console.log('--------- linear yRegions', yRegions, 'yMarkers', yMarkers, 'datasets', datasets, 'labels', labels, 'maxVal', maxVal, 'endVal', endVal)
-
   useEffect(() => {
     if (!chartEl.current) return
     chartEl.current.innerHTML = ''

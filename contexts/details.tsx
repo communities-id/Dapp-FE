@@ -305,9 +305,10 @@ export const DetailsProvider = ({ mode: _mode, keywords: _keywords, children }: 
   
   const refreshOwnerInfo = async () => {
     loadPrimaryDID(account as string).then((did) => {
+      if (!did) return
       setOwnerPrimaryDID(did)
       loadAddressInfo(did).then((info) => {
-        memberInfo && setOwnerMemberInfo(info as Partial<MemberInfo>)
+        info && setOwnerMemberInfo(info as Partial<MemberInfo>)
       })
     })
   }
