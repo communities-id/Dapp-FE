@@ -35,7 +35,7 @@ export default async function handler(
   );
 
 
-  const { domain: omniDomain, types: omniTypes, commitment: omniCommitment } = getCommunityOmninodeSignPayload(name, owner, {
+  const { domain: omniDomain, types: omniTypes, commitment: omniCommitment } = getCommunityOmninodeSignPayload(name, '', {
     chainId: _chainId
   })
   // const omninodeSigner = new Wallet(process.env.PRIVATE_KEY as string)
