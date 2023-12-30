@@ -223,7 +223,8 @@ const CommunityMint: FC<Props> = () => {
       signature: s1
     })
     setOmninodeAdvanceMintSetting({
-      mintTo: crossChainMintSetting.omninodeMintTo.trim() || '',
+      // mintTo: crossChainMintSetting.omninodeMintTo.trim() || '',
+      mintTo: '',
       signature: s2
     })
   }, [crossChainMintSetting.signature, crossChainMintSetting.mintTo, crossChainMintSetting.omninodeMintTo])
